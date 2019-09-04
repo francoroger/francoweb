@@ -12,13 +12,13 @@
           </li>
           <li class="site-menu-item has-sub">
             <a href="javascript:void(0)">
-              <i class="site-menu-icon wb-extension" aria-hidden="true"></i>
+              <i class="site-menu-icon wb-folder" aria-hidden="true"></i>
               <span class="site-menu-title">Cadastros</span>
               <span class="site-menu-arrow"></span>
             </a>
             <ul class="site-menu-sub">
               <li class="site-menu-item">
-                <a class="animsition-link" href="#">
+                <a class="animsition-link" href="{{ route('clientes.index') }}">
                   <span class="site-menu-title">Clientes</span>
                 </a>
               </li>

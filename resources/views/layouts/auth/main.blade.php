@@ -31,7 +31,6 @@
 
     <!-- Fonts -->
     @stack('stylesheets_fonts')
-    <link rel="stylesheet" href="{{ asset('assets/fonts/font-awesome/font-awesome.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/web-icons/web-icons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/fonts/brand-icons/brand-icons.min.css') }}">
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
@@ -54,23 +53,30 @@
       Breakpoints();
     </script>
   </head>
-  <body class="animsition">
+  <body class="animsition page-login-v3 layout-full">
     <!--[if lt IE 8]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    @include('layouts.app._navbar')
-
-    @include('layouts.app._menubar')
-
-    @include('layouts.app._gridmenu')
 
     <!-- Page -->
-    <div class="page">
-      @yield('content')
+    <div class="page vertical-align text-center" data-animsition-in="fade-in" data-animsition-out="fade-out">>
+      <div class="page-content vertical-align-middle animation-slide-top animation-duration-1">
+        <div class="panel">
+          <div class="panel-body">
+            <div class="brand">
+              <img class="brand-img" src="{{ asset('assets//images/logo-colored.png') }}" alt="...">
+              <h2 class="brand-text font-size-18">{{ config('app.name', 'Laravel') }}</h2>
+            </div>
+
+            @yield('content')
+
+          </div>
+        </div>
+
+        @include('layouts.auth._footer')
+      </div>
     </div>
     <!-- End Page -->
-
-    @include('layouts.app._footer')
 
     <!-- Core  -->
     <script src="{{ asset('assets/vendor/babel-external-helpers/babel-external-helpers.js') }}"></script>
