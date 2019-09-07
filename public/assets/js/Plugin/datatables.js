@@ -66,7 +66,7 @@
           responsive: true,
           language: {
             lengthMenu: '_MENU_',
-            searchPlaceholder: 'Pesquisar...',
+            searchPlaceholder: 'Search..',
             search: "_INPUT_",
             info: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
             emptyTable: "Nenhum registro encontrado",
@@ -86,12 +86,11 @@
             aria: {
               sortAscending: ": Ordenar colunas de forma ascendente",
               sortDescending: ": Ordenar colunas de forma descendente"
+              // ,paginate: {
+              //   previous: '<i class="icon wb-chevron-left-mini"></i>',
+              //   next: '<i class="icon wb-chevron-right-mini"></i>'
+              // }
             }
-            // ,paginate: {
-            //   previous: '<i class="icon wb-chevron-left-mini"></i>',
-            //   next: '<i class="icon wb-chevron-right-mini"></i>'
-            // }
-
             // ,
             // classes: {
             //   sFilterInput: "form-control form-control-sm",
