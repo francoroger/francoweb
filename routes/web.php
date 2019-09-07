@@ -15,4 +15,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::resource('clientes', 'ClienteController');
+Route::group(['prefix' => 'cadastros'], function() {
+  Route::get('clientes/ajax', 'ClienteController@ajax')->name('clientes.ajax');
+  Route::resource('clientes', 'ClienteController');
+});

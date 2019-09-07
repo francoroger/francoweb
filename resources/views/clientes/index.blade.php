@@ -44,7 +44,7 @@
   <div class="page-content">
     <div class="panel">
       <div class="panel-body">
-        <table class="table table-hover dataTable table-striped w-full" data-plugin="dataTable">
+        <table class="table table-hover dataTable table-striped w-full" id="myTable" data-plugin="dataTable">
           <thead>
             <tr>
               <th>Nome</th>
@@ -56,22 +56,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($clientes as $cliente)
-              <tr>
-                <td>{{ $cliente->nome }}</td>
-                <td>{{ $cliente->cpf }}</td>
-                <td>{{ $cliente->cidade }}</td>
-                <td>{{ $cliente->uf }}</td>
-                <td>{{ $cliente->telefone }}</td>
-                <td class="text-center">
-                  @if ($cliente->ativo == 1)
-                    <span class="badge badge-outline badge-success">Ativo</span>
-                  @else
-                    <span class="badge badge-outline badge-default">Inativo</span>
-                  @endif
-                </td>
-              </tr>
-            @endforeach
+
           </tbody>
         </table>
       </div>

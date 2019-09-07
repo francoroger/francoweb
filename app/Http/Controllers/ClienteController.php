@@ -31,6 +31,12 @@ class ClienteController extends Controller
     ]);
   }
 
+  public function ajax(Request $request)
+  {
+    $clientes = Cliente::all();
+    return response()->json($clientes);
+  }
+
   /**
   * Show the form for creating a new resource.
   *
