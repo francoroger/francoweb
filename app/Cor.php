@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cliente extends Model
+class Cor extends Model
 {
-  protected $table = 'cliente';
+  protected $table = 'cores';
 
   public $timestamps = false;
 }

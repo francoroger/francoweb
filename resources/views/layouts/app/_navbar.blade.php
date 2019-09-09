@@ -8,10 +8,10 @@
     <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-collapse" data-toggle="collapse">
       <i class="icon wb-more-horizontal" aria-hidden="true"></i>
     </button>
-    <div class="navbar-brand navbar-brand-center site-gridmenu-toggle" data-toggle="gridmenu">
+    <a class="navbar-brand navbar-brand-center" href="{{ url('/') }}">
       <img class="navbar-brand-logo" src="{{ asset('assets/images/logo.png') }}" title="{{ config('app.name', 'Laravel') }}">
       <span class="navbar-brand-text hidden-xs-down"> {{ config('app.name', 'Laravel') }}</span>
-    </div>
+    </a>
     <!--
     <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-search" data-toggle="collapse">
       <span class="sr-only">Pesquisar</span>

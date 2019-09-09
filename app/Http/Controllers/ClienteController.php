@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Cliente;
+use App\Guia;
+use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
@@ -24,17 +25,32 @@ class ClienteController extends Controller
   */
   public function index()
   {
-    $clientes = Cliente::all();
-
-    return view('clientes.index')->with([
-      'clientes' => $clientes,
-    ]);
+    return view('clientes.index');
   }
 
   public function ajax(Request $request)
   {
     $clientes = Cliente::all();
-    return response()->json($clientes);
+    $data = [];
+    foreach ($clientes as $cliente) {
+      $actions = '<div class="text-nowrap">';
+      $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('clientes.edit', $cliente->id).'"><i class="icon wb-pencil"></i></a>';
+      $actions .= '<button class="btn btn-sm btn-icon btn-flat btn-danger btn-delete" title="Excluir" data-id="'.$cliente->id.'"><i class="icon wb-trash"></i></button>';
+      $actions .= '</div>';
+      $data[] = [
+        'nome' => $cliente->nome,
+        'cpf' => $cliente->cpf,
+        'cidade' => $cliente->cidade,
+        'uf' => $cliente->uf,
+        'telefone' => $cliente->telefone,
+        'status' => $cliente->ativo ? '<span class="badge badge-outline badge-success">Ativo</span>' : '<span class="badge badge-outline badge-default">Inativo</span>',
+        'actions' => $actions,
+      ];
+    }
+    $data = [
+      'data' => $data
+    ];
+    return response()->json($data);
   }
 
   /**
@@ -44,7 +60,10 @@ class ClienteController extends Controller
   */
   public function create()
   {
-    //
+    $guias = Guia::select(['id','nome', 'ativo'])->orderBy('nome')->get();
+    return view('clientes.create')->with([
+      'guias' => $guias,
+    ]);
   }
 
   /**
@@ -77,7 +96,12 @@ class ClienteController extends Controller
   */
   public function edit($id)
   {
-    //
+    $cliente = Cliente::findOrFail($id);
+    $guias = Guia::select(['id','nome', 'ativo'])->orderBy('nome')->get();
+    return view('clientes.edit')->with([
+      'cliente' => $cliente,
+      'guias' => $guias,
+    ]);
   }
 
   /**
@@ -100,6 +124,6 @@ class ClienteController extends Controller
   */
   public function destroy($id)
   {
-    //
+    return response(200);
   }
 }

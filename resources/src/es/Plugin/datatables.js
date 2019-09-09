@@ -35,7 +35,7 @@ class DataTable extends Plugin {
       responsive: true,
       language: {
         lengthMenu: '_MENU_',
-        searchPlaceholder: 'Search..',
+        searchPlaceholder: 'Pesquisar..',
         search: "_INPUT_",
         info: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
         emptyTable: "Nenhum registro encontrado",
