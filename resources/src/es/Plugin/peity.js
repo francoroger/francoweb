@@ -1,10 +1,10 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
-import * as Config from "Config";
+import $ from 'jquery'
+import Plugin from 'Plugin'
+import * as Config from 'Config'
 
 class PeityBar extends Plugin {
   getName() {
-    return 'peityBar';
+    return 'peityBar'
   }
 
   static getDefaults() {
@@ -16,33 +16,33 @@ class PeityBar extends Plugin {
       min: 0,
       padding: 0.1,
       width: 44
-    };
+    }
   }
 
   render() {
     if (!$.fn.peity) {
-      return;
+      return
     }
 
     let $el = this.$el,
-      options = this.options;
+      options = this.options
 
     if (options.skin) {
-      let skinColors = Config.colors(options.skin);
+      const skinColors = Config.colors(options.skin)
       if (skinColors) {
-        options.fill = [skinColors[400]];
+        options.fill = [skinColors[400]]
       }
     }
 
-    $el.peity('bar', options);
+    $el.peity('bar', options)
   }
 }
 
-Plugin.register('peityBar', PeityBar);
+Plugin.register('peityBar', PeityBar)
 
 class PeityDonut extends Plugin {
   getName() {
-    return 'peityDonut';
+    return 'peityDonut'
   }
 
   static getDefaults() {
@@ -57,32 +57,32 @@ class PeityDonut extends Plugin {
       innerRadius: null,
       radius: 11,
       width: null
-    };
+    }
   }
 
   render() {
     if (!$.fn.peity) {
-      return;
+      return
     }
 
     let $el = this.$el,
-      options = this.options;
+      options = this.options
 
     if (options.skin) {
-      let skinColors = Config.colors(options.skin);
+      const skinColors = Config.colors(options.skin)
       if (skinColors) {
-        options.fill = [skinColors[700], skinColors[400], skinColors[200]];
+        options.fill = [skinColors[700], skinColors[400], skinColors[200]]
       }
     }
 
-    $el.peity('donut', options);
+    $el.peity('donut', options)
   }
 }
-Plugin.register('peityDonut', PeityDonut);
+Plugin.register('peityDonut', PeityDonut)
 
 class PeityLine extends Plugin {
   getName() {
-    return 'peityLine';
+    return 'peityLine'
   }
 
   static getDefaults() {
@@ -95,33 +95,33 @@ class PeityLine extends Plugin {
       stroke: Config.colors('primary', 600),
       strokeWidth: 1,
       width: 44
-    };
+    }
   }
 
   render() {
     if (!$.fn.peity) {
-      return;
+      return
     }
 
     let $el = this.$el,
-      options = this.options;
+      options = this.options
 
     if (options.skin) {
-      let skinColors = Config.colors(options.skin);
+      const skinColors = Config.colors(options.skin)
       if (skinColors) {
-        options.fill = [skinColors[200]];
-        options.stroke = skinColors[600];
+        options.fill = [skinColors[200]]
+        options.stroke = skinColors[600]
       }
     }
 
-    $el.peity('line', options);
+    $el.peity('line', options)
   }
 }
-Plugin.register('peityLine', PeityLine);
+Plugin.register('peityLine', PeityLine)
 
 class PeityPie extends Plugin {
   getName() {
-    return 'peityPie';
+    return 'peityPie'
   }
 
   static getDefaults() {
@@ -135,33 +135,33 @@ class PeityPie extends Plugin {
       height: null,
       radius: 11,
       width: null
-    };
+    }
   }
 
   render() {
     if (!$.fn.peity) {
-      return;
+      return
     }
 
     let $el = this.$el,
-      options = this.options;
+      options = this.options
 
     if (options.skin) {
-      let skinColors = Config.colors(options.skin);
+      const skinColors = Config.colors(options.skin)
       if (skinColors) {
-        options.fill = [skinColors[700], skinColors[400], skinColors[200]];
+        options.fill = [skinColors[700], skinColors[400], skinColors[200]]
       }
     }
 
-    $el.peity('pie', options);
+    $el.peity('pie', options)
   }
 }
 
-Plugin.register('peityPie', PeityPie);
+Plugin.register('peityPie', PeityPie)
 
 export {
   PeityBar,
   PeityLine,
   PeityDonut,
   PeityPie
-};
+}

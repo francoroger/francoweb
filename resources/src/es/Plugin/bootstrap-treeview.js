@@ -1,12 +1,12 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
-import * as Config from "Config";
+import $ from 'jquery'
+import Plugin from 'Plugin'
+import * as Config from 'Config'
 
-const NAME = 'treeview';
+const NAME = 'treeview'
 
 class Treeview extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -26,31 +26,31 @@ class Treeview extends Plugin {
 
       searchResultColor: Config.colors('primary', 600),
       searchResultBackColor: '#ffffff'
-    };
+    }
   }
   render() {
     if (!$.fn.treeview) {
-      return;
+      return
     }
 
     let $el = this.$el,
-      options = this.options;
+      options = this.options
 
     if (
       typeof options.source === 'string' &&
       $.isFunction(window[options.source])
     ) {
-      options.data = window[options.source]();
-      delete options.source;
+      options.data = window[options.source]()
+      delete options.source
     } else if ($.isFunction(options.souce)) {
-      options.data = options.source();
-      delete options.source;
+      options.data = options.source()
+      delete options.source
     }
 
-    $el.treeview(options);
+    $el.treeview(options)
   }
 }
 
-Plugin.register(NAME, Treeview);
+Plugin.register(NAME, Treeview)
 
-export default Treeview;
+export default Treeview

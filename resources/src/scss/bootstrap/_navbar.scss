@@ -40,6 +40,10 @@
 // Used for brand, project, or site names.
 
 .navbar-brand {
+
+  @include hover-focus {
+    text-decoration: none;
+  }
   display: inline-block;
   padding-top: $navbar-brand-padding-y;
   padding-bottom: $navbar-brand-padding-y;
@@ -47,10 +51,6 @@
   font-size: $navbar-brand-font-size;
   line-height: inherit;
   white-space: nowrap;
-
-  @include hover-focus {
-    text-decoration: none;
-  }
 }
 
 
@@ -106,16 +106,16 @@
 
 // Button for toggling the navbar when in its collapsed state
 .navbar-toggler {
-  padding: $navbar-toggler-padding-y $navbar-toggler-padding-x;
-  font-size: $navbar-toggler-font-size;
-  line-height: 1;
-  background: transparent; // remove default button style
-  border: $border-width solid transparent; // remove default button style
   @include border-radius($navbar-toggler-border-radius);
 
   @include hover-focus {
     text-decoration: none;
   }
+  padding: $navbar-toggler-padding-y $navbar-toggler-padding-x;
+  font-size: $navbar-toggler-font-size;
+  line-height: 1;
+  background: transparent; // remove default button style
+  border: $border-width solid transparent; // remove default button style
 }
 
 // Keep as a separate element so folks can easily override it with another icon
@@ -204,20 +204,20 @@
 // Dark links against a light background
 .navbar-light {
   .navbar-brand {
-    color: $navbar-light-active-color;
 
     @include hover-focus {
       color: $navbar-light-active-color;
     }
+    color: $navbar-light-active-color;
   }
 
   .navbar-nav {
     .nav-link {
-      color: $navbar-light-color;
 
       @include hover-focus {
         color: $navbar-light-hover-color;
       }
+      color: $navbar-light-color;
 
       &.disabled {
         color: $navbar-light-disabled-color;
@@ -244,11 +244,11 @@
   .navbar-text {
     color: $navbar-light-color;
     a {
-      color: $navbar-light-active-color;
 
       @include hover-focus {
         color: $navbar-light-active-color;
       }
+      color: $navbar-light-active-color;
     }
   }
 }
@@ -256,20 +256,20 @@
 // White links against a dark background
 .navbar-dark {
   .navbar-brand {
-    color: $navbar-dark-active-color;
 
     @include hover-focus {
       color: $navbar-dark-active-color;
     }
+    color: $navbar-dark-active-color;
   }
 
   .navbar-nav {
     .nav-link {
-      color: $navbar-dark-color;
 
       @include hover-focus {
         color: $navbar-dark-hover-color;
       }
+      color: $navbar-dark-color;
 
       &.disabled {
         color: $navbar-dark-disabled-color;
@@ -296,11 +296,11 @@
   .navbar-text {
     color: $navbar-dark-color;
     a {
-      color: $navbar-dark-active-color;
 
       @include hover-focus {
         color: $navbar-dark-active-color;
       }
+      color: $navbar-dark-active-color;
     }
   }
 }

@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'selectpicker';
+const NAME = 'selectpicker'
 
 class Selectpicker extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -12,10 +12,10 @@ class Selectpicker extends Plugin {
       style: 'btn-select',
       iconBase: 'icon',
       tickIcon: 'wb-check'
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Selectpicker);
+Plugin.register(NAME, Selectpicker)
 
-export default Selectpicker;
+export default Selectpicker

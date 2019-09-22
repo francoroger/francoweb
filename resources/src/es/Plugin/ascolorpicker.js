@@ -1,19 +1,19 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'asColorPicker';
+const NAME = 'asColorPicker'
 
 class AsColorPicker extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       namespace: 'colorInputUi'
-    };
+    }
   }
 }
 
-Plugin.register(NAME, AsColorPicker);
+Plugin.register(NAME, AsColorPicker)
 
-export default AsColorPicker;
+export default AsColorPicker

@@ -1,17 +1,17 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'tokenfield';
+const NAME = 'tokenfield'
 
 class Tokenfield extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 }
 
-Plugin.register(NAME, Tokenfield);
+Plugin.register(NAME, Tokenfield)
 
-export default Tokenfield;
+export default Tokenfield

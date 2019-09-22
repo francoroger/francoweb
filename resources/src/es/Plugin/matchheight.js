@@ -1,33 +1,33 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'matchHeight';
+const NAME = 'matchHeight'
 
 class MatchHeight extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 
   render() {
     if (typeof $.fn.matchHeight === 'undefined') {
-      return;
+      return
     }
 
     let $el = this.$el,
-      matchSelector = $el.data('matchSelector');
+      matchSelector = $el.data('matchSelector')
 
     if (matchSelector) {
-      $el.find(matchSelector).matchHeight(this.options);
+      $el.find(matchSelector).matchHeight(this.options)
     } else {
-      $el.children().matchHeight(this.options);
+      $el.children().matchHeight(this.options)
     }
   }
 }
 
-Plugin.register(NAME, MatchHeight);
+Plugin.register(NAME, MatchHeight)
 
-export default MatchHeight;
+export default MatchHeight

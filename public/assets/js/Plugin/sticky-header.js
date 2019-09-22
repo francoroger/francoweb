@@ -105,23 +105,21 @@
           var method = options;
           if (/^\_/.test(method)) {
             return false;
-          } else {
-            return this.each(function () {
-              var api = _jquery2.default.data(this, pluginName);
-              if (api && typeof api[method] === 'function') {
-                api[method].apply(api, args);
-              }
-            });
           }
-        } else {
           return this.each(function () {
-            if (!_jquery2.default.data(this, pluginName)) {
-              _jquery2.default.data(this, pluginName, new stickyHeader(this, options));
-            } else {
-              _jquery2.default.data(this, pluginName).init(options);
+            var api = _jquery2.default.data(this, pluginName);
+            if (api && typeof api[method] === 'function') {
+              api[method].apply(api, args);
             }
           });
         }
+        return this.each(function () {
+          if (!_jquery2.default.data(this, pluginName)) {
+            _jquery2.default.data(this, pluginName, new stickyHeader(this, options));
+          } else {
+            _jquery2.default.data(this, pluginName).init(options);
+          }
+        });
       }
     }]);
     return stickyHeader;
@@ -130,7 +128,6 @@
   _jquery2.default.fn[pluginName] = stickyHeader._jQueryInterface;
   _jquery2.default.fn[pluginName].constructor = stickyHeader;
   _jquery2.default.fn[pluginName].noConflict = function () {
-    'use strict';
 
     _jquery2.default.fn[pluginName] = window.JQUERY_NO_CONFLICT;
     return stickyHeader._jQueryInterface;

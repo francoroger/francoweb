@@ -1,20 +1,20 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'asRange';
+const NAME = 'asRange'
 
 class AsRange extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       tip: false,
       scale: false
-    };
+    }
   }
 }
 
-Plugin.register(NAME, AsRange);
+Plugin.register(NAME, AsRange)
 
-export default AsRange;
+export default AsRange

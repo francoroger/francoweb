@@ -5,13 +5,6 @@
 //
 
 .btn {
-  display: inline-block;
-  font-weight: $btn-font-weight;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  user-select: none;
-  border: $input-btn-border-width solid transparent;
   @include button-size($input-btn-padding-y, $input-btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius);
   @include transition($btn-transition);
 
@@ -19,6 +12,13 @@
   @include hover-focus {
     text-decoration: none;
   }
+  display: inline-block;
+  font-weight: $btn-font-weight;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: $input-btn-border-width solid transparent;
   &:focus,
   &.focus {
     outline: 0;
@@ -28,14 +28,14 @@
   // Disabled comes first so active can properly restyle
   &.disabled,
   &:disabled {
-    opacity: .65;
     @include box-shadow(none);
+    opacity: .65;
   }
 
   &:not([disabled]):not(.disabled):active,
   &:not([disabled]):not(.disabled).active {
-    background-image: none;
     @include box-shadow($input-btn-focus-box-shadow, $btn-active-box-shadow);
+    background-image: none;
   }
 }
 
@@ -73,9 +73,6 @@ fieldset[disabled] a.btn {
 
 // Make a button look and behave like a link
 .btn-link {
-  font-weight: $font-weight-normal;
-  color: $link-color;
-  background-color: transparent;
 
   @include hover {
     color: $link-hover-color;
@@ -83,6 +80,9 @@ fieldset[disabled] a.btn {
     background-color: transparent;
     border-color: transparent;
   }
+  font-weight: $font-weight-normal;
+  color: $link-color;
+  background-color: transparent;
 
   &:focus,
   &.focus {

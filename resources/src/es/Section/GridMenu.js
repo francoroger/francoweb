@@ -1,15 +1,15 @@
-import $ from 'jquery';
-import Component from 'Component';
+import $ from 'jquery'
+import Component from 'Component'
 
-const $BODY = $('body');
-const $HTML = $('html');
+const $BODY = $('body')
+const $HTML = $('html')
 
 class Scrollable {
   constructor($el) {
-    this.$el = $el;
-    this.api = null;
+    this.$el = $el
+    this.api = null
 
-    this.init();
+    this.init()
   }
 
   init() {
@@ -18,88 +18,88 @@ class Scrollable {
       skin: 'scrollable-inverse',
       direction: 'vertical',
       contentSelector: '>',
-      containerSelector: '>',
-    }).data('asScrollable');
+      containerSelector: '>'
+    }).data('asScrollable')
   }
 
   update() {
     if (this.api) {
-      this.api.update();
+      this.api.update()
     }
   }
 
   enable() {
     if (!this.api) {
-      this.init();
+      this.init()
     }
     if (this.api) {
-      this.api.enable();
+      this.api.enable()
     }
   }
 
   disable() {
     if (this.api) {
-      this.api.disable();
+      this.api.disable()
     }
   }
 }
 
 export default class extends Component {
   constructor(...args) {
-    super(...args);
+    super(...args)
 
-    this.isOpened = false;
-    this.scrollable = new Scrollable(this.$el);
+    this.isOpened = false
+    this.scrollable = new Scrollable(this.$el)
   }
 
   open() {
-    this.animate(function() {
-      this.$el.addClass('active');
+    this.animate(function () {
+      this.$el.addClass('active')
 
       $('[data-toggle="gridmenu"]').addClass('active')
-        .attr('aria-expanded', true);
+        .attr('aria-expanded', true)
 
-      $BODY.addClass('site-gridmenu-active');
-      $HTML.addClass('disable-scrolling');
-    }, function() {
-      this.scrollable.enable();
-    });
+      $BODY.addClass('site-gridmenu-active')
+      $HTML.addClass('disable-scrolling')
+    }, function () {
+      this.scrollable.enable()
+    })
 
-    this.isOpened = true;
+    this.isOpened = true
   }
 
   close() {
-    this.animate(function() {
-      this.$el.removeClass('active');
+    this.animate(function () {
+      this.$el.removeClass('active')
 
       $('[data-toggle="gridmenu"]').addClass('active')
-        .attr('aria-expanded', true);
+        .attr('aria-expanded', true)
 
-      $BODY.removeClass('site-gridmenu-active');
-      $HTML.removeClass('disable-scrolling');
-    }, function() {
-      this.scrollable.disable();
-    });
+      $BODY.removeClass('site-gridmenu-active')
+      $HTML.removeClass('disable-scrolling')
+    }, function () {
+      this.scrollable.disable()
+    })
 
-    this.isOpened = false;
+    this.isOpened = false
   }
 
   toggle(opened) {
     if (opened) {
-      this.open();
+      this.open()
     } else {
-      this.close();
+      this.close()
     }
   }
 
   animate(doing, callback) {
-    doing.call(this);
-    this.$el.trigger('changing.site.gridmenu');
+    doing.call(this)
+    this.$el.trigger('changing.site.gridmenu')
 
     setTimeout(() => {
-      callback.call(this);
+      callback.call(this)
 
-      this.$el.trigger('changed.site.gridmenu');
-    }, 500);
+      this.$el.trigger('changed.site.gridmenu')
+    }, 500)
   }
 }

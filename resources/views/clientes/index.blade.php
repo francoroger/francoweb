@@ -39,7 +39,7 @@
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/datatables.js') }}"></script>
-  <script src="{{ asset('assets/examples/js/tables/datatable.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/clientes/index.js') }}"></script>
 
   <script src="{{ asset('assets/js/Plugin/bootbox.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
@@ -69,35 +69,37 @@
 @endpush
 
 @section('content')
-  <div class="page-header">
-    <h1 class="page-title font-size-26 font-weight-100">Clientes</h1>
-    <div class="page-header-actions">
-      <div class="btn-group btn-group-sm" aria-label="Ações" role="group">
-        <a href="{{ route('clientes.create') }}" class="btn btn-info">
-          <i class="icon wb-plus" aria-hidden="true"></i>
-          <span class="hidden-sm-down">Adicionar</span>
-        </a>
+  <div class="page">
+    <div class="page-header">
+      <h1 class="page-title font-size-26 font-weight-100">Clientes</h1>
+      <div class="page-header-actions">
+        <div class="btn-group btn-group-sm" aria-label="Ações" role="group">
+          <a href="{{ route('clientes.create') }}" class="btn btn-info">
+            <i class="icon wb-plus" aria-hidden="true"></i>
+            <span class="hidden-sm-down">Adicionar</span>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="page-content">
-    <div class="panel">
-      <div class="panel-body">
-        <table class="table table-hover dataTable table-striped w-full" id="clientes-table" data-ajax="{{ route('clientes.ajax') }}">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>CPF / CNPJ</th>
-              <th>Cidade</th>
-              <th>UF</th>
-              <th>Telefone</th>
-              <th class="text-center">Status</th>
-              <th class="text-center">Ações</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+    <div class="page-content">
+      <div class="panel">
+        <div class="panel-body">
+          <table class="table table-hover dataTable table-striped w-full" id="clientes-table" data-ajax="{{ route('clientes.ajax') }}" data-processing="true">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>CPF / CNPJ</th>
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>Telefone</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Ações</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

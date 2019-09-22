@@ -8,6 +8,8 @@
   $prev-key: null;
   $prev-num: null;
   @each $key, $num in $map {
+    $prev-key: $key;
+    $prev-num: $num;
     @if $prev-num == null {
       // Do nothing
     } @else if not comparable($prev-num, $num) {
@@ -15,8 +17,6 @@
     } @else if $prev-num >= $num {
       @warn "Invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} which isn't greater than #{$prev-num}, the value of the previous key '#{$prev-key}' !";
     }
-    $prev-key: $key;
-    $prev-num: $num;
   }
 }
 

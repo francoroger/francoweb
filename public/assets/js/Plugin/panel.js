@@ -24,10 +24,14 @@
   var NAME = 'panel';
 
   function getPanelAPI($el) {
-    if ($el.length <= 0) return;
+    if ($el.length <= 0) {
+      return;
+    }
     var api = $el.data('panelAPI');
 
-    if (api) return api;
+    if (api) {
+      return api;
+    }
 
     api = new Panel($el, _jquery2.default.extend(true, {}, Panel.getDefaults(), $el.data()));
     api.render();

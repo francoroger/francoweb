@@ -1,177 +1,177 @@
-import Site from 'Site';
-import * as Config from 'Config';
+import Site from 'Site'
+import * as Config from 'Config'
 
 class AppCalendar extends Site {
   initialize() {
-    super.initialize();
+    super.initialize()
 
-    this.$actionToggleBtn = $('.site-action-toggle');
+    this.$actionToggleBtn = $('.site-action-toggle')
     this.$addNewCalendarForm = $('#addNewCalendar').modal({
-      show: false,
-    });
+      show: false
+    })
   }
   process() {
-    super.process();
+    super.process()
 
-    this.handleFullcalendar();
-    this.handleSelective();
-    this.handleAction();
-    this.handleListItem();
-    this.handleEventList();
+    this.handleFullcalendar()
+    this.handleSelective()
+    this.handleAction()
+    this.handleListItem()
+    this.handleEventList()
   }
 
   handleFullcalendar() {
-    let myEvents = [{
+    const myEvents = [{
       title: 'All Day Event',
-      start: '2016-10-01',
+      start: '2016-10-01'
     }, {
       title: 'Long Event',
       start: '2016-10-07',
       end: '2016-10-10',
       backgroundColor: Config.colors('cyan', 600),
-      borderColor: Config.colors('cyan', 600),
+      borderColor: Config.colors('cyan', 600)
     }, {
       id: 999,
       title: 'Repeating Event',
       start: '2016-10-09T16:00:00',
       backgroundColor: Config.colors('red', 600),
-      borderColor: Config.colors('red', 600),
+      borderColor: Config.colors('red', 600)
     }, {
       title: 'Conference',
       start: '2016-10-11',
-      end: '2016-10-13',
+      end: '2016-10-13'
     }, {
       title: 'Meeting',
       start: '2016-10-12T10:30:00',
-      end: '2016-10-12T12:30:00',
+      end: '2016-10-12T12:30:00'
     }, {
       title: 'Lunch',
-      start: '2016-10-12T12:00:00',
+      start: '2016-10-12T12:00:00'
     }, {
       title: 'Meeting',
-      start: '2016-10-12T14:30:00',
+      start: '2016-10-12T14:30:00'
     }, {
       title: 'Happy Hour',
-      start: '2016-10-12T17:30:00',
+      start: '2016-10-12T17:30:00'
     }, {
       title: 'Dinner',
-      start: '2016-10-12T20:00:00',
+      start: '2016-10-12T20:00:00'
     }, {
       title: 'Birthday Party',
-      start: '2016-10-13T07:00:00',
-    }];
+      start: '2016-10-13T07:00:00'
+    }]
 
-    let myOptions = {
+    const myOptions = {
       header: {
         left: null,
         center: 'prev,title,next',
-        right: 'month,agendaWeek,agendaDay',
+        right: 'month,agendaWeek,agendaDay'
       },
       defaultDate: '2016-10-12',
       selectable: true,
       selectHelper: true,
       select() {
-        $('#addNewEvent').modal('show');
+        $('#addNewEvent').modal('show')
       },
       editable: true,
       eventLimit: true,
       windowResize(view) {
-        let width = $(window).outerWidth();
-        let options = Object.assign({}, myOptions);
+        const width = $(window).outerWidth()
+        const options = Object.assign({}, myOptions)
 
-        options.events = view.calendar.clientEvents();
-        options.aspectRatio = width < 667 ? 0.5 : 1.35;
+        options.events = view.calendar.clientEvents()
+        options.aspectRatio = width < 667 ? 0.5 : 1.35
 
-        $('#calendar').fullCalendar('destroy');
-        $('#calendar').fullCalendar(options);
+        $('#calendar').fullCalendar('destroy')
+        $('#calendar').fullCalendar(options)
       },
       eventClick(event) {
-        let color = event.backgroundColor ? event.backgroundColor : Config.colors('blue', 600);
-        $('#editEname').val(event.title);
+        const color = event.backgroundColor ? event.backgroundColor : Config.colors('blue', 600)
+        $('#editEname').val(event.title)
 
         if (event.start) {
-          $('#editStarts').datepicker('update', event.start._d);
+          $('#editStarts').datepicker('update', event.start._d)
         } else {
-          $('#editStarts').datepicker('update', '');
+          $('#editStarts').datepicker('update', '')
         }
         if (event.end) {
-          $('#editEnds').datepicker('update', event.end._d);
+          $('#editEnds').datepicker('update', event.end._d)
         } else {
-          $('#editEnds').datepicker('update', '');
+          $('#editEnds').datepicker('update', '')
         }
 
-        $('#editColor [type=radio]').each(function() {
+        $('#editColor [type=radio]').each(function () {
           let $this = $(this),
             _value = $this.data('color').split('|'),
-            value = Config.colors(_value[0], _value[1]);
+            value = Config.colors(_value[0], _value[1])
           if (value === color) {
-            $this.prop('checked', true);
+            $this.prop('checked', true)
           } else {
-            $this.prop('checked', false);
+            $this.prop('checked', false)
           }
-        });
+        })
 
         $('#editNewEvent').modal('show').one('hidden.bs.modal', (e) => {
-          event.title = $('#editEname').val();
+          event.title = $('#editEname').val()
 
-          let color = $('#editColor [type=radio]:checked').data('color').split('|');
-          color = Config.colors(color[0], color[1]);
-          event.backgroundColor = color;
-          event.borderColor = color;
+          let color = $('#editColor [type=radio]:checked').data('color').split('|')
+          color = Config.colors(color[0], color[1])
+          event.backgroundColor = color
+          event.borderColor = color
 
-          event.start = new Date($('#editStarts').data('datepicker').getDate());
-          event.end = new Date($('#editEnds').data('datepicker').getDate());
-          $('#calendar').fullCalendar('updateEvent', event);
-        });
+          event.start = new Date($('#editStarts').data('datepicker').getDate())
+          event.end = new Date($('#editEnds').data('datepicker').getDate())
+          $('#calendar').fullCalendar('updateEvent', event)
+        })
       },
       eventDragStart() {
-        $('.site-action').data('actionBtn').show();
+        $('.site-action').data('actionBtn').show()
       },
       eventDragStop() {
-        $('.site-action').data('actionBtn').hide();
+        $('.site-action').data('actionBtn').hide()
       },
       events: myEvents,
-      droppable: true,
-    };
+      droppable: true
+    }
 
-    let _options;
-    let myOptionsMobile = Object.assign({}, myOptions);
+    let _options
+    const myOptionsMobile = Object.assign({}, myOptions)
 
-    myOptionsMobile.aspectRatio = 0.5;
-    _options = $(window).outerWidth() < 667 ? myOptionsMobile : myOptions;
+    myOptionsMobile.aspectRatio = 0.5
+    _options = $(window).outerWidth() < 667 ? myOptionsMobile : myOptions
 
-    $('#editNewEvent').modal();
-    $('#calendar').fullCalendar(_options);
+    $('#editNewEvent').modal()
+    $('#calendar').fullCalendar(_options)
   }
 
   handleSelective() {
-    let member = [{
+    const member = [{
       id: 'uid_1',
       name: 'Herman Beck',
-      avatar: '../../../../global/portraits/1.jpg',
+      avatar: '../../../../global/portraits/1.jpg'
     }, {
       id: 'uid_2',
       name: 'Mary Adams',
-      avatar: '../../../../global/portraits/2.jpg',
+      avatar: '../../../../global/portraits/2.jpg'
     }, {
       id: 'uid_3',
       name: 'Caleb Richards',
-      avatar: '../../../../global/portraits/3.jpg',
+      avatar: '../../../../global/portraits/3.jpg'
     }, {
       id: 'uid_4',
       name: 'June Lane',
-      avatar: '../../../../global/portraits/4.jpg',
-    }];
+      avatar: '../../../../global/portraits/4.jpg'
+    }]
 
-    let items = [{
+    const items = [{
       id: 'uid_1',
       name: 'Herman Beck',
-      avatar: '../../../../global/portraits/1.jpg',
+      avatar: '../../../../global/portraits/1.jpg'
     }, {
       id: 'uid_2',
       name: 'Caleb Richards',
-      avatar: '../../../../global/portraits/2.jpg',
-    }];
+      avatar: '../../../../global/portraits/2.jpg'
+    }]
 
     $('.plugin-selective').selective({
       namespace: 'addMember',
@@ -180,7 +180,7 @@ class AppCalendar extends Site {
       buildFromHtml: false,
       tpl: {
         optionValue(data) {
-          return data.id;
+          return data.id
         },
         frame() {
           return `<div class="${this.namespace}">
@@ -191,48 +191,48 @@ class AppCalendar extends Site {
           ${this.options.tpl.list.call(this)}
           </div>
           </div>
-          </div>`;
+          </div>`
         },
         triggerButton() {
-          return `<div class="${this.namespace}-trigger-button"><i class="wb-plus"></i></div>`;
+          return `<div class="${this.namespace}-trigger-button"><i class="wb-plus"></i></div>`
         },
         listItem(data) {
-          return `<li class="${this.namespace}-list-item"><img class="avatar" src="${data.avatar}">${data.name}</li>`;
+          return `<li class="${this.namespace}-list-item"><img class="avatar" src="${data.avatar}">${data.name}</li>`
         },
         item(data) {
-          return `<li class="${this.namespace}-item"><img class="avatar" src="${data.avatar}" title="${data.name}">${this.options.tpl.itemRemove.call(this)}</li>`;
+          return `<li class="${this.namespace}-item"><img class="avatar" src="${data.avatar}" title="${data.name}">${this.options.tpl.itemRemove.call(this)}</li>`
         },
         itemRemove() {
-          return `<span class="${this.namespace}-remove"><i class="wb-minus-circle"></i></span>`;
+          return `<span class="${this.namespace}-remove"><i class="wb-minus-circle"></i></span>`
         },
         option(data) {
-          return `<option value="${this.options.tpl.optionValue.call(this, data)}">${data.name}</option>`;
-        },
-      },
-    });
+          return `<option value="${this.options.tpl.optionValue.call(this, data)}">${data.name}</option>`
+        }
+      }
+    })
   }
 
   handleAction() {
     this.$actionToggleBtn.on('click', (e) => {
-      this.$addNewCalendarForm.modal('show');
-      e.stopPropagation();
-    });
+      this.$addNewCalendarForm.modal('show')
+      e.stopPropagation()
+    })
   }
 
   handleEventList() {
     $('#addNewEventBtn').on('click', () => {
-      $('#addNewEvent').modal('show');
-    });
+      $('#addNewEvent').modal('show')
+    })
 
-    $('.calendar-list .calendar-event').each(function() {
+    $('.calendar-list .calendar-event').each(function () {
       let $this = $(this),
-        color = $this.data('color').split('-');
+        color = $this.data('color').split('-')
       $this.data('event', {
         title: $this.data('title'),
         stick: $this.data('stick'),
         backgroundColor: Config.colors(color[0], color[1]),
-        borderColor: Config.colors(color[0], color[1]),
-      });
+        borderColor: Config.colors(color[0], color[1])
+      })
       $this.draggable({
         zIndex: 999,
         revert: true,
@@ -243,17 +243,17 @@ class AppCalendar extends Site {
           <div class="fc-content">
             <span class="fc-title">${$this.data('title')}</span>
           </div>
-          </a>`;
-        },
-      });
-    });
+          </a>`
+        }
+      })
+    })
   }
 
   handleListItem() {
     this.$actionToggleBtn.on('click', (e) => {
-      $('#addNewCalendar').modal('show');
-      e.stopPropagation();
-    });
+      $('#addNewCalendar').modal('show')
+      e.stopPropagation()
+    })
 
     $(document).on('click', '[data-tag=list-delete]', (e) => {
       bootbox.dialog({
@@ -264,31 +264,31 @@ class AppCalendar extends Site {
             className: 'btn-danger',
             callback() {
               // $(e.target).closest('.list-group-item').remove();
-            },
-          },
-        },
-      });
-    });
+            }
+          }
+        }
+      })
+    })
   }
 }
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new AppCalendar();
+    instance = new AppCalendar()
   }
-  return instance;
+  return instance
 }
 
 function run() {
-  let app = getInstance();
-  app.run();
+  const app = getInstance()
+  app.run()
 }
 
-export default AppCalendar;
+export default AppCalendar
 export {
   AppCalendar,
   run,
-  getInstance,
-};
+  getInstance
+}

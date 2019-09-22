@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'asSpinner';
+const NAME = 'asSpinner'
 
 class AsSpinner extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -14,10 +14,10 @@ class AsSpinner extends Plugin {
       min: '-10',
       max: 100,
       mousewheel: true
-    };
+    }
   }
 }
 
-Plugin.register(NAME, AsSpinner);
+Plugin.register(NAME, AsSpinner)
 
-export default AsSpinner;
+export default AsSpinner

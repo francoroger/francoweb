@@ -92,65 +92,67 @@
 @endpush
 
 @section('content')
-  <div class="page-header">
-    <h1 class="page-title font-size-26 font-weight-100">Cores</h1>
-  </div>
+  <div class="page">
+    <div class="page-header">
+      <h1 class="page-title font-size-26 font-weight-100">Cores</h1>
+    </div>
 
-  <div class="page-content container-fluid">
-    <div class="row">
-      <div class="col-md-7">
-        <div class="panel">
-          <div class="panel-heading">
-            <h3 class="panel-title">Cores</h3>
-          </div>
-          <div class="panel-body" id="cores">
-            @include('cores.data', ['cores' => $cores])
+    <div class="page-content container-fluid">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">Cores</h3>
+            </div>
+            <div class="panel-body" id="cores">
+              @include('cores.data', ['cores' => $cores])
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-5">
-        <div class="panel">
-          <div class="panel-heading">
-            <h3 class="panel-title">Cadastrar Cor</h3>
-          </div>
-          <div class="panel-body">
-            <form id="add-form" autocomplete="off">
-              <div class="form-group">
-                <input type="text" class="form-control" id="add-descricao" name="add-descricao" placeholder="Cor">
-              </div>
-              <div class="form-group text-right">
-                <button type="submit" class="btn btn-info">
-                  <i class="icon wb-plus"></i> Adicionar
-                </button>
-              </div>
-            </form>
+        <div class="col-md-5">
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">Cadastrar Cor</h3>
+            </div>
+            <div class="panel-body">
+              <form id="add-form" autocomplete="off">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="add-descricao" name="add-descricao" placeholder="Cor">
+                </div>
+                <div class="form-group text-right">
+                  <button type="submit" class="btn btn-info">
+                    <i class="icon wb-plus"></i> Adicionar
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="modal fade" id="modal-cor" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-simple">
-      <div class="modal-content">
-        <form id="edit-form" autocomplete="off">
-          <div class="modal-header">
-            <button type="button" class="close" aria-hidden="true" data-dismiss="modal">×</button>
-            <h4 class="modal-title">Editar Cor</h4>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" name="edit-id">
-            <div class="form-group">
-              <label for="edit-descricao">Descrição</label>
-              <input type="text" class="form-control" id="edit-descricao" name="edit-descricao" placeholder="Cor">
+    <div class="modal fade" id="modal-cor" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-simple">
+        <div class="modal-content">
+          <form id="edit-form" autocomplete="off">
+            <div class="modal-header">
+              <button type="button" class="close" aria-hidden="true" data-dismiss="modal">×</button>
+              <h4 class="modal-title">Editar Cor</h4>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" name="edit-id">
+              <div class="form-group">
+                <label for="edit-descricao">Descrição</label>
+                <input type="text" class="form-control" id="edit-descricao" name="edit-descricao" placeholder="Cor">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-success">Salvar</button>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success">Salvar</button>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 @endsection

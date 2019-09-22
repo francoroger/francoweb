@@ -34,11 +34,11 @@
       // transform: rotate(180deg);
 
       &:before {
-        transform: translateX(-0.1em) translateY(.1em) rotate(135deg);
+        transform: translateX(-.1em) translateY(.1em) rotate(135deg);
       }
 
       &:after {
-        transform: translateX(-0.1em) translateY(-.1em) rotate(45deg);
+        transform: translateX(-.1em) translateY(-.1em) rotate(45deg);
       }
     }
   }

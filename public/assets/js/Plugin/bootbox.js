@@ -55,7 +55,7 @@
         }
 
         if (options.className) {
-          options.className = options.className + ' modal-simple';
+          options.className += ' modal-simple';
         }
 
         if (typeof options.callback === 'string' && _jquery2.default.isFunction(window[options.callback])) {

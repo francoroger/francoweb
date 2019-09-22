@@ -1,24 +1,24 @@
-import BaseApp from 'BaseApp';
+import BaseApp from 'BaseApp'
 
 class AppForum extends BaseApp {}
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new AppForum();
+    instance = new AppForum()
   }
-  return instance;
+  return instance
 }
 
 function run() {
-  let app = getInstance();
-  app.run();
+  const app = getInstance()
+  app.run()
 }
 
-export default AppForum;
+export default AppForum
 export {
   AppForum,
   run,
   getInstance
-};
+}

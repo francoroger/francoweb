@@ -1,151 +1,151 @@
-import $ from 'jquery';
-import * as Config from 'Config';
-import Base from 'Base';
-import Menubar from 'Menubar';
-import GridMenu from 'GridMenu';
-import Sidebar from 'Sidebar';
-import PageAside from 'PageAside';
+import $ from 'jquery'
+import * as Config from 'Config'
+import Base from 'Base'
+import Menubar from 'Menubar'
+import GridMenu from 'GridMenu'
+import Sidebar from 'Sidebar'
+import PageAside from 'PageAside'
 
-const DOC = document;
-const $DOC = $(document);
-const $BODY = $('body');
+const DOC = document
+const $DOC = $(document)
+const $BODY = $('body')
 
 class Site extends Base {
   initialize() {
-    this.startLoading();
-    this.initializePluginAPIs();
-    this.initializePlugins();
+    this.startLoading()
+    this.initializePluginAPIs()
+    this.initializePlugins()
 
-    this.initComponents();
+    this.initComponents()
 
     setTimeout(() => {
-      this.setDefaultState();
-    }, 500);
+      this.setDefaultState()
+    }, 500)
   }
 
   process() {
-    this.polyfillIEWidth();
-    this.initBootstrap();
+    this.polyfillIEWidth()
+    this.initBootstrap()
 
-    this.setupMenubar();
-    this.setupGridMenu();
-    this.setupFullScreen();
-    this.setupMegaNavbar();
-    this.setupTour();
-    this.setupNavbarCollpase();
+    this.setupMenubar()
+    this.setupGridMenu()
+    this.setupFullScreen()
+    this.setupMegaNavbar()
+    this.setupTour()
+    this.setupNavbarCollpase()
     // Dropdown menu setup ===================
     this.$el.on('click', '.dropdown-menu-media', (e) => {
-      e.stopPropagation();
-    });
+      e.stopPropagation()
+    })
   }
 
   _getDefaultMeunbarType() {
     let breakpoint = this.getCurrentBreakpoint(),
-      type = false;
+      type = false
 
     if ($BODY.data('autoMenubar') === false || $BODY.is('.site-menubar-keep')) {
       if ($BODY.hasClass('site-menubar-fold')) {
-        type = 'fold';
+        type = 'fold'
       } else if ($BODY.hasClass('site-menubar-unfold')) {
-        type = 'unfold';
+        type = 'unfold'
       }
     }
 
     switch (breakpoint) {
       case 'lg':
-        type = type || 'unfold';
-        break;
+        type = type || 'unfold'
+        break
       case 'md':
       case 'sm':
-        type = type || 'fold';
-        break;
+        type = type || 'fold'
+        break
       case 'xs':
-        type = 'hide';
-        break;
+        type = 'hide'
+        break
         // no default
     }
-    return type;
+    return type
   }
   setDefaultState() {
-    let defaultState = this.getDefaultState();
+    const defaultState = this.getDefaultState()
 
     // menubar
-    this.menubar.change(defaultState.menubarType);
+    this.menubar.change(defaultState.menubarType)
     // gridmenu
-    this.gridmenu.toggle(defaultState.gridmenu);
+    this.gridmenu.toggle(defaultState.gridmenu)
   }
 
   getDefaultState() {
-    let menubarType = this._getDefaultMeunbarType();
+    const menubarType = this._getDefaultMeunbarType()
     return {
       menubarType,
-      gridmenu: false,
-    };
+      gridmenu: false
+    }
   }
 
   menubarType(type) {
-    let toggle = function($el) {
-      $el.toggleClass('hided', !(type === 'open'));
-      $el.toggleClass('unfolded', !(type === 'fold'));
-    };
+    const toggle = function ($el) {
+      $el.toggleClass('hided', !(type === 'open'))
+      $el.toggleClass('unfolded', !(type === 'fold'))
+    }
 
-    $('[data-toggle="menubar"]').each(function() {
-      let $this = $(this);
-      let $hamburger = $(this).find('.hamburger');
+    $('[data-toggle="menubar"]').each(function () {
+      const $this = $(this)
+      const $hamburger = $(this).find('.hamburger')
 
       if ($hamburger.length > 0) {
-        toggle($hamburger);
+        toggle($hamburger)
       } else {
-        toggle($this);
+        toggle($this)
       }
-    });
+    })
   }
 
   initComponents(callback = undefined) {
     this.menubar = new Menubar({
-      $el: $('.site-menubar'),
-    });
+      $el: $('.site-menubar')
+    })
     this.gridmenu = new GridMenu({
-      $el: $('.site-gridmenu'),
-    });
-    this.sidebar = new Sidebar();
+      $el: $('.site-gridmenu')
+    })
+    this.sidebar = new Sidebar()
 
-    let $aside = $('.page-aside');
+    const $aside = $('.page-aside')
     if ($aside.length > 0) {
       this.aside = new PageAside({
-        $el: $aside,
-      });
-      this.aside.run();
+        $el: $aside
+      })
+      this.aside.run()
     }
 
-    this.menubar.run();
-    this.sidebar.run();
+    this.menubar.run()
+    this.sidebar.run()
   }
 
   getCurrentBreakpoint() {
-    let bp = Breakpoints.current();
-    return bp ? bp.name : 'lg';
+    const bp = Breakpoints.current()
+    return bp ? bp.name : 'lg'
   }
 
   initBootstrap() {
     // Tooltip setup =============
     $DOC.tooltip({
       selector: '[data-tooltip=true]',
-      container: 'body',
-    });
+      container: 'body'
+    })
 
-    $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover();
+    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="popover"]').popover()
   }
 
   polyfillIEWidth() {
     if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-      let msViewportStyle = DOC.createElement('style');
+      const msViewportStyle = DOC.createElement('style')
       msViewportStyle
-        .appendChild(DOC.createTextNode('@-ms-viewport{width:auto!important}'));
+        .appendChild(DOC.createTextNode('@-ms-viewport{width:auto!important}'))
       DOC
         .querySelector('head')
-        .appendChild(msViewportStyle);
+        .appendChild(msViewportStyle)
     }
   }
 
@@ -153,121 +153,121 @@ class Site extends Base {
     if (typeof screenfull !== 'undefined') {
       $DOC.on('click', '[data-toggle="fullscreen"]', () => {
         if (screenfull.enabled) {
-          screenfull.toggle();
+          screenfull.toggle()
         }
 
-        return false;
-      });
+        return false
+      })
 
       if (screenfull.enabled) {
         DOC.addEventListener(screenfull.raw.fullscreenchange, () => {
-          $('[data-toggle="fullscreen"]').toggleClass('active', screenfull.isFullscreen);
-        });
+          $('[data-toggle="fullscreen"]').toggleClass('active', screenfull.isFullscreen)
+        })
       }
     }
   }
 
   setupGridMenu() {
-    const self = this;
+    const self = this
 
-    $DOC.on('click', '[data-toggle="gridmenu"]', function() {
-      let $this = $(this);
-      let isOpened = self.gridmenu.isOpened;
+    $DOC.on('click', '[data-toggle="gridmenu"]', function () {
+      const $this = $(this)
+      const isOpened = self.gridmenu.isOpened
 
       if (isOpened) {
-        $this.addClass('active').attr('aria-expanded', true);
+        $this.addClass('active').attr('aria-expanded', true)
       } else {
-        $this.removeClass('active').attr('aria-expanded', false);
+        $this.removeClass('active').attr('aria-expanded', false)
       }
 
-      self.gridmenu.toggle(!isOpened);
-    });
+      self.gridmenu.toggle(!isOpened)
+    })
   }
 
   setupMegaNavbar() {
     $DOC.on('click', '.navbar-mega .dropdown-menu', (e) => {
-      e.stopPropagation();
+      e.stopPropagation()
     }).on('show.bs.dropdown', (e) => {
-      let $target = $(e.target);
-      let $trigger = e.relatedTarget ? $(e.relatedTarget) : $target.children('[data-toggle="dropdown"]');
-      let animation = $trigger.data('animation');
+      const $target = $(e.target)
+      const $trigger = e.relatedTarget ? $(e.relatedTarget) : $target.children('[data-toggle="dropdown"]')
+      const animation = $trigger.data('animation')
 
       if (animation) {
-        let $menu = $target.children('.dropdown-menu');
+        const $menu = $target.children('.dropdown-menu')
         $menu
           .addClass(`animation-${animation}`)
           .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', () => {
-            $menu.removeClass('animation-' + animation);
-          });
+            $menu.removeClass(`animation-${animation}`)
+          })
       }
     }).on('shown.bs.dropdown', (e) => {
-      let $menu = $(e.target).find('.dropdown-menu-media > .list-group');
+      const $menu = $(e.target).find('.dropdown-menu-media > .list-group')
       if ($menu.length > 0) {
-        let api = $menu.data('asScrollable');
+        const api = $menu.data('asScrollable')
         if (api) {
-          api.update();
+          api.update()
         } else {
           $menu.asScrollable({
             namespace: 'scrollable',
             contentSelector: '> [data-role=\'content\']',
-            containerSelector: '> [data-role=\'container\']',
-          });
+            containerSelector: '> [data-role=\'container\']'
+          })
         }
       }
-    });
+    })
   }
 
   setupMenubar() {
     $(document).on('click', '[data-toggle="menubar"]:visible', () => {
-      let type = this.menubar.type;
+      let type = this.menubar.type
 
       switch (type) {
         case 'fold':
-          type = 'unfold';
-          break;
+          type = 'unfold'
+          break
         case 'unfold':
-          type = 'fold';
-          break;
+          type = 'fold'
+          break
         case 'open':
-          type = 'hide';
-          break;
+          type = 'hide'
+          break
         case 'hide':
-          type = 'open';
-          break;
+          type = 'open'
+          break
           // no default
       }
 
-      this.menubar.change(type);
-      this.menubarType(type);
-      return false;
-    });
+      this.menubar.change(type)
+      this.menubarType(type)
+      return false
+    })
 
     Breakpoints.on('change', () => {
-      this.menubar.type = this._getDefaultMeunbarType();
-      this.menubar.change(this.menubar.type);
-    });
+      this.menubar.type = this._getDefaultMeunbarType()
+      this.menubar.change(this.menubar.type)
+    })
   }
 
   setupNavbarCollpase() {
     $(document)
-      .on('click', '[data-target=\'#site-navbar-collapse\']', function(e) {
-        let $trigger = $(this);
-        let isClose = $trigger.hasClass('collapsed');
-        $BODY.addClass('site-navbar-collapsing');
-        $BODY.toggleClass('site-navbar-collapse-show', !isClose);
+      .on('click', '[data-target=\'#site-navbar-collapse\']', function (e) {
+        const $trigger = $(this)
+        const isClose = $trigger.hasClass('collapsed')
+        $BODY.addClass('site-navbar-collapsing')
+        $BODY.toggleClass('site-navbar-collapse-show', !isClose)
         setTimeout(() => {
-          $BODY.removeClass('site-navbar-collapsing');
-        }, 350);
-      });
+          $BODY.removeClass('site-navbar-collapsing')
+        }, 350)
+      })
   }
 
   startLoading() {
     if (typeof $.fn.animsition === 'undefined') {
-      return false;
+      return false
     }
 
     // let loadingType = 'default';
-    let assets = Config.get('assets');
+    const assets = Config.get('assets')
     $BODY.animsition({
       inClass: 'fade-in',
       outClass: 'fade-out',
@@ -287,68 +287,68 @@ class Site extends Base {
           <div></div>
         </div>
       </div>`,
-      onLoadEvent: true,
-    });
+      onLoadEvent: true
+    })
   }
 
   setupTour(flag) {
     if (typeof this.tour === 'undefined') {
       if (typeof introJs === 'undefined') {
-        return;
+        return
       }
       let overflow = $('body').css('overflow'),
         self = this,
-        tourOptions = Config.get('tour');
+        tourOptions = Config.get('tour')
 
-      this.tour = introJs();
+      this.tour = introJs()
 
       this
         .tour
         .onbeforechange(() => {
-          $('body').css('overflow', 'hidden');
-        });
+          $('body').css('overflow', 'hidden')
+        })
 
       this
         .tour
         .oncomplete(() => {
-          $('body').css('overflow', overflow);
-        });
+          $('body').css('overflow', overflow)
+        })
 
       this
         .tour
         .onexit(() => {
-          $('body').css('overflow', overflow);
-        });
+          $('body').css('overflow', overflow)
+        })
 
       this
         .tour
-        .setOptions(tourOptions);
+        .setOptions(tourOptions)
       $('.site-tour-trigger').on('click', () => {
         self
           .tour
-          .start();
-      });
+          .start()
+      })
     }
   }
 }
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new Site();
+    instance = new Site()
   }
-  return instance;
+  return instance
 }
 
 function run() {
-  let site = getInstance();
-  site.run();
+  const site = getInstance()
+  site.run()
 }
 
-export default Site;
+export default Site
 export {
   Site,
   run,
-  getInstance,
-};
+  getInstance
+}

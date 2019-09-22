@@ -1,11 +1,11 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'progress';
+const NAME = 'progress'
 
 class Progress extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -13,63 +13,63 @@ class Progress extends Plugin {
       bootstrap: true,
 
       onUpdate(n) {
-        let per = (n - this.min) / (this.max - this.min);
+        const per = (n - this.min) / (this.max - this.min)
         if (per < 0.5) {
           this.$target
             .addClass('progress-bar-success')
-            .removeClass('progress-bar-warning progress-bar-danger');
+            .removeClass('progress-bar-warning progress-bar-danger')
         } else if (per >= 0.5 && per < 0.8) {
           this.$target
             .addClass('progress-bar-warning')
-            .removeClass('progress-bar-success progress-bar-danger');
+            .removeClass('progress-bar-success progress-bar-danger')
         } else {
           this.$target
             .addClass('progress-bar-danger')
-            .removeClass('progress-bar-success progress-bar-warning');
+            .removeClass('progress-bar-success progress-bar-warning')
         }
       },
 
       labelCallback(n) {
-        let label;
-        let labelType = this.$element.data('labeltype');
+        let label
+        const labelType = this.$element.data('labeltype')
 
         if (labelType === 'percentage') {
-          let percentage = this.getPercentage(n);
-          label = `${percentage}%`;
+          const percentage = this.getPercentage(n)
+          label = `${percentage}%`
         } else if (labelType === 'steps') {
-          let total = this.$element.data('totalsteps');
+          let total = this.$element.data('totalsteps')
           if (!total) {
-            total = 10;
+            total = 10
           }
-          let step = Math.round(total * (n - this.min) / (this.max - this.min));
-          label = `${step} / ${total}`;
+          const step = Math.round(total * (n - this.min) / (this.max - this.min))
+          label = `${step} / ${total}`
         } else {
-          label = n;
+          label = n
         }
 
         if (this.$element.parent().hasClass('contextual-progress')) {
           this.$element
             .parent()
             .find('.progress-label')
-            .html(label);
+            .html(label)
         }
 
-        return label;
+        return label
       }
-    };
+    }
   }
 
   render() {
     if (!$.fn.asProgress) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
 
-    $el.asProgress(this.options);
+    $el.asProgress(this.options)
   }
 }
 
-Plugin.register(NAME, Progress);
+Plugin.register(NAME, Progress)
 
-export default Progress;
+export default Progress

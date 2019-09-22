@@ -71,7 +71,7 @@ $color-blue-grey: $color-blue-grey-600 !default;
 
 // Primary color
 //
-$color-primary: 'blue' !default;
+$color-primary: "blue" !default;
 
 // $brand-colors: (
 //   "primary": (
@@ -490,7 +490,7 @@ $grid-lg-gutter-width: pxToRem(50px);
 // ==========
 // Font, line-height, and color for body text, headings, and more.
 //
-$use-font-family: 'Roboto';
+$use-font-family: "Roboto";
 // $font-family-sans-serif: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 // $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", $use-font-family, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 $font-family-sans-serif:     $use-font-family, sans-serif;//rc--
@@ -551,7 +551,7 @@ $headings-line-height: 1.2 ;
 $headings-color: $title-color;
 $headings-text-shadow: rgba($black, .15) 0 0 1px;
 $headings-small-color: $prompt-color;
-@import 'fonts/Roboto';
+@import "fonts/Roboto";
 
 // Type
 // ====

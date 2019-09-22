@@ -50,7 +50,9 @@
     }, {
       key: 'show',
       value: function show() {
-        if (typeof alertify === 'undefined') return;
+        if (typeof alertify === 'undefined') {
+          return;
+        }
         var options = this.options;
         if (typeof options.delay !== 'undefined') {
           alertify.delay(options.delay);

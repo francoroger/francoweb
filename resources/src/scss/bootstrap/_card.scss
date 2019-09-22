@@ -3,6 +3,7 @@
 //
 
 .card {
+  @include border-radius($card-border-radius);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -11,7 +12,6 @@
   background-color: $card-bg;
   background-clip: border-box;
   border: $card-border-width solid $card-border-color;
-  @include border-radius($card-border-radius);
 
   > hr {
     margin-right: 0;
@@ -120,31 +120,25 @@
 }
 
 .card-img {
-  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
   @include border-radius($card-inner-border-radius);
+  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
 }
 
 // Card image caps
 .card-img-top {
-  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
   @include border-top-radius($card-inner-border-radius);
+  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
 }
 
 .card-img-bottom {
-  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
   @include border-bottom-radius($card-inner-border-radius);
+  width: 100%; // Required because we use flexbox and this inherently applies align-self: stretch
 }
 
 
 // Card deck
 
 .card-deck {
-  display: flex;
-  flex-direction: column;
-
-  .card {
-    margin-bottom: $card-deck-margin;
-  }
 
   @include media-breakpoint-up(sm) {
     flex-flow: row wrap;
@@ -161,6 +155,12 @@
       margin-left: $card-deck-margin;
     }
   }
+  display: flex;
+  flex-direction: column;
+
+  .card {
+    margin-bottom: $card-deck-margin;
+  }
 }
 
 
@@ -169,25 +169,11 @@
 //
 
 .card-group {
-  display: flex;
-  flex-direction: column;
-
-  .card {
-    margin-bottom: $card-group-margin;
-  }
 
   @include media-breakpoint-up(sm) {
     flex-flow: row wrap;
 
     .card {
-      // Flexbugs #4: https://github.com/philipwalton/flexbugs#4-flex-shorthand-declarations-with-unitless-flex-basis-values-are-ignored
-      flex: 1 0 0%;
-      margin-bottom: 0;
-
-      + .card {
-        margin-left: 0;
-        border-left: 0;
-      }
 
       // Handle rounded corners
       @if $enable-rounded {
@@ -233,7 +219,21 @@
           }
         }
       }
+      // Flexbugs #4: https://github.com/philipwalton/flexbugs#4-flex-shorthand-declarations-with-unitless-flex-basis-values-are-ignored
+      flex: 1 0 0%;
+      margin-bottom: 0;
+
+      + .card {
+        margin-left: 0;
+        border-left: 0;
+      }
     }
+  }
+  display: flex;
+  flex-direction: column;
+
+  .card {
+    margin-bottom: $card-group-margin;
   }
 }
 
@@ -243,9 +243,6 @@
 //
 
 .card-columns {
-  .card {
-    margin-bottom: $card-columns-margin;
-  }
 
   @include media-breakpoint-up(sm) {
     column-count: $card-columns-count;
@@ -255,5 +252,8 @@
       display: inline-block; // Don't let them vertically span multiple columns
       width: 100%; // Don't let their width change
     }
+  }
+  .card {
+    margin-bottom: $card-columns-margin;
   }
 }

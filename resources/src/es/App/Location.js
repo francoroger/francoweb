@@ -1,289 +1,289 @@
-import Site from 'Site';
+import Site from 'Site'
 
 class Map {
   constructor() {
-    this.window = $(window);
-    this.$siteNavbar = $('.site-navbar');
-    this.$siteFooter = $('.site-footer');
-    this.$pageMain = $('.page-main');
+    this.window = $(window)
+    this.$siteNavbar = $('.site-navbar')
+    this.$siteFooter = $('.site-footer')
+    this.$pageMain = $('.page-main')
 
-    this.handleMapHeight();
+    this.handleMapHeight()
   }
 
   handleMapHeight() {
     let footerH = this.$siteFooter.outerHeight(),
-      navbarH = this.$siteNavbar.outerHeight();
-    let mapH = this.window.height() - navbarH - footerH;
+      navbarH = this.$siteNavbar.outerHeight()
+    const mapH = this.window.height() - navbarH - footerH
 
-    this.$pageMain.outerHeight(mapH);
+    this.$pageMain.outerHeight(mapH)
   }
 
   getMap() {
-    let mapLatlng = L.latLng(37.769, -122.446);
+    const mapLatlng = L.latLng(37.769, -122.446)
 
     // this accessToken, you can get it to here ==> [ https://www.mapbox.com ]
-    L.mapbox.accessToken = 'pk.eyJ1IjoiYW1hemluZ3N1cmdlIiwiYSI6ImNpaDVubzBoOTAxZG11dGx4OW5hODl2b3YifQ.qudwERFDdMJhFA-B2uO6Rg';
+    L.mapbox.accessToken = 'pk.eyJ1IjoiYW1hemluZ3N1cmdlIiwiYSI6ImNpaDVubzBoOTAxZG11dGx4OW5hODl2b3YifQ.qudwERFDdMJhFA-B2uO6Rg'
 
-    return L.mapbox.map('map', 'mapbox.light').setView(mapLatlng, 18);
+    return L.mapbox.map('map', 'mapbox.light').setView(mapLatlng, 18)
   }
 }
 
 class Markers {
   constructor(friends, map) {
-    this.friends = friends;
-    this.map = map;
-    this.allMarkers = [];
+    this.friends = friends
+    this.map = map
+    this.allMarkers = []
 
-    this.handleMarkers();
+    this.handleMarkers()
   }
 
   handleMarkers() {
     /* add markercluster Plugin */
     // this mapbox's Plugins,you can get it to here ==> [ https://github.com/Leaflet/Leaflet.markercluster.git ]
-    let markers = new L.markerClusterGroup({
+    const markers = new L.markerClusterGroup({
       removeOutsideVisibleBounds: false,
       polygonOptions: {
-        color: `#444444`,
-      },
-    });
+        color: '#444444'
+      }
+    })
 
     for (let i = 0; i < this.friends.length; i++) {
-      let path, x;
+      let path, x
 
       if (i % 2 === 0) {
-        x = Number(Math.random());
+        x = Number(Math.random())
       } else {
-        x = -1 * Math.random();
+        x = -1 * Math.random()
       }
 
-      let markerLatlng = L.latLng(37.769 + Math.random() / 170 * x, -122.446 + Math.random() / 150 * x);
+      const markerLatlng = L.latLng(37.769 + Math.random() / 170 * x, -122.446 + Math.random() / 150 * x)
 
-      path = $(this.friends[i]).find('img').attr('src');
+      path = $(this.friends[i]).find('img').attr('src')
 
-      let divContent = '<div class=\'in-map-markers\'><div class=\'friend-icon\'><img src=\'' + path + '\' /></div></div>';
+      const divContent = `<div class='in-map-markers'><div class='friend-icon'><img src='${path}' /></div></div>`
 
-      let friendImg = L.divIcon({
+      const friendImg = L.divIcon({
         html: divContent,
         iconAnchor: [0, 0],
-        className: '',
-      });
+        className: ''
+      })
 
       /* create new marker and add to map */
-      let popupInfo = '<div class=\'friend-popup-info\'><div class=\'detail\'>info</div><h3>' + $(this.friends[i]).find('.friend-name').html() + '</h3><p>' + $(this.friends[i]).find('.friend-title').html() + '</p></div><i class=\'icon wb-chevron-right-mini\'></i>';
-      let marker = L.marker(markerLatlng, {
+      const popupInfo = `<div class='friend-popup-info'><div class='detail'>info</div><h3>${$(this.friends[i]).find('.friend-name').html()}</h3><p>${$(this.friends[i]).find('.friend-title').html()}</p></div><i class='icon wb-chevron-right-mini'></i>`
+      const marker = L.marker(markerLatlng, {
         title: $(this.friends[i]).find('friend-name').html(),
-        icon: friendImg,
+        icon: friendImg
       }).bindPopup(popupInfo, {
-        closeButton: false,
-      });
+        closeButton: false
+      })
 
-      markers.addLayer(marker);
+      markers.addLayer(marker)
 
-      this.allMarkers.push(marker);
+      this.allMarkers.push(marker)
 
-      marker.on('popupopen', function() {
-        this._icon.className += ' marker-active';
-        this.setZIndexOffset(999);
-      });
+      marker.on('popupopen', function () {
+        this._icon.className += ' marker-active'
+        this.setZIndexOffset(999)
+      })
 
-      marker.on('popupclose', function() {
+      marker.on('popupclose', function () {
         if (this._icon) {
-          this._icon.className = 'leaflet-marker-icon leaflet-zoom-animated leaflet-clickable';
+          this._icon.className = 'leaflet-marker-icon leaflet-zoom-animated leaflet-clickable'
         }
-        this.setZIndexOffset(450);
-      });
+        this.setZIndexOffset(450)
+      })
     }
 
-    this.map.addLayer(markers);
+    this.map.addLayer(markers)
   }
 
   getAllMarkers() {
-    return this.allMarkers;
+    return this.allMarkers
   }
 
   getMarkersInMap() {
-    let inMapMarkers = [];
-    let allMarkers = this.getAllMarkers();
+    const inMapMarkers = []
+    const allMarkers = this.getAllMarkers()
 
     /* Get the object of all Markers in the map view */
     for (let i = 0; i < allMarkers.length; i++) {
       if (this.map.getBounds().contains(allMarkers[i].getLatLng())) {
-        inMapMarkers.push(allMarkers.indexOf(allMarkers[i]));
+        inMapMarkers.push(allMarkers.indexOf(allMarkers[i]))
       }
     }
 
-    return inMapMarkers;
+    return inMapMarkers
   }
 }
 
 class AppLocation extends Site {
   initialize() {
-    super.initialize();
+    super.initialize()
 
-    this.window = $(window);
-    this.$listItem = $('.app-location .page-aside .list-group');
-    this.$allFriends = $('.app-location .friend-info');
-    this.allFriends = this.getAllFriends();
-    this.mapbox = new Map();
+    this.window = $(window)
+    this.$listItem = $('.app-location .page-aside .list-group')
+    this.$allFriends = $('.app-location .friend-info')
+    this.allFriends = this.getAllFriends()
+    this.mapbox = new Map()
 
-    this.map = this.mapbox.getMap();
-    this.markers = new Markers(this.$allFriends, this.map);
-    this.allMarkers = this.markers.getAllMarkers();
+    this.map = this.mapbox.getMap()
+    this.markers = new Markers(this.$allFriends, this.map)
+    this.allMarkers = this.markers.getAllMarkers()
 
-    this.markersInMap = null;
-    this.friendNum = null;
+    this.markersInMap = null
+    this.friendNum = null
 
     // states
     this.states = {
       mapChanged: true,
-      listItemActive: false,
-    };
+      listItemActive: false
+    }
   }
 
   process() {
-    super.process();
+    super.process()
 
-    this.handleResize();
-    this.steupListItem();
-    this.steupMapChange();
-    this.handleSearch();
+    this.handleResize()
+    this.steupListItem()
+    this.steupMapChange()
+    this.handleSearch()
   }
 
   getDefaultState() {
     return Object.assign(super.getDefaultState(), {
       mapChange: true,
-      listItemActive: false,
-    });
+      listItemActive: false
+    })
   }
 
   mapChange(change) {
     if (change) {
-      console.log('map change');
+      console.log('map change')
     } else {
-      let friendsInList = [];
+      const friendsInList = []
 
-      this.markersInMap = this.markers.getMarkersInMap();
+      this.markersInMap = this.markers.getMarkersInMap()
       for (let i = 0; i < this.allMarkers.length; i++) {
         if (this.markersInMap.indexOf(i) === -1) {
-          $(this.allFriends[i]).hide();
+          $(this.allFriends[i]).hide()
         } else {
-          $(this.allFriends[i]).show();
-          friendsInList.push($(this.allFriends[i]));
+          $(this.allFriends[i]).show()
+          friendsInList.push($(this.allFriends[i]))
         }
       }
 
-      this.friendsInList = friendsInList;
+      this.friendsInList = friendsInList
     }
 
-    this.states.mapChanged = change;
+    this.states.mapChanged = change
   }
 
   listItemActive(active) {
     if (active) {
-      this.map.panTo(this.allMarkers[this.friendNum].getLatLng());
-      this.allMarkers[this.friendNum].openPopup();
+      this.map.panTo(this.allMarkers[this.friendNum].getLatLng())
+      this.allMarkers[this.friendNum].openPopup()
     } else {
-      console.log('listItem unactive');
+      console.log('listItem unactive')
     }
 
-    this.states.listItemActived = active;
+    this.states.listItemActived = active
   }
 
   getAllFriends() {
-    let allFriends = [];
+    const allFriends = []
 
-    this.$allFriends.each(function() {
-      allFriends.push(this);
-    });
+    this.$allFriends.each(function () {
+      allFriends.push(this)
+    })
 
-    return allFriends;
+    return allFriends
   }
 
   steupListItem() {
-    let self = this;
+    const self = this
 
-    this.$allFriends.on('click', function() {
+    this.$allFriends.on('click', function () {
       $('.list-inline').on('click', (event) => {
-        event.stopPropagation();
-      });
+        event.stopPropagation()
+      })
 
-      self.friendNum = self.allFriends.indexOf(this);
+      self.friendNum = self.allFriends.indexOf(this)
 
-      self.listItemActive(true);
-    });
+      self.listItemActive(true)
+    })
 
     this.$allFriends.on('mouseup', () => {
-      this.listItemActive(false);
-    });
+      this.listItemActive(false)
+    })
   }
 
   steupMapChange() {
     this.map.on('viewreset move', () => {
-      this.mapChange(true);
-    });
+      this.mapChange(true)
+    })
 
     this.map.on('ready blur moveend dragend zoomend', () => {
-      this.mapChange(false);
-    });
+      this.mapChange(false)
+    })
   }
 
   handleResize() {
     this.window.on('resize', () => {
-      this.mapbox.handleMapHeight();
-    });
+      this.mapbox.handleMapHeight()
+    })
   }
 
   handleSearch() {
-    let self = this;
-    $('.search-friends input').on('focus', function() {
+    const self = this
+    $('.search-friends input').on('focus', function () {
       $(this).on('keyup', () => {
-        let inputName = $('.search-friends input').val();
+        const inputName = $('.search-friends input').val()
 
         for (let i = 0; i < self.friendsInList.length; i++) {
-          let friendName = self.friendsInList[i].find('.friend-name').html();
+          const friendName = self.friendsInList[i].find('.friend-name').html()
 
           if (inputName.length <= friendName.length) {
             for (let j = 1; j <= inputName.length; j++) {
               if (inputName.substring(0, j).toLowerCase() === friendName.substring(0, j).toLowerCase()) {
-                self.friendsInList[i].show();
+                self.friendsInList[i].show()
               } else {
-                self.friendsInList[i].hide();
+                self.friendsInList[i].hide()
               }
             }
           } else {
-            self.friendsInList[i].hide();
+            self.friendsInList[i].hide()
           }
         }
         if (inputName === '') {
           for (let i = 0; i < self.friendsInList.length; i++) {
-            self.friendsInList[i].show();
+            self.friendsInList[i].show()
           }
         }
-      });
-    });
-    $('.search-friends input').on('focusout', function() {
-      $(this).off('keyup');
-    });
+      })
+    })
+    $('.search-friends input').on('focusout', function () {
+      $(this).off('keyup')
+    })
   }
 }
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new AppLocation();
+    instance = new AppLocation()
   }
-  return instance;
+  return instance
 }
 
 function run() {
-  let app = getInstance();
-  app.run();
+  const app = getInstance()
+  app.run()
 }
 
-export default AppLocation;
+export default AppLocation
 export {
   AppLocation,
   run,
-  getInstance,
-};
+  getInstance
+}

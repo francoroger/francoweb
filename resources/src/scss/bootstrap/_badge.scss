@@ -4,6 +4,7 @@
 // `background-color`.
 
 .badge {
+  @include border-radius($badge-border-radius);
   display: inline-block;
   padding: $badge-padding-y $badge-padding-x;
   font-size: $badge-font-size;
@@ -12,7 +13,6 @@
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  @include border-radius($badge-border-radius);
 
   // Empty badges collapse automatically
   &:empty {
@@ -31,9 +31,9 @@
 // Make them extra rounded with a modifier to replace v3's badges.
 
 .badge-pill {
+  @include border-radius($badge-pill-border-radius);
   padding-right: $badge-pill-padding-x;
   padding-left: $badge-pill-padding-x;
-  @include border-radius($badge-pill-border-radius);
 }
 
 // Colors

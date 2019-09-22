@@ -2,34 +2,34 @@
 @import "bootstrap/functions";
 
 // Bootstrap's variables
-@import 'bootstrap/variables';
+@import "bootstrap/variables";
 
 // Load mixins
-@import 'mixins';
+@import "mixins";
 
 // Load color variables
-@import 'vars-color';
+@import "vars-color";
 
 // Load social color variables
-@import 'vars-social-color';
+@import "vars-social-color";
 
 // Load Bootstrap override variables
-@import 'vars-bootstrap';
+@import "vars-bootstrap";
 
 // Load Site variables
-@import 'vars-site';
+@import "vars-site";
 
 // Load components variables
-@import 'vars-components';
+@import "vars-components";
 
 // Load fonts
-@import 'fonts/Roboto';
+@import "fonts/Roboto";
 
 //web icons
-@import 'web-icons/variables';
+@import "web-icons/variables";
 
 // Load Custom variables
-@import 'vars-customs';
+@import "vars-customs";
 
 // // Reset and dependencies
 // // v4-normalize

@@ -1,91 +1,91 @@
-import BaseApp from 'BaseApp';
+import BaseApp from 'BaseApp'
 
 class AppContacts extends BaseApp {
   initialize() {
-    super.initialize();
+    super.initialize()
 
-    this.$actionBtn = $('.site-action');
-    this.$actionToggleBtn = this.$actionBtn.find('.site-action-toggle');
+    this.$actionBtn = $('.site-action')
+    this.$actionToggleBtn = this.$actionBtn.find('.site-action-toggle')
     this.$addMainForm = $('#addUserForm').modal({
-      show: false,
-    });
-    this.$content = $('#contactsContent');
+      show: false
+    })
+    this.$content = $('#contactsContent')
 
     // states
     this.states = {
-      checked: false,
-    };
+      checked: false
+    }
   }
   process() {
-    super.process();
+    super.process()
 
-    this.setupActionBtn();
-    this.bindListChecked();
-    this.handlSlidePanelContent();
+    this.setupActionBtn()
+    this.bindListChecked()
+    this.handlSlidePanelContent()
   }
 
   listChecked(checked) {
-    let api = this.$actionBtn.data('actionBtn');
+    const api = this.$actionBtn.data('actionBtn')
     if (checked) {
-      api.show();
+      api.show()
     } else {
-      api.hide();
+      api.hide()
     }
 
-    this.states.checked = checked;
+    this.states.checked = checked
   }
 
   setupActionBtn() {
     this.$actionToggleBtn.on('click', (e) => {
       if (!this.states.checked) {
-        this.$addMainForm.modal('show');
-        e.stopPropagation();
+        this.$addMainForm.modal('show')
+        e.stopPropagation()
       }
-    });
+    })
   }
 
   bindListChecked() {
     this.$content.on('asSelectable::change', (e, api, checked) => {
-      this.listChecked(checked);
-    });
+      this.listChecked(checked)
+    })
   }
 
   handlSlidePanelContent() {
-    $(document).on('click', '[data-toggle=edit]', function() {
+    $(document).on('click', '[data-toggle=edit]', function () {
       let $button = $(this),
-        $panel = $button.parents('.slidePanel');
-      let $form = $panel.find('.user-info');
+        $panel = $button.parents('.slidePanel')
+      const $form = $panel.find('.user-info')
 
-      $button.toggleClass('active');
-      $form.toggleClass('active');
-    });
+      $button.toggleClass('active')
+      $form.toggleClass('active')
+    })
 
     $(document).on('change', '.user-info .form-group', (e) => {
       let $input = $(this).find('input'),
-        $span = $(this).siblings('span');
-      $span.html($input.val());
-    });
+        $span = $(this).siblings('span')
+      $span.html($input.val())
+    })
   }
 }
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new AppContacts();
+    instance = new AppContacts()
   }
 
-  return instance;
+  return instance
 }
 
 function run() {
-  let app = getInstance();
-  app.run();
+  const app = getInstance()
+  app.run()
 }
 
-export default AppContacts;
+export default AppContacts
 export {
   AppContacts,
   run,
-  getInstance,
-};
+  getInstance
+}

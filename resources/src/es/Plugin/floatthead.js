@@ -1,28 +1,28 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'floatThead';
+const NAME = 'floatThead'
 
 class FloatThead extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       position: 'auto',
-      top: function() {
-        let offset = $('.page').offset();
+      top() {
+        const offset = $('.page').offset()
 
-        return offset.top;
+        return offset.top
       },
-      responsiveContainer: function($table) {
-        return $table.closest('.table-responsive');
+      responsiveContainer($table) {
+        return $table.closest('.table-responsive')
       }
-    };
+    }
   }
 }
 
-Plugin.register(NAME, FloatThead);
+Plugin.register(NAME, FloatThead)
 
-export default FloatThead;
+export default FloatThead

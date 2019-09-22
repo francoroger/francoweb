@@ -1,11 +1,11 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'slidePanel';
+const NAME = 'slidePanel'
 
 class SlidePanel extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
   static getDefaults() {
     return {
@@ -15,42 +15,42 @@ class SlidePanel extends Plugin {
         template(options) {
           return `<div class="${options.classes.loading}">
                     <div class="loader loader-default"></div>
-                  </div>`;
+                  </div>`
         },
         showCallback(options) {
-          this.$el.addClass(`${options.classes.loading}-show`);
+          this.$el.addClass(`${options.classes.loading}-show`)
         },
         hideCallback(options) {
-          this.$el.removeClass(`${options.classes.loading}-show`);
+          this.$el.removeClass(`${options.classes.loading}-show`)
         }
       }
-    };
+    }
   }
   render() {
     if (typeof $.slidePanel === 'undefined') {
-      return;
+      return
     }
     if (!this.options.url) {
-      this.options.url = this.$el.attr('href');
+      this.options.url = this.$el.attr('href')
       this.options.url =
-        this.options.url && this.options.url.replace(/.*(?=#[^\s]*$)/, '');
+        this.options.url && this.options.url.replace(/.*(?=#[^\s]*$)/, '')
     }
 
-    this.$el.data('slidePanelWrapAPI', this);
+    this.$el.data('slidePanelWrapAPI', this)
   }
   show() {
-    let options = this.options;
+    const options = this.options
 
     $.slidePanel.show({
-        url: options.url
-      },
+      url: options.url
+    },
       options
-    );
+    )
   }
   static api() {
-    return 'click|show';
+    return 'click|show'
   }
 }
 
-Plugin.register(NAME, SlidePanel);
-export default SlidePanel;
+Plugin.register(NAME, SlidePanel)
+export default SlidePanel

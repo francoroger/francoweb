@@ -1,11 +1,11 @@
-import Plugin from 'Plugin';
-import * as Config from "Config";
+import Plugin from 'Plugin'
+import * as Config from 'Config'
 
-const NAME = 'vectorMap';
+const NAME = 'vectorMap'
 
 class VectorMap extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -39,10 +39,10 @@ class VectorMap extends Plugin {
           'stroke-width': 0
         }
       }
-    };
+    }
   }
 }
 
-Plugin.register(NAME, VectorMap);
+Plugin.register(NAME, VectorMap)
 
-export default VectorMap;
+export default VectorMap

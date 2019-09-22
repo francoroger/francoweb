@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'sortable';
+const NAME = 'sortable'
 
 class Sortable extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -17,16 +17,16 @@ class Sortable extends Plugin {
       placeholderClass: 'sortable-placeholder',
       draggingClass: 'sortable-dragging',
       hoverClass: false
-    };
+    }
   }
 
   render() {
-    let $el = this.$el;
+    const $el = this.$el
 
-    sortable(this.$el.get(0), this.options);
+    sortable(this.$el.get(0), this.options)
   }
 }
 
-Plugin.register(NAME, Sortable);
+Plugin.register(NAME, Sortable)
 
-export default Sortable;
+export default Sortable

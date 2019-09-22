@@ -123,8 +123,8 @@ $alert-social-text: $color-white !default;
   padding-right: ($alert-padding-horizontal + 20);
 
   .close {
-    padding: 0;
     position: inherit;
+    padding: 0;
     margin-right: $minus-alert-padding-horizontal;
     // top: 0;
     text-decoration: none;

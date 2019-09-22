@@ -15,17 +15,17 @@
 @mixin caret($direction: down) {
   @if $enable-caret {
     &::after {
+      @if $direction == down {
+        @include caret-down;
+      } @else if $direction == up {
+        @include caret-up;
+      }
       display: inline-block;
       width: 0;
       height: 0;
       margin-left: $caret-width * .85;
       vertical-align: $caret-width * .85;
       content: "";
-      @if $direction == down {
-        @include caret-down;
-      } @else if $direction == up {
-        @include caret-up;
-      }
     }
 
     &:empty::after {

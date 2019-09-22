@@ -83,7 +83,7 @@
 
         if (options.rowSelectable) {
           self.$element.on('click', options.rowSelector, function (e) {
-            if ('checkbox' !== e.target.type && 'button' !== e.target.type && 'a' !== e.target.tagName.toLowerCase() && !(0, _jquery2.default)(e.target).parent('div.checkbox-custom').length) {
+            if (e.target.type !== 'checkbox' && e.target.type !== 'button' && e.target.tagName.toLowerCase() !== 'a' && !(0, _jquery2.default)(e.target).parent('div.checkbox-custom').length) {
               var $checkbox = (0, _jquery2.default)(options.itemSelector, this);
               var value = $checkbox.prop('checked');
               $checkbox.prop('checked', !value);
@@ -170,7 +170,6 @@
   _jquery2.default.fn[pluginName] = asSelectable._jQueryInterface;
   _jquery2.default.fn[pluginName].constructor = asSelectable;
   _jquery2.default.fn[pluginName].noConflict = function () {
-    'use strict';
 
     _jquery2.default.fn[pluginName] = window.JQUERY_NO_CONFLICT;
     return asSelectable._jQueryInterface;

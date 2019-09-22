@@ -2,58 +2,58 @@ let values = {
   fontFamily: 'Noto Sans, sans-serif',
   primaryColor: 'blue',
   assets: '../assets'
-};
+}
 
 function get(...names) {
-  let data = values;
-  let callback = function(data, name) {
-    return data[name];
-  };
-
-  for (let i = 0; i < names.length; i++) {
-    let name = names[i];
-
-    data = callback(data, name);
+  let data = values
+  const callback = function (data, name) {
+    return data[name]
   }
 
-  return data;
+  for (let i = 0; i < names.length; i++) {
+    const name = names[i]
+
+    data = callback(data, name)
+  }
+
+  return data
 }
 
 function set(name, value) {
   if (typeof name === 'string' && typeof value !== 'undefined') {
-    values[name] = value;
+    values[name] = value
   } else if (typeof name === 'object') {
-    values = $.extend(true, {}, values, name);
+    values = $.extend(true, {}, values, name)
   }
 }
 
 function getColor(name, level) {
   if (name === 'primary') {
-    name = get('primaryColor');
+    name = get('primaryColor')
     if (!name) {
-      name = 'red';
+      name = 'red'
     }
   }
 
   if (typeof values.colors === 'undefined') {
-    return null;
+    return null
   }
 
   if (typeof values.colors[name] !== 'undefined') {
     if (level && typeof values.colors[name][level] !== 'undefined') {
-      return values.colors[name][level];
+      return values.colors[name][level]
     }
 
     if (typeof level === 'undefined') {
-      return values.colors[name];
+      return values.colors[name]
     }
   }
 
-  return null;
+  return null
 }
 
 function colors(name, level) {
-  return getColor(name, level);
+  return getColor(name, level)
 }
 
 export {
@@ -61,4 +61,4 @@ export {
   set,
   getColor,
   colors
-};
+}

@@ -1,13 +1,13 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'ionRangeSlider';
+const NAME = 'ionRangeSlider'
 
 class IonRangeSlider extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 }
 
-Plugin.register(NAME, IonRangeSlider);
+Plugin.register(NAME, IonRangeSlider)
 
-export default IonRangeSlider;
+export default IonRangeSlider

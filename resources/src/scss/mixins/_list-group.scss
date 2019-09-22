@@ -8,12 +8,12 @@
 
   a.list-group-item-#{$state},
   button.list-group-item-#{$state} {
-    color: $color;
 
     @include hover-focus {
       color: $color;
       background-color: darken($background, 5%);
     }
+    color: $color;
 
     &.active {
       color: #fff;

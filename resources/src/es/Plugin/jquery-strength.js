@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'strength';
+const NAME = 'strength'
 
 class Strength extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -41,10 +41,10 @@ class Strength extends Plugin {
         good: 'strength-good',
         strong: 'strength-strong'
       }
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Strength);
+Plugin.register(NAME, Strength)
 
-export default Strength;
+export default Strength

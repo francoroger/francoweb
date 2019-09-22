@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'knob';
+const NAME = 'knob'
 
 class Knob extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -14,10 +14,10 @@ class Knob extends Plugin {
       width: 120,
       height: 120,
       thickness: '.1'
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Knob);
+Plugin.register(NAME, Knob)
 
-export default Knob;
+export default Knob

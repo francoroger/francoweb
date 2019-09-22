@@ -134,7 +134,6 @@
   _jquery2.default.fn[pluginName] = actionBtn._jQueryInterface;
   _jquery2.default.fn[pluginName].constructor = actionBtn;
   _jquery2.default.fn[pluginName].noConflict = function () {
-    'use strict';
 
     _jquery2.default.fn[pluginName] = window.JQUERY_NO_CONFLICT;
     return actionBtn._jQueryInterface;

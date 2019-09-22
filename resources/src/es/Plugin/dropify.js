@@ -1,17 +1,17 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'dropify';
+const NAME = 'dropify'
 
 class Dropify extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 }
 
-Plugin.register(NAME, Dropify);
+Plugin.register(NAME, Dropify)
 
-export default Dropify;
+export default Dropify

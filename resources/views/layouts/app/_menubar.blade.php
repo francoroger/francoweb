@@ -29,6 +29,12 @@
               <span class="site-menu-title">Ordem de Serviço</span>
             </a>
           </li>
+          <li class="site-menu-item{{ Request::is('catalogacao/checklist*') ? ' active' : '' }}">
+            <a href="{{ route('catalogacao_checklist.index') }}">
+              <i class="site-menu-icon fa-check-square-o" aria-hidden="true"></i>
+              <span class="site-menu-title">Check List Catalogação</span>
+            </a>
+          </li>
           <li class="site-menu-item">
             <a href="#">
               <i class="site-menu-icon wb-wrench" aria-hidden="true"></i>

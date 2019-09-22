@@ -1,55 +1,55 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'bootbox';
+const NAME = 'bootbox'
 
 class Bootbox extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   render() {
-    this.$el.data('bootboxWrapApi', this);
+    this.$el.data('bootboxWrapApi', this)
   }
 
   show() {
     if (typeof bootbox === 'undefined') {
-      return;
+      return
     }
 
-    let options = this.options;
+    const options = this.options
 
     if (options.classname) {
-      options.className = options.classname;
+      options.className = options.classname
     }
 
     if (options.className) {
-      options.className = options.className + ' modal-simple';
+      options.className += ' modal-simple'
     }
 
     if (
       typeof options.callback === 'string' &&
       $.isFunction(window[options.callback])
     ) {
-      options.callback = window[options.callback];
+      options.callback = window[options.callback]
     }
 
     if (options.type) {
       switch (options.type) {
         case 'alert':
-          bootbox.alert(options);
-          break;
+          bootbox.alert(options)
+          break
         case 'confirm':
-          bootbox.confirm(options);
-          break;
+          bootbox.confirm(options)
+          break
         case 'prompt':
-          bootbox.prompt(options);
-          break;
+          bootbox.prompt(options)
+          break
         default:
-          bootbox.dialog(options);
+          bootbox.dialog(options)
       }
     } else {
-      bootbox.dialog(options);
+      bootbox.dialog(options)
     }
   }
 
@@ -57,13 +57,13 @@ class Bootbox extends Plugin {
     return {
       message: '',
       className: 'modal-simple'
-    };
+    }
   }
 
   static api() {
-    return 'click|show';
+    return 'click|show'
   }
 }
-Plugin.register(NAME, Bootbox);
+Plugin.register(NAME, Bootbox)
 
-export default Bootbox;
+export default Bootbox

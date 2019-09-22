@@ -1,11 +1,11 @@
-import Plugin from 'Plugin';
-import * as Config from "Config";
+import Plugin from 'Plugin'
+import * as Config from 'Config'
 
-const NAME = 'gmaps';
+const NAME = 'gmaps'
 
 class GmapsPlugin extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   render() {}
@@ -209,10 +209,10 @@ class GmapsPlugin extends Plugin {
           color: Config.colors('blue-grey', '600')
         }]
       }]
-    };
+    }
   }
 }
 
-Plugin.register(NAME, GmapsPlugin);
+Plugin.register(NAME, GmapsPlugin)
 
-export default GmapsPlugin;
+export default GmapsPlugin

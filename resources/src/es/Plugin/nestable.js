@@ -1,17 +1,17 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'nestable';
+const NAME = 'nestable'
 
 class Nestable extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 }
 
-Plugin.register(NAME, Nestable);
+Plugin.register(NAME, Nestable)
 
-export default Nestable;
+export default Nestable

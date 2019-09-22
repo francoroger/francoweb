@@ -1,28 +1,28 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'editableTable';
+const NAME = 'editableTable'
 
 class EditableTable extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 
   render() {
     if (!$.fn.editableTableWidget) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
 
-    $el.editableTableWidget(this.options);
+    $el.editableTableWidget(this.options)
   }
 }
 
-Plugin.register(NAME, EditableTable);
+Plugin.register(NAME, EditableTable)
 
-export default EditableTable;
+export default EditableTable

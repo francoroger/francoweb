@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'TouchSpin';
+const NAME = 'TouchSpin'
 
 class TouchSpin extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -13,10 +13,10 @@ class TouchSpin extends Plugin {
       verticaldownclass: 'wb-minus',
       buttondown_class: 'btn btn-outline btn-default',
       buttonup_class: 'btn btn-outline btn-default'
-    };
+    }
   }
 }
 
-Plugin.register(NAME, TouchSpin);
+Plugin.register(NAME, TouchSpin)
 
-export default TouchSpin;
+export default TouchSpin

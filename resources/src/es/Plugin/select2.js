@@ -1,19 +1,19 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'select2';
+const NAME = 'select2'
 
 class Select2 extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       width: 'style'
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Select2);
+Plugin.register(NAME, Select2)
 
-export default Select2;
+export default Select2

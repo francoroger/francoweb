@@ -1,22 +1,22 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'highlight';
+const NAME = 'highlight'
 
 class Highlight extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 
   render() {
-    hljs.initHighlightingOnLoad();
+    hljs.initHighlightingOnLoad()
   }
 }
 
-Plugin.register(NAME, Highlight);
+Plugin.register(NAME, Highlight)
 
-export default Highlight;
+export default Highlight

@@ -1,90 +1,90 @@
-import Site from 'Site';
+import Site from 'Site'
 
 class AppNotebook extends Site {
   initialize() {
-    super.initialize();
+    super.initialize()
 
-    this.$listItem = $('.list-group-item');
-    this.$actionBtn = $('.site-action');
-    this.$toggle = this.$actionBtn.find('.site-action-toggle');
-    this.$newNote = $('#addNewNote');
-    this.$mdEdit = $('#mdEdit');
-    this.window = $(window);
+    this.$listItem = $('.list-group-item')
+    this.$actionBtn = $('.site-action')
+    this.$toggle = this.$actionBtn.find('.site-action-toggle')
+    this.$newNote = $('#addNewNote')
+    this.$mdEdit = $('#mdEdit')
+    this.window = $(window)
 
     // states
     this.states = {
-      listItemActive: false,
-    };
+      listItemActive: false
+    }
   }
   process() {
-    super.process();
+    super.process()
 
-    this.handleResize();
-    this.steupListItem();
-    this.steupActionBtn();
+    this.handleResize()
+    this.steupListItem()
+    this.steupActionBtn()
   }
 
   initEditer() {
     this.$mdEdit.markdown({
       autofocus: false,
-      savable: false,
-    });
+      savable: false
+    })
   }
 
   listItemActive(active) {
-    let api = this.$actionBtn.data('actionBtn');
+    const api = this.$actionBtn.data('actionBtn')
     if (active) {
-      api.show();
+      api.show()
     } else {
-      this.$listItem.removeClass('active');
+      this.$listItem.removeClass('active')
     }
 
-    this.states.listItemActive = active;
+    this.states.listItemActive = active
   }
 
   steupListItem() {
-    let self = this;
-    this.$listItem.on('click', function() {
-      $(this).siblings().removeClass('active');
-      $(this).addClass('active');
+    const self = this
+    this.$listItem.on('click', function () {
+      $(this).siblings().removeClass('active')
+      $(this).addClass('active')
 
-      self.listItemActive(true);
-    });
+      self.listItemActive(true)
+    })
   }
 
   steupActionBtn() {
     this.$toggle.on('click', (e) => {
       if (this.states.listItemActive) {
-        this.listItemActive(false);
+        this.listItemActive(false)
       } else {
-        this.$newNote.modal('show');
-        e.stopPropagation();
+        this.$newNote.modal('show')
+        e.stopPropagation()
       }
-    });
+    })
   }
 
   handleResize() {
-    this.window.on('resize', this.initEditer());
+    this.window.on('resize', this.initEditer())
   }
 }
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new AppNotebook();
+    instance = new AppNotebook()
   }
-  return instance;
+  return instance
 }
 
 function run() {
-  let app = getInstance();
-  app.run();
+  const app = getInstance()
+  app.run()
 }
 
-export default AppNotebook;
+export default AppNotebook
 export {
   AppNotebook,
   run,
-  getInstance,
-};
+  getInstance
+}

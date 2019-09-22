@@ -1,32 +1,32 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'moreButton';
+const NAME = 'moreButton'
 
 class MoreButton extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   render() {
-    this.$target = $(this.options.more);
-    this.$el.data('moreButtonApi', this);
+    this.$target = $(this.options.more)
+    this.$el.data('moreButtonApi', this)
   }
 
   toggle() {
-    this.$target.toggle();
+    this.$target.toggle()
   }
 
   static getDefaults() {
     return {
       more: ''
-    };
+    }
   }
   static api() {
-    return 'click|toggle';
+    return 'click|toggle'
   }
 }
 
-Plugin.register(NAME, MoreButton);
+Plugin.register(NAME, MoreButton)
 
-export default MoreButton;
+export default MoreButton

@@ -1,7 +1,7 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const pluginName = 'actionBtn';
+const pluginName = 'actionBtn'
 const defaults = {
   trigger: 'click', // click, hover
   toggleSelector: '.site-action-toggle',
@@ -9,111 +9,111 @@ const defaults = {
   activeClass: 'active',
   onShow() {},
   onHide() {}
-};
+}
 
 class actionBtn {
   constructor(element, options) {
-    this.element = element;
-    this.$element = $(element);
+    this.element = element
+    this.$element = $(element)
 
-    this.options = $.extend({}, defaults, options, this.$element.data());
+    this.options = $.extend({}, defaults, options, this.$element.data())
 
-    this.init();
+    this.init()
   }
   init() {
-    this.showed = false;
+    this.showed = false
 
-    this.$toggle = this.$element.find(this.options.toggleSelector);
-    this.$list = this.$element.find(this.options.listSelector);
+    this.$toggle = this.$element.find(this.options.toggleSelector)
+    this.$list = this.$element.find(this.options.listSelector)
 
-    const self = this;
+    const self = this
 
     if (this.options.trigger === 'hover') {
       this.$element.on('mouseenter', this.options.toggleSelector, () => {
         if (!self.showed) {
-          self.show();
+          self.show()
         }
-      });
+      })
       this.$element.on('mouseleave', this.options.toggleSelector, () => {
         if (self.showed) {
-          self.hide();
+          self.hide()
         }
-      });
+      })
     } else {
       this.$element.on('click', this.options.toggleSelector, () => {
         if (self.showed) {
-          self.hide();
+          self.hide()
         } else {
-          self.show();
+          self.show()
         }
-      });
+      })
     }
   }
 
   show() {
     if (!this.showed) {
-      this.$element.addClass(this.options.activeClass);
-      this.showed = true;
+      this.$element.addClass(this.options.activeClass)
+      this.showed = true
 
-      this.options.onShow.call(this);
+      this.options.onShow.call(this)
     }
   }
   hide() {
     if (this.showed) {
-      this.$element.removeClass(this.options.activeClass);
-      this.showed = false;
+      this.$element.removeClass(this.options.activeClass)
+      this.showed = false
 
-      this.options.onHide.call(this);
+      this.options.onHide.call(this)
     }
   }
 
   static _jQueryInterface(options, ...args) {
     if (typeof options === 'string') {
-      const method = options;
+      const method = options
 
       if (/^\_/.test(method)) {
-        return false;
+        return false
       } else if (/^(get)$/.test(method)) {
-        const api = this.first().data(pluginName);
+        const api = this.first().data(pluginName)
         if (api && typeof api[method] === 'function') {
-          return api[method](...args);
+          return api[method](...args)
         }
       } else {
-        return this.each(function() {
-          const api = $.data(this, pluginName);
+        return this.each(function () {
+          const api = $.data(this, pluginName)
           if (api && typeof api[method] === 'function') {
-            api[method](...args);
+            api[method](...args)
           }
-        });
+        })
       }
     } else {
-      return this.each(function() {
+      return this.each(function () {
         if (!$.data(this, pluginName)) {
-          $.data(this, pluginName, new actionBtn(this, options));
+          $.data(this, pluginName, new actionBtn(this, options))
         }
-      });
+      })
     }
   }
 }
 
-$.fn[pluginName] = actionBtn._jQueryInterface;
-$.fn[pluginName].constructor = actionBtn;
+$.fn[pluginName] = actionBtn._jQueryInterface
+$.fn[pluginName].constructor = actionBtn
 $.fn[pluginName].noConflict = () => {
-  'use strict';
-  $.fn[pluginName] = window.JQUERY_NO_CONFLICT;
-  return actionBtn._jQueryInterface;
-};
+
+  $.fn[pluginName] = window.JQUERY_NO_CONFLICT
+  return actionBtn._jQueryInterface
+}
 
 class ActionBtn extends Plugin {
   getName() {
-    return pluginName;
+    return pluginName
   }
 
   static getDefaults() {
-    return defaults;
+    return defaults
   }
 }
 
-Plugin.register(pluginName, ActionBtn);
+Plugin.register(pluginName, ActionBtn)
 
-export default ActionBtn;
+export default ActionBtn

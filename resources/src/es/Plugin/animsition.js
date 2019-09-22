@@ -1,11 +1,11 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'animsition';
+const NAME = 'animsition'
 
 class Animsition extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -66,43 +66,43 @@ class Animsition extends Plugin {
         'zoom-out',
         'zoom-out-lg'
       ]
-    };
+    }
   }
 
   render(callback) {
-    let options = this.options;
+    const options = this.options
 
     if (options.random) {
       let li = options.inDefaults.length,
-        lo = options.outDefaults.length;
+        lo = options.outDefaults.length
 
       let ni = parseInt(li * Math.random(), 0),
-        no = parseInt(lo * Math.random(), 0);
+        no = parseInt(lo * Math.random(), 0)
 
-      options.inClass = options.inDefaults[ni];
-      options.outClass = options.outDefaults[no];
+      options.inClass = options.inDefaults[ni]
+      options.outClass = options.outDefaults[no]
     }
 
-    this.$el.animsition(options);
+    this.$el.animsition(options)
 
-    $(`.${options.loadingClass}`).addClass(`loader-${options.loadingType}`);
+    $(`.${options.loadingClass}`).addClass(`loader-${options.loadingType}`)
 
     if (this.$el.animsition('supportCheck', options)) {
       if ($.isFunction(callback)) {
         this.$el.one('animsition.end', () => {
-          callback.call();
-        });
+          callback.call()
+        })
       }
 
-      return true;
+      return true
     }
     if ($.isFunction(callback)) {
-      callback.call();
+      callback.call()
     }
-    return false;
+    return false
   }
 }
 
-Plugin.register(NAME, Animsition);
+Plugin.register(NAME, Animsition)
 
-export default Animsition;
+export default Animsition

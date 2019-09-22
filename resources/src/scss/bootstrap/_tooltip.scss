@@ -1,12 +1,12 @@
 // Base class
 .tooltip {
+  // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
+  // So reset our font and text properties to avoid inheriting weird values.
+  @include reset-text();
   position: absolute;
   z-index: $zindex-tooltip;
   display: block;
   margin: $tooltip-margin;
-  // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
-  // So reset our font and text properties to avoid inheriting weird values.
-  @include reset-text();
   font-size: $font-size-sm;
   // Allow breaking very long words so they don't overflow the tooltip's bounds
   word-wrap: break-word;
@@ -98,10 +98,10 @@
 
 // Wrapper for the tooltip content
 .tooltip-inner {
+  @include border-radius($border-radius);
   max-width: $tooltip-max-width;
   padding: $tooltip-padding-y $tooltip-padding-x;
   color: $tooltip-color;
   text-align: center;
   background-color: $tooltip-bg;
-  @include border-radius($border-radius);
 }

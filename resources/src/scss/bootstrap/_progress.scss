@@ -4,12 +4,12 @@
 }
 
 .progress {
+  @include border-radius($progress-border-radius);
   display: flex;
   height: $progress-height;
   overflow: hidden; // force rounded corners by cropping it
   font-size: $progress-font-size;
   background-color: $progress-bg;
-  @include border-radius($progress-border-radius);
 }
 
 .progress-bar {

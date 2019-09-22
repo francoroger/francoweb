@@ -46,8 +46,8 @@
       value: function getDefaults() {
         return {
           namespace: 'scrollable',
-          contentSelector: "> [data-role='content']",
-          containerSelector: "> [data-role='container']"
+          contentSelector: '> [data-role=\'content\']',
+          containerSelector: '> [data-role=\'container\']'
         };
       }
     }]);

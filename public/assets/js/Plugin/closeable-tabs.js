@@ -51,11 +51,15 @@
         }
 
         var $parent = (0, _jquery2.default)(selector);
-        if (e) e.preventDefault();
+        if (e) {
+          e.preventDefault();
+        }
 
         $parent.trigger(e = _jquery2.default.Event('close.bs.tab'));
 
-        if (e.isDefaultPrevented()) return;
+        if (e.isDefaultPrevented()) {
+          return;
+        }
 
         $parent.removeClass('in');
 
@@ -78,7 +82,7 @@
           if (!data) {
             $this.data('bs.tab.close', data = new TabClose(this));
           }
-          if (typeof option == 'string') {
+          if (typeof option === 'string') {
             data[option].call($this);
           }
         });
@@ -92,7 +96,6 @@
   _jquery2.default.fn[pluginName] = TabClose._jQueryInterface;
   _jquery2.default.fn[pluginName].Constructor = TabClose;
   _jquery2.default.fn[pluginName].noConflict = function () {
-    'use strict';
 
     _jquery2.default.fn[pluginName] = window.JQUERY_NO_CONFLICT;
     return asSelectable._jQueryInterface;

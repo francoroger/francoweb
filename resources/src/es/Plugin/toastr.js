@@ -1,50 +1,50 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'toastr';
+const NAME = 'toastr'
 
 class Toastr extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   render() {
-    this.$el.data('toastrWrapApi', this);
+    this.$el.data('toastrWrapApi', this)
   }
 
   show(e) {
     if (typeof toastr === 'undefined') {
-      return;
+      return
     }
 
-    e.preventDefault();
+    e.preventDefault()
 
-    let options = this.options;
-    let message = options.message || '';
-    let type = options.type || 'info';
-    let title = options.title || undefined;
+    const options = this.options
+    const message = options.message || ''
+    const type = options.type || 'info'
+    const title = options.title || undefined
 
     switch (type) {
       case 'success':
-        toastr.success(message, title, options);
-        break;
+        toastr.success(message, title, options)
+        break
       case 'warning':
-        toastr.warning(message, title, options);
-        break;
+        toastr.warning(message, title, options)
+        break
       case 'error':
-        toastr.error(message, title, options);
-        break;
+        toastr.error(message, title, options)
+        break
       case 'info':
-        toastr.info(message, title, options);
-        break;
+        toastr.info(message, title, options)
+        break
       default:
-        toastr.info(message, title, options);
+        toastr.info(message, title, options)
     }
   }
   static api() {
-    return 'click|show';
+    return 'click|show'
   }
 }
 
-Plugin.register(NAME, Toastr);
+Plugin.register(NAME, Toastr)
 
-export default Toastr;
+export default Toastr

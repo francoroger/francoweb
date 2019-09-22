@@ -1,24 +1,24 @@
-import $ from 'jquery';
+import $ from 'jquery'
 import {
-  getDefaults,
+  getDefaults
 }
-from 'Plugin';
-import Site from 'Site';
+from 'Plugin'
+import Site from 'Site'
 
 class BaseApp extends Site {
   initialize() {
-    super.initialize();
+    super.initialize()
 
-    this.handlSlidePanelPlugin();
+    this.handlSlidePanelPlugin()
   }
   process() {
-    super.process();
+    super.process()
 
-    this.bindSlidePanelPlugin();
+    this.bindSlidePanelPlugin()
   }
 
   handlSlidePanelPlugin() {
-    const self = this;
+    const self = this
     this.slidepanelOptions = $.extend({}, getDefaults('slidePanel'), {
       template(options) {
         return `<div class="${options.classes.base} ${options.classes.base}-${options.direction}">
@@ -26,51 +26,51 @@ class BaseApp extends Site {
                     <div><div class="${options.classes.content}"></div></div>
                   </div>
                   <div class="${options.classes.base}-handler"></div>
-                </div>`;
+                </div>`
       },
       afterLoad() {
         this.$panel.find(`.${this.options.classes.base}-scrollable`).asScrollable({
           namespace: 'scrollable',
           contentSelector: '>',
-          containerSelector: '>',
-        });
-        self.initializePlugins(this.$panel);
+          containerSelector: '>'
+        })
+        self.initializePlugins(this.$panel)
       },
       afterShow() {
         $(document).on('click.slidePanelShow', (e) => {
           if ($(e.target).closest('.slidePanel').length === 0 && $(e.target).closest('html').length === 1) {
-            this.hide();
+            this.hide()
           }
-        });
+        })
       },
       afterHide() {
-        $(document).off('click.slidePanelShow');
-        $(document).off('click.slidePanelDatepicker');
-      },
-    }, this.getSlidePanelOptions());
+        $(document).off('click.slidePanelShow')
+        $(document).off('click.slidePanelDatepicker')
+      }
+    }, this.getSlidePanelOptions())
   }
 
   bindSlidePanelPlugin() {
-    const self = this;
-    $(document).on('click', '[data-toggle="slidePanel"]', function(e) {
-      self.openSlidePanel($(this).data('url'));
+    const self = this
+    $(document).on('click', '[data-toggle="slidePanel"]', function (e) {
+      self.openSlidePanel($(this).data('url'))
 
-      e.stopPropagation();
-    });
+      e.stopPropagation()
+    })
   }
 
   getSlidePanelOptions() {
-    return {};
+    return {}
   }
 
   openSlidePanel(url = '') {
     $.slidePanel.show({
       url,
       settings: {
-        cache: false,
-      },
-    }, this.slidepanelOptions);
+        cache: false
+      }
+    }, this.slidepanelOptions)
   }
 }
 
-export default BaseApp;
+export default BaseApp

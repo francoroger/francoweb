@@ -310,7 +310,7 @@
 }
 
 .animation-easing-easeInBack {
-  animation-timing-function: cubic-bezier(.6, -0.28, .735, .045);
+  animation-timing-function: cubic-bezier(.6, -.28, .735, .045);
 }
 
 .animation-easing-eastOutQuad {
@@ -374,11 +374,11 @@
 }
 
 .animation-easing-easeInOutBack {
-  animation-timing-function: cubic-bezier(.68, -0.55, .265, 1.55);
+  animation-timing-function: cubic-bezier(.68, -.55, .265, 1.55);
 }
 
 .animation-easing-easeInOutElastic {
-  animation-timing-function: cubic-bezier(1, -0.56, 0, 1.455);
+  animation-timing-function: cubic-bezier(1, -.56, 0, 1.455);
 }
 
 // Keyframes Modifier

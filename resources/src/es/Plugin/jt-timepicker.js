@@ -1,17 +1,17 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'timepicker';
+const NAME = 'timepicker'
 
 class Timepicker extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 }
 
-Plugin.register(NAME, Timepicker);
+Plugin.register(NAME, Timepicker)
 
-export default Timepicker;
+export default Timepicker

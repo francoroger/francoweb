@@ -1,44 +1,44 @@
-import Site from 'Site';
+import Site from 'Site'
 
 class AppProjects extends Site {
   initialize() {
-    super.initialize();
+    super.initialize()
 
-    this.handleSelective();
+    this.handleSelective()
   }
   process() {
-    super.process();
+    super.process()
 
-    this.handleProject();
+    this.handleProject()
   }
 
   handleSelective() {
     let members = [{
         id: 'uid_1',
         name: 'Herman Beck',
-        img: '../../../../global/portraits/1.jpg',
+        img: '../../../../global/portraits/1.jpg'
       }, {
         id: 'uid_2',
         name: 'Mary Adams',
-        img: '../../../../global/portraits/2.jpg',
+        img: '../../../../global/portraits/2.jpg'
       }, {
         id: 'uid_3',
         name: 'Caleb Richards',
-        img: '../../../../global/portraits/3.jpg',
+        img: '../../../../global/portraits/3.jpg'
       }, {
         id: 'uid_4',
         name: 'June Lane',
-        img: '../../../../global/portraits/4.jpg',
+        img: '../../../../global/portraits/4.jpg'
       }],
       selected = [{
         id: 'uid_1',
         name: 'Herman Beck',
-        img: '../../../../global/portraits/1.jpg',
+        img: '../../../../global/portraits/1.jpg'
       }, {
         id: 'uid_2',
         name: 'Caleb Richards',
-        img: '../../../../global/portraits/2.jpg',
-      }];
+        img: '../../../../global/portraits/2.jpg'
+      }]
 
     $('.plugin-selective').selective({
       namespace: 'addMember',
@@ -47,7 +47,7 @@ class AppProjects extends Site {
       buildFromHtml: false,
       tpl: {
         optionValue(data) {
-          return data.id;
+          return data.id
         },
         frame() {
           return `<div class="${this.namespace}">
@@ -58,25 +58,25 @@ class AppProjects extends Site {
             ${this.options.tpl.list.call(this)}
           </div>
           </div>
-          </div>`;
+          </div>`
         },
         triggerButton() {
-          return `<div class="${this.namespace}-trigger-button"><i class="wb-plus"></i></div>`;
+          return `<div class="${this.namespace}-trigger-button"><i class="wb-plus"></i></div>`
         },
         listItem(data) {
-          return `<li class="${this.namespace}-list-item"><img class="avatar" src="${data.img}">${data.name}</li>`;
+          return `<li class="${this.namespace}-list-item"><img class="avatar" src="${data.img}">${data.name}</li>`
         },
         item(data) {
-          return `<li class="${this.namespace}-item"><img class="avatar" src="${data.img}">${this.options.tpl.itemRemove.call(this)}</li>`;
+          return `<li class="${this.namespace}-item"><img class="avatar" src="${data.img}">${this.options.tpl.itemRemove.call(this)}</li>`
         },
         itemRemove() {
-          return `<span class="${this.namespace}-remove"><i class="wb-minus-circle"></i></span>`;
+          return `<span class="${this.namespace}-remove"><i class="wb-minus-circle"></i></span>`
         },
         option(data) {
-          return `<option value="${this.options.tpl.optionValue.call(this, data)}">${data.name}</option>`;
-        },
-      },
-    });
+          return `<option value="${this.options.tpl.optionValue.call(this, data)}">${data.name}</option>`
+        }
+      }
+    })
   }
 
   handleProject() {
@@ -89,31 +89,31 @@ class AppProjects extends Site {
             className: 'btn-danger',
             callback() {
               // $(e.target).closest('.list-group-item').remove();
-            },
-          },
-        },
-      });
-    });
+            }
+          }
+        }
+      })
+    })
   }
 }
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new AppProjects();
+    instance = new AppProjects()
   }
-  return instance;
+  return instance
 }
 
 function run() {
-  let app = getInstance();
-  app.run();
+  const app = getInstance()
+  app.run()
 }
 
-export default AppProjects;
+export default AppProjects
 export {
   AppProjects,
   run,
-  getInstance,
-};
+  getInstance
+}

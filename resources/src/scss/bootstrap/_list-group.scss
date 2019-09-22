@@ -18,9 +18,6 @@
 // list items. Includes an extra `.active` modifier class for selected items.
 
 .list-group-item-action {
-  width: 100%; // For `<button>`s (anchors become 100% by default though)
-  color: $list-group-action-color;
-  text-align: inherit; // For `<button>`s (anchors inherit)
 
   // Hover state
   @include hover-focus {
@@ -28,6 +25,9 @@
     text-decoration: none;
     background-color: $list-group-hover-bg;
   }
+  width: 100%; // For `<button>`s (anchors become 100% by default though)
+  color: $list-group-action-color;
+  text-align: inherit; // For `<button>`s (anchors inherit)
 
   &:active {
     color: $list-group-action-active-color;
@@ -41,6 +41,10 @@
 // Use on `li`s or `div`s within the `.list-group` parent.
 
 .list-group-item {
+
+  @include hover-focus {
+    text-decoration: none;
+  }
   position: relative;
   display: block;
   padding: $list-group-item-padding-y $list-group-item-padding-x;
@@ -54,12 +58,8 @@
   }
 
   &:last-child {
-    margin-bottom: 0;
     @include border-bottom-radius($list-group-border-radius);
-  }
-
-  @include hover-focus {
-    text-decoration: none;
+    margin-bottom: 0;
   }
 
   &.disabled,

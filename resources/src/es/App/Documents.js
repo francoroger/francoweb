@@ -1,59 +1,59 @@
-import Site from 'Site';
+import Site from 'Site'
 
 class AppDocuments extends Site {
   initialize() {
-    super.initialize();
+    super.initialize()
 
-    this.scrollHandle();
-    this.stickyfillHandle();
+    this.scrollHandle()
+    this.stickyfillHandle()
   }
 
   process() {
-    super.process();
+    super.process()
 
-    this.handleResize();
+    this.handleResize()
   }
 
   scrollHandle() {
     $('body').scrollspy({
       target: '#articleSticky',
       offset: 80
-    });
+    })
   }
 
   stickyfillHandle() {
     if (!window.Stickyfill) {
-      return false;
+      return false
     }
-    Stickyfill.add($('#articleSticky'));
+    Stickyfill.add($('#articleSticky'))
     // $('#articleSticky').Stickyfill();
   }
 
   handleResize() {
-    $(window).on('resize orientationchange', function() {
-      $(this).width() > 767 ? Stickyfill.refreshAll() : Stickyfill.removeAll();
-    }).resize();
+    $(window).on('resize orientationchange', function () {
+      $(this).width() > 767 ? Stickyfill.refreshAll() : Stickyfill.removeAll()
+    }).resize()
   }
 }
 
-let instance = null;
+let instance = null
 
 function getInstance() {
   if (!instance) {
-    instance = new AppDocuments();
+    instance = new AppDocuments()
   }
 
-  return instance;
+  return instance
 }
 
 function run() {
-  let app = getInstance();
-  app.run();
+  const app = getInstance()
+  app.run()
 }
 
-export default AppDocuments;
+export default AppDocuments
 export {
   AppDocuments,
   run,
   getInstance
-};
+}

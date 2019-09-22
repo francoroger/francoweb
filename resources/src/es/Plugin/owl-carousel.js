@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'owlCarousel';
+const NAME = 'owlCarousel'
 
 class OwlCarousel extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -22,10 +22,10 @@ class OwlCarousel extends Plugin {
           items: 3
         }
       }
-    };
+    }
   }
 }
 
-Plugin.register(NAME, OwlCarousel);
+Plugin.register(NAME, OwlCarousel)
 
-export default OwlCarousel;
+export default OwlCarousel

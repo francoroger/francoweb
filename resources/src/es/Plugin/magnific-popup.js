@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'magnificPopup';
+const NAME = 'magnificPopup'
 
 class MagnificPopup extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -14,10 +14,10 @@ class MagnificPopup extends Plugin {
       image: {
         verticalFit: true
       }
-    };
+    }
   }
 }
 
-Plugin.register(NAME, MagnificPopup);
+Plugin.register(NAME, MagnificPopup)
 
-export default MagnificPopup;
+export default MagnificPopup

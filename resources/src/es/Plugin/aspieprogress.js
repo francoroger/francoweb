@@ -1,11 +1,11 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'pieProgress';
+const NAME = 'pieProgress'
 
 class PieProgress extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -18,20 +18,20 @@ class PieProgress extends Plugin {
         number: 'pie-progress-number',
         content: 'pie-progress-content'
       }
-    };
+    }
   }
 
   render() {
     if (!$.fn.asPieProgress) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
 
-    $el.asPieProgress(this.options);
+    $el.asPieProgress(this.options)
   }
 }
 
-Plugin.register(NAME, PieProgress);
+Plugin.register(NAME, PieProgress)
 
-export default PieProgress;
+export default PieProgress

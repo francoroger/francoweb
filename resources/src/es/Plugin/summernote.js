@@ -1,19 +1,19 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'summernote';
+const NAME = 'summernote'
 
 class Summernote extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       height: 300
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Summernote);
+Plugin.register(NAME, Summernote)
 
-export default Summernote;
+export default Summernote

@@ -82,7 +82,7 @@
 
         if (typeof api === 'string') {
           var _api = obj.api().split('|');
-          var event = _api[0] + ('.plugin.' + name);
+          var event = _api[0] + '.plugin.' + name;
           var func = _api[1] || 'render';
 
           var callback = function callback(e) {
@@ -117,18 +117,16 @@
   function getPluginAPI(name) {
     if (typeof name === 'undefined') {
       return apis;
-    } else {
-      return apis[name];
     }
+    return apis[name];
   }
 
   function getPlugin(name) {
     if (typeof plugins[name] !== 'undefined') {
       return plugins[name];
-    } else {
-      console.warn('Plugin:' + name + ' has no warpped class.');
-      return false;
     }
+    console.warn('Plugin:' + name + ' has no warpped class.');
+    return false;
   }
 
   function getDefaults(name) {
@@ -136,9 +134,8 @@
 
     if (PluginClass) {
       return PluginClass.getDefaults();
-    } else {
-      return {};
     }
+    return {};
   }
 
   function pluginFactory(name, $el) {
@@ -158,10 +155,9 @@
     } else if (typeof PluginClass.api !== 'undefined') {
       // console.log('Plugin:' + name + ' use api render.');
       return false;
-    } else {
-      console.warn('Plugin:' + name + ' script is not loaded.');
-      return false;
     }
+    console.warn('Plugin:' + name + ' script is not loaded.');
+    return false;
   }
 
   exports.Plugin = Plugin;

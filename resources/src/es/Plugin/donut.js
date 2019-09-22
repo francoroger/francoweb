@@ -1,11 +1,11 @@
-import Plugin from 'Plugin';
-import * as Config from "Config";
+import Plugin from 'Plugin'
+import * as Config from 'Config'
 
-const NAME = 'donut';
+const NAME = 'donut'
 
 class DonutPlugin extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -23,37 +23,37 @@ class DonutPlugin extends Plugin {
       colorStop: Config.colors('blue-grey', 200),
       strokeColor: Config.colors('primary', 500),
       generateGradient: true
-    };
+    }
   }
 
   render() {
     if (!Gauge) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
     let $canvas = $el.find('canvas'),
-      $text = $el.find('.donut-label');
+      $text = $el.find('.donut-label')
 
     if ($canvas.length === 0) {
-      return;
+      return
     }
 
-    let donut = new Donut($canvas[0]).setOptions(this.options);
+    const donut = new Donut($canvas[0]).setOptions(this.options)
 
-    $el.data('donut', donut);
+    $el.data('donut', donut)
 
-    donut.animationSpeed = 50;
-    donut.maxValue = $el.data('max-value');
+    donut.animationSpeed = 50
+    donut.maxValue = $el.data('max-value')
 
-    donut.set($el.data('value'));
+    donut.set($el.data('value'))
 
     if ($text.length > 0) {
-      donut.setTextField($text[0]);
+      donut.setTextField($text[0])
     }
   }
 }
 
-Plugin.register(NAME, DonutPlugin);
+Plugin.register(NAME, DonutPlugin)
 
-export default DonutPlugin;
+export default DonutPlugin

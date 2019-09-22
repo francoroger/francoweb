@@ -49,7 +49,7 @@
             return;
           }
 
-          (0, _jquery2.default)(document).trigger("enhance.tablesaw");
+          (0, _jquery2.default)(document).trigger('enhance.tablesaw');
         };
       }
     }]);

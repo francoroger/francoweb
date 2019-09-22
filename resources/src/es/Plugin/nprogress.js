@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'nprogress';
+const NAME = 'nprogress'
 
 class Nprogress extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -14,18 +14,18 @@ class Nprogress extends Plugin {
       trickleSpeed: 360,
       showSpinner: false,
       template: '<div class="bar" role="bar"></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
-    };
+    }
   }
 
   render() {
     if (typeof NProgress === 'undefined') {
-      return;
+      return
     }
 
-    NProgress.configure(this.options);
+    NProgress.configure(this.options)
   }
 }
 
-Plugin.register(NAME, Nprogress);
+Plugin.register(NAME, Nprogress)
 
-export default Nprogress;
+export default Nprogress

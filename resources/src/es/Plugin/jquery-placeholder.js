@@ -1,28 +1,28 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'placeholder';
+const NAME = 'placeholder'
 
 class Placeholder extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 
   render() {
     if (!$.fn.placeholder) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
 
-    $el.placeholder();
+    $el.placeholder()
   }
 }
 
-Plugin.register(NAME, Placeholder);
+Plugin.register(NAME, Placeholder)
 
-export default Placeholder;
+export default Placeholder

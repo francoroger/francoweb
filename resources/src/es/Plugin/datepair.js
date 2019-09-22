@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'datepair';
+const NAME = 'datepair'
 
 class Datepair extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -13,10 +13,10 @@ class Datepair extends Plugin {
       endClass: 'datepair-end',
       timeClass: 'datepair-time',
       dateClass: 'datepair-date'
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Datepair);
+Plugin.register(NAME, Datepair)
 
-export default Datepair;
+export default Datepair

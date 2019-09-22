@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'breadcrumb';
+const NAME = 'breadcrumb'
 
 class Breadcrumb extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
   static getDefaults() {
     return {
@@ -13,15 +13,15 @@ class Breadcrumb extends Plugin {
       dropdownMenuClass: 'dropdown-menu',
       dropdownItemClass: 'dropdown-item',
       toggleIconClass: 'wb-chevron-down-mini',
-      ellipsis: function(classes, label) {
-        return `<li class="breadcrumb-item ${classes.ellipsisClass}">${label}</li>`;
+      ellipsis(classes, label) {
+        return `<li class="breadcrumb-item ${classes.ellipsisClass}">${label}</li>`
       },
-      dropdown: function(classes) {
-        const dropdownClass = 'dropdown';
-        let dropdownMenuClass = 'dropdown-menu';
+      dropdown(classes) {
+        const dropdownClass = 'dropdown'
+        let dropdownMenuClass = 'dropdown-menu'
 
         if (this.options.overflow === 'right') {
-          dropdownMenuClass += ' dropdown-menu-right';
+          dropdownMenuClass += ' dropdown-menu-right'
         }
 
         return `<li class="breadcrumb-item ${dropdownClass} ${classes.dropdownClass}">
@@ -29,21 +29,21 @@ class Breadcrumb extends Plugin {
             <i class="${classes.toggleIconClass}"></i>
           </a>
           <div class="${dropdownMenuClass} ${classes.dropdownMenuClass}" role="menu"></div>
-        </li>`;
+        </li>`
       },
-      dropdownItem: function(classes, label, href) {
+      dropdownItem(classes, label, href) {
         if (!href) {
-          return `<a class="${classes.dropdownItemClass} ${classes.dropdownItemDisableClass}" href="#">${label}</a>`;
+          return `<a class="${classes.dropdownItemClass} ${classes.dropdownItemDisableClass}" href="#">${label}</a>`
         }
-        return `<a class="${classes.dropdownItemClass}" href="${href}">${label}</a>`;
+        return `<a class="${classes.dropdownItemClass}" href="${href}">${label}</a>`
       }
-    };
+    }
   }
   render() {
-    let $el = this.$el;
-    $el.asBreadcrumbs(this.options);
+    const $el = this.$el
+    $el.asBreadcrumbs(this.options)
   }
 }
-Plugin.register(NAME, Breadcrumb);
+Plugin.register(NAME, Breadcrumb)
 
-export default Breadcrumb;
+export default Breadcrumb

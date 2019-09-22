@@ -26,3 +26,12 @@ Route::group(['prefix' => 'cadastros'], function() {
   Route::put('cores/{id}', 'CorController@update')->name('cores.update');
   Route::delete('cores/{id}', 'CorController@destroy')->name('cores.destroy');
 });
+
+Route::group(['prefix' => 'catalogacao'], function() {
+  //Check list catalogação
+  Route::get('checklist/ajax', 'CheckListCatalogacaoController@ajax')->name('catalogacao_checklist.ajax');
+  Route::get('checklist', 'CheckListCatalogacaoController@index')->name('catalogacao_checklist.index');
+  Route::get('checklist/{id}', 'CheckListCatalogacaoController@show')->name('catalogacao_checklist.show');
+  Route::get('checklist/{id}/check', 'CheckListCatalogacaoController@check')->name('catalogacao_checklist.check');
+  Route::put('checklist/{id}', 'CheckListCatalogacaoController@update')->name('catalogacao_checklist.update');
+});

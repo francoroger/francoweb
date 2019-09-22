@@ -42,7 +42,7 @@ $index-loader-color: #fff !default;
   width: .25em;
   height: .5em;
   background: $animsition-loading-spinner-bg;
-  animation: default-grill 1s infinite ease-in-out -0.16s;
+  animation: default-grill 1s infinite ease-in-out -.16s;
 
   &:before, &:after {
     position: absolute;
@@ -55,8 +55,8 @@ $index-loader-color: #fff !default;
   }
 
   &:before {
-    left: -0.375em;
-    animation-delay: -0.32s;
+    left: -.375em;
+    animation-delay: -.32s;
   }
 
   &:after {
@@ -99,11 +99,11 @@ $index-loader-color: #fff !default;
 // Modifier: `loader-ellipsis`
 // -------------------------
 .loader-ellipsis {
-  top: -0.625em;
+  top: -.625em;
   width: .625em;
   height: .625em;
   border-radius: 50%;
-  animation: loader-ellipsis 1.8s infinite ease-in-out both -0.16s;
+  animation: loader-ellipsis 1.8s infinite ease-in-out both -.16s;
 
   &:before, &:after {
     position: absolute;
@@ -116,8 +116,8 @@ $index-loader-color: #fff !default;
   }
 
   &:before {
-    left: -0.875em;
-    animation-delay: -0.32s;
+    left: -.875em;
+    animation-delay: -.32s;
   }
 
   &:after {
@@ -225,7 +225,7 @@ $index-loader-color: #fff !default;
     bottom: 50%;
     left: 0;
     animation: loader-folding-cube-before 2.4s infinite ease-in-out;
-    animation-delay: -0.6s;
+    animation-delay: -.6s;
   }
 
   &:after {
@@ -238,7 +238,7 @@ $index-loader-color: #fff !default;
 // Modifier: `loader-cube-grid`
 // -------------------------
 .loader-cube-grid {
-  top: -0.6em;
+  top: -.6em;
   width: .3em;
   height: .3em;
   animation: loader-cube-grid 1.2s infinite ease-in-out;
@@ -378,7 +378,7 @@ $index-loader-color: #fff !default;
 
   40% {
     height: 1.2em;
-    box-shadow: 0 -0.25em $animsition-loading-spinner-bg;
+    box-shadow: 0 -.25em $animsition-loading-spinner-bg;
   }
 }
 
@@ -394,69 +394,69 @@ $index-loader-color: #fff !default;
 
 @keyframes loader-round-circle {
   0%, 100% {
-    box-shadow: 0 -3em 0 .2em $animsition-loading-spinner-bg, 2em -2em 0 0 $animsition-loading-spinner-bg, 3em 0 0 -0.5em $animsition-loading-spinner-bg, 2em 2em 0 -0.5em $animsition-loading-spinner-bg, 0 3em 0 -0.5em $animsition-loading-spinner-bg, -2em 2em 0 -0.5em $animsition-loading-spinner-bg, -3em 0 0 -0.5em $animsition-loading-spinner-bg, -2em -2em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 .2em $animsition-loading-spinner-bg, 2em -2em 0 0 $animsition-loading-spinner-bg, 3em 0 0 -.5em $animsition-loading-spinner-bg, 2em 2em 0 -.5em $animsition-loading-spinner-bg, 0 3em 0 -.5em $animsition-loading-spinner-bg, -2em 2em 0 -.5em $animsition-loading-spinner-bg, -3em 0 0 -.5em $animsition-loading-spinner-bg, -2em -2em 0 0 $animsition-loading-spinner-bg;
   }
 
   12.5% {
-    box-shadow: 0 -3em 0 0 $animsition-loading-spinner-bg, 2em -2em 0 .2em $animsition-loading-spinner-bg, 3em 0 0 0 $animsition-loading-spinner-bg, 2em 2em 0 -0.5em $animsition-loading-spinner-bg, 0 3em 0 -0.5em $animsition-loading-spinner-bg, -2em 2em 0 -0.5em $animsition-loading-spinner-bg, -3em 0 0 -0.5em $animsition-loading-spinner-bg, -2em -2em 0 -0.5em $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 0 $animsition-loading-spinner-bg, 2em -2em 0 .2em $animsition-loading-spinner-bg, 3em 0 0 0 $animsition-loading-spinner-bg, 2em 2em 0 -.5em $animsition-loading-spinner-bg, 0 3em 0 -.5em $animsition-loading-spinner-bg, -2em 2em 0 -.5em $animsition-loading-spinner-bg, -3em 0 0 -.5em $animsition-loading-spinner-bg, -2em -2em 0 -.5em $animsition-loading-spinner-bg;
   }
 
   25% {
-    box-shadow: 0 -3em 0 -0.5em $animsition-loading-spinner-bg, 2em -2em 0 0 $animsition-loading-spinner-bg, 3em 0 0 .2em $animsition-loading-spinner-bg, 2em 2em 0 0 $animsition-loading-spinner-bg, 0 3em 0 -0.5em $animsition-loading-spinner-bg, -2em 2em 0 -0.5em $animsition-loading-spinner-bg, -3em 0 0 -0.5em $animsition-loading-spinner-bg, -2em -2em 0 -0.5em $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 -.5em $animsition-loading-spinner-bg, 2em -2em 0 0 $animsition-loading-spinner-bg, 3em 0 0 .2em $animsition-loading-spinner-bg, 2em 2em 0 0 $animsition-loading-spinner-bg, 0 3em 0 -.5em $animsition-loading-spinner-bg, -2em 2em 0 -.5em $animsition-loading-spinner-bg, -3em 0 0 -.5em $animsition-loading-spinner-bg, -2em -2em 0 -.5em $animsition-loading-spinner-bg;
   }
 
   37.5% {
-    box-shadow: 0 -3em 0 -0.5em $animsition-loading-spinner-bg, 2em -2em 0 -0.5em $animsition-loading-spinner-bg, 3em 0 0 0 $animsition-loading-spinner-bg, 2em 2em 0 .2em $animsition-loading-spinner-bg, 0 3em 0 0 $animsition-loading-spinner-bg, -2em 2em 0 -0.5em $animsition-loading-spinner-bg, -3em 0 0 -0.5em $animsition-loading-spinner-bg, -2em -2em 0 -0.5em $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 -.5em $animsition-loading-spinner-bg, 2em -2em 0 -.5em $animsition-loading-spinner-bg, 3em 0 0 0 $animsition-loading-spinner-bg, 2em 2em 0 .2em $animsition-loading-spinner-bg, 0 3em 0 0 $animsition-loading-spinner-bg, -2em 2em 0 -.5em $animsition-loading-spinner-bg, -3em 0 0 -.5em $animsition-loading-spinner-bg, -2em -2em 0 -.5em $animsition-loading-spinner-bg;
   }
 
   50% {
-    box-shadow: 0 -3em 0 -0.5em $animsition-loading-spinner-bg, 2em -2em 0 -0.5em $animsition-loading-spinner-bg, 3em 0 0 -0.5em $animsition-loading-spinner-bg, 2em 2em 0 0 $animsition-loading-spinner-bg, 0 3em 0 .2em $animsition-loading-spinner-bg, -2em 2em 0 0 $animsition-loading-spinner-bg, -3em 0 0 -0.5em $animsition-loading-spinner-bg, -2em -2em 0 -0.5em $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 -.5em $animsition-loading-spinner-bg, 2em -2em 0 -.5em $animsition-loading-spinner-bg, 3em 0 0 -.5em $animsition-loading-spinner-bg, 2em 2em 0 0 $animsition-loading-spinner-bg, 0 3em 0 .2em $animsition-loading-spinner-bg, -2em 2em 0 0 $animsition-loading-spinner-bg, -3em 0 0 -.5em $animsition-loading-spinner-bg, -2em -2em 0 -.5em $animsition-loading-spinner-bg;
   }
 
   62.5% {
-    box-shadow: 0 -3em 0 -0.5em $animsition-loading-spinner-bg, 2em -2em 0 -0.5em $animsition-loading-spinner-bg, 3em 0 0 -0.5em $animsition-loading-spinner-bg, 2em 2em 0 -0.5em $animsition-loading-spinner-bg, 0 3em 0 0 $animsition-loading-spinner-bg, -2em 2em 0 .2em $animsition-loading-spinner-bg, -3em 0 0 0 $animsition-loading-spinner-bg, -2em -2em 0 -0.5em $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 -.5em $animsition-loading-spinner-bg, 2em -2em 0 -.5em $animsition-loading-spinner-bg, 3em 0 0 -.5em $animsition-loading-spinner-bg, 2em 2em 0 -.5em $animsition-loading-spinner-bg, 0 3em 0 0 $animsition-loading-spinner-bg, -2em 2em 0 .2em $animsition-loading-spinner-bg, -3em 0 0 0 $animsition-loading-spinner-bg, -2em -2em 0 -.5em $animsition-loading-spinner-bg;
   }
 
   75% {
-    box-shadow: 0 -3em 0 -0.5em $animsition-loading-spinner-bg, 2em -2em 0 -0.5em $animsition-loading-spinner-bg, 3em 0 0 -0.5em $animsition-loading-spinner-bg, 2em 2em 0 -0.5em $animsition-loading-spinner-bg, 0 3em 0 -0.5em $animsition-loading-spinner-bg, -2em 2em 0 0 $animsition-loading-spinner-bg, -3em 0 0 .2em $animsition-loading-spinner-bg, -2em -2em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 -.5em $animsition-loading-spinner-bg, 2em -2em 0 -.5em $animsition-loading-spinner-bg, 3em 0 0 -.5em $animsition-loading-spinner-bg, 2em 2em 0 -.5em $animsition-loading-spinner-bg, 0 3em 0 -.5em $animsition-loading-spinner-bg, -2em 2em 0 0 $animsition-loading-spinner-bg, -3em 0 0 .2em $animsition-loading-spinner-bg, -2em -2em 0 0 $animsition-loading-spinner-bg;
   }
 
   87.5% {
-    box-shadow: 0 -3em 0 0 $animsition-loading-spinner-bg, 2em -2em 0 -0.5em $animsition-loading-spinner-bg, 3em 0 0 -0.5em $animsition-loading-spinner-bg, 2em 2em 0 -0.5em $animsition-loading-spinner-bg, 0 3em 0 -0.5em $animsition-loading-spinner-bg, -2em 2em 0 0 $animsition-loading-spinner-bg, -3em 0 0 0 $animsition-loading-spinner-bg, -2em -2em 0 .2em $animsition-loading-spinner-bg;
+    box-shadow: 0 -3em 0 0 $animsition-loading-spinner-bg, 2em -2em 0 -.5em $animsition-loading-spinner-bg, 3em 0 0 -.5em $animsition-loading-spinner-bg, 2em 2em 0 -.5em $animsition-loading-spinner-bg, 0 3em 0 -.5em $animsition-loading-spinner-bg, -2em 2em 0 0 $animsition-loading-spinner-bg, -3em 0 0 0 $animsition-loading-spinner-bg, -2em -2em 0 .2em $animsition-loading-spinner-bg;
   }
 }
 
 @keyframes loader-tadpole {
   0% {
-    box-shadow: 0 -0.83em 0 -0.4em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.42em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.44em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.46em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.477em $animsition-loading-spinner-bg;
+    box-shadow: 0 -.83em 0 -.4em $animsition-loading-spinner-bg, 0 -.83em 0 -.42em $animsition-loading-spinner-bg, 0 -.83em 0 -.44em $animsition-loading-spinner-bg, 0 -.83em 0 -.46em $animsition-loading-spinner-bg, 0 -.83em 0 -.477em $animsition-loading-spinner-bg;
     transform: rotate(0deg);
   }
 
   5%, 95% {
-    box-shadow: 0 -0.83em 0 -0.4em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.42em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.44em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.46em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.477em $animsition-loading-spinner-bg;
+    box-shadow: 0 -.83em 0 -.4em $animsition-loading-spinner-bg, 0 -.83em 0 -.42em $animsition-loading-spinner-bg, 0 -.83em 0 -.44em $animsition-loading-spinner-bg, 0 -.83em 0 -.46em $animsition-loading-spinner-bg, 0 -.83em 0 -.477em $animsition-loading-spinner-bg;
   }
 
   10%, 59% {
-    box-shadow: 0 -0.83em 0 -0.4em $animsition-loading-spinner-bg, -0.087em -0.825em 0 -0.42em $animsition-loading-spinner-bg, -0.173em -0.812em 0 -0.44em $animsition-loading-spinner-bg, -0.256em -0.789em 0 -0.46em $animsition-loading-spinner-bg, -0.297em -0.775em 0 -0.477em $animsition-loading-spinner-bg;
+    box-shadow: 0 -.83em 0 -.4em $animsition-loading-spinner-bg, -.087em -.825em 0 -.42em $animsition-loading-spinner-bg, -.173em -.812em 0 -.44em $animsition-loading-spinner-bg, -.256em -.789em 0 -.46em $animsition-loading-spinner-bg, -.297em -.775em 0 -.477em $animsition-loading-spinner-bg;
   }
 
   20% {
-    box-shadow: 0 -0.83em 0 -0.4em $animsition-loading-spinner-bg, -0.338em -0.758em 0 -0.42em $animsition-loading-spinner-bg, -0.555em -0.617em 0 -0.44em $animsition-loading-spinner-bg, -0.671em -0.488em 0 -0.46em $animsition-loading-spinner-bg, -0.749em -0.34em 0 -0.477em $animsition-loading-spinner-bg;
+    box-shadow: 0 -.83em 0 -.4em $animsition-loading-spinner-bg, -.338em -.758em 0 -.42em $animsition-loading-spinner-bg, -.555em -.617em 0 -.44em $animsition-loading-spinner-bg, -.671em -.488em 0 -.46em $animsition-loading-spinner-bg, -.749em -.34em 0 -.477em $animsition-loading-spinner-bg;
   }
 
   38% {
-    box-shadow: 0 -0.83em 0 -0.4em $animsition-loading-spinner-bg, -0.377em -0.74em 0 -0.42em $animsition-loading-spinner-bg, -0.645em -0.522em 0 -0.44em $animsition-loading-spinner-bg, -0.775em -0.297em 0 -0.46em $animsition-loading-spinner-bg, -0.82em -0.09em 0 -0.477em $animsition-loading-spinner-bg;
+    box-shadow: 0 -.83em 0 -.4em $animsition-loading-spinner-bg, -.377em -.74em 0 -.42em $animsition-loading-spinner-bg, -.645em -.522em 0 -.44em $animsition-loading-spinner-bg, -.775em -.297em 0 -.46em $animsition-loading-spinner-bg, -.82em -.09em 0 -.477em $animsition-loading-spinner-bg;
   }
 
   100% {
-    box-shadow: 0 -0.83em 0 -0.4em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.42em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.44em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.46em $animsition-loading-spinner-bg, 0 -0.83em 0 -0.477em $animsition-loading-spinner-bg;
+    box-shadow: 0 -.83em 0 -.4em $animsition-loading-spinner-bg, 0 -.83em 0 -.42em $animsition-loading-spinner-bg, 0 -.83em 0 -.44em $animsition-loading-spinner-bg, 0 -.83em 0 -.46em $animsition-loading-spinner-bg, 0 -.83em 0 -.477em $animsition-loading-spinner-bg;
     transform: rotate(360deg);
   }
 }
 
 @keyframes loader-ellipsis {
   0%, 80%, 100% {
-    box-shadow: 0 .625em 0 -0.325em $animsition-loading-spinner-bg;
+    box-shadow: 0 .625em 0 -.325em $animsition-loading-spinner-bg;
   }
 
   40% {
@@ -639,86 +639,86 @@ $index-loader-color: #fff !default;
 
 @keyframes loader-cube-grid {
   15% {
-    box-shadow: -0.3em .3em 0 -0.3em $animsition-loading-spinner-bg, 0 .6em 0 -0.3em $animsition-loading-spinner-bg, .3em .9em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .3em 0 -.3em $animsition-loading-spinner-bg, 0 .6em 0 -.3em $animsition-loading-spinner-bg, .3em .9em 0 -.3em $animsition-loading-spinner-bg;
   }
 
   30% {
-    box-shadow: -0.3em .3em 0 0 $animsition-loading-spinner-bg, 0 .6em 0 0 $animsition-loading-spinner-bg, .3em .9em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .3em 0 0 $animsition-loading-spinner-bg, 0 .6em 0 0 $animsition-loading-spinner-bg, .3em .9em 0 0 $animsition-loading-spinner-bg;
   }
 
   70% {
-    box-shadow: -0.3em .3em 0 0 $animsition-loading-spinner-bg, 0 .6em 0 0 $animsition-loading-spinner-bg, .3em .9em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .3em 0 0 $animsition-loading-spinner-bg, 0 .6em 0 0 $animsition-loading-spinner-bg, .3em .9em 0 0 $animsition-loading-spinner-bg;
   }
 
   85% {
-    box-shadow: -0.3em .3em 0 -0.3em $animsition-loading-spinner-bg, 0 .6em 0 -0.3em $animsition-loading-spinner-bg, .3em .9em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .3em 0 -.3em $animsition-loading-spinner-bg, 0 .6em 0 -.3em $animsition-loading-spinner-bg, .3em .9em 0 -.3em $animsition-loading-spinner-bg;
   }
 }
 
 @keyframes loader-cube-grid-before {
   0% {
-    box-shadow: -0.3em .9em 0 -0.3em $animsition-loading-spinner-bg, 0 .3em 0 -0.3em $animsition-loading-spinner-bg, .3em .6em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 -.3em $animsition-loading-spinner-bg, 0 .3em 0 -.3em $animsition-loading-spinner-bg, .3em .6em 0 -.3em $animsition-loading-spinner-bg;
   }
 
   15% {
-    box-shadow: -0.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 -0.3em $animsition-loading-spinner-bg, .3em .6em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 -.3em $animsition-loading-spinner-bg, .3em .6em 0 -.3em $animsition-loading-spinner-bg;
   }
 
   22.5% {
-    box-shadow: -0.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 -0.3em $animsition-loading-spinner-bg, .3em .6em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 -.3em $animsition-loading-spinner-bg, .3em .6em 0 -.3em $animsition-loading-spinner-bg;
   }
 
   37.5% {
-    box-shadow: -0.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
   }
 
   55% {
-    box-shadow: -0.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 0 $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
   }
 
   70% {
-    box-shadow: -0.3em .9em 0 -0.3em $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 -.3em $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
   }
 
   77.5% {
-    box-shadow: -0.3em .9em 0 -0.3em $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 -.3em $animsition-loading-spinner-bg, 0 .3em 0 0 $animsition-loading-spinner-bg, .3em .6em 0 0 $animsition-loading-spinner-bg;
   }
 
   92.5% {
-    box-shadow: -0.3em .9em 0 -0.3em $animsition-loading-spinner-bg, 0 .3em 0 -0.3em $animsition-loading-spinner-bg, .3em .6em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .9em 0 -.3em $animsition-loading-spinner-bg, 0 .3em 0 -.3em $animsition-loading-spinner-bg, .3em .6em 0 -.3em $animsition-loading-spinner-bg;
   }
 }
 
 @keyframes loader-cube-grid-after {
   7.5% {
-    box-shadow: -0.3em .6em 0 -0.3em $animsition-loading-spinner-bg, 0 .9em 0 -0.3em $animsition-loading-spinner-bg, .3em .3em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 -.3em $animsition-loading-spinner-bg, 0 .9em 0 -.3em $animsition-loading-spinner-bg, .3em .3em 0 -.3em $animsition-loading-spinner-bg;
   }
 
   22.5% {
-    box-shadow: -0.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 -.3em $animsition-loading-spinner-bg;
   }
 
   30% {
-    box-shadow: -0.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 -.3em $animsition-loading-spinner-bg;
   }
 
   45% {
-    box-shadow: -0.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
   }
 
   62.5% {
-    box-shadow: -0.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 0 $animsition-loading-spinner-bg, 0 .9em 0 0 $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
   }
 
   77.5% {
-    box-shadow: -0.3em .6em 0 -0.3em $animsition-loading-spinner-bg, 0 .9em 0 -0.3em $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 -.3em $animsition-loading-spinner-bg, 0 .9em 0 -.3em $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
   }
 
   85% {
-    box-shadow: -0.3em .6em 0 -0.3em $animsition-loading-spinner-bg, 0 .9em 0 -0.3em $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 -.3em $animsition-loading-spinner-bg, 0 .9em 0 -.3em $animsition-loading-spinner-bg, .3em .3em 0 0 $animsition-loading-spinner-bg;
   }
 
   100% {
-    box-shadow: -0.3em .6em 0 -0.3em $animsition-loading-spinner-bg, 0 .9em 0 -0.3em $animsition-loading-spinner-bg, .3em .3em 0 -0.3em $animsition-loading-spinner-bg;
+    box-shadow: -.3em .6em 0 -.3em $animsition-loading-spinner-bg, 0 .9em 0 -.3em $animsition-loading-spinner-bg, .3em .3em 0 -.3em $animsition-loading-spinner-bg;
   }
 }

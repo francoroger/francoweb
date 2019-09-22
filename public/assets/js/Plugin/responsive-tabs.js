@@ -59,7 +59,9 @@
     babelHelpers.createClass(responsiveHorizontalTabs, [{
       key: 'init',
       value: function init() {
-        if (this.$dropdown.length === 0) return;
+        if (this.$dropdown.length === 0) {
+          return;
+        }
 
         this.$dropdown.show();
         this.breakpoints = [];
@@ -93,7 +95,9 @@
     }, {
       key: 'layout',
       value: function layout() {
-        if (this.breakpoints.length <= 0) return;
+        if (this.breakpoints.length <= 0) {
+          return;
+        }
 
         var width = this.$nav.width();
         var i = 0;
@@ -101,10 +105,14 @@
         var active = this.$tabPanel.filter('.' + activeClassName).index();
 
         for (; i < this.breakpoints.length; i++) {
-          if (this.breakpoints[i] > width) break;
+          if (this.breakpoints[i] > width) {
+            break;
+          }
         }
 
-        if (i === this.flag) return;
+        if (i === this.flag) {
+          return;
+        }
 
         this.$items.children().removeClass(activeClassName);
         this.$dropdownItems.removeClass(activeClassName);
@@ -156,23 +164,21 @@
           var method = options;
           if (/^\_/.test(method)) {
             return false;
-          } else {
-            return this.each(function () {
-              var api = _jquery2.default.data(this, pluginName);
-              if (api && typeof api[method] === 'function') {
-                api[method].apply(api, args);
-              }
-            });
           }
-        } else {
           return this.each(function () {
-            if (!_jquery2.default.data(this, pluginName)) {
-              _jquery2.default.data(this, pluginName, new responsiveHorizontalTabs(this, options));
-            } else {
-              _jquery2.default.data(this, pluginName).init();
+            var api = _jquery2.default.data(this, pluginName);
+            if (api && typeof api[method] === 'function') {
+              api[method].apply(api, args);
             }
           });
         }
+        return this.each(function () {
+          if (!_jquery2.default.data(this, pluginName)) {
+            _jquery2.default.data(this, pluginName, new responsiveHorizontalTabs(this, options));
+          } else {
+            _jquery2.default.data(this, pluginName).init();
+          }
+        });
       }
     }]);
     return responsiveHorizontalTabs;
@@ -181,7 +187,6 @@
   _jquery2.default.fn[pluginName] = responsiveHorizontalTabs._jQueryInterface;
   _jquery2.default.fn[pluginName].constructor = responsiveHorizontalTabs;
   _jquery2.default.fn[pluginName].noConflict = function () {
-    'use strict';
 
     _jquery2.default.fn[pluginName] = window.JQUERY_NO_CONFLICT;
     return responsiveHorizontalTabs._jQueryInterface;

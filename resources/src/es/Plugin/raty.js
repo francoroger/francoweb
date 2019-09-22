@@ -1,11 +1,11 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'rating';
+const NAME = 'rating'
 
 class Rating extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -18,24 +18,24 @@ class Rating extends Plugin {
       cancelOff: 'icon wb-minus-circle',
       cancelOn: 'icon wb-minus-circle orange-600',
       starHalf: 'icon wb-star-half orange-500'
-    };
+    }
   }
 
   render() {
     if (!$.fn.raty) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
 
     if (this.options.hints) {
-      this.options.hints = this.options.hints.split(',');
+      this.options.hints = this.options.hints.split(',')
     }
 
-    $el.raty(this.options);
+    $el.raty(this.options)
   }
 }
 
-Plugin.register(NAME, Rating);
+Plugin.register(NAME, Rating)
 
-export default Rating;
+export default Rating

@@ -1,27 +1,27 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'scrollable';
+const NAME = 'scrollable'
 
 class Scrollable extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       namespace: 'scrollable',
-      contentSelector: "> [data-role='content']",
-      containerSelector: "> [data-role='container']"
-    };
+      contentSelector: '> [data-role=\'content\']',
+      containerSelector: '> [data-role=\'container\']'
+    }
   }
 
   render() {
-    let $el = this.$el;
+    const $el = this.$el
 
-    $el.asScrollable(this.options);
+    $el.asScrollable(this.options)
   }
 }
 
-Plugin.register(NAME, Scrollable);
+Plugin.register(NAME, Scrollable)
 
-export default Scrollable;
+export default Scrollable

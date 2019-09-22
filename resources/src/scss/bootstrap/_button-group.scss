@@ -8,14 +8,14 @@
   vertical-align: middle; // match .btn alignment given font-size hack above
 
   > .btn {
-    position: relative;
-    flex: 0 1 auto;
 
     // Bring the hover, focused, and "active" buttons to the front to overlay
     // the borders properly
     @include hover {
       z-index: 2;
     }
+    position: relative;
+    flex: 0 1 auto;
     &:focus,
     &:active,
     &.active {

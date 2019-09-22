@@ -41,19 +41,19 @@
         settings = JSON.parse(settings);
       }
 
-      if (settings['primary'] && settings['primary'] !== 'primary') {
+      if (settings.primary && settings.primary !== 'primary') {
         var head = document.head;
         var link = document.createElement('link');
 
         link.type = 'text/css';
         link.rel = 'stylesheet';
-        link.href = getLevel(window.location.pathname, layout) + 'assets/skins/' + settings['primary'] + '.css';
+        link.href = getLevel(window.location.pathname, layout) + 'assets/skins/' + settings.primary + '.css';
         link.id = 'skinStyle';
 
         head.appendChild(link);
       }
 
-      if (settings['sidebar'] && settings['sidebar'] === 'light') {
+      if (settings.sidebar && settings.sidebar === 'light') {
         var menubarFn = setInterval(function () {
           var menubar = document.getElementsByClassName('site-menubar');
           if (menubar.length > 0) {
@@ -68,10 +68,10 @@
 
         if (navbar.length > 0) {
           clearInterval(navbarFn);
-          if (settings['navbar'] && settings['navbar'] !== 'primary') {
-            navbar[0].className += ' bg-' + settings['navbar'] + '-600';
+          if (settings.navbar && settings.navbar !== 'primary') {
+            navbar[0].className += ' bg-' + settings.navbar + '-600';
           }
-          if (settings['navbarInverse'] && settings['navbarInverse'] !== 'false') {
+          if (settings.navbarInverse && settings.navbarInverse !== 'false') {
             navbar[0].className += ' navbar-inverse';
           }
         }
@@ -125,10 +125,10 @@
           skintoolsPrimary: ['primary', 'brown', 'cyan', 'green', 'grey', 'indigo', 'orange', 'pink', 'purple', 'red', 'teal', 'yellow'],
           storageKey: settingsName,
           defaultSettings: {
-            'sidebar': 'dark',
-            'navbar': 'primary',
-            'navbarInverse': 'false',
-            'primary': 'primary'
+            sidebar: 'dark',
+            navbar: 'primary',
+            navbarInverse: 'false',
+            primary: 'primary'
           },
           init: function init() {
             var self = this;
@@ -198,7 +198,7 @@
                     self.navbarImprove(v);
                     break;
                   case 'navbarInverse':
-                    var flag = v === 'false' ? false : true;
+                    var flag = v !== 'false';
                     $('input[value="inverse"]', self.$navbar).prop('checked', flag);
                     self.navbarImprove('inverse', flag);
                     break;

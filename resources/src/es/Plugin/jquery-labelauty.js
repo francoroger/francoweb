@@ -1,19 +1,19 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'labelauty';
+const NAME = 'labelauty'
 
 class Labelauty extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       same_width: true
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Labelauty);
+Plugin.register(NAME, Labelauty)
 
-export default Labelauty;
+export default Labelauty

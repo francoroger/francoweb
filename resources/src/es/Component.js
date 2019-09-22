@@ -1,17 +1,17 @@
-import $ from 'jquery';
+import $ from 'jquery'
 
 if (typeof Object.assign === 'undefined') {
-  Object.assign = $.extend;
+  Object.assign = $.extend
 }
 export default class {
   constructor(options = {}) {
-    this.$el = options.$el ? options.$el : $(document);
-    this.el = this.$el[0];
-    delete options.$el;
+    this.$el = options.$el ? options.$el : $(document)
+    this.el = this.$el[0]
+    delete options.$el
 
-    this.options = options;
+    this.options = options
 
-    this.isProcessed = false;
+    this.isProcessed = false
   }
 
   initialize() {
@@ -24,22 +24,22 @@ export default class {
   run(...state) {
     // run Component
     if (!this.isProcessed) {
-      this.initialize();
-      this.process();
+      this.initialize()
+      this.process()
     }
 
-    this.isProcessed = true;
+    this.isProcessed = true
   }
 
   triggerResize() {
     if (document.createEvent) {
-      let ev = document.createEvent('Event');
-      ev.initEvent('resize', true, true);
-      window.dispatchEvent(ev);
+      const ev = document.createEvent('Event')
+      ev.initEvent('resize', true, true)
+      window.dispatchEvent(ev)
     } else {
-      element = document.documentElement;
-      let event = document.createEventObject();
-      element.fireEvent('onresize', event);
+      element = document.documentElement
+      const event = document.createEventObject()
+      element.fireEvent('onresize', event)
     }
   }
 }

@@ -5,17 +5,6 @@
 //
 
 .form-control {
-  display: block;
-  width: 100%;
-  padding: $input-btn-padding-y $input-btn-padding-x;
-  font-size: $font-size-base;
-  line-height: $input-btn-line-height;
-  color: $input-color;
-  background-color: $input-bg;
-  // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214.
-  background-image: none;
-  background-clip: padding-box;
-  border: $input-btn-border-width solid $input-border-color;
 
   // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
   @if $enable-rounded {
@@ -29,14 +18,25 @@
   @include box-shadow($input-box-shadow);
   @include transition($input-transition);
 
+  // Customize the `:focus` state to imitate native WebKit styles.
+  @include form-control-focus();
+  display: block;
+  width: 100%;
+  padding: $input-btn-padding-y $input-btn-padding-x;
+  font-size: $font-size-base;
+  line-height: $input-btn-line-height;
+  color: $input-color;
+  background-color: $input-bg;
+  // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214.
+  background-image: none;
+  background-clip: padding-box;
+  border: $input-btn-border-width solid $input-border-color;
+
   // Unstyle the caret on `<select>`s in IE10+.
   &::-ms-expand {
     background-color: transparent;
     border: 0;
   }
-
-  // Customize the `:focus` state to imitate native WebKit styles.
-  @include form-control-focus();
 
   // Placeholder
   &::placeholder {
@@ -154,10 +154,10 @@ select.form-control {
 // issue documented in https://github.com/twbs/bootstrap/issues/15074.
 
 .form-control-sm {
+  @include border-radius($input-border-radius-sm);
   padding: $input-btn-padding-y-sm $input-btn-padding-x-sm;
   font-size: $font-size-sm;
   line-height: $input-btn-line-height-sm;
-  @include border-radius($input-border-radius-sm);
 }
 
 select.form-control-sm {
@@ -167,10 +167,10 @@ select.form-control-sm {
 }
 
 .form-control-lg {
+  @include border-radius($input-border-radius-lg);
   padding: $input-btn-padding-y-lg $input-btn-padding-x-lg;
   font-size: $font-size-lg;
   line-height: $input-btn-line-height-lg;
-  @include border-radius($input-border-radius-lg);
 }
 
 select.form-control-lg {
@@ -271,16 +271,6 @@ select.form-control-lg {
 // default HTML form controls and our custom form controls (e.g., input groups).
 
 .form-inline {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center; // Prevent shorter elements from growing to same height as others (e.g., small buttons growing to normal sized button height)
-
-  // Because we use flex, the initial sizing of checkboxes is collapsed and
-  // doesn't occupy the full-width (which is what we want for xs grid tier),
-  // so we force that here.
-  .form-check {
-    width: 100%;
-  }
 
   // Kick in the inline
   @include media-breakpoint-up(sm) {
@@ -354,5 +344,15 @@ select.form-control-lg {
     .has-feedback .form-control-feedback {
       top: 0;
     }
+  }
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center; // Prevent shorter elements from growing to same height as others (e.g., small buttons growing to normal sized button height)
+
+  // Because we use flex, the initial sizing of checkboxes is collapsed and
+  // doesn't occupy the full-width (which is what we want for xs grid tier),
+  // so we force that here.
+  .form-check {
+    width: 100%;
   }
 }

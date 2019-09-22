@@ -1,14 +1,14 @@
 .pagination {
-  display: flex;
   @include list-unstyled();
   @include border-radius();
+  display: flex;
 }
 
 .page-item {
   &:first-child {
     .page-link {
-      margin-left: 0;
       @include border-left-radius($border-radius);
+      margin-left: 0;
     }
   }
   &:last-child {
@@ -33,6 +33,13 @@
 }
 
 .page-link {
+
+  @include hover-focus {
+    color: $pagination-hover-color;
+    text-decoration: none;
+    background-color: $pagination-hover-bg;
+    border-color: $pagination-hover-border-color;
+  }
   position: relative;
   display: block;
   padding: $pagination-padding-y $pagination-padding-x;
@@ -41,13 +48,6 @@
   color: $pagination-color;
   background-color: $pagination-bg;
   border: $pagination-border-width solid $pagination-border-color;
-
-  @include hover-focus {
-    color: $pagination-hover-color;
-    text-decoration: none;
-    background-color: $pagination-hover-bg;
-    border-color: $pagination-hover-border-color;
-  }
 }
 
 

@@ -37,7 +37,9 @@
     }, {
       key: 'render',
       value: function render() {
-        if (typeof ace === 'undefined') return;
+        if (typeof ace === 'undefined') {
+          return;
+        }
         // ace.config.set("themePath", "../theme");
         ace.config.loadModule('ace/ext/language_tools');
 

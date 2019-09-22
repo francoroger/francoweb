@@ -1,35 +1,35 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'masonry';
+const NAME = 'masonry'
 
 class Masonry extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       itemSelector: '.masonry-item'
-    };
+    }
   }
 
   render() {
     if (typeof $.fn.masonry === 'undefined') {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
     if ($.fn.imagesLoaded) {
-      $el.imagesLoaded(function() {
-        $el.masonry(this.options);
-      });
+      $el.imagesLoaded(function () {
+        $el.masonry(this.options)
+      })
     } else {
-      $el.masonry(this.options);
+      $el.masonry(this.options)
     }
   }
 }
 
-Plugin.register(NAME, Masonry);
+Plugin.register(NAME, Masonry)
 
-export default Masonry;
+export default Masonry

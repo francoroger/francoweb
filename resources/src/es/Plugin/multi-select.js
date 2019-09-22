@@ -1,17 +1,17 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'multiSelect';
+const NAME = 'multiSelect'
 
 class MultiSelect extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 }
 
-Plugin.register(NAME, MultiSelect);
+Plugin.register(NAME, MultiSelect)
 
-export default MultiSelect;
+export default MultiSelect

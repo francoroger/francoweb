@@ -1,13 +1,13 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'jstree';
+const NAME = 'jstree'
 
 class Jstree extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 }
 
-Plugin.register(NAME, Jstree);
+Plugin.register(NAME, Jstree)
 
-export default Jstree;
+export default Jstree

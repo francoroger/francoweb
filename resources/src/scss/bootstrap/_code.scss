@@ -8,11 +8,11 @@ samp {
 
 // Inline code
 code {
+  @include border-radius($border-radius);
   padding: $code-padding-y $code-padding-x;
   font-size: $code-font-size;
   color: $code-color;
   background-color: $code-bg;
-  @include border-radius($border-radius);
 
   // Streamline the style when inside anchors to avoid broken underline and more
   a > & {
@@ -24,18 +24,18 @@ code {
 
 // User input typically entered via keyboard
 kbd {
+  @include border-radius($border-radius-sm);
+  @include box-shadow($kbd-box-shadow);
   padding: $code-padding-y $code-padding-x;
   font-size: $code-font-size;
   color: $kbd-color;
   background-color: $kbd-bg;
-  @include border-radius($border-radius-sm);
-  @include box-shadow($kbd-box-shadow);
 
   kbd {
+    @include box-shadow(none);
     padding: 0;
     font-size: 100%;
     font-weight: $nested-kbd-font-weight;
-    @include box-shadow(none);
   }
 }
 

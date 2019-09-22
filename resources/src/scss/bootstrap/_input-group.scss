@@ -11,6 +11,11 @@
   width: 100%;
 
   .form-control {
+
+    // Bring the "active" form control to the front
+    @include hover-focus-active {
+      z-index: 3;
+    }
     // Ensure that the input is always above the *appended* addon button for
     // proper border colors.
     position: relative;
@@ -20,11 +25,6 @@
     // the column. Applies to IE Edge+ and Firefox. Chrome does not require this.
     width: 1%;
     margin-bottom: 0;
-
-    // Bring the "active" form control to the front
-    @include hover-focus-active {
-      z-index: 3;
-    }
   }
 }
 
@@ -66,6 +66,7 @@
 //
 
 .input-group-addon {
+  @include border-radius($input-border-radius);
   padding: $input-btn-padding-y $input-btn-padding-x;
   margin-bottom: 0; // Allow use of <label> elements by overriding our default margin-bottom
   font-size: $font-size-base; // Match inputs
@@ -75,19 +76,18 @@
   text-align: center;
   background-color: $input-group-addon-bg;
   border: $input-btn-border-width solid $input-group-addon-border-color;
-  @include border-radius($input-border-radius);
 
   // Sizing
   &.form-control-sm {
+    @include border-radius($input-border-radius-sm);
     padding: $input-btn-padding-y-sm $input-btn-padding-x-sm;
     font-size: $font-size-sm;
-    @include border-radius($input-border-radius-sm);
   }
 
   &.form-control-lg {
+    @include border-radius($input-border-radius-lg);
     padding: $input-btn-padding-y-lg $input-btn-padding-x-lg;
     font-size: $font-size-lg;
-    @include border-radius($input-border-radius-lg);
   }
 
   // Nuke default margins from checkboxes and radios to vertically center within.
@@ -142,15 +142,15 @@
   // Negative margin for spacing, position for bringing hovered/focused/actived
   // element above the siblings.
   > .btn {
-    position: relative;
-
-    + .btn {
-      margin-left: (-$input-btn-border-width);
-    }
 
     // Bring the "active" button to the front
     @include hover-focus-active {
       z-index: 3;
+    }
+    position: relative;
+
+    + .btn {
+      margin-left: (-$input-btn-border-width);
     }
   }
 
@@ -168,6 +168,11 @@
   &:not(:first-child) {
     > .btn,
     > .btn-group {
+
+      // Because specificity
+      @include hover-focus-active {
+        z-index: 3;
+      }
       z-index: 2;
       // remove nagative margin ($input-btn-border-width) to solve overlapping issue with button.
       margin-left: 0;
@@ -175,11 +180,6 @@
       // When input is first, overlap the right side of it with the button(-group)
       &:first-child {
         margin-left: (-$input-btn-border-width);
-      }
-
-      // Because specificity
-      @include hover-focus-active {
-        z-index: 3;
       }
     }
   }

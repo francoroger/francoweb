@@ -1,11 +1,11 @@
-import Plugin from 'Plugin';
-import * as Config from "Config";
+import Plugin from 'Plugin'
+import * as Config from 'Config'
 
-const NAME = 'gauge';
+const NAME = 'gauge'
 
 class GaugePlugin extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -23,37 +23,37 @@ class GaugePlugin extends Plugin {
       colorStop: Config.colors('blue-grey', 200),
       strokeColor: Config.colors('primary', 500),
       generateGradient: true
-    };
+    }
   }
 
   render() {
     if (!Gauge) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
     let $canvas = $el.find('canvas'),
-      $text = $el.find('.gauge-label');
+      $text = $el.find('.gauge-label')
 
     if ($canvas.length === 0) {
-      return;
+      return
     }
 
-    let gauge = new Gauge($canvas[0]).setOptions(this.options);
+    const gauge = new Gauge($canvas[0]).setOptions(this.options)
 
-    $el.data('gauge', gauge);
+    $el.data('gauge', gauge)
 
-    gauge.animationSpeed = 50;
-    gauge.maxValue = $el.data('max-value');
+    gauge.animationSpeed = 50
+    gauge.maxValue = $el.data('max-value')
 
-    gauge.set($el.data('value'));
+    gauge.set($el.data('value'))
 
     if ($text.length > 0) {
-      gauge.setTextField($text[0]);
+      gauge.setTextField($text[0])
     }
   }
 }
 
-Plugin.register(NAME, GaugePlugin);
+Plugin.register(NAME, GaugePlugin)
 
-export default GaugePlugin;
+export default GaugePlugin

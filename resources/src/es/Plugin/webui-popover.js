@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'webuiPopover';
+const NAME = 'webuiPopover'
 
 class WebuiPopover extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -16,10 +16,10 @@ class WebuiPopover extends Plugin {
       style: '',
       delay: 300,
       padding: true
-    };
+    }
   }
 }
 
-Plugin.register(NAME, WebuiPopover);
+Plugin.register(NAME, WebuiPopover)
 
-export default WebuiPopover;
+export default WebuiPopover

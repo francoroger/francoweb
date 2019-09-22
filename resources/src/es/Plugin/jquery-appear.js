@@ -1,49 +1,49 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'appear';
+const NAME = 'appear'
 
 class Appear extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   bind() {
     this.$el.on('appear', () => {
       if (this.$el.hasClass('appear-no-repeat')) {
-        return;
+        return
       }
       this.$el
         .removeClass('invisible')
-        .addClass(`animation-${this.options.animate}`);
+        .addClass(`animation-${this.options.animate}`)
 
       if (this.$el.data('repeat') === false) {
-        this.$el.addClass('appear-no-repeat');
+        this.$el.addClass('appear-no-repeat')
       }
-    });
+    })
 
     $(document).on('disappear', () => {
       if (this.$el.hasClass('appear-no-repeat')) {
-        return;
+        return
       }
 
       this.$el
         .addClass('invisible')
-        .removeClass(`animation-${this.options.animate}`);
-    });
+        .removeClass(`animation-${this.options.animate}`)
+    })
   }
 
   render() {
     if (!$.fn.appear) {
-      return;
+      return
     }
 
-    this.$el.appear(this.options);
-    this.$el.not(':appeared').addClass('invisible');
+    this.$el.appear(this.options)
+    this.$el.not(':appeared').addClass('invisible')
 
-    this.bind();
+    this.bind()
   }
 }
 
-Plugin.register(NAME, Appear);
-export default Appear;
+Plugin.register(NAME, Appear)
+export default Appear

@@ -1,29 +1,29 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'sweetalert';
+const NAME = 'sweetalert'
 
 class Sweetalert extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   render() {
-    this.$el.data('sweetalertWrapApi', this);
+    this.$el.data('sweetalertWrapApi', this)
   }
 
   show() {
     if (typeof swal === 'undefined') {
-      return;
+      return
     }
 
-    swal(this.options);
+    swal(this.options)
   }
 
   static api() {
-    return 'click|show';
+    return 'click|show'
   }
 }
 
-Plugin.register(NAME, Sweetalert);
+Plugin.register(NAME, Sweetalert)
 
-export default Sweetalert;
+export default Sweetalert

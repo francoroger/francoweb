@@ -1,11 +1,11 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'selectable';
+const NAME = 'selectable'
 
 class Selectable extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -16,20 +16,20 @@ class Selectable extends Plugin {
       rowSelectable: false,
       rowActiveClass: 'active',
       onChange: null
-    };
+    }
   }
 
   render() {
     if (!$.fn.asSelectable) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
 
-    $el.asSelectable(this.options);
+    $el.asSelectable(this.options)
   }
 }
 
-Plugin.register(NAME, Selectable);
+Plugin.register(NAME, Selectable)
 
-export default Selectable;
+export default Selectable

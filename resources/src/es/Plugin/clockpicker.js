@@ -1,19 +1,19 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'clockpicker';
+const NAME = 'clockpicker'
 
 class Clockpicker extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       donetext: 'Done'
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Clockpicker);
+Plugin.register(NAME, Clockpicker)
 
-export default Clockpicker;
+export default Clockpicker

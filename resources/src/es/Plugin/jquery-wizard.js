@@ -1,10 +1,10 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'wizard';
+const NAME = 'wizard'
 
 class Wizard extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
@@ -12,14 +12,14 @@ class Wizard extends Plugin {
       step: '.steps .step, .pearls .pearl',
       templates: {
         buttons() {
-          let options = this.options;
+          const options = this.options
           return `<div class="wizard-buttons"><a class="btn btn-default btn-outline" href="#${this
             .id}" data-wizard="back" role="button">${options.buttonLabels
             .back}</a><a class="btn btn-primary btn-outline float-right" href="#${this
             .id}" data-wizard="next" role="button">${options.buttonLabels
             .next}</a><a class="btn btn-success btn-outline float-right" href="#${this
             .id}" data-wizard="finish" role="button">${options.buttonLabels
-            .finish}</a></div>`;
+            .finish}</a></div>`
         }
       },
       classes: {
@@ -40,10 +40,10 @@ class Wizard extends Plugin {
           disabled: 'disabled'
         }
       }
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Wizard);
+Plugin.register(NAME, Wizard)
 
-export default Wizard;
+export default Wizard

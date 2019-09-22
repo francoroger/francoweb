@@ -1,28 +1,28 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'tablesaw';
+const NAME = 'tablesaw'
 
 class Tablesaw extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 
   static api() {
     return () => {
       if (typeof $.fn.tablesaw === 'undefined') {
-        return;
+        return
       }
 
-      $(document).trigger("enhance.tablesaw");
-    };
+      $(document).trigger('enhance.tablesaw')
+    }
   }
 }
 
-Plugin.register(NAME, Tablesaw);
+Plugin.register(NAME, Tablesaw)
 
-export default Tablesaw;
+export default Tablesaw

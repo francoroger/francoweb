@@ -353,7 +353,7 @@
       $(document).off('click.slidePanelDatepicker');
     },
     contentFilter: function contentFilter(data, object) {
-      var $checked = undefined,
+      var $checked = void 0,
           $panel = $(data),
           $target = $(object.target);
       var info = $target.data('taskInfo');
@@ -621,8 +621,8 @@
           }
         } else {
           var data = {
-            'title': value,
-            'complete': false
+            title: value,
+            complete: false
           };
           var $subtask = $(self.subtaskTpl(data));
 

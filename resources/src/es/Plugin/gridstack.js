@@ -1,31 +1,31 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'gridstack';
+const NAME = 'gridstack'
 
 class Gridstack extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       cellHeight: 80,
       verticalMargin: 20
-    };
+    }
   }
 
   render() {
     if (!$.fn.gridstack) {
-      return;
+      return
     }
 
-    let $el = this.$el;
+    const $el = this.$el
 
-    $el.gridstack(this.options);
+    $el.gridstack(this.options)
   }
 }
 
-Plugin.register(NAME, Gridstack);
+Plugin.register(NAME, Gridstack)
 
-export default Gridstack;
+export default Gridstack

@@ -1,32 +1,32 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'card';
+const NAME = 'card'
 
 class Card extends Plugin {
   getName() {
-    return;
+    return
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 
   render() {
     if (!$.fn.card) {
-      return;
+      return
     }
 
     let $el = this.$el,
-      options = this.options;
+      options = this.options
 
     if (options.target) {
-      options.container = $(options.target);
+      options.container = $(options.target)
     }
-    $el.card(options);
+    $el.card(options)
   }
 }
 
-Plugin.register(NAME, Card);
+Plugin.register(NAME, Card)
 
-export default Card;
+export default Card

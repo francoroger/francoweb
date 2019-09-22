@@ -1,47 +1,47 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'formatter';
+const NAME = 'formatter'
 
 class Formatter extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       persistent: true
-    };
+    }
   }
 
   render() {
     if (!$.fn.formatter) {
-      return;
+      return
     }
 
     let browserName = navigator.userAgent.toLowerCase(),
-      ieOptions;
+      ieOptions
 
     if (/msie/i.test(browserName) && !/opera/.test(browserName)) {
       ieOptions = {
         persistent: false
-      };
+      }
     } else {
-      ieOptions = {};
+      ieOptions = {}
     }
 
     let $el = this.$el,
-      options = this.options;
+      options = this.options
 
     if (options.pattern) {
       options.pattern = options.pattern
         .replace(/\[\[/g, '{{')
-        .replace(/\]\]/g, '}}');
+        .replace(/\]\]/g, '}}')
     }
-    $el.formatter(options);
+    $el.formatter(options)
   }
 }
 
-Plugin.register(NAME, Formatter);
+Plugin.register(NAME, Formatter)
 
-export default Formatter;
+export default Formatter

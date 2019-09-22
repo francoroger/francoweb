@@ -298,7 +298,7 @@ $radio-inline-gap: 20px !default;
       background-color: transparent;
       border: $radio-border-width solid $gray-500;
       border-radius: 50%;
-      transition: .1s cubic-bezier(.8, -0.33, .2, 1.33);
+      transition: .1s cubic-bezier(.8, -.33, .2, 1.33);
       transform: scale(0, 0);
       //curve - http://cubic-bezier.com/#.8,-0.33,.2,1.33
     }

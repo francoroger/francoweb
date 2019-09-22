@@ -126,101 +126,101 @@ $btn-pure-inverse-color: $inverse !default;
 $btn-pure-inverse-hover-color: $btn-inverse-hover-bg !default;
 
 $btn-styles: (
-  'default': (
-    'color': $btn-default-color,
-    'bg': $btn-default-bg,
-    'border': $btn-default-border,
-    'hover-bg': $btn-default-hover-bg,
-    'hover-border': $btn-default-hover-border,
-    'active-bg': $btn-default-active-bg,
-    'active-border': $btn-default-active-border,
-    'disabled-color': $btn-default-disabled-color,
-    'disabled-bg': $btn-default-disabled-bg,
-    'disabled-border': $btn-default-disabled-border
+  "default": (
+    "color": $btn-default-color,
+    "bg": $btn-default-bg,
+    "border": $btn-default-border,
+    "hover-bg": $btn-default-hover-bg,
+    "hover-border": $btn-default-hover-border,
+    "active-bg": $btn-default-active-bg,
+    "active-border": $btn-default-active-border,
+    "disabled-color": $btn-default-disabled-color,
+    "disabled-bg": $btn-default-disabled-bg,
+    "disabled-border": $btn-default-disabled-border
   ),
-  'primary': (
-    'color': $btn-primary-color,
-    'bg': $btn-primary-bg,
-    'border': $btn-primary-border,
-    'hover-bg': $btn-primary-hover-bg,
-    'hover-border': $btn-primary-hover-border,
-    'active-bg': $btn-primary-active-bg,
-    'active-border': $btn-primary-active-border,
-    'disabled-color': $btn-primary-disabled-color,
-    'disabled-bg': $btn-primary-disabled-bg,
-    'disabled-border': $btn-primary-disabled-border
+  "primary": (
+    "color": $btn-primary-color,
+    "bg": $btn-primary-bg,
+    "border": $btn-primary-border,
+    "hover-bg": $btn-primary-hover-bg,
+    "hover-border": $btn-primary-hover-border,
+    "active-bg": $btn-primary-active-bg,
+    "active-border": $btn-primary-active-border,
+    "disabled-color": $btn-primary-disabled-color,
+    "disabled-bg": $btn-primary-disabled-bg,
+    "disabled-border": $btn-primary-disabled-border
   ),
-  'success': (
-    'color': $btn-success-color,
-    'bg': $btn-success-bg,
-    'border': $btn-success-border,
-    'hover-bg': $btn-success-hover-bg,
-    'hover-border': $btn-success-hover-border,
-    'active-bg': $btn-success-active-bg,
-    'active-border': $btn-success-active-border,
-    'disabled-color': $btn-success-disabled-color,
-    'disabled-bg': $btn-success-disabled-bg,
-    'disabled-border': $btn-success-disabled-border
+  "success": (
+    "color": $btn-success-color,
+    "bg": $btn-success-bg,
+    "border": $btn-success-border,
+    "hover-bg": $btn-success-hover-bg,
+    "hover-border": $btn-success-hover-border,
+    "active-bg": $btn-success-active-bg,
+    "active-border": $btn-success-active-border,
+    "disabled-color": $btn-success-disabled-color,
+    "disabled-bg": $btn-success-disabled-bg,
+    "disabled-border": $btn-success-disabled-border
   ),
-  'info': (
-    'color': $btn-info-color,
-    'bg': $btn-info-bg,
-    'border': $btn-info-border,
-    'hover-bg': $btn-info-hover-bg,
-    'hover-border': $btn-info-hover-border,
-    'active-bg': $btn-info-active-bg,
-    'active-border': $btn-info-active-border,
-    'disabled-color': $btn-info-disabled-color,
-    'disabled-bg': $btn-info-disabled-bg,
-    'disabled-border': $btn-info-disabled-border
+  "info": (
+    "color": $btn-info-color,
+    "bg": $btn-info-bg,
+    "border": $btn-info-border,
+    "hover-bg": $btn-info-hover-bg,
+    "hover-border": $btn-info-hover-border,
+    "active-bg": $btn-info-active-bg,
+    "active-border": $btn-info-active-border,
+    "disabled-color": $btn-info-disabled-color,
+    "disabled-bg": $btn-info-disabled-bg,
+    "disabled-border": $btn-info-disabled-border
   ),
-  'warning': (
-    'color': $btn-warning-color,
-    'bg': $btn-warning-bg,
-    'border': $btn-warning-border,
-    'hover-bg': $btn-warning-hover-bg,
-    'hover-border': $btn-warning-hover-border,
-    'active-bg': $btn-warning-active-bg,
-    'active-border': $btn-warning-active-border,
-    'disabled-color': $btn-warning-disabled-color,
-    'disabled-bg': $btn-warning-disabled-bg,
-    'disabled-border': $btn-warning-disabled-border
+  "warning": (
+    "color": $btn-warning-color,
+    "bg": $btn-warning-bg,
+    "border": $btn-warning-border,
+    "hover-bg": $btn-warning-hover-bg,
+    "hover-border": $btn-warning-hover-border,
+    "active-bg": $btn-warning-active-bg,
+    "active-border": $btn-warning-active-border,
+    "disabled-color": $btn-warning-disabled-color,
+    "disabled-bg": $btn-warning-disabled-bg,
+    "disabled-border": $btn-warning-disabled-border
   ),
-  'danger': (
-    'color': $btn-danger-color,
-    'bg': $btn-danger-bg,
-    'border': $btn-danger-border,
-    'hover-bg': $btn-danger-hover-bg,
-    'hover-border': $btn-danger-hover-border,
-    'active-bg': $btn-danger-active-bg,
-    'active-border': $btn-danger-active-border,
-    'disabled-color': $btn-danger-disabled-color,
-    'disabled-bg': $btn-danger-disabled-bg,
-    'disabled-border': $btn-danger-disabled-border
+  "danger": (
+    "color": $btn-danger-color,
+    "bg": $btn-danger-bg,
+    "border": $btn-danger-border,
+    "hover-bg": $btn-danger-hover-bg,
+    "hover-border": $btn-danger-hover-border,
+    "active-bg": $btn-danger-active-bg,
+    "active-border": $btn-danger-active-border,
+    "disabled-color": $btn-danger-disabled-color,
+    "disabled-bg": $btn-danger-disabled-bg,
+    "disabled-border": $btn-danger-disabled-border
   ),
-  'inverse': (
-    'color': $btn-inverse-color,
-    'bg': $btn-inverse-bg,
-    'border': $btn-inverse-border,
-    'hover-bg': $btn-inverse-hover-bg,
-    'hover-border': $btn-inverse-hover-border,
-    'active-bg': $btn-inverse-active-bg,
-    'active-border': $btn-inverse-active-border,
-    'disabled-color': $btn-inverse-disabled-color,
-    'disabled-bg': $btn-inverse-disabled-bg,
-    'disabled-border': $btn-inverse-disabled-border
+  "inverse": (
+    "color": $btn-inverse-color,
+    "bg": $btn-inverse-bg,
+    "border": $btn-inverse-border,
+    "hover-bg": $btn-inverse-hover-bg,
+    "hover-border": $btn-inverse-hover-border,
+    "active-bg": $btn-inverse-active-bg,
+    "active-border": $btn-inverse-active-border,
+    "disabled-color": $btn-inverse-disabled-color,
+    "disabled-bg": $btn-inverse-disabled-bg,
+    "disabled-border": $btn-inverse-disabled-border
   ),
-  'dark': (
-    'color': $btn-dark-color,
-    'bg': $btn-dark-bg,
-    'border': $btn-dark-border,
-    'hover-bg': $btn-dark-hover-bg,
-    'hover-border': $btn-dark-hover-border,
-    'active-bg': $btn-dark-active-bg,
-    'active-border': $btn-dark-active-border,
-    'disabled-color': $btn-dark-disabled-color,
-    'disabled-bg': $btn-dark-disabled-bg,
-    'disabled-border': $btn-dark-disabled-border
+  "dark": (
+    "color": $btn-dark-color,
+    "bg": $btn-dark-bg,
+    "border": $btn-dark-border,
+    "hover-bg": $btn-dark-hover-bg,
+    "hover-border": $btn-dark-hover-border,
+    "active-bg": $btn-dark-active-bg,
+    "active-border": $btn-dark-active-border,
+    "disabled-color": $btn-dark-disabled-color,
+    "disabled-bg": $btn-dark-disabled-bg,
+    "disabled-border": $btn-dark-disabled-border
   )
 ) !default;
 
@@ -248,7 +248,7 @@ $btn-styles: (
 
   &:not([disabled]):not(.disabled):active,
   &:not([disabled]):not(.disabled).active {
-   box-shadow: none;
+    box-shadow: none;
   }
 
   // Button with icon

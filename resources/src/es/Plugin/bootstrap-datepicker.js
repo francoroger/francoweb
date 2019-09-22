@@ -1,19 +1,19 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'datepicker';
+const NAME = 'datepicker'
 
 class Datepicker extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
     return {
       autoclose: true
-    };
+    }
   }
 }
 
-Plugin.register(NAME, Datepicker);
+Plugin.register(NAME, Datepicker)
 
-export default Datepicker;
+export default Datepicker

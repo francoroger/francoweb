@@ -1,17 +1,17 @@
-import Plugin from 'Plugin';
+import Plugin from 'Plugin'
 
-const NAME = 'iCheck';
+const NAME = 'iCheck'
 
 class ICheck extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 }
 
-Plugin.register(NAME, ICheck);
+Plugin.register(NAME, ICheck)
 
-export default ICheck;
+export default ICheck

@@ -1,37 +1,37 @@
-import $ from 'jquery';
-import Plugin from 'Plugin';
+import $ from 'jquery'
+import Plugin from 'Plugin'
 
-const NAME = 'isotope';
+const NAME = 'isotope'
 
 class Isotope extends Plugin {
   getName() {
-    return NAME;
+    return NAME
   }
 
   static getDefaults() {
-    return {};
+    return {}
   }
 
   render() {
     if (typeof $.fn.isotope === 'undefined') {
-      return;
+      return
     }
 
-    let callback = () => {
-      let $el = this.$el;
+    const callback = () => {
+      const $el = this.$el
 
-      $el.isotope(this.options);
-    };
+      $el.isotope(this.options)
+    }
     if (this !== document) {
-      callback();
+      callback()
     } else {
       $(window).on('load', () => {
-        callback();
-      });
+        callback()
+      })
     }
   }
 }
 
-Plugin.register(NAME, Isotope);
+Plugin.register(NAME, Isotope)
 
-export default Isotope;
+export default Isotope

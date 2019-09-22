@@ -6,9 +6,9 @@
   }
   height: $site-footer-height;
   padding: $site-footer-vertical-padding $page-horizontal-padding;
+  font-size: $site-footer-font-size;
   background-color: $site-footer-bg;
   border-top: 1px solid $site-footer-divider-color;
-  font-size: $site-footer-font-size;
 
   &-legal {
     float: left;

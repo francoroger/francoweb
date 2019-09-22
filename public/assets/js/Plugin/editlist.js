@@ -61,7 +61,9 @@
         });
 
         this.$delBtn.on('click', function () {
-          if (typeof _bootbox2.default === 'undefined') return;
+          if (typeof _bootbox2.default === 'undefined') {
+            return;
+          }
           _bootbox2.default.dialog({
             message: 'Do you want to delete the contact?',
             buttons: {
@@ -142,7 +144,6 @@
   _jquery2.default.fn[pluginName] = editlist._jQueryInterface;
   _jquery2.default.fn[pluginName].constructor = editlist;
   _jquery2.default.fn[pluginName].noConflict = function () {
-    'use strict';
 
     _jquery2.default.fn[pluginName] = window.JQUERY_NO_CONFLICT;
     return editlist._jQueryInterface;
