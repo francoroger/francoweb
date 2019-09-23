@@ -4,6 +4,8 @@
   <link rel="stylesheet" href="{{ asset('assets/examples/css/pages/login-v3.css') }}">
 @endpush
 
+@section('body-class', 'page-login-v3 layout-full')
+
 @section('content')
   <form method="POST" action="{{ route('login') }}">
     @csrf

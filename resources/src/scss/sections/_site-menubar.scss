@@ -11,7 +11,7 @@ body {
   top: $site-navbar-height;
   z-index: $zindex-menubar;
   height: 100%;
-  height: calc(100% - #{$site-navbar-height});
+  height: 100%; //CASO USE FOOTER: calc(100% - #{$site-navbar-height});
   font-family: $site-menubar-font-family;
   color: $site-menubar-color;
   background: $site-menubar-bg;

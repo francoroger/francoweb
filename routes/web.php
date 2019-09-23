@@ -25,6 +25,10 @@ Route::group(['prefix' => 'cadastros'], function() {
   Route::post('cores', 'CorController@store')->name('cores.store');
   Route::put('cores/{id}', 'CorController@update')->name('cores.update');
   Route::delete('cores/{id}', 'CorController@destroy')->name('cores.destroy');
+
+  //Usuários
+  Route::get('usuarios/ajax', 'UserController@ajax')->name('usuarios.ajax');
+  Route::resource('usuarios', 'UserController');
 });
 
 Route::group(['prefix' => 'catalogacao'], function() {

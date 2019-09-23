@@ -1,7 +1,7 @@
 @extends('layouts.app.main')
 
 @push('stylesheets_plugins')
-  <link rel="stylesheet" href="{{ asset('assets/examples/css/apps/media.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/modules/css/catalogacao_checklist/checklist.css') }}">
 @endpush
 
 @push('scripts_plugin')
@@ -64,9 +64,9 @@
                     </div>
                     <div class="image-wrap">
                       @if (file_exists('fotos/'.$item->foto))
-                        <img class="image img-rounded" src="{{ asset('fotos/'.$item->foto) }}" alt="...">
+                        <img class="image img-rounded" src="{{ asset('fotos/'.$item->foto) }}" alt="{{ $item->foto }}">
                       @else
-                        <img class="image img-rounded" src="{{ asset('assets/photos/placeholder.png') }}" alt="...">
+                        <img class="image img-rounded" src="{{ asset('assets/photos/placeholder.png') }}" alt="{{ $item->foto }}">
                       @endif
                     </div>
                     <div class="info-wrap">

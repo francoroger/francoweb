@@ -89,6 +89,11 @@
                   <span class="site-menu-title">Tipos de Transporte</span>
                 </a>
               </li>
+              <li class="site-menu-item{{ Request::is('cadastros/usuarios*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('usuarios.index') }}">
+                  <span class="site-menu-title">Usuários</span>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="site-menu-item">
@@ -107,11 +112,6 @@
               <li class="site-menu-item">
                 <a class="animsition-link" href="#">
                   <span class="site-menu-title">Cotações</span>
-                </a>
-              </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
-                  <span class="site-menu-title">Usuários</span>
                 </a>
               </li>
             </ul>

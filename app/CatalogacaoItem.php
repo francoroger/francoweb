@@ -31,13 +31,21 @@ class CatalogacaoItem extends Model
   }
 
   /**
-  * Get foto - remove 'T:\' do caminho do arquivo
+  * Get foto - trata o caminho para localizar a foto na estrutura de pastas
+  * Exemplo: CATALOGAÇÃO/FOTOS CATALOGO YYYY/MM-YYYY/FILENAME.jpg
   *
   * @param  string  $value
   * @return string
   */
   public function getFotoAttribute($value)
   {
-    return substr($value, 3);
+    //remove 'T:\' do caminho do arquivo
+    $filename = substr($value, 3);
+    //obtem o ano do arquivo
+    $ano = substr($filename, 0, 4);
+    //obtem o mês do arquivo, colocando 0 para corrigir o formato m
+    $mes = str_pad(str_replace('_', '', substr($filename, 5, 2)), 2, '0', STR_PAD_LEFT);
+    //retorna o caminho concatenando com a raiz
+    return "CATALOGAÇÃO/FOTOS CATALOGO $ano/$mes-$ano/$filename";
   }
 }
