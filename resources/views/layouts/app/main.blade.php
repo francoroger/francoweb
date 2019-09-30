@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/site.min.css') }}">
 
     <!-- Plugins -->
-    <link rel="stylesheet" href="{{ asset('assets/vendor/animsition/animsition.css') }}">
+    <!--<link rel="stylesheet" href="{{ asset('assets/vendor/animsition/animsition.css') }}">-->
     <link rel="stylesheet" href="{{ asset('assets/vendor/asscrollable/asScrollable.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/switchery/switchery.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/intro-js/introjs.css') }}">
@@ -73,7 +73,7 @@
     <script src="{{ asset('assets/vendor/jquery/jquery.js') }}"></script>
     <script src="{{ asset('assets/vendor/popper-js/umd/popper.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/bootstrap/bootstrap.js') }}"></script>
-    <script src="{{ asset('assets/vendor/animsition/animsition.js') }}"></script>
+    <!--<script src="{{ asset('assets/vendor/animsition/animsition.js') }}"></script>-->
     <script src="{{ asset('assets/vendor/mousewheel/jquery.mousewheel.js') }}"></script>
     <script src="{{ asset('assets/vendor/asscrollbar/jquery-asScrollbar.js') }}"></script>
     <script src="{{ asset('assets/vendor/asscrollable/jquery-asScrollable.js') }}"></script>

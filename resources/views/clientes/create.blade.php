@@ -19,7 +19,7 @@
     </div>
 
     <div class="page-content">
-      <form class="panel" action="{{ route('clientes.store') }}" autocomplete="off">
+      <form class="panel" method="post" action="{{ route('clientes.store') }}" autocomplete="off">
         {{ csrf_field() }}
         <ul class="nav nav-tabs nav-tabs-line" role="tablist">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-principal" aria-controls="tab-principal" role="tab" aria-expanded="true">Dados Cadastrais</a></li>

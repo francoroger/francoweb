@@ -74,8 +74,14 @@ class CheckListCatalogacaoController extends Controller
   public function check($id)
   {
     $catalogacao = Catalogacao::findOrFail($id);
+
+    $itens = $catalogacao->itens->sortBy(function($item) {
+      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
+    });
+
     return view('catalogacao_checklist.checklist')->with([
       'catalogacao' => $catalogacao,
+      'itens' => $itens,
     ]);
   }
 

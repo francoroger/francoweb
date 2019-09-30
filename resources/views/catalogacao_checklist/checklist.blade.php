@@ -11,7 +11,6 @@
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/sticky-header.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/asscrollable.js') }}"></script>
-  <script src="{{ asset('assets/js/Plugin/animate-list.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/action-btn.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/asselectable.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/selectable.js') }}"></script>
@@ -50,10 +49,9 @@
         <!-- Media Content -->
         <div id="mediaContent" class="page-content page-content-table" data-plugin="selectable">
           <!-- Media -->
-          <div class="media-list is-grid pb-50" data-plugin="animateList" data-animate="fade" data-child="li">
-            <ul class="blocks blocks-100 blocks-xxl-4 blocks-xl-3 blocks-lg-3 blocks-md-2 blocks-sm-2"
-              data-plugin="animateList" data-child=">li">
-              @foreach ($catalogacao->itens->sortBy('produto.descricao') as $i => $item)
+          <div class="media-list is-grid pb-50" data-child="li">
+            <ul class="blocks blocks-100 blocks-xxl-4 blocks-xl-3 blocks-lg-3 blocks-md-2 blocks-sm-2" data-child=">li">
+              @foreach ($itens as $i => $item)
                 <li>
                   <input type="hidden" name="itens[{{$i}}][id]" value="{{ $item->id }}">
                   <div class="media-item bg-white">
@@ -74,7 +72,7 @@
                       <table class="table table-bordered">
                         <tr>
                           <td class="p-10 font-weight-500 text-right" style="width: 15%">Material:</td>
-                          <td class="p-10" style="width: 85%">{{ $item->material->descricao ?? '' }}</td>
+                          <td class="p-10" style="width: 85%">{{ $item->material->descricao ?? '' }} {{ $item->milesimos ? "$item->milesimos mil" : '' }}</td>
                         </tr>
                         <tr>
                           <td class="p-10 font-weight-500 text-right" style="width: 15%">Fornecedor:</td>

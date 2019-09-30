@@ -69,8 +69,8 @@
                   <span class="site-menu-title">Materiais</span>
                 </a>
               </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
+              <li class="site-menu-item{{ Request::is('cadastros/tipos_servico*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('tipos_servico.index') }}">
                   <span class="site-menu-title">Tipos de Serviço</span>
                 </a>
               </li>
@@ -79,13 +79,13 @@
                   <span class="site-menu-title">Cores</span>
                 </a>
               </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
+              <li class="site-menu-item{{ Request::is('cadastros/produtos*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('produtos.index') }}">
                   <span class="site-menu-title">Produtos</span>
                 </a>
               </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
+              <li class="site-menu-item{{ Request::is('cadastros/tipos_transporte*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('tipos_transporte.index') }}">
                   <span class="site-menu-title">Tipos de Transporte</span>
                 </a>
               </li>

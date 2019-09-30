@@ -19,7 +19,7 @@
     </div>
 
     <div class="page-content">
-      <form class="panel" action="{{ route('clientes.update', $cliente->id) }}" autocomplete="off">
+      <form class="panel" method="post" action="{{ route('clientes.update', $cliente->id) }}" autocomplete="off">
         <input type="hidden" name="_method" value="PUT">
         {{ csrf_field() }}
         <ul class="nav nav-tabs nav-tabs-line" role="tablist">

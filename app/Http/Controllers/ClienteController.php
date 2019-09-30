@@ -74,7 +74,42 @@ class ClienteController extends Controller
   */
   public function store(Request $request)
   {
-    //
+    $request->validate([
+      'nome' => 'required|string|max:255',
+    ]);
+
+    $cliente = new Cliente;
+    $cliente->nome = $request->nome;
+    $cliente->tipopessoa = $request->tipopessoa;
+    $cliente->cpf = $request->cpf;
+    $cliente->rzsc = $request->rzsc;
+    $cliente->inscest = $request->inscest;
+    $cliente->idguia = $request->idguia;
+    $cliente->telefone = $request->telefone;
+    $cliente->celular = $request->celular;
+    $cliente->email = $request->email;
+    $cliente->telefone2 = $request->telefone2;
+    $cliente->celular2 = $request->celular2;
+    $cliente->email2 = $request->email2;
+    //$cliente->telefone3 = $request->telefone3;
+    $cliente->cep = $request->cep;
+    $cliente->endereco = $request->endereco;
+    $cliente->bairro = $request->bairro;
+    $cliente->cidade = $request->cidade;
+    $cliente->uf = $request->uf;
+    $cliente->cep_entrega = $request->cep_entrega;
+    $cliente->endereco_entrega = $request->endereco_entrega;
+    $cliente->bairro_entrega = $request->bairro_entrega;
+    $cliente->cidade_entrega = $request->cidade_entrega;
+    $cliente->uf_entrega = $request->uf_entrega;
+    $cliente->obs = $request->obs;
+    //$cliente->prospec_id = $request->prospec_id;
+    //$cliente->ativo = $request->ativo;
+    //$cliente->atualizado = $request->atualizado;
+    //$cliente->data_cadastro = $request->data_cadastro;
+    //$cliente->guia_inativo = $request->guia_inativo;
+
+    return redirect()->route('clientes.index');
   }
 
   /**
