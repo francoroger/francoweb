@@ -34,7 +34,8 @@ class CheckListCatalogacaoController extends Controller
     $data = [];
     foreach ($catalogacoes as $catalogacao) {
       $actions = '<div class="text-nowrap">';
-      $actions .= $catalogacao->status == 'F' ? '<a class="btn btn-sm btn-icon btn-flat btn-success" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-check"></i></a>' : '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="'.route('catalogacao_checklist.show', $catalogacao->id).'"><i class="icon wb-search"></i></a>';
+      $actions .= $catalogacao->status == 'F' ? '<a class="btn btn-sm btn-icon btn-flat btn-success" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-check"></i></a>' : '';
+      $actions .= $catalogacao->status == 'C' ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a> <a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="'.route('catalogacao_checklist.show', $catalogacao->id).'"><i class="icon wb-search"></i></a>' : '';
       $actions .= '</div>';
       $data[] = [
         'id' => $catalogacao->id,
