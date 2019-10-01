@@ -80,7 +80,7 @@ class CheckListCatalogacaoController extends Controller
       return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
 
-    return view('catalogacao_checklist.checklist')->with([
+    return view('catalogacao_checklist.check')->with([
       'catalogacao' => $catalogacao,
       'itens' => $itens,
     ]);

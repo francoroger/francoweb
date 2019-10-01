@@ -79,12 +79,20 @@
           }
         }
 
-        .checkbox-custom {
+        .checkbox-custom-left {
           position: absolute;
           margin: 0;
           padding: 0;
-          top: 9px;
-          left: 34px;
+          top: 5px;
+          left: 7px;
+        }
+
+        .checkbox-custom-right {
+          position: absolute;
+          margin: 0;
+          padding: 0;
+          top: 5px;
+          right: 10px;
         }
 
         .image-wrap {
