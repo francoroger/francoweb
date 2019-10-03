@@ -61,8 +61,14 @@ class CheckListCatalogacaoController extends Controller
   public function show($id)
   {
     $catalogacao = Catalogacao::findOrFail($id);
+
+    $itens = $catalogacao->itens->sortBy(function($item) {
+      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
+    });
+
     return view('catalogacao_checklist.show')->with([
       'catalogacao' => $catalogacao,
+      'itens' => $itens,
     ]);
   }
 
@@ -80,9 +86,14 @@ class CheckListCatalogacaoController extends Controller
       return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
 
+    $produtos = $catalogacao->itens->unique('produto.descricao')->sortBy('produto.descricao')->pluck('produto.descricao', 'produto.id');
+    $materiais = $catalogacao->itens->unique('material.descricao')->sortBy('material.descricao')->pluck('material.descricao', 'material.id');
+
     return view('catalogacao_checklist.check')->with([
       'catalogacao' => $catalogacao,
       'itens' => $itens,
+      'produtos' => $produtos,
+      'materiais' => $materiais,
     ]);
   }
 
@@ -97,13 +108,13 @@ class CheckListCatalogacaoController extends Controller
   {
     foreach ($request->itens as $item) {
       $catalogacao_item = CatalogacaoItem::findOrFail($item['id']);
-      $catalogacao_item->check = filter_var($item['check'], FILTER_VALIDATE_BOOLEAN);
+      $catalogacao_item->status_check = $item['status_check'];
       $catalogacao_item->obs_check = $item['obs_check'];
       $catalogacao_item->save();
     }
 
     $catalogacao = Catalogacao::findOrFail($id);
-    $catalogacao->status = 'C';
+    $catalogacao->status = $request->status;
     $catalogacao->save();
 
     return redirect()->route('catalogacao_checklist.index');
