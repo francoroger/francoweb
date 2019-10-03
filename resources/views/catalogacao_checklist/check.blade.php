@@ -43,10 +43,9 @@
           <div class="col-md-12">
             <span class="font-weight-500 mr-10">Filtros: </span>
             <div class="inline-block dropdown">
-              <div id="produtos-menu" data-toggle="dropdown" aria-expanded="false" role="button">
-                <span class="selected-item">Todos os Produtos</span>
-                <i class="icon wb-chevron-down-mini" aria-hidden="true"></i>
-              </div>
+              <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="produtos-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Todos os Produtos
+              </button>
               <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="produtos-menu" role="menu">
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todos os Produtos</a>
                 <div class="dropdown-divider"></div>
@@ -57,10 +56,9 @@
             </div>
             <div class="inline-block mx-5"></div>
             <div class="inline-block dropdown">
-              <div id="materiais-menu" data-toggle="dropdown" aria-expanded="false" role="button">
-                <span class="selected-item">Todos os Materiais</span>
-                <i class="icon wb-chevron-down-mini" aria-hidden="true"></i>
-              </div>
+              <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="materiais-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Todos os Materiais
+              </button>
               <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="materiais-menu" role="menu">
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todos os Materiais</a>
                 <div class="dropdown-divider"></div>
