@@ -34,15 +34,29 @@ class CheckListCatalogacaoController extends Controller
     $data = [];
     foreach ($catalogacoes as $catalogacao) {
       $actions = '<div class="text-nowrap">';
-      $actions .= $catalogacao->status == 'F' ? '<a class="btn btn-sm btn-icon btn-flat btn-success" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-check"></i></a>' : '';
+      $actions .= ($catalogacao->status == 'F' || $catalogacao->status == 'P') ? '<a class="btn btn-sm btn-icon btn-flat btn-success" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-check"></i></a>' : '';
       $actions .= $catalogacao->status == 'C' ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a> <a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="'.route('catalogacao_checklist.show', $catalogacao->id).'"><i class="icon wb-search"></i></a>' : '';
       $actions .= '</div>';
+      switch ($catalogacao->status) {
+        case 'F':
+          $status = '<span class="badge badge-danger">Aguardando</span>';
+          break;
+        case 'P':
+          $status = '<span class="badge badge-warning">Em Andamento</span>';
+          break;
+        case 'C':
+          $status = '<span class="badge badge-success">Concluída</span>';
+          break;
+        default:
+          break;
+      }
+
       $data[] = [
         'id' => $catalogacao->id,
         'cliente' => $catalogacao->cliente->nome ?? '',
         'datacad' => date('d/m/Y', strtotime($catalogacao->datacad)),
         'horacad' => date('H:i', strtotime($catalogacao->horacad)),
-        'status' => $catalogacao->status == 'F' ? '<span class="badge badge-outline badge-warning">Aguardando</span>' : '<span class="badge badge-outline badge-success">Concluída</span>',
+        'status' => $status,
         'actions' => $actions,
       ];
     }

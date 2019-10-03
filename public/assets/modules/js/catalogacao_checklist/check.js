@@ -77,7 +77,7 @@
         if (isConfirm) {
           (0, _jquery2.default)('#status').val('C');
         } else {
-          (0, _jquery2.default)('#status').val('F');
+          (0, _jquery2.default)('#status').val('P');
         }
         (0, _jquery2.default)("#check-form").unbind('submit').submit();
       });

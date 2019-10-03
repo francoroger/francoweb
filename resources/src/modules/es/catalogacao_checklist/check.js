@@ -68,7 +68,7 @@ $(document).ready(function($) {
       if (isConfirm) {
         $('#status').val('C');
       } else {
-        $('#status').val('F');
+        $('#status').val('P');
       }
       $("#check-form").unbind('submit').submit();
     });
