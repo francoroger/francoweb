@@ -20,7 +20,8 @@ $(document).ready(function($) {
         { data: 'status', sClass: "text-center" },
         { data: 'actions', sClass: "text-center", orderable: false, searchable: false }
       ],
-      order: [[ 0, 'desc' ]]
+      order: [[ 0, 'desc' ]],
+      pageLength: 50,
     });
 
     $('#catalogacao-checklist-table').DataTable(options);

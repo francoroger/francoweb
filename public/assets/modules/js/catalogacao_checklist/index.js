@@ -27,7 +27,8 @@
 
       var options = _jquery2.default.extend(true, {}, defaults, {
         columns: [{ data: 'id' }, { data: 'cliente' }, { data: 'datacad' }, { data: 'horacad' }, { data: 'status', sClass: "text-center" }, { data: 'actions', sClass: "text-center", orderable: false, searchable: false }],
-        order: [[0, 'desc']]
+        order: [[0, 'desc']],
+        pageLength: 50
       });
 
       (0, _jquery2.default)('#catalogacao-checklist-table').DataTable(options);
