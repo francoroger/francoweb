@@ -112,6 +112,27 @@ class CheckListCatalogacaoController extends Controller
   }
 
   /**
+  * Salva o conteúdo preenchido via ajax.
+  *
+  * @param  \Illuminate\Http\Request  $request
+  * @return \Illuminate\Http\Response
+  */
+  public function autosave(Request $request)
+  {
+    $itens = json_decode($request->itens);
+    foreach ($itens as $item) {
+      if ($item->status_check || $item->obs_check) {
+        $catalogacao_item = CatalogacaoItem::findOrFail($item->id);
+        $catalogacao_item->status_check = $item->status_check;
+        $catalogacao_item->obs_check = $item->obs_check;
+        $catalogacao_item->save();
+      }
+    }
+
+    return response(200);
+  }
+
+  /**
   * Update the specified resource in storage.
   *
   * @param  \Illuminate\Http\Request  $request

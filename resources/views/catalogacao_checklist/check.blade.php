@@ -3,17 +3,25 @@
 @push('stylesheets_plugins')
   <link rel="stylesheet" href="{{ asset('assets/modules/css/catalogacao_checklist/checklist.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/ladda/ladda.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/magnific-popup/magnific-popup.css') }}">
 @endpush
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.js') }}"></script>
   <script src="{{ asset('assets/vendor/isotope/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/ladda/spin.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/ladda/ladda.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/magnific-popup/jquery.magnific-popup.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
   <script src="{{ asset('assets/modules/js/catalogacao_checklist/check.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/filterable.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/ladda.js') }}"></script>
+
+
 @endpush
 
 @section('body-class', 'app-media')
@@ -34,7 +42,11 @@
           </div>
           <div class="col-md-3 text-right">
             <!-- Ações -->
-            <button type="submit" class="btn btn-success btn-sm"><i class="icon wb-check" aria-hidden="true"></i> Salvar</button>
+            <button type="button" id="btn-autosave" class="btn btn-default btn-sm ladda-button" data-url="{{ route('catalogacao_checklist.autosave') }}" data-token="{{ csrf_token() }}" data-style="expand-left" data-size="xs" disabled>
+              <span class="ladda-label">
+                <i class="icon wb-check mr-10" aria-hidden="true"></i> Salvo
+              </span>
+            </button>
           </div>
         </div>
 
@@ -79,27 +91,29 @@
                 <input type="hidden" name="itens[{{$loop->index}}][id]" value="{{ $item->id }}">
                 <div class="media-item bg-white{{ $item->status_check == 'S' ? ' border-success' : '' }}{{ $item->status_check == 'N' ? ' border-danger' : '' }}">
                   <div class="checkbox-custom checkbox-success checkbox-lg checkbox-custom-left">
-                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="S" id="media_s{{$loop->index}}" {{ $item->status_check == 'S' ? 'checked' : '' }} />
-                    <label for="media_s{{$loop->index}}"></label>
+                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="S" id="status_check_s{{$loop->index}}" {{ $item->status_check == 'S' ? 'checked' : '' }} />
+                    <label for="status_check_s{{$loop->index}}"></label>
                   </div>
 
                   <div class="checkbox-custom checkbox-danger checkbox-lg checkbox-custom-right">
-                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="N" id="media_n{{$loop->index}}" {{ $item->status_check == 'N' ? 'checked' : '' }} />
-                    <label for="media_n{{$loop->index}}"></label>
+                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="N" id="status_check_n{{$loop->index}}" {{ $item->status_check == 'N' ? 'checked' : '' }} />
+                    <label for="status_check_n{{$loop->index}}"></label>
                   </div>
 
                   <div class="checkbox-custom checkbox-lg checkbox-custom-bottom d-none">
-                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="" id="media_u{{$loop->index}}" {{ $item->status_check == '' ? 'checked' : '' }} />
-                    <label for="media_u{{$loop->index}}"></label>
+                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="" id="status_check_u{{$loop->index}}" {{ $item->status_check == '' ? 'checked' : '' }} />
+                    <label for="status_check_u{{$loop->index}}"></label>
                   </div>
 
-                  <div class="image-wrap">
-                    @if (file_exists('fotos/'.$item->foto))
-                      <img class="image img-rounded" src="{{ asset('fotos/'.$item->foto) }}" alt="{{ $item->foto }}">
-                    @else
-                      <img class="image img-rounded" src="{{ asset('assets/photos/placeholder.png') }}" alt="{{ $item->foto }}">
-                    @endif
-                  </div>
+                  @if (file_exists('fotos/'.$item->foto))
+                    <div class="image-wrap" data-mfp-src="{{ asset('fotos/'.$item->foto) }}">
+                      <img class="image img-rounded" src="{{ route('thumbnail', ['src' => 'fotos/'.$item->foto, 'height' => 200]) }}" alt="{{ $item->foto }}">
+                    </div>
+                  @else
+                    <div class="image-wrap" data-mfp-src="{{ asset('assets/photos/placeholder.png') }}">
+                      <img class="image img-rounded" src="{{ route('thumbnail', ['src' => 'assets/photos/placeholder.png', 'height' => 200]) }}" alt="{{ $item->foto }}">
+                    </div>
+                  @endif
                   <div class="info-wrap">
                     <div class="title text-center"><h4>{{ $item->produto->descricao ?? '' }}</h4></div>
                     <table class="table table-bordered">

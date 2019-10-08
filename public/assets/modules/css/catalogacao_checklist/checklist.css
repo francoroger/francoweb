@@ -43,6 +43,10 @@
   overflow: hidden;
 }
 
+.app-media .media-list .image-wrap {
+  cursor: zoom-in;
+}
+
 .app-media .media-list .image-wrap > .image {
   max-width: 100%;
 }

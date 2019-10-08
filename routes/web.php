@@ -14,6 +14,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('thumbnail', 'HomeController@thumbnail')->name('thumbnail');
 
 Route::group(['prefix' => 'cadastros'], function() {
   //Clientes
@@ -53,6 +54,7 @@ Route::group(['prefix' => 'catalogacao'], function() {
   //Check list catalogação
   Route::get('checklist/ajax', 'CheckListCatalogacaoController@ajax')->name('catalogacao_checklist.ajax');
   Route::get('checklist', 'CheckListCatalogacaoController@index')->name('catalogacao_checklist.index');
+  Route::post('checklist', 'CheckListCatalogacaoController@autosave')->name('catalogacao_checklist.autosave');
   Route::get('checklist/{id}', 'CheckListCatalogacaoController@show')->name('catalogacao_checklist.show');
   Route::get('checklist/{id}/check', 'CheckListCatalogacaoController@check')->name('catalogacao_checklist.check');
   Route::put('checklist/{id}', 'CheckListCatalogacaoController@update')->name('catalogacao_checklist.update');

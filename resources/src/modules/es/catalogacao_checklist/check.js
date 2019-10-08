@@ -3,12 +3,110 @@ import * as Site from 'Site';
 
 $(document).ready(function($) {
   Site.run();
+
+  grid = $('#itens_catalogo').isotope();
+
+  $('.image-wrap').magnificPopup({
+    type: 'image',
+    closeOnContentClick: true,
+    mainClass: 'mfp-fade',
+    tClose: 'Fechar (Esc)',
+    tLoading: 'Carregando...',
+    gallery: {
+      enabled: false
+    }
+  });
+
+  autosave();
 });
+
+var updatetime = 30000;
+
+var changed = false;
+
+var grid;
+
+window.autosave = function() {
+  if (changed) {
+    $('#btn-autosave').trigger('click');
+    changed = false;
+  }
+  setTimeout(autosave, updatetime)
+};
+
+//Form change
+(function() {
+  $(document).on('change', 'form :input', function() {
+    changed = true;
+    $('#btn-autosave').prop('disabled', false);
+    $('#btn-autosave .ladda-label').html('<i class="icon wb-check mr-10" aria-hidden="true"></i> Salvar');
+    $('#btn-autosave').addClass('btn-success');
+    $('#btn-autosave').removeClass('btn-default');
+  })
+})();
+
+//Ajax Save btn click
+(function() {
+  $(document).on('click', '#btn-autosave', function() {
+    //Button
+    var btn = $(this);
+    btn.html('Salvando...');
+
+    //Ajax Params
+    var route = btn.data('url');
+    var token = btn.data('token');
+
+    //Ladda
+    var l = Ladda.create(document.querySelector('#btn-autosave'));
+    l.start();
+    l.isLoading();
+    l.setProgress(0 - 1);
+
+    //FormData
+    var formData = new FormData();
+    formData.append('id', $('input[name="id"]').val());
+    var itens = [];
+    $('input[name*="[id]"]').each(function(i) {
+      var name = $(this).attr('name');
+      itens.push({
+        id: $(this).val(),
+        status_check: $('input[name="'+name.replace('id', 'status_check')+'"]:checked').val(),
+        obs_check: $('input[name="'+name.replace('id', 'obs_check')+'"]').val()
+      })
+    });
+    formData.append('itens', JSON.stringify(itens));
+
+    //Ajax
+    $.ajax({
+      url: route,
+      headers: {'X-CSRF-TOKEN': token},
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      cache: false,
+      processData:false,
+      success: function (data)
+      {
+        l.stop();
+        btn.html('<i class="icon wb-check mr-10" aria-hidden="true"></i> Salvo');
+        $('#btn-autosave').prop('disabled', true);
+        $('#btn-autosave').addClass('btn-default');
+        $('#btn-autosave').removeClass('btn-success');
+      },
+      error: function(jqXHR, textStatus, errorThrown)
+      {
+        console.log(jqXHR);
+      }
+    });
+  });
+})();
 
 // Filter
 (function() {
   $(document).on('click', '.dropdown-item', function() {
-    $(this).parent().parent().find('.selected-item').html($(this).text());
+    let btn = $(this).parent().parent();
+
+    btn.find('.selected-item').html($(this).text());
 
     $(this).parent()
       .find('.dropdown-item.active')
@@ -28,8 +126,12 @@ $(document).ready(function($) {
     });
     let selector = filters.join('');
 
-    $('#itens_catalogo').isotope({
+    grid.isotope({
       filter: selector
+    });
+
+    grid.on('arrangeComplete', function(filteredItems) {
+
     });
   });
 })();
