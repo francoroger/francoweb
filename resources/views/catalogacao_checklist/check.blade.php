@@ -107,11 +107,11 @@
 
                   @if (file_exists('fotos/'.$item->foto))
                     <div class="image-wrap" data-mfp-src="{{ asset('fotos/'.$item->foto) }}">
-                      <img class="image img-rounded" src="{{ route('thumbnail', ['src' => 'fotos/'.$item->foto, 'height' => 200]) }}" alt="{{ $item->foto }}">
+                      <img class="image img-rounded" src="{{ route('thumbnail', ['src' => 'fotos/'.$item->foto, 'height' => 528]) }}" alt="{{ $item->foto }}">
                     </div>
                   @else
                     <div class="image-wrap" data-mfp-src="{{ asset('assets/photos/placeholder.png') }}">
-                      <img class="image img-rounded" src="{{ route('thumbnail', ['src' => 'assets/photos/placeholder.png', 'height' => 200]) }}" alt="{{ $item->foto }}">
+                      <img class="image img-rounded" src="{{ route('thumbnail', ['src' => 'assets/photos/placeholder.png', 'height' => 528]) }}" alt="{{ $item->foto }}">
                     </div>
                   @endif
                   <div class="info-wrap">
