@@ -4,8 +4,6 @@ import * as Site from 'Site';
 $(document).ready(function($) {
   Site.run();
 
-  grid = $('#itens_catalogo').isotope();
-
   $('.image-wrap').magnificPopup({
     type: 'image',
     closeOnContentClick: true,
@@ -126,13 +124,9 @@ window.autosave = function() {
     });
     let selector = filters.join('');
 
-    grid.isotope({
-      filter: selector
-    });
+    grid = $('#itens_catalogo').isotope();
 
-    grid.on('arrangeComplete', function(filteredItems) {
-
-    });
+    
   });
 })();
 
