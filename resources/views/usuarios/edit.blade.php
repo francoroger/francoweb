@@ -20,8 +20,8 @@
 
     <div class="page-content">
       <form class="panel" method="post" action="{{ route('usuarios.update', $usuario->id) }}" autocomplete="off">
-        @csrf
         <input type="hidden" name="_method" value="PUT">
+        @csrf
         <div class="panel-body container-fluid">
           <div class="row">
             <div class="form-group col-md-12">

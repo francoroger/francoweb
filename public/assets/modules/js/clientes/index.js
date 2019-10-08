@@ -19,6 +19,12 @@
     (0, _Site.run)();
   });
 
+  var tbClientes;
+
+  window.removeTableRow = function (row) {
+    tbClientes.row(row).remove().draw();
+  };
+
   // Tabela Clientes
   // ---------------------------
   (function () {
@@ -29,7 +35,7 @@
         columns: [{ data: 'nome' }, { data: 'cpf' }, { data: 'cidade' }, { data: 'uf' }, { data: 'telefone' }, { data: 'status', sClass: "text-center" }, { data: 'actions', sClass: "text-center", orderable: false, searchable: false }]
       });
 
-      (0, _jquery2.default)('#clientes-table').DataTable(options);
+      tbClientes = (0, _jquery2.default)('#clientes-table').DataTable(options);
     });
   })();
 

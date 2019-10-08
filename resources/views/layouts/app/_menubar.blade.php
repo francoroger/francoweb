@@ -64,8 +64,8 @@
                   <span class="site-menu-title">Fornecedores</span>
                 </a>
               </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
+              <li class="site-menu-item{{ Request::is('cadastros/materiais*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('materiais.index') }}">
                   <span class="site-menu-title">Materiais</span>
                 </a>
               </li>

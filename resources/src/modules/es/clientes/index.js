@@ -5,6 +5,12 @@ $(document).ready(function($) {
   Site.run();
 });
 
+var tbClientes;
+
+window.removeTableRow = function(row) {
+  tbClientes.row(row).remove().draw();
+};
+
 // Tabela Clientes
 // ---------------------------
 (function() {
@@ -23,7 +29,7 @@ $(document).ready(function($) {
       ]
     });
 
-    $('#clientes-table').DataTable(options);
+    tbClientes = $('#clientes-table').DataTable(options);
   });
 })();
 

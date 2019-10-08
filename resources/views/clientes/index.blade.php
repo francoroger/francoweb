@@ -59,8 +59,8 @@
           success: function (data)
           {
             var el = $("#clientes-table").find("[data-id='" + id + "']");
-            el.parent().parent().parent().remove();
-            //location.reload();
+            var row = el.parent().parent().parent();
+            removeTableRow(row);
           }
         });
       }

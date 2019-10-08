@@ -27,6 +27,10 @@ Route::group(['prefix' => 'cadastros'], function() {
   Route::put('cores/{id}', 'CorController@update')->name('cores.update');
   Route::delete('cores/{id}', 'CorController@destroy')->name('cores.destroy');
 
+  //Materiais
+  Route::get('materiais/ajax', 'MaterialController@ajax')->name('materiais.ajax');
+  Route::resource('materiais', 'MaterialController');
+
   //Produtos
   Route::get('produtos', 'ProdutoController@index')->name('produtos.index');
   Route::post('produtos', 'ProdutoController@store')->name('produtos.store');

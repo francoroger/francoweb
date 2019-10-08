@@ -9,4 +9,9 @@ class Material extends Model
   protected $table = 'material';
 
   public $timestamps = false;
+
+  public function cores()
+  {
+    return $this->belongsToMany('App\Cor', 'coresmat', 'idmaterial', 'idcor');
+  }
 }

@@ -6,22 +6,31 @@
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('assets/plugins/jQuery-Mask-Plugin/dist/jquery.mask.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/jquery-mask.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/clientes/edit.js') }}"></script>
 @endpush
 
 @section('content')
   <div class="page">
-    <div class="page-header">
-      <h1 class="page-title font-size-26 font-weight-100">{{ $cliente->nome }}</h1>
-    </div>
-
-    <div class="page-content">
-      <form class="panel" method="post" action="{{ route('clientes.update', $cliente->id) }}" autocomplete="off">
-        <input type="hidden" name="_method" value="PUT">
-        {{ csrf_field() }}
+    <form class="panel" method="post" action="{{ route('clientes.update', $cliente->id) }}" autocomplete="off">
+      <input type="hidden" name="_method" value="PUT">
+      @csrf
+      <div class="page-header">
+        <h1 class="page-title font-size-26 font-weight-100">{{ $cliente->nome }}</h1>
+        <div class="page-header-actions">
+          <div class="float-left mr-10">
+            <input type="hidden" name="ativo" value="0">
+            <input type="checkbox" id="ativo" name="ativo" data-plugin="switchery" value="1" {{ old('ativo', $cliente->ativo) == 1 ? 'checked' : '' }} />
+          </div>
+          <label class="pt-3" for="ativo">Ativo</label>
+        </div>
+      </div>
+      <div class="page-content">
         <ul class="nav nav-tabs nav-tabs-line" role="tablist">
           <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-principal" aria-controls="tab-principal" role="tab" aria-expanded="true">Dados Cadastrais</a></li>
           <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-endereco" aria-controls="tab-endereco" role="tab">Endereço</a></li>
@@ -32,8 +41,8 @@
             <div class="tab-pane active" id="tab-principal" role="tabpanel">
               <div class="row">
                 <div class="form-group col-md-9">
-                  <label class="form-control-label" for="nome">Nome <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" placeholder="Nome / Apelido" value="{{ old('nome', $cliente->nome) }}" required />
+                  <label class="form-control-label" for="nome">Apelido <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" placeholder="Nome Fantasia / Apelido" value="{{ old('nome', $cliente->nome) }}" required />
                   @error('nome')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -44,11 +53,11 @@
                   <label class="form-control-label">Pessoa <span class="text-danger">*</span></label>
                   <div>
                     <div class="radio-custom radio-default radio-inline">
-                      <input type="radio" id="pessoa_fisica" name="tipopessoa" />
+                      <input type="radio" id="pessoa_fisica" name="tipopessoa" value="F" {{ old('tipopessoa', $cliente->tipopessoa) == 'F' ? 'checked' : '' }} />
                       <label for="pessoa_fisica">Física</label>
                     </div>
                     <div class="radio-custom radio-default radio-inline">
-                      <input type="radio" id="pessoa_juridica" name="tipopessoa" />
+                      <input type="radio" id="pessoa_juridica" name="tipopessoa" value="J" {{ old('tipopessoa', $cliente->tipopessoa) == 'J' ? 'checked' : '' }} />
                       <label for="pessoa_juridica">Jurídica</label>
                     </div>
                   </div>
@@ -66,7 +75,7 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-9">
-                  <label class="form-control-label" for="rzsc">Razão Social</label>
+                  <label class="form-control-label" for="rzsc">Razão Social / Nome</label>
                   <input type="text" class="form-control @error('rzsc') is-invalid @enderror" id="rzsc" name="rzsc" placeholder="Razão Social / Nome Completo" value="{{ old('rzsc', $cliente->rzsc) }}" />
                   @error('rzsc')
                     <span class="invalid-feedback" role="alert">
@@ -91,7 +100,7 @@
                   <select class="form-control @error('idguia') is-invalid @enderror" id="idguia" name="idguia" data-plugin="select2" data-placeholder="Selecione o guia...">
                     <option value=""></option>
                     @foreach ($guias as $guia)
-                      <option value="{{ $guia->id }}"{{ old('idguia') == $guia->id ? ' selected' : '' }}{{ $guia->ativo ? '' : ' disabled' }}>{{ $guia->nome }}</option>
+                      <option value="{{ $guia->id }}"{{ old('idguia', $cliente->idguia) == $guia->id ? ' selected' : '' }}{{ $guia->ativo ? '' : ' disabled' }}>{{ $guia->nome }}</option>
                     @endforeach
                   </select>
                   @error('idguia')
@@ -105,7 +114,7 @@
               <div class="row">
                 <div class="form-group col-md-3">
                   <label class="form-control-label" for="telefone">Telefone</label>
-                  <input type="text" class="form-control @error('telefone') is-invalid @enderror" id="telefone" name="telefone" placeholder="Telefone Principal" value="{{ old('telefone', $cliente->telefone) }}" />
+                  <input type="text" class="form-control @error('telefone') is-invalid @enderror" id="telefone" name="telefone" placeholder="Telefone Principal" value="{{ old('telefone', $cliente->telefone) }}" data-plugin="mask" data-type="cellphone" />
                   @error('telefone')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -114,7 +123,7 @@
                 </div>
                 <div class="form-group col-md-3">
                   <label class="form-control-label" for="celular">Celular <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control @error('celular') is-invalid @enderror" id="celular" name="celular" placeholder="Celular Principal" value="{{ old('celular', $cliente->celular) }}" required />
+                  <input type="text" class="form-control @error('celular') is-invalid @enderror" id="celular" name="celular" placeholder="Celular Principal" value="{{ old('celular', $cliente->celular) }}" "data-plugin="mask" data-type="cellphone" required />
                   @error('celular')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -134,7 +143,7 @@
 
               <div class="row">
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control @error('telefone2') is-invalid @enderror" id="telefone2" name="telefone2" placeholder="Telefone Secundário" value="{{ old('telefone2', $cliente->telefone2) }}" />
+                  <input type="text" class="form-control @error('telefone2') is-invalid @enderror" id="telefone2" name="telefone2" placeholder="Telefone Secundário" value="{{ old('telefone2', $cliente->telefone2) }}" "data-plugin="mask" data-type="cellphone" />
                   @error('telefone2')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -142,7 +151,7 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control @error('celular2') is-invalid @enderror" id="celular2" name="celular2" placeholder="Celular Secundário" value="{{ old('celular2', $cliente->celular2) }}" />
+                  <input type="text" class="form-control @error('celular2') is-invalid @enderror" id="celular2" name="celular2" placeholder="Celular Secundário" value="{{ old('celular2', $cliente->celular2) }}" "data-plugin="mask" data-type="cellphone" />
                   @error('celular2')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -159,6 +168,17 @@
                 </div>
               </div>
 
+              <div class="row">
+                <div class="form-group col-md-3">
+                  <input type="text" class="form-control @error('telefone3') is-invalid @enderror" id="telefone3" name="telefone3" placeholder="Telefone Alternativo" value="{{ old('telefone3', $cliente->telefone3) }}" "data-plugin="mask" data-type="cellphone" />
+                  @error('telefone3')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+              </div>
+
             </div>
             <div class="tab-pane" id="tab-endereco" role="tabpanel">
 
@@ -167,12 +187,7 @@
               <div class="row">
                 <div class="form-group col-md-3">
                   <label class="form-control-label" for="cep">CEP</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control @error('cep') is-invalid @enderror" id="cep" name="cep" placeholder="CEP" value="{{ old('cep', $cliente->cep) }}" />
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default btn-outline">Pesquisar</button>
-                    </span>
-                  </div>
+                  <input type="text" class="form-control @error('cep') is-invalid @enderror" id="cep" name="cep" placeholder="CEP" value="{{ old('cep', $cliente->cep) }}" data-plugin="mask" data-pattern="00000-000" />
                   @error('cep')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -254,12 +269,7 @@
               <div class="row">
                 <div class="form-group col-md-3">
                   <label class="form-control-label" for="cep_entrega">CEP</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control @error('cep_entrega') is-invalid @enderror" id="cep_entrega" name="cep_entrega" placeholder="CEP" value="{{ old('cep_entrega', $cliente->cep_entrega) }}" />
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default btn-outline">Pesquisar</button>
-                    </span>
-                  </div>
+                  <input type="text" class="form-control @error('cep_entrega') is-invalid @enderror" id="cep_entrega" name="cep_entrega" placeholder="CEP" value="{{ old('cep_entrega', $cliente->cep_entrega) }}" data-plugin="mask" data-pattern="00000-000" />
                   @error('cep_entrega')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -338,13 +348,33 @@
 
             </div>
             <div class="tab-pane" id="tab-obs" role="tabpanel">
-              <div class="form-group">
-                <textarea class="form-control @error('obs') is-invalid @enderror" id="obs" name="obs" rows="15" placeholder="Observações, comentários, notas...">{{ old('obs', $cliente->obs) }}</textarea>
-                @error('obs')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label class="form-control-label" for="prospec_id">Como nos conheceu?</label>
+                  <select class="form-control @error('prospec_id') is-invalid @enderror" id="prospec_id" name="prospec_id">
+                    <option value=""></option>
+                    @foreach ($meiosProspec as $meio)
+                      <option value="{{ $meio->id }}"{{ old('prospec_id', $cliente->prospec_id) == $meio->id ? ' selected' : '' }}>{{ $meio->descricao }}</option>
+                    @endforeach
+                  </select>
+                  @error('prospec_id')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label class="form-control-label" for="obs">Observações</label>
+                  <textarea class="form-control @error('obs') is-invalid @enderror" id="obs" name="obs" rows="15" placeholder="Observações, comentários, notas...">{{ old('obs', $cliente->obs) }}</textarea>
+                  @error('obs')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
               </div>
             </div>
           </div>
@@ -355,10 +385,8 @@
             <button type="submit" class="btn btn-success">Salvar</button>
           </div>
         </div>
-      </form>
-
-
-    </div>
+      </div>
+    </form>
   </div>
 
 @endsection
