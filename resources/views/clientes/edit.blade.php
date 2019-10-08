@@ -123,7 +123,7 @@
                 </div>
                 <div class="form-group col-md-3">
                   <label class="form-control-label" for="celular">Celular <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control @error('celular') is-invalid @enderror" id="celular" name="celular" placeholder="Celular Principal" value="{{ old('celular', $cliente->celular) }}" "data-plugin="mask" data-type="cellphone" required />
+                  <input type="text" class="form-control @error('celular') is-invalid @enderror" id="celular" name="celular" placeholder="Celular Principal" value="{{ old('celular', $cliente->celular) }}" data-plugin="mask" data-type="cellphone" required />
                   @error('celular')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -143,7 +143,7 @@
 
               <div class="row">
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control @error('telefone2') is-invalid @enderror" id="telefone2" name="telefone2" placeholder="Telefone Secundário" value="{{ old('telefone2', $cliente->telefone2) }}" "data-plugin="mask" data-type="cellphone" />
+                  <input type="text" class="form-control @error('telefone2') is-invalid @enderror" id="telefone2" name="telefone2" placeholder="Telefone Secundário" value="{{ old('telefone2', $cliente->telefone2) }}" data-plugin="mask" data-type="cellphone" />
                   @error('telefone2')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -151,7 +151,7 @@
                   @enderror
                 </div>
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control @error('celular2') is-invalid @enderror" id="celular2" name="celular2" placeholder="Celular Secundário" value="{{ old('celular2', $cliente->celular2) }}" "data-plugin="mask" data-type="cellphone" />
+                  <input type="text" class="form-control @error('celular2') is-invalid @enderror" id="celular2" name="celular2" placeholder="Celular Secundário" value="{{ old('celular2', $cliente->celular2) }}" data-plugin="mask" data-type="cellphone" />
                   @error('celular2')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -170,7 +170,7 @@
 
               <div class="row">
                 <div class="form-group col-md-3">
-                  <input type="text" class="form-control @error('telefone3') is-invalid @enderror" id="telefone3" name="telefone3" placeholder="Telefone Alternativo" value="{{ old('telefone3', $cliente->telefone3) }}" "data-plugin="mask" data-type="cellphone" />
+                  <input type="text" class="form-control @error('telefone3') is-invalid @enderror" id="telefone3" name="telefone3" placeholder="Telefone Alternativo" value="{{ old('telefone3', $cliente->telefone3) }}" data-plugin="mask" data-type="cellphone" />
                   @error('telefone3')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>

@@ -97,7 +97,7 @@
                 </div>
                 <div class="form-group col-md-9">
                   <label class="form-control-label" for="idguia">Guia</label>
-                  <select class="form-control @error('idguia') is-invalid @enderror" id="idguia" name="idguia" data-plugin="select2" data-placeholder="Selecione o guia...">
+                  <select class="form-control @error('idguia') is-invalid @enderror" id="idguia" name="idguia" data-plugin="select2">
                     <option value=""></option>
                     @foreach ($guias as $guia)
                       <option value="{{ $guia->id }}"{{ old('idguia') == $guia->id ? ' selected' : '' }}{{ $guia->ativo ? '' : ' disabled' }}>{{ $guia->nome }}</option>
