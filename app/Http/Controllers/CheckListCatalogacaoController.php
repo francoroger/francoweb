@@ -129,6 +129,10 @@ class CheckListCatalogacaoController extends Controller
       }
     }
 
+    $catalogacao = Catalogacao::findOrFail($request->id);
+    $catalogacao->status = 'P';
+    $catalogacao->save();
+
     return response(200);
   }
 
