@@ -44,28 +44,14 @@ $(document).ready(function($) {
 
 //Busca CEP
 (function() {
-  $(document).on('keyup', '#cep, #cep_entrega', function(event) {
+  $(document).on('keyup', '#cep', function(event) {
     let cep = $(this).val().trim();
     if (cep.length == 9) {
-      let endereco;
-      let bairro;
-      let cidade;
-      let estado;
-      let numero;
-
-      if ($(this).attr('id') == 'cep') {
-        endereco = $('#endereco');
-        bairro = $('#bairro');
-        cidade = $('#cidade');
-        estado = $('#uf');
-        numero = $('#numero');
-      } else if ($(this).attr('id') == 'cep_entrega') {
-        endereco = $('#endereco_entrega');
-        bairro = $('#bairro_entrega');
-        cidade = $('#cidade_entrega');
-        estado = $('#uf_entrega');
-        numero = $('#numero_entrega');
-      }
+      let endereco = $('#endereco');
+      let bairro = $('#bairro');
+      let cidade = $('#cidade');
+      let estado = $('#uf');
+      let numero = $('#numero');
 
       $.ajax({
         url: 'http://cep.republicavirtual.com.br/web_cep.php?cep='+cep+'&formato=json',

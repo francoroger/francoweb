@@ -14,4 +14,9 @@ class Material extends Model
   {
     return $this->belongsToMany('App\Cor', 'coresmat', 'idmaterial', 'idcor');
   }
+
+  public function cotacoes()
+  {
+    return $this->hasMany('App\Cotacao', 'idmaterial', 'id');
+  }
 }

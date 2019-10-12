@@ -59,8 +59,8 @@
 
           <div class="row">
             <div class="form-group col-md-3">
-              <label class="form-control-label" for="cpf">CPF / CNPJ <span class="text-danger">*</span></label>
-              <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf" placeholder="CPF / CNPJ" value="{{ old('cpf', $cliente->cpf) }}" required />
+              <label class="form-control-label" for="cpf">CPF / CNPJ</label>
+              <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf" placeholder="CPF / CNPJ" value="{{ old('cpf', $cliente->cpf) }}" />
               @error('cpf')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -89,7 +89,14 @@
               @enderror
             </div>
             <div class="form-group col-md-9">
-              <label class="form-control-label" for="idguia">Guia</label>
+              <label class="form-control-label w-full" for="idguia">
+                <span>Guia</span>
+                <div class="inline-block float-right">
+                  <label for="guia_inativo">Inativo</label>
+                  <input type="hidden" name="guia_inativo" value="0">
+                  <input type="checkbox" id="guia_inativo" name="guia_inativo" value="1" {{ old('guia_inativo', $cliente->guia_inativo) == 1 ? 'checked' : '' }} />
+                </div>
+              </label>
               <select class="form-control @error('idguia') is-invalid @enderror" id="idguia" name="idguia" data-plugin="select2" data-placeholder="Selecione o guia...">
                 <option value=""></option>
                 @foreach ($guias as $guia)
@@ -103,6 +110,8 @@
               @enderror
             </div>
           </div>
+
+          <h4 class="example-title">Contato</h4>
 
           <div class="row">
             <div class="form-group col-md-3">
@@ -124,8 +133,8 @@
               @enderror
             </div>
             <div class="form-group col-md-6">
-              <label class="form-control-label" for="email">E-mail <span class="text-danger">*</span></label>
-              <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="E-mail Principal" value="{{ old('email', $cliente->email) }}" required />
+              <label class="form-control-label" for="email">E-mail</label>
+              <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="E-mail Principal" value="{{ old('email', $cliente->email) }}" />
               @error('email')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -196,6 +205,24 @@
           </div>
 
           <div class="row">
+            <div class="form-group col-md-3">
+              <label class="form-control-label" for="numero">Número</label>
+              <input type="text" class="form-control @error('numero') is-invalid @enderror" id="numero" name="numero" placeholder="Número" value="{{ old('numero', $cliente->numero) }}" />
+              @error('numero')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+            <div class="form-group col-md-4">
+              <label class="form-control-label" for="compl">Complemento</label>
+              <input type="text" class="form-control @error('compl') is-invalid @enderror" id="compl" name="compl" placeholder="Complemento" value="{{ old('compl', $cliente->compl) }}" />
+              @error('compl')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
             <div class="form-group col-md-5">
               <label class="form-control-label" for="bairro">Bairro</label>
               <input type="text" class="form-control @error('bairro') is-invalid @enderror" id="bairro" name="bairro" placeholder="Bairro" value="{{ old('bairro', $cliente->bairro) }}" />
@@ -205,7 +232,10 @@
                 </span>
               @enderror
             </div>
-            <div class="form-group col-md-5">
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-10">
               <label class="form-control-label" for="cidade">Cidade</label>
               <input type="text" class="form-control @error('cidade') is-invalid @enderror" id="cidade" name="cidade" placeholder="Cidade" value="{{ old('cidade', $cliente->cidade) }}" />
               @error('cidade')
@@ -278,6 +308,24 @@
           </div>
 
           <div class="row">
+            <div class="form-group col-md-3">
+              <label class="form-control-label" for="numero_entrega">Número</label>
+              <input type="text" class="form-control @error('numero_entrega') is-invalid @enderror" id="numero_entrega" name="numero_entrega" placeholder="Número" value="{{ old('numero_entrega', $cliente->numero_entrega) }}" />
+              @error('numero_entrega')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+            <div class="form-group col-md-4">
+              <label class="form-control-label" for="compl_entrega">Complemento</label>
+              <input type="text" class="form-control @error('compl_entrega') is-invalid @enderror" id="compl_entrega" name="compl_entrega" placeholder="Complemento" value="{{ old('compl_entrega', $cliente->compl_entrega) }}" />
+              @error('compl_entrega')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
             <div class="form-group col-md-5">
               <label class="form-control-label" for="bairro_entrega">Bairro</label>
               <input type="text" class="form-control @error('bairro_entrega') is-invalid @enderror" id="bairro_entrega" name="bairro_entrega" placeholder="Bairro" value="{{ old('bairro_entrega', $cliente->bairro_entrega) }}" />
@@ -287,7 +335,10 @@
                 </span>
               @enderror
             </div>
-            <div class="form-group col-md-5">
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-10">
               <label class="form-control-label" for="cidade_entrega">Cidade</label>
               <input type="text" class="form-control @error('cidade_entrega') is-invalid @enderror" id="cidade_entrega" name="cidade_entrega" placeholder="Cidade" value="{{ old('cidade_entrega', $cliente->cidade_entrega) }}" />
               @error('cidade_entrega')
@@ -336,6 +387,8 @@
             </div>
           </div>
 
+          <h4 class="example-title">Informações Adicionais</h4>
+
           <div class="row">
             <div class="form-group col-md-12">
               <label class="form-control-label" for="prospec_id">Como nos conheceu?</label>
@@ -364,7 +417,7 @@
               @enderror
             </div>
           </div>
-          
+
         </div>
         <div class="panel-footer text-right">
           <div class="form-group">

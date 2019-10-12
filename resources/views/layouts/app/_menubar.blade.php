@@ -54,13 +54,13 @@
                   <span class="site-menu-title">Clientes</span>
                 </a>
               </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
+              <li class="site-menu-item{{ Request::is('cadastros/guias*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('guias.index') }}">
                   <span class="site-menu-title">Guias</span>
                 </a>
               </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
+              <li class="site-menu-item{{ Request::is('cadastros/fornecedores*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('fornecedores.index') }}">
                   <span class="site-menu-title">Fornecedores</span>
                 </a>
               </li>

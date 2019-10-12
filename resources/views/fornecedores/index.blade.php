@@ -39,7 +39,7 @@
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/datatables.js') }}"></script>
-  <script src="{{ asset('assets/modules/js/clientes/index.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/fornecedores/index.js') }}"></script>
 
   <script src="{{ asset('assets/js/Plugin/bootbox.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
@@ -48,17 +48,17 @@
   <script src="{{ asset('assets/examples/js/advanced/bootbox-sweetalert.js') }}"></script>
 
   <script type="text/javascript">
-    function excluirCliente(id)
+    function excluirFornecedor(id)
     {
       if (id) {
         $.ajax({
-          url: "{{ route('clientes.destroy', '') }}/" + id,
+          url: "{{ route('fornecedores.destroy', '') }}/" + id,
           headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
           type: 'DELETE',
           dataType: "json",
           success: function (data)
           {
-            var el = $("#clientes-table").find("[data-id='" + id + "']");
+            var el = $("#fornecedores-table").find("[data-id='" + id + "']");
             var row = el.parent().parent().parent();
             removeTableRow(row);
           },
@@ -76,10 +76,10 @@
 @section('content')
   <div class="page">
     <div class="page-header">
-      <h1 class="page-title font-size-26 font-weight-100">Clientes</h1>
+      <h1 class="page-title font-size-26 font-weight-100">Fornecedores</h1>
       <div class="page-header-actions">
         <div class="btn-group btn-group-sm" aria-label="Ações" role="group">
-          <a href="{{ route('clientes.create') }}" class="btn btn-info">
+          <a href="{{ route('fornecedores.create') }}" class="btn btn-info">
             <i class="icon wb-plus" aria-hidden="true"></i>
             <span class="hidden-sm-down">Adicionar</span>
           </a>
@@ -90,7 +90,7 @@
     <div class="page-content">
       <div class="panel">
         <div class="panel-body">
-          <table class="table table-hover dataTable table-striped w-full" id="clientes-table" data-ajax="{{ route('clientes.ajax') }}" data-processing="true">
+          <table class="table table-hover dataTable table-striped w-full" id="fornecedores-table" data-ajax="{{ route('fornecedores.ajax') }}" data-processing="true">
             <thead>
               <tr>
                 <th>Nome</th>

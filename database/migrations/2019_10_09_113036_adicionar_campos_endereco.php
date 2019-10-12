@@ -28,6 +28,7 @@ class AdicionarCamposEndereco extends Migration
     Schema::table('guia', function (Blueprint $table) {
       $table->string('numero')->nullable()->after('endereco');
       $table->string('compl')->nullable()->after('numero');
+      $table->string('uf', 2)->nullable();
     });
   }
 
@@ -53,6 +54,7 @@ class AdicionarCamposEndereco extends Migration
     Schema::table('guia', function (Blueprint $table) {
       $table->dropColumn('numero');
       $table->dropColumn('compl');
+      $table->dropColumn('uf');
     });
   }
 }

@@ -79,7 +79,6 @@ class ClienteController extends Controller
   */
   public function store(Request $request)
   {
-    dd($request->ativo);
     $request->validate([
       'nome' => 'required|string|max:255',
     ]);
@@ -91,6 +90,7 @@ class ClienteController extends Controller
     $cliente->rzsc = $request->rzsc;
     $cliente->inscest = $request->inscest;
     $cliente->idguia = $request->idguia;
+    $cliente->guia_inativo = $request->guia_inativo;
     $cliente->telefone = $request->telefone;
     $cliente->celular = $request->celular;
     $cliente->email = $request->email;
@@ -100,11 +100,15 @@ class ClienteController extends Controller
     $cliente->telefone3 = $request->telefone3;
     $cliente->cep = $request->cep;
     $cliente->endereco = $request->endereco;
+    $cliente->numero = $request->numero;
+    $cliente->compl = $request->compl;
     $cliente->bairro = $request->bairro;
     $cliente->cidade = $request->cidade;
     $cliente->uf = $request->uf;
     $cliente->cep_entrega = $request->cep_entrega;
     $cliente->endereco_entrega = $request->endereco_entrega;
+    $cliente->numero_entrega = $request->numero_entrega;
+    $cliente->compl_entrega = $request->compl_entrega;
     $cliente->bairro_entrega = $request->bairro_entrega;
     $cliente->cidade_entrega = $request->cidade_entrega;
     $cliente->uf_entrega = $request->uf_entrega;
@@ -113,7 +117,6 @@ class ClienteController extends Controller
     $cliente->ativo = $request->ativo;
     $cliente->atualizado = 'N';
     $cliente->data_cadastro = Carbon::now();
-    //$cliente->guia_inativo = $request->guia_inativo;
     $cliente->save();
 
     return redirect()->route('clientes.index');
@@ -182,11 +185,15 @@ class ClienteController extends Controller
     $cliente->telefone3 = $request->telefone3;
     $cliente->cep = $request->cep;
     $cliente->endereco = $request->endereco;
+    $cliente->numero = $request->numero;
+    $cliente->compl = $request->compl;
     $cliente->bairro = $request->bairro;
     $cliente->cidade = $request->cidade;
     $cliente->uf = $request->uf;
     $cliente->cep_entrega = $request->cep_entrega;
     $cliente->endereco_entrega = $request->endereco_entrega;
+    $cliente->numero_entrega = $request->numero_entrega;
+    $cliente->compl_entrega = $request->compl_entrega;
     $cliente->bairro_entrega = $request->bairro_entrega;
     $cliente->cidade_entrega = $request->cidade_entrega;
     $cliente->uf_entrega = $request->uf_entrega;

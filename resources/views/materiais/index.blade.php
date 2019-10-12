@@ -61,6 +61,11 @@
             var el = $("#materiais-table").find("[data-id='" + id + "']");
             var row = el.parent().parent().parent();
             removeTableRow(row);
+          },
+          error: function(jqXHR, textStatus, errorThrown)
+          {
+            alert('erro');
+            console.log(jqXHR);
           }
         });
       }
@@ -89,7 +94,7 @@
             <thead>
               <tr>
                 <th>Descrição</th>
-                <th class="text-center">Ações</th>
+                <th style="width:100px;" class="text-center">Ações</th>
               </tr>
             </thead>
             <tbody></tbody>

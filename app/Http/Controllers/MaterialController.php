@@ -40,6 +40,7 @@ class MaterialController extends Controller
     foreach ($materiais as $material) {
       $actions = '<div class="text-nowrap">';
       $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('materiais.edit', $material->id).'"><i class="icon wb-pencil"></i></a>';
+      $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-success" title="Cotações" href="'.route('materiais.cotacoes', $material->id).'"><i class="fa fa-usd"></i></a>';
       $actions .= '<button class="btn btn-sm btn-icon btn-flat btn-danger btn-delete" title="Excluir" data-id="'.$material->id.'"><i class="icon wb-trash"></i></button>';
       $actions .= '</div>';
       $data[] = [
@@ -149,5 +150,19 @@ class MaterialController extends Controller
     if ($material->delete()) {
       return response(200);
     }
+  }
+
+  /**
+  * Obtem a cotação atual do material
+  *
+  * @param  int  $id
+  * @return \Illuminate\Http\JsonResponse
+  */
+  public function cotacao($id)
+  {
+    $material = Material::findOrFail($id);
+    return response()->json([
+      'valorg' => $material->cotacoes->count() > 0 ? $material->cotacoes->sortByDesc('data')->first()->valorg : '0,00'
+    ]);
   }
 }

@@ -58,9 +58,14 @@
           dataType: "json",
           success: function (data)
           {
-            //var el = $("#usuarios-table").find("[data-id='" + id + "']");
-            //el.parent().parent().parent().remove();
-            location.reload();
+            var el = $("#usuarios-table").find("[data-id='" + id + "']");
+            var row = el.parent().parent().parent();
+            removeTableRow(row);
+          },
+          error: function(jqXHR, textStatus, errorThrown)
+          {
+            alert('erro');
+            console.log(jqXHR);
           }
         });
       }

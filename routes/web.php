@@ -21,6 +21,14 @@ Route::group(['prefix' => 'cadastros'], function() {
   Route::get('clientes/ajax', 'ClienteController@ajax')->name('clientes.ajax');
   Route::resource('clientes', 'ClienteController');
 
+  //Fornecedores
+  Route::get('fornecedores/ajax', 'FornecedorController@ajax')->name('fornecedores.ajax');
+  Route::resource('fornecedores', 'FornecedorController');
+
+  //Guias
+  Route::get('guias/ajax', 'GuiaController@ajax')->name('guias.ajax');
+  Route::resource('guias', 'GuiaController');
+
   //Cores
   Route::get('cores', 'CorController@index')->name('cores.index');
   Route::post('cores', 'CorController@store')->name('cores.store');
@@ -29,6 +37,10 @@ Route::group(['prefix' => 'cadastros'], function() {
 
   //Materiais
   Route::get('materiais/ajax', 'MaterialController@ajax')->name('materiais.ajax');
+  Route::get('materiais/{id}/cotacao', 'MaterialController@cotacao')->name('materiais.cotacao');
+  Route::get('materiais/{id}/cotacoes', 'CotacaoController@index')->name('materiais.cotacoes');
+  Route::post('materiais/cotacoes', 'CotacaoController@store')->name('cotacoes.store');
+  Route::delete('materiais/cotacoes/{id}', 'CotacaoController@destroy')->name('cotacoes.destroy');
   Route::resource('materiais', 'MaterialController');
 
   //Produtos

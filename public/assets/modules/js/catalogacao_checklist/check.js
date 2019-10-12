@@ -18,8 +18,6 @@
   (0, _jquery2.default)(document).ready(function ($$$1) {
     (0, _Site.run)();
 
-    grid = $$$1('#itens_catalogo').isotope();
-
     $$$1('.image-wrap').magnificPopup({
       type: 'image',
       closeOnContentClick: true,
@@ -135,11 +133,7 @@
       });
       var selector = filters.join('');
 
-      grid.isotope({
-        filter: selector
-      });
-
-      grid.on('arrangeComplete', function (filteredItems) {});
+      grid = (0, _jquery2.default)('#itens_catalogo').isotope();
     });
   })();
 

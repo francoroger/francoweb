@@ -12,15 +12,15 @@
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/jquery-mask.js') }}"></script>
-  <script src="{{ asset('assets/modules/js/clientes/edit.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/fornecedores/edit.js') }}"></script>
 @endpush
 
 @section('content')
   <div class="page">
-    <form class="panel" method="post" action="{{ route('clientes.store') }}" autocomplete="off">
+    <form class="panel" method="post" action="{{ route('fornecedores.store') }}" autocomplete="off">
       @csrf
       <div class="page-header">
-        <h1 class="page-title font-size-26 font-weight-100">Novo Cliente</h1>
+        <h1 class="page-title font-size-26 font-weight-100">Novo Fornecedor</h1>
         <div class="page-header-actions">
           <div class="float-left mr-10">
             <input type="hidden" name="ativo" value="0">
@@ -89,20 +89,6 @@
                 </span>
               @enderror
             </div>
-            <div class="form-group col-md-9">
-              <label class="form-control-label" for="idguia">Guia</label>
-              <select class="form-control @error('idguia') is-invalid @enderror" id="idguia" name="idguia" data-plugin="select2">
-                <option value=""></option>
-                @foreach ($guias as $guia)
-                  <option value="{{ $guia->id }}"{{ old('idguia') == $guia->id ? ' selected' : '' }}{{ $guia->ativo ? '' : ' disabled' }}>{{ $guia->nome }}</option>
-                @endforeach
-              </select>
-              @error('idguia')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
           </div>
 
           <h4 class="example-title">Contato</h4>
@@ -164,18 +150,7 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="form-group col-md-3">
-              <input type="text" class="form-control @error('telefone3') is-invalid @enderror" id="telefone3" name="telefone3" placeholder="Telefone Alternativo" value="{{ old('telefone3') }}" data-plugin="mask" data-type="cellphone" />
-              @error('telefone3')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-          </div>
-
-          <h4 class="example-title">Endereço Principal</h4>
+          <h4 class="example-title">Endereço</h4>
 
           <div class="row">
             <div class="form-group col-md-3">
@@ -278,126 +253,7 @@
             </div>
           </div>
 
-          <h4 class="example-title">Endereço de Entrega</h4>
-
-          <div class="row">
-            <div class="form-group col-md-3">
-              <label class="form-control-label" for="cep_entrega">CEP</label>
-              <input type="text" class="form-control @error('cep_entrega') is-invalid @enderror" id="cep_entrega" name="cep_entrega" placeholder="CEP" value="{{ old('cep_entrega') }}" data-plugin="mask" data-pattern="00000-000" />@error('cep_entrega')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-            <div class="form-group col-md-9">
-              <label class="form-control-label" for="endereco_entrega">Endereço</label>
-              <input type="text" class="form-control @error('endereco_entrega') is-invalid @enderror" id="endereco_entrega" name="endereco_entrega" placeholder="Endereço" value="{{ old('endereco_entrega') }}" />
-              @error('endereco_entrega')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-3">
-              <label class="form-control-label" for="numero_entrega">Número</label>
-              <input type="text" class="form-control @error('numero_entrega') is-invalid @enderror" id="numero_entrega" name="numero_entrega" placeholder="Número" value="{{ old('numero_entrega') }}" />
-              @error('numero_entrega')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-            <div class="form-group col-md-4">
-              <label class="form-control-label" for="compl_entrega">Complemento</label>
-              <input type="text" class="form-control @error('compl_entrega') is-invalid @enderror" id="compl_entrega" name="compl_entrega" placeholder="Complemento" value="{{ old('compl_entrega') }}" />
-              @error('compl_entrega')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-            <div class="form-group col-md-5">
-              <label class="form-control-label" for="bairro_entrega">Bairro</label>
-              <input type="text" class="form-control @error('bairro_entrega') is-invalid @enderror" id="bairro_entrega" name="bairro_entrega" placeholder="Bairro" value="{{ old('bairro_entrega') }}" />
-              @error('bairro_entrega')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-10">
-              <label class="form-control-label" for="cidade_entrega">Cidade</label>
-              <input type="text" class="form-control @error('cidade_entrega') is-invalid @enderror" id="cidade_entrega" name="cidade_entrega" placeholder="Cidade" value="{{ old('cidade_entrega') }}" />
-              @error('cidade_entrega')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-            <div class="form-group col-md-2">
-              <label class="form-control-label" for="uf_entrega">UF</label>
-              <select class="form-control @error('uf_entrega') is-invalid @enderror" id="uf_entrega" name="uf_entrega">
-                <option value=""></option>
-                <option value="AC"{{ old('uf_entrega') == 'AC' ? ' selected' : '' }}>AC</option>
-                <option value="AL"{{ old('uf_entrega') == 'AL' ? ' selected' : '' }}>AL</option>
-                <option value="AP"{{ old('uf_entrega') == 'AP' ? ' selected' : '' }}>AP</option>
-                <option value="AM"{{ old('uf_entrega') == 'AM' ? ' selected' : '' }}>AM</option>
-                <option value="BA"{{ old('uf_entrega') == 'BA' ? ' selected' : '' }}>BA</option>
-                <option value="CE"{{ old('uf_entrega') == 'CE' ? ' selected' : '' }}>CE</option>
-                <option value="DF"{{ old('uf_entrega') == 'DF' ? ' selected' : '' }}>DF</option>
-                <option value="ES"{{ old('uf_entrega') == 'ES' ? ' selected' : '' }}>ES</option>
-                <option value="GO"{{ old('uf_entrega') == 'GO' ? ' selected' : '' }}>GO</option>
-                <option value="MA"{{ old('uf_entrega') == 'MA' ? ' selected' : '' }}>MA</option>
-                <option value="MT"{{ old('uf_entrega') == 'MT' ? ' selected' : '' }}>MT</option>
-                <option value="MS"{{ old('uf_entrega') == 'MS' ? ' selected' : '' }}>MS</option>
-                <option value="MG"{{ old('uf_entrega') == 'MG' ? ' selected' : '' }}>MG</option>
-                <option value="PA"{{ old('uf_entrega') == 'PA' ? ' selected' : '' }}>PA</option>
-                <option value="PB"{{ old('uf_entrega') == 'PB' ? ' selected' : '' }}>PB</option>
-                <option value="PR"{{ old('uf_entrega') == 'PR' ? ' selected' : '' }}>PR</option>
-                <option value="PE"{{ old('uf_entrega') == 'PE' ? ' selected' : '' }}>PE</option>
-                <option value="PI"{{ old('uf_entrega') == 'PI' ? ' selected' : '' }}>PI</option>
-                <option value="RJ"{{ old('uf_entrega') == 'RJ' ? ' selected' : '' }}>RJ</option>
-                <option value="RN"{{ old('uf_entrega') == 'RN' ? ' selected' : '' }}>RN</option>
-                <option value="RS"{{ old('uf_entrega') == 'RS' ? ' selected' : '' }}>RS</option>
-                <option value="RO"{{ old('uf_entrega') == 'RO' ? ' selected' : '' }}>RO</option>
-                <option value="RR"{{ old('uf_entrega') == 'RR' ? ' selected' : '' }}>RR</option>
-                <option value="SC"{{ old('uf_entrega') == 'SC' ? ' selected' : '' }}>SC</option>
-                <option value="SP"{{ old('uf_entrega') == 'SP' ? ' selected' : '' }}>SP</option>
-                <option value="SE"{{ old('uf_entrega') == 'SE' ? ' selected' : '' }}>SE</option>
-                <option value="TO"{{ old('uf_entrega') == 'TO' ? ' selected' : '' }}>TO</option>
-              </select>
-              @error('uf_entrega')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-          </div>
-
           <h4 class="example-title">Informações Adicionais</h4>
-
-          <div class="row">
-            <div class="form-group col-md-12">
-              <label class="form-control-label" for="prospec_id">Como nos conheceu?</label>
-              <select class="form-control @error('prospec_id') is-invalid @enderror" id="prospec_id" name="prospec_id">
-                <option value=""></option>
-                @foreach ($meiosProspec as $meio)
-                  <option value="{{ $meio->id }}"{{ old('prospec_id') == $meio->id ? ' selected' : '' }}>{{ $meio->descricao }}</option>
-                @endforeach
-              </select>
-              @error('prospec_id')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-          </div>
 
           <div class="row">
             <div class="form-group col-md-12">
@@ -414,7 +270,7 @@
         </div>
         <div class="panel-footer text-right">
           <div class="form-group">
-            <a class="btn btn-default" href="{{ route('clientes.index') }}" role="button">Cancelar</a>
+            <a class="btn btn-default" href="{{ route('fornecedores.index') }}" role="button">Cancelar</a>
             <button type="submit" class="btn btn-success">Salvar</button>
           </div>
         </div>
