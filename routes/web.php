@@ -16,6 +16,7 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('thumbnail', 'HomeController@thumbnail')->name('thumbnail');
 Route::get('webcam', 'HomeController@webcam')->name('webcam');
+Route::get('phpinfo', function() { phpinfo(); })->name('phpinfo');
 
 Route::group(['prefix' => 'cadastros'], function() {
   //Clientes
