@@ -48,5 +48,10 @@ class HomeController extends Controller
     return response()->make($cacheimage, 200, array('Content-Type' => 'image/jpeg'));
   }
 
+  public function webcam()
+  {
+    return view('dashboard.webcam');
+  }
+
 
 }

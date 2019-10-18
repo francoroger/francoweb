@@ -55,7 +55,9 @@ class DataTable extends Plugin {
         aria: {
           sortAscending: ': Ordenar colunas de forma ascendente',
           sortDescending: ': Ordenar colunas de forma descendente'
-        }
+        },
+        decimal: ",",
+        thousands: ".",
         // ,paginate: {
         //   previous: '<i class="icon wb-chevron-left-mini"></i>',
         //   next: '<i class="icon wb-chevron-right-mini"></i>'

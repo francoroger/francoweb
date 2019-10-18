@@ -27,6 +27,11 @@ class FornecedorController extends Controller
     return view('fornecedores.index');
   }
 
+  /**
+  * Process ajax request.
+  *
+  * @return \Illuminate\Http\JsonResponse
+  */
   public function ajax(Request $request)
   {
     $fornecedores = Fornecedor::all();

@@ -1,0 +1,16 @@
+@import "vars";
+
+.text-active,
+.active > .text,
+.active > .auto .text {
+  display: none !important;
+}
+
+.active > .text-active,
+.active > .auto .text-active {
+  display: inline-block !important;
+}
+
+.active .icon {
+  line-height: 1;
+}

@@ -86,11 +86,14 @@
             aria: {
               sortAscending: ': Ordenar colunas de forma ascendente',
               sortDescending: ': Ordenar colunas de forma descendente'
-              // ,paginate: {
-              //   previous: '<i class="icon wb-chevron-left-mini"></i>',
-              //   next: '<i class="icon wb-chevron-right-mini"></i>'
-              // }
-            }
+            },
+            decimal: ",",
+            thousands: "."
+            // ,paginate: {
+            //   previous: '<i class="icon wb-chevron-left-mini"></i>',
+            //   next: '<i class="icon wb-chevron-right-mini"></i>'
+            // }
+
             // ,
             // classes: {
             //   sFilterInput: "form-control form-control-sm",

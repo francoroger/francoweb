@@ -59,7 +59,7 @@
     }
   });
 
-    //Paginação do Preview
+  //Paginação do Preview
   $(document).on('click', '.pagination li a', function(event) {
     event.preventDefault();
     var page = $(this).attr('href').split('page=')[1];

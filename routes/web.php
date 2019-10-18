@@ -15,6 +15,7 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('thumbnail', 'HomeController@thumbnail')->name('thumbnail');
+Route::get('webcam', 'HomeController@webcam')->name('webcam');
 
 Route::group(['prefix' => 'cadastros'], function() {
   //Clientes
@@ -75,3 +76,12 @@ Route::group(['prefix' => 'catalogacao'], function() {
   Route::get('checklist/{id}/check', 'CheckListCatalogacaoController@check')->name('catalogacao_checklist.check');
   Route::put('checklist/{id}', 'CheckListCatalogacaoController@update')->name('catalogacao_checklist.update');
 });
+
+Route::group(['prefix' => 'relatorios'], function() {
+  Route::get('servicos', 'RelatorioServicoController@index')->name('relatorio_servicos.index');
+  Route::post('servicos', 'RelatorioServicoController@search')->name('relatorio_servicos.search');
+});
+
+//Recebimentos
+Route::get('recebimentos/ajax', 'RecebimentoController@ajax')->name('recebimentos.ajax');
+Route::resource('recebimentos', 'RecebimentoController');

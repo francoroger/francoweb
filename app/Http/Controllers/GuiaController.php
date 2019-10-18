@@ -27,6 +27,11 @@ class GuiaController extends Controller
     return view('guias.index');
   }
 
+  /**
+  * Process ajax request.
+  *
+  * @return \Illuminate\Http\JsonResponse
+  */
   public function ajax(Request $request)
   {
     $guias = Guia::all();

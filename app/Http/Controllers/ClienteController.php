@@ -30,6 +30,11 @@ class ClienteController extends Controller
     return view('clientes.index');
   }
 
+  /**
+  * Process ajax request.
+  *
+  * @return \Illuminate\Http\JsonResponse
+  */
   public function ajax(Request $request)
   {
     $clientes = Cliente::all();

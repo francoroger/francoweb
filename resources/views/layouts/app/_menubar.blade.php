@@ -11,8 +11,8 @@
             </a>
           </li>
           <li class="site-menu-category">Processo</li>
-          <li class="site-menu-item">
-            <a href="#">
+          <li class="site-menu-item{{ Request::is('recebimento*') ? ' active' : '' }}">
+            <a href="{{ route('recebimentos.index') }}">
               <i class="site-menu-icon wb-inbox" aria-hidden="true"></i>
               <span class="site-menu-title">Recebimento</span>
             </a>
@@ -102,16 +102,17 @@
               <span class="site-menu-title">Tabela de Preços</span>
             </a>
           </li>
-          <li class="site-menu-item has-sub">
+          <li class="site-menu-category">Consultas</li>
+          <li class="site-menu-item has-sub{{ Request::is('relatorios/*') ? ' active open' : '' }}">
             <a href="javascript:void(0)">
-              <i class="site-menu-icon wb-settings" aria-hidden="true"></i>
-              <span class="site-menu-title">Configurações</span>
+              <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+              <span class="site-menu-title">Relatórios</span>
               <span class="site-menu-arrow"></span>
             </a>
             <ul class="site-menu-sub">
-              <li class="site-menu-item">
-                <a class="animsition-link" href="#">
-                  <span class="site-menu-title">Cotações</span>
+              <li class="site-menu-item{{ Request::is('relatorios/servicos*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('relatorio_servicos.index') }}">
+                  <span class="site-menu-title">Serviços</span>
                 </a>
               </li>
             </ul>
