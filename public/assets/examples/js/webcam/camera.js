@@ -22,10 +22,5 @@
     var CameraClass1 = new Plugin.getPlugin('camera');
     var api1 = new CameraClass1($camera1, $camera1.data());
     api1.render();
-
-    var $camera2 = $$$1('#exampleCamera2');
-    var CameraClass2 = new Plugin.getPlugin('camera');
-    var api2 = new CameraClass2($camera2, $camera2.data());
-    api2.render();
   });
 });

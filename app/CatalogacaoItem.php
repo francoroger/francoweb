@@ -30,6 +30,11 @@ class CatalogacaoItem extends Model
     return $this->belongsTo('App\Produto', 'idproduto');
   }
 
+  public function servicos()
+  {
+    return $this->hasMany('App\CatalogacaoServico', 'iditemtri', 'id');
+  }
+
   /**
   * Get foto - trata o caminho para localizar a foto na estrutura de pastas
   * Exemplo: CATALOGAÇÃO/FOTOS CATALOGO YYYY/MM-YYYY/FILENAME.jpg
@@ -47,5 +52,10 @@ class CatalogacaoItem extends Model
     $mes = str_pad(str_replace('_', '', substr($filename, 5, 2)), 2, '0', STR_PAD_LEFT);
     //retorna o caminho concatenando com a raiz
     return "CATALOGAÇÃO/FOTOS CATALOGO $ano/$mes-$ano/$filename";
+  }
+
+  public function getValorComDescontoAttribute($value)
+  {
+    return $this->desconto > 0 ? $this->preco_bruto - ($this->preco_bruto * $this->desconto / 100) : $this->preco_bruto;
   }
 }

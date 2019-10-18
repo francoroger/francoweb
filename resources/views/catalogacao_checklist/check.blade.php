@@ -122,20 +122,38 @@
                         <td class="p-10" style="width: 85%">{{ $item->material->descricao ?? '' }} {{ $item->milesimos ? "$item->milesimos mil" : '' }}</td>
                       </tr>
                       <tr>
-                        <td class="p-10 font-weight-500 text-right" style="width: 15%">Fornecedor:</td>
-                        <td class="p-10" style="width: 85%">{{ $item->fornecedor->nome ?? '' }}</td>
-                      </tr>
-                      <tr>
                         <td class="p-10 font-weight-500 text-right" style="width: 15%">Peso:</td>
                         <td class="p-10" style="width: 85%">{{ number_format ($item->peso, 2, ',', '.') }} g</td>
                       </tr>
                       <tr>
-                        <td class="p-10 font-weight-500 text-right" style="width: 15%">Quantidade:</td>
-                        <td class="p-10" style="width: 85%">{{ number_format ($item->quantidade, 0, ',', '.') }}</td>
+                        <td class="p-10 font-weight-500 text-right" style="width: 15%">Fornecedor:</td>
+                        <td class="p-10" style="width: 85%">{{ $item->fornecedor->nome ?? '' }}</td>
+                      </tr>
+                      <tr>
+                        <td class="p-10 font-weight-500 text-right" style="width: 15%">Referência:</td>
+                        <td class="p-10" style="width: 85%">{{ $item->referencia }}</td>
                       </tr>
                       <tr>
                         <td class="p-10 font-weight-500 text-right" style="width: 15%">Bruto:</td>
-                        <td class="p-10" style="width: 85%">R$ {{ number_format ($item->preco_bruto, 2, ',', '.') }}</td>
+                        <td class="p-10" style="width: 85%">
+                          @if ($item->desconto)
+                            <span style="text-decoration:line-through;">
+                              R$ {{ number_format ($item->preco_bruto, 2, ',', '.') }}
+                            </span>
+                            <span class="text-danger font-weight-400">R$ {{ number_format ($item->valor_com_desconto, 2, ',', '.') }}</span>
+                          @else
+                            R$ {{ number_format ($item->preco_bruto, 2, ',', '.') }}
+                          @endif
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="p-10 font-weight-500 text-right" style="width: 15%">Banho:</td>
+                        <td class="p-10" style="width: 85%">R$ {{ number_format ($item->custo_total, 2, ',', '.') }}</td>
+                      </tr>
+                      <tr>
+                        <td class="p-10 font-weight-500 text-right" style="width: 15%">Quantidade:</td>
+                        <td class="p-10" style="width: 85%">{{ number_format ($item->quantidade, 0, ',', '.') }}</td>
                       </tr>
                       <tr>
                         <td class="p-10 font-weight-500 text-right" style="width: 15%">Informação:</td>

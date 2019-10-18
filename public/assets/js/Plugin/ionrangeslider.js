@@ -34,11 +34,6 @@
       value: function getName() {
         return NAME;
       }
-    }], [{
-      key: 'getDefaults',
-      value: function getDefaults() {
-        return {};
-      }
     }]);
     return IonRangeSlider;
   }(_Plugin3.default);
