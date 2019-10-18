@@ -97,7 +97,7 @@ class CheckListCatalogacaoController extends Controller
     $catalogacao = Catalogacao::findOrFail($id);
 
     $itens = $catalogacao->itens->sortBy(function($item) {
-      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->status_check);
+      return sprintf('%-12s%s', $item->descricao_produto, $item->status_check, $item->fornecedor->nome ?? '');
     });
 
     $produtos = $catalogacao->itens->unique('produto.descricao')->sortBy('produto.descricao')->pluck('produto.descricao', 'produto.id');
