@@ -141,14 +141,22 @@
 
   // Toggle border on check
   (function () {
-    (0, _jquery2.default)('input[type=radio]').change(function () {
+    (0, _jquery2.default)('input[type=radio]').on('change', function () {
       (0, _jquery2.default)(this).parent().parent().removeClass('bg-green-100');
       (0, _jquery2.default)(this).parent().parent().removeClass('bg-red-100');
+      (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Verificado');
+      (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_NaoVerificado');
+      (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Aprovado');
+      (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Reprovado');
 
       if (this.value == 'S') {
         (0, _jquery2.default)(this).parent().parent().addClass('bg-green-100');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_Verificado');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_Aprovado');
       } else if (this.value == 'N') {
         (0, _jquery2.default)(this).parent().parent().addClass('bg-red-100');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_Verificado');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_Reprovado');
       }
     });
   })();

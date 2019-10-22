@@ -1,7 +1,7 @@
 @extends('layouts.app.main')
 
 @push('stylesheets_plugins')
-  <link rel="stylesheet" href="{{ asset('assets/modules/css/catalogacao_checklist/checklist.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/modules/css/catalogacao_checklist/check.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/ladda/ladda.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/magnific-popup/magnific-popup.css') }}">
@@ -79,6 +79,20 @@
                 @endforeach
               </div>
             </div>
+            <div class="inline-block mx-5"></div>
+            <div class="inline-block dropdown">
+              <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="status-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Todas as Situações
+              </button>
+              <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="status-menu" role="menu">
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todas as Situações</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Verificado">Verificados</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Aprovado">Aprovados</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Reprovado">Reprovados</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_NaoVerificado">Não Verificados</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -87,21 +101,21 @@
         <div class="media-list is-grid" data-child="li">
           <ul class="blocks blocks-100 blocks-xxl-4 blocks-lg-3 blocks-md-2" id="itens_catalogo">
             @foreach ($itens as $item)
-              <li class="{{ $item->idmaterial ? 'Material_'.$item->idmaterial  : '' }} {{ $item->idproduto ? 'Produto_'.$item->idproduto  : '' }}">
+              <li class="{{ $item->idmaterial ? 'Material_'.$item->idmaterial  : '' }} {{ $item->idproduto ? 'Produto_'.$item->idproduto  : '' }} {{ $item->status_check ? ($item->status_check == 'S' ? 'Status_Verificado Status_Aprovado' : 'Status_Verificado Status_Reprovado') : 'Status_NaoVerificado' }}">
                 <input type="hidden" name="itens[{{$loop->index}}][id]" value="{{ $item->id }}">
-                <div class="media-item bg-white {{ $item->status_check == 'S' ? ' bg-green-100' : '' }}{{ $item->status_check == 'N' ? ' bg-red-100' : '' }}">
+                <div class="media-item bg-white{{ $item->status_check == 'S' ? ' bg-green-100' : '' }}{{ $item->status_check == 'N' ? ' bg-red-100' : '' }}">
                   <div class="checkbox-custom checkbox-success checkbox-lg checkbox-custom-left">
-                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="S" id="status_check_s{{$loop->index}}" {{ $item->status_check == 'S' ? 'checked' : '' }} />
+                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="S" id="status_check_s{{$loop->index}}"{{ $item->status_check == 'S' ? ' checked' : '' }} />
                     <label for="status_check_s{{$loop->index}}"></label>
                   </div>
 
                   <div class="checkbox-custom checkbox-danger checkbox-lg checkbox-custom-right">
-                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="N" id="status_check_n{{$loop->index}}" {{ $item->status_check == 'N' ? 'checked' : '' }} />
+                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="N" id="status_check_n{{$loop->index}}"{{ $item->status_check == 'N' ? ' checked' : '' }} />
                     <label for="status_check_n{{$loop->index}}"></label>
                   </div>
 
                   <div class="checkbox-custom checkbox-lg checkbox-custom-bottom d-none">
-                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="" id="status_check_u{{$loop->index}}" {{ $item->status_check == '' ? 'checked' : '' }} />
+                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="" id="status_check_u{{$loop->index}}"{{ $item->status_check == '' ? ' checked' : '' }} />
                     <label for="status_check_u{{$loop->index}}"></label>
                   </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Catalogacao;
 use App\CatalogacaoItem;
 use Illuminate\Http\Request;
+use PDF;
 
 class CheckListCatalogacaoController extends Controller
 {
@@ -36,6 +37,7 @@ class CheckListCatalogacaoController extends Controller
       $actions = '<div class="text-nowrap">';
       $actions .= ($catalogacao->status == 'F' || $catalogacao->status == 'P') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a>' : '';
       $actions .= $catalogacao->status == 'C' ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a> <a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="'.route('catalogacao_checklist.show', $catalogacao->id).'"><i class="icon wb-search"></i></a>' : '';
+      $actions .= $catalogacao->status == 'C' ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Imprimir" target="_blank" href="'.route('catalogacao_checklist.print', $catalogacao->id).'"><i class="icon wb-print"></i></a>' : '';
       $actions .= '</div>';
       switch ($catalogacao->status) {
         case 'F':
@@ -77,12 +79,17 @@ class CheckListCatalogacaoController extends Controller
     $catalogacao = Catalogacao::findOrFail($id);
 
     $itens = $catalogacao->itens->sortBy(function($item) {
-      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
+      return sprintf('%-12s%s', $item->status_check, $item->descricao_produto, $item->fornecedor->nome ?? '');
     });
+
+    $produtos = $catalogacao->itens->unique('produto.descricao')->sortBy('produto.descricao')->pluck('produto.descricao', 'produto.id');
+    $materiais = $catalogacao->itens->unique('material.descricao')->sortBy('material.descricao')->pluck('material.descricao', 'material.id');
 
     return view('catalogacao_checklist.show')->with([
       'catalogacao' => $catalogacao,
       'itens' => $itens,
+      'produtos' => $produtos,
+      'materiais' => $materiais,
     ]);
   }
 
@@ -157,5 +164,27 @@ class CheckListCatalogacaoController extends Controller
     $catalogacao->save();
 
     return redirect()->route('catalogacao_checklist.index');
+  }
+
+  /**
+  * Export to PDF.
+  *
+  * @param  int  $id
+  * @return \Illuminate\Http\Response
+  */
+  public function print($id)
+  {
+    $catalogacao = Catalogacao::findOrFail($id);
+
+    $itens = $catalogacao->itens->sortBy(function($item) {
+      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
+    });
+
+    $pdf = PDF::loadView('catalogacao_checklist.print', [
+      'catalogacao' => $catalogacao,
+      'itens' => $itens,
+    ]);
+
+    return $pdf->stream('checklist.pdf');
   }
 }

@@ -30,19 +30,9 @@ class ServicoItem extends Model
     return $this->belongsTo('App\Cor', 'idcor');
   }
 
-  public function getValorAttribute($value)
-  {
-    return number_format($value, 2, ',', '.');
-  }
-
   public function setValorAttribute($value)
   {
     isset($value) ? $this->attributes['valor'] = str_replace(',', '.', str_replace('.', '', $value)) : $this->attributes['valor'] = null;
-  }
-
-  public function getPesoAttribute($value)
-  {
-    return number_format($value, 2, ',', '.');
   }
 
   public function setPesoAttribute($value)

@@ -9,12 +9,13 @@
         <th>Tipo Serviço</th>
         <th>Material</th>
         <th>Cor</th>
-        <th>Ml</th>
-        <th>Valor</th>
-        <th>Peso (g)</th>
+        <th class="text-right">Ml</th>
+        <th class="text-right">Valor</th>
+        <th class="text-right">Peso (g)</th>
       </tr>
     </thead>
     <tbody>
+
       @foreach ($itens as $item)
         <tr>
           <td class="text-nowrap">{{ $item->servico->id }}</td>
@@ -24,11 +25,16 @@
           <td class="text-nowrap">{{ $item->tipo_servico->descricao ?? '' }}</td>
           <td class="text-nowrap">{{ $item->material->descricao ?? '' }}</td>
           <td class="text-nowrap">{{ $item->cor->descricao ?? '' }}</td>
-          <td class="text-nowrap">{{ $item->milesimos }}</td>
-          <td class="text-nowrap">R$ {{ $item->valor }}</td>
-          <td class="text-nowrap">{{ $item->peso }}</td>
+          <td class="text-nowrap text-right">{{ $item->milesimos }}</td>
+          <td class="text-nowrap text-right">R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
+          <td class="text-nowrap text-right">{{ number_format($item->peso, 1, ',', '.') }}</td>
         </tr>
       @endforeach
+      <tr class="font-weight-500">
+        <td colspan="8">Totais:</td>
+        <td class="text-nowrap text-right">R$ {{ number_format($total['valor'], 2, ',', '.') }}</td>
+        <td class="text-nowrap text-right">{{ number_format($total['peso'], 1, ',', '.') }} Kg</td>
+      </tr>
     </tbody>
   </table>
 </div>

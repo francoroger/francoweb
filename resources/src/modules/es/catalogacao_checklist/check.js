@@ -133,15 +133,23 @@ window.autosave = function() {
 
 // Toggle border on check
 (function() {
-  $('input[type=radio]').change(function() {
+  $('input[type=radio]').on('change', function() {
     $(this).parent().parent().removeClass('bg-green-100');
     $(this).parent().parent().removeClass('bg-red-100');
+    $(this).parent().parent().parent().removeClass('Status_Verificado');
+    $(this).parent().parent().parent().removeClass('Status_NaoVerificado');
+    $(this).parent().parent().parent().removeClass('Status_Aprovado');
+    $(this).parent().parent().parent().removeClass('Status_Reprovado');
 
     if (this.value == 'S') {
       $(this).parent().parent().addClass('bg-green-100');
+      $(this).parent().parent().parent().addClass('Status_Verificado');
+      $(this).parent().parent().parent().addClass('Status_Aprovado');
     }
     else if (this.value == 'N') {
       $(this).parent().parent().addClass('bg-red-100');
+      $(this).parent().parent().parent().addClass('Status_Verificado');
+      $(this).parent().parent().parent().addClass('Status_Reprovado');
     }
   });
 })();
