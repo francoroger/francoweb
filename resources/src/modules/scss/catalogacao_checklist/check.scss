@@ -260,6 +260,14 @@
     }
   }
 
+  .fspacer {
+    display: inline-block;
+  }
+
+  .fdropdown {
+    display: inline-block;
+  }
+
   @include media-breakpoint-down(xs) {
     .is-list {
       .info-wrap {
@@ -292,6 +300,14 @@
           margin-top: 20px;
         }
       }
+    }
+
+    .fspacer {
+      display: block !important;
+    }
+
+    .fdropdown {
+      display: block !important;
     }
   }
 

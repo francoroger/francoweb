@@ -104,7 +104,7 @@ class RelatorioServicoController extends Controller
     $total['valor'] = $itens->sum('valor');
     $total['peso'] = $itens->sum('peso') / 100;
 
-    $itens = $itens->paginate(10);
+    $itens = $itens->paginate(50);
 
     return response()->json(['view' => view('relatorios.servicos.result', ['itens' => $itens, 'total' => $total])->render()]);
   }

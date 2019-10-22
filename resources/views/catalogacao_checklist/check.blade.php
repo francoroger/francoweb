@@ -54,11 +54,11 @@
         <div class="row">
           <div class="col-md-12">
             <span class="font-weight-500 mr-10">Filtros: </span>
-            <div class="inline-block dropdown">
-              <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="produtos-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="fdropdown dropdown">
+              <button class="btn btn-block btn-secondary dropdown-toggle selected-item" type="button" id="produtos-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Todos os Produtos
               </button>
-              <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="produtos-menu" role="menu">
+              <div class="dropdown-menu w-full animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="produtos-menu" role="menu">
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todos os Produtos</a>
                 <div class="dropdown-divider"></div>
                 @foreach ($produtos as $i => $produto)
@@ -66,12 +66,12 @@
                 @endforeach
               </div>
             </div>
-            <div class="inline-block mx-5"></div>
-            <div class="inline-block dropdown">
-              <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="materiais-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="fspacer mx-5 my-5"></div>
+            <div class="fdropdown dropdown">
+              <button class="btn btn-block btn-secondary dropdown-toggle selected-item" type="button" id="materiais-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Todos os Materiais
               </button>
-              <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="materiais-menu" role="menu">
+              <div class="dropdown-menu w-full animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="materiais-menu" role="menu">
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todos os Materiais</a>
                 <div class="dropdown-divider"></div>
                 @foreach ($materiais as $i => $material)
@@ -79,12 +79,12 @@
                 @endforeach
               </div>
             </div>
-            <div class="inline-block mx-5"></div>
-            <div class="inline-block dropdown">
-              <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="status-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="fspacer mx-5 my-5"></div>
+            <div class="fdropdown dropdown">
+              <button class="btn btn-block btn-secondary dropdown-toggle selected-item" type="button" id="status-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Todas as Situações
               </button>
-              <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="status-menu" role="menu">
+              <div class="dropdown-menu w-full animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="status-menu" role="menu">
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todas as Situações</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Verificado">Verificados</a>
