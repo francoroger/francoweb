@@ -79,7 +79,7 @@ class CheckListCatalogacaoController extends Controller
     $catalogacao = Catalogacao::findOrFail($id);
 
     $itens = $catalogacao->itens->sortBy(function($item) {
-      return sprintf('%-12s%s', $item->status_check, $item->descricao_produto, $item->fornecedor->nome ?? '');
+      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
 
     $produtos = $catalogacao->itens->unique('produto.descricao')->sortBy('produto.descricao')->pluck('produto.descricao', 'produto.id');
@@ -104,7 +104,7 @@ class CheckListCatalogacaoController extends Controller
     $catalogacao = Catalogacao::findOrFail($id);
 
     $itens = $catalogacao->itens->sortBy(function($item) {
-      return sprintf('%-12s%s', $item->status_check, $item->descricao_produto, $item->fornecedor->nome ?? '');
+      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
 
     $produtos = $catalogacao->itens->unique('produto.descricao')->sortBy('produto.descricao')->pluck('produto.descricao', 'produto.id');
