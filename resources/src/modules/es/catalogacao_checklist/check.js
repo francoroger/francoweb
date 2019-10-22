@@ -124,23 +124,24 @@ window.autosave = function() {
     });
     let selector = filters.join('');
 
-    grid = $('#itens_catalogo').isotope();
+    grid = $('#itens_catalogo').isotope({
+      filter: selector
+    });
 
-    
   });
 })();
 
 // Toggle border on check
 (function() {
   $('input[type=radio]').change(function() {
-    $(this).parent().parent().removeClass('border-success');
-    $(this).parent().parent().removeClass('border-danger');
+    $(this).parent().parent().removeClass('bg-green-100');
+    $(this).parent().parent().removeClass('bg-red-100');
 
     if (this.value == 'S') {
-      $(this).parent().parent().addClass('border-success');
+      $(this).parent().parent().addClass('bg-green-100');
     }
     else if (this.value == 'N') {
-      $(this).parent().parent().addClass('border-danger');
+      $(this).parent().parent().addClass('bg-red-100');
     }
   });
 })();

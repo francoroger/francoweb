@@ -32,7 +32,7 @@
       <div class="row">
         <div class="col-md-6">
 
-          <div class="panel" id="exampleCamera1">
+          <div class="panel" id="exampleCamera1" data-url="{{ route('webcam.upload') }}" data-token="{{ csrf_token() }}">
             <div class="panel-heading">
               <h3 class="panel-title">Capturar Imagem</h3>
               <div class="panel-actions">
@@ -46,6 +46,9 @@
                 <button type="button" class="panel-action btn btn-default btn-outline" data-action="camera-snapshot">
                   <i class="fa fa-check mx-5"></i>
                 </button>
+                <button type="button" class="panel-action btn btn-default btn-outline" data-action="camera-upload">
+                  <i class="fa fa-upload mx-5"></i>
+                </button>
               </div>
             </div>
             <div class="panel-body">
@@ -56,12 +59,13 @@
                   <i class="icon wb-image"></i>
                 </div>
               </figure>
+              <input type="hidden" name="uploaded-file" value="">
             </div>
           </div>
 
         </div>
 
-        
+
       </div>
 
     </div>

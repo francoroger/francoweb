@@ -89,7 +89,7 @@
             @foreach ($itens as $item)
               <li class="{{ $item->idmaterial ? 'Material_'.$item->idmaterial  : '' }} {{ $item->idproduto ? 'Produto_'.$item->idproduto  : '' }}">
                 <input type="hidden" name="itens[{{$loop->index}}][id]" value="{{ $item->id }}">
-                <div class="media-item bg-white{{ $item->status_check == 'S' ? ' border-success' : '' }}{{ $item->status_check == 'N' ? ' border-danger' : '' }}">
+                <div class="media-item bg-white {{ $item->status_check == 'S' ? ' bg-green-100' : '' }}{{ $item->status_check == 'N' ? ' bg-red-100' : '' }}">
                   <div class="checkbox-custom checkbox-success checkbox-lg checkbox-custom-left">
                     <input type="radio" name="itens[{{$loop->index}}][status_check]" value="S" id="status_check_s{{$loop->index}}" {{ $item->status_check == 'S' ? 'checked' : '' }} />
                     <label for="status_check_s{{$loop->index}}"></label>

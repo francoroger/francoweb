@@ -60,7 +60,7 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 5px solid transparent;
+  border: 1px solid transparent;
   border-radius: .286rem;
 }
 
@@ -290,4 +290,8 @@
 
 .app-media .table > tbody > tr > td {
   cursor: default !important;
+}
+
+.app-media .page-content-table .table > tbody > tr:hover > td {
+  background-color: transparent;
 }

@@ -133,20 +133,22 @@
       });
       var selector = filters.join('');
 
-      grid = (0, _jquery2.default)('#itens_catalogo').isotope();
+      grid = (0, _jquery2.default)('#itens_catalogo').isotope({
+        filter: selector
+      });
     });
   })();
 
   // Toggle border on check
   (function () {
     (0, _jquery2.default)('input[type=radio]').change(function () {
-      (0, _jquery2.default)(this).parent().parent().removeClass('border-success');
-      (0, _jquery2.default)(this).parent().parent().removeClass('border-danger');
+      (0, _jquery2.default)(this).parent().parent().removeClass('bg-green-100');
+      (0, _jquery2.default)(this).parent().parent().removeClass('bg-red-100');
 
       if (this.value == 'S') {
-        (0, _jquery2.default)(this).parent().parent().addClass('border-success');
+        (0, _jquery2.default)(this).parent().parent().addClass('bg-green-100');
       } else if (this.value == 'N') {
-        (0, _jquery2.default)(this).parent().parent().addClass('border-danger');
+        (0, _jquery2.default)(this).parent().parent().addClass('bg-red-100');
       }
     });
   })();

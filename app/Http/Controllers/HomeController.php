@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Image;
+use Storage;
 
 class HomeController extends Controller
 {
@@ -51,6 +52,29 @@ class HomeController extends Controller
   public function webcam()
   {
     return view('dashboard.webcam');
+  }
+
+  public function upload(Request $request)
+  {
+    //Alternativa 1:
+    $filename = Storage::disk('public')->put('snapshots', $request->file('snapshot'));
+    $path = Storage::url($filename);
+    return response()->json([
+      'path' => $path,
+      'filename' => $filename
+    ]);
+
+    //Alternativa 2:
+    /*$filecontent = $request->get('data_uri');
+    $fileext = $request->get('image_fmt');
+    $name = "snapshot-".time().".$fileext";
+    $image = Image::make(file_get_contents($filecontent));
+    $newimage = $image->encode($fileext);
+    $filename = Storage::disk('public')->put('snapshots/'.$name, $newimage->__toString());
+    return response()->json([
+      'filename' => $filename
+    ]);*/
+
   }
 
 
