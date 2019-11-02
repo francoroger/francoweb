@@ -1,7 +1,7 @@
 @extends('layouts.app.main')
 
 @push('stylesheets_plugins')
-  <link rel="stylesheet" href="{{ asset('assets/modules/css/catalogacao_checklist/checklist.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/modules/css/catalogacao_checklist/check.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/magnific-popup/magnific-popup.css') }}">
 @endpush
 
@@ -11,7 +11,7 @@
 @endpush
 
 @push('scripts_page')
-  <script src="{{ asset('assets/modules/js/catalogacao_checklist/check.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/catalogacao_checklist/show.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/filterable.js') }}"></script>
 @endpush
 
@@ -27,7 +27,17 @@
         </div>
         <div class="col-md-3 text-right">
           <!-- Inprimir -->
-
+          <form id="print-form" method="POST" action="{{ route('catalogacao_checklist.print', $catalogacao->id) }}" target="_blank" style="display: none;">
+            @csrf
+            <input type="hidden" name="filtro_material">
+            <input type="hidden" name="filtro_produto">
+            <input type="hidden" name="filtro_status">
+          </form>
+          <button type="button" id="btn-print" class="btn btn-info btn-sm font-weight-400"
+            onclick="event.preventDefault();
+                     document.getElementById('print-form').submit();">
+            <i class="fa fa-print mr-10" aria-hidden="true"></i> Imprimir
+          </button>
         </div>
       </div>
 
@@ -35,43 +45,43 @@
       <div class="row">
         <div class="col-md-12">
           <span class="font-weight-500 mr-10">Filtros: </span>
-          <div class="inline-block dropdown">
-            <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="produtos-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="fdropdown dropdown">
+            <button class="btn btn-block btn-secondary dropdown-toggle selected-item" type="button" id="produtos-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Todos os Produtos
             </button>
-            <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="produtos-menu" role="menu">
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todos os Produtos</a>
+            <div class="dropdown-menu w-full animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="produtos-menu" role="menu">
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*" data-filter-type="filtro_produto" data-filter-value="">Todos os Produtos</a>
               <div class="dropdown-divider"></div>
               @foreach ($produtos as $i => $produto)
-                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Produto_{{ $i }}">{{ $produto }}</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Produto_{{ $i }}" data-filter-type="filtro_produto" data-filter-value="{{ $i }}">{{ $produto }}</a>
               @endforeach
             </div>
           </div>
-          <div class="inline-block mx-5"></div>
-          <div class="inline-block dropdown">
-            <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="materiais-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="fspacer mx-5 my-5"></div>
+          <div class="fdropdown dropdown">
+            <button class="btn btn-block btn-secondary dropdown-toggle selected-item" type="button" id="materiais-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Todos os Materiais
             </button>
-            <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="materiais-menu" role="menu">
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todos os Materiais</a>
+            <div class="dropdown-menu w-full animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="materiais-menu" role="menu">
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*" data-filter-type="filtro_material" data-filter-value="">Todos os Materiais</a>
               <div class="dropdown-divider"></div>
               @foreach ($materiais as $i => $material)
-                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Material_{{ $i }}">{{ $material }}</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Material_{{ $i }}" data-filter-type="filtro_material" data-filter-value="{{ $i }}">{{ $material }}</a>
               @endforeach
             </div>
           </div>
-          <div class="inline-block mx-5"></div>
-          <div class="inline-block dropdown">
-            <button class="btn btn-secondary dropdown-toggle selected-item" type="button" id="status-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="fspacer mx-5 my-5"></div>
+          <div class="fdropdown dropdown">
+            <button class="btn btn-block btn-secondary dropdown-toggle selected-item" type="button" id="status-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Todas as Situações
             </button>
-            <div class="dropdown-menu animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="status-menu" role="menu">
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*">Todas as Situações</a>
+            <div class="dropdown-menu w-full animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="status-menu" role="menu">
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*" data-filter-type="filtro_status" data-filter-value="">Todas as Situações</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Verificado">Verificados</a>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Aprovado">Aprovados</a>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Reprovado">Reprovados</a>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_NaoVerificado">Não Verificados</a>
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Verificado" data-filter-type="filtro_status" data-filter-value="V">Verificados</a>
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Aprovado" data-filter-type="filtro_status" data-filter-value="S">Aprovados</a>
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Reprovado" data-filter-type="filtro_status" data-filter-value="N">Reprovados</a>
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_NaoVerificado" data-filter-type="filtro_status" data-filter-value="P">Não Verificados</a>
             </div>
           </div>
         </div>
@@ -123,7 +133,6 @@
                         @else
                           R$ {{ number_format ($item->preco_bruto, 2, ',', '.') }}
                         @endif
-
                       </td>
                     </tr>
                     <tr>

@@ -20,8 +20,6 @@
   <script src="{{ asset('assets/modules/js/catalogacao_checklist/check.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/filterable.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/ladda.js') }}"></script>
-
-
 @endpush
 
 @section('body-class', 'app-media')

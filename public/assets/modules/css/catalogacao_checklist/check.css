@@ -255,6 +255,14 @@
   vertical-align: middle;
 }
 
+.app-media .fspacer {
+  display: inline-block;
+}
+
+.app-media .fdropdown {
+  display: inline-block;
+}
+
 @media (max-width: 479px) {
   .app-media .is-list .info-wrap {
     display: block !important;
@@ -285,6 +293,14 @@
     display: block;
     float: none;
     margin-top: 20px;
+  }
+
+  .app-media .fspacer {
+    display: block !important;
+  }
+
+  .app-media .fdropdown {
+    display: block !important;
   }
 }
 

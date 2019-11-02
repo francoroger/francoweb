@@ -37,7 +37,6 @@ class CheckListCatalogacaoController extends Controller
       $actions = '<div class="text-nowrap">';
       $actions .= ($catalogacao->status == 'F' || $catalogacao->status == 'P') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a>' : '';
       $actions .= $catalogacao->status == 'C' ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a> <a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="'.route('catalogacao_checklist.show', $catalogacao->id).'"><i class="icon wb-search"></i></a>' : '';
-      $actions .= $catalogacao->status == 'C' ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Imprimir" target="_blank" href="'.route('catalogacao_checklist.print', $catalogacao->id).'"><i class="icon wb-print"></i></a>' : '';
       $actions .= '</div>';
       switch ($catalogacao->status) {
         case 'F':
@@ -172,7 +171,7 @@ class CheckListCatalogacaoController extends Controller
   * @param  int  $id
   * @return \Illuminate\Http\Response
   */
-  public function print($id)
+  public function print(Request $request, $id)
   {
     $catalogacao = Catalogacao::findOrFail($id);
 
@@ -180,7 +179,39 @@ class CheckListCatalogacaoController extends Controller
       return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
 
-    $pdf = PDF::loadView('catalogacao_checklist.print', [
+    if ($request->filtro_material) {
+      $itens = $itens->where('idmaterial', $request->filtro_material);
+    }
+
+    if ($request->filtro_produto) {
+      $itens = $itens->where('idproduto', $request->filtro_produto);
+    }
+
+    if ($request->filtro_status) {
+      switch ($request->filtro_status) {
+        case 'V':
+          $itens = $itens->where('status_check', '!=', null);
+          break;
+        case 'S':
+          $itens = $itens->where('status_check', 'S');
+          break;
+        case 'N':
+          $itens = $itens->where('status_check', 'N');
+          break;
+        case 'P':
+          $itens = $itens->where('status_check', null);
+          break;
+      }
+    }
+
+    /*return view('catalogacao_checklist.print')->with([
+      'catalogacao' => $catalogacao,
+      'itens' => $itens,
+    ]);*/
+
+    $pdf = \App::make('dompdf.wrapper');
+    $pdf->getDomPDF()->set_option("enable_php", true);
+    $pdf->loadView('catalogacao_checklist.print', [
       'catalogacao' => $catalogacao,
       'itens' => $itens,
     ]);
