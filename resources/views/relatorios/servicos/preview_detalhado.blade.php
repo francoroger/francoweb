@@ -15,7 +15,6 @@
       </tr>
     </thead>
     <tbody>
-
       @foreach ($itens as $item)
         <tr>
           <td class="text-nowrap">{{ $item->servico->id }}</td>
@@ -27,15 +26,17 @@
           <td class="text-nowrap">{{ $item->cor->descricao ?? '' }}</td>
           <td class="text-nowrap text-right">{{ $item->milesimos }}</td>
           <td class="text-nowrap text-right">R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
-          <td class="text-nowrap text-right">{{ number_format($item->peso, 1, ',', '.') }}</td>
+          <td class="text-nowrap text-right">{{ number_format($item->peso, 0, ',', '.') }}</td>
         </tr>
       @endforeach
+    </tbody>
+    <tfoot>
       <tr class="font-weight-500">
         <td colspan="8">Totais:</td>
         <td class="text-nowrap text-right">R$ {{ number_format($total['valor'], 2, ',', '.') }}</td>
         <td class="text-nowrap text-right">{{ number_format($total['peso'], 1, ',', '.') }} Kg</td>
       </tr>
-    </tbody>
+    </tfoot>
   </table>
 </div>
 

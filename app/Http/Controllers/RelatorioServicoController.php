@@ -11,6 +11,8 @@ use App\Servico;
 use App\ServicoItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PDF;
+use Storage;
 
 class RelatorioServicoController extends Controller
 {
@@ -53,12 +55,12 @@ class RelatorioServicoController extends Controller
   }
 
   /**
-  * Post search criteria.
+  * Do search according to request criteria.
   *
   * @param  \Illuminate\Http\Request  $request
-  * @return \Illuminate\Http\Response
+  * @return \App\ServicoItem
   */
-  public function search(Request $request)
+  private function searchDetalhado(Request $request)
   {
     $itens = ServicoItem::select()
                         ->leftJoin('servico', 'idservico', '=', 'servico.id')
@@ -94,18 +96,136 @@ class RelatorioServicoController extends Controller
       $itens->whereIn('idcor', explode(',', $request->idcor));
     }
 
-    if ($request->milesimos) {
-      $camada = explode(';', $request->milesimos);
-      $itens->whereBetween('milesimos', $camada);
+    if ($request->milini && $request->milfim) {
+      $itens->whereBetween('milesimos', [$request->milini, $request->milfim]);
     }
 
-    $itens->orderBy($request->sort);
+    $itens->orderBy($request->sortbydet);
 
-    $total['valor'] = $itens->sum('valor');
-    $total['peso'] = $itens->sum('peso') / 100;
-
-    $itens = $itens->paginate(50);
-
-    return response()->json(['view' => view('relatorios.servicos.result', ['itens' => $itens, 'total' => $total])->render()]);
+    return $itens;
   }
+
+  /**
+  * Do search according to request criteria.
+  *
+  * @param  \Illuminate\Http\Request  $request
+  * @return \App\Servico
+  */
+  private function searchResumido(Request $request)
+  {
+    $servicos = Servico::select([
+      'servico.id',
+      'servico.datavenda',
+      'servico.idcliente',
+      'servico.idguia',
+    ])->leftJoin('cliente', 'servico.idcliente', '=', 'cliente.id')
+      ->leftJoin('guia', 'servico.idguia', '=', 'guia.id');
+
+    $servicos->whereHas('itens', function($query) use ($request) {
+      if ($request->idtiposervico) {
+        $query->whereIn('idtiposervico', explode(',', $request->idtiposervico));
+      }
+
+      if ($request->idmaterial) {
+        $query->whereIn('idmaterial', explode(',', $request->idmaterial));
+      }
+
+      if ($request->idcor) {
+        $query->whereIn('idcor', explode(',', $request->idcor));
+      }
+
+      if ($request->milini && $request->milfim) {
+        $query->whereBetween('milesimos', [$request->milini, $request->milfim]);
+      }
+    });
+
+    if ($request->dataini && $request->datafim) {
+      $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini);
+      $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim);
+      $servicos->whereBetween('datavenda', [$dtini, $dtfim]);
+    }
+    if ($request->idcliente) {
+      $servicos->whereIn('idcliente', explode(',', $request->idcliente));
+    }
+    if ($request->idguia) {
+      $servicos->whereIn('idguia', explode(',', $request->idguia));
+    }
+
+    $servicos->orderBy($request->sortbyres);
+
+    return $servicos;
+  }
+
+  /**
+  * Post preview.
+  *
+  * @param  \Illuminate\Http\Request  $request
+  * @return \Illuminate\Http\Response
+  */
+  public function preview(Request $request)
+  {
+    switch ($request->modelo) {
+      case 'D':
+        $itens = $this->searchDetalhado($request);
+
+        $total['valor'] = $itens->sum('valor');
+        $total['peso'] = $itens->sum('peso') / 100;
+
+        $itens = $itens->paginate(10);
+
+        return response()->json(['view' => view('relatorios.servicos.preview_detalhado', ['itens' => $itens, 'total' => $total])->render()]);
+        break;
+      case 'R':
+        $servicos = $this->searchResumido($request);
+
+        $total['valor'] = 0;
+        $total['peso'] = 0;
+        $calc = $servicos->get();
+        foreach ($calc as $servico) {
+          $total['valor'] += $servico->itens->sum('valor');
+          $total['peso'] += $servico->itens->sum('peso');
+        }
+        $total['peso'] = $total['peso'] / 100;
+
+        $servicos = $servicos->paginate(10);
+
+        return response()->json(['view' => view('relatorios.servicos.preview_resumido', ['servicos' => $servicos, 'total' => $total])->render()]);
+        break;
+    }
+  }
+
+  /**
+  * Export to PDF.
+  *
+  * @param  int  $id
+  * @return \Illuminate\Http\Response
+  */
+  public function print(Request $request)
+  {
+    switch ($request->modelo) {
+      case 'D':
+        $itens = $this->searchDetalhado($request);
+
+        $total['valor'] = $itens->sum('valor');
+        $total['peso'] = $itens->sum('peso') / 100;
+
+        $itens = $itens->get();
+
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->setPaper('a4', 'landscape');
+        $pdf->loadView('relatorios.servicos.print_detalhado', [
+          'itens' => $itens,
+          'total' => $total
+        ]);
+
+        return $pdf->stream('relatorio_servicos.pdf');
+
+        break;
+      case 'R':
+        // code...
+        break;
+    }
+  }
+
 }

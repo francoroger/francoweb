@@ -82,7 +82,8 @@ Route::group(['prefix' => 'catalogacao'], function() {
 
 Route::group(['prefix' => 'relatorios'], function() {
   Route::get('servicos', 'RelatorioServicoController@index')->name('relatorio_servicos.index');
-  Route::post('servicos', 'RelatorioServicoController@search')->name('relatorio_servicos.search');
+  Route::post('servicos', 'RelatorioServicoController@preview')->name('relatorio_servicos.preview');
+  Route::post('servicos/print', 'RelatorioServicoController@print')->name('relatorio_servicos.print');
 });
 
 //Recebimentos

@@ -2,78 +2,50 @@
 
 @push('stylesheets_plugins')
   <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendor/ionrangeslider/ionrangeslider.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/asspinner/asSpinner.css') }}">
 @endpush
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/ionrangeslider/ion.rangeSlider.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/asspinner/jquery-asSpinner.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
+  <script src="{{ asset('assets/modules/js/relatorios/servicos.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/panel.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
-  <script src="{{ asset('assets/js/Plugin/ionrangeslider.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-datepicker.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/asspinner.js') }}"></script>
   <script type="text/javascript">
-  $('#filter-form').on('submit', function(event) {
-    event.preventDefault();
-    fetchData();
+  var token = "{{ csrf_token() }}";
+  var route = "{{ route('relatorio_servicos.preview', '') }}";
+
+  //Form
+  $('#filter-form').on('keypress', function (e) {
+    if (e.which == 13) {
+      return false;
+    }
   });
 
+  //Preview
+  $(document).on('click', '#btn-preview', function(event) {
+    fetchData(route, token);
+  });
+
+  //Pagination
   $(document).on('click', '.pagination li a', function(event) {
     event.preventDefault();
     var page = $(this).attr('href').split('page=')[1];
-    fetchData(page);
+    fetchData(route, token, page);
   });
 
-  $(document).on('click', '.dropdown-item', function(event) {
-    event.preventDefault();
-    var sort = $(this).data('sort-col');
-    $('.dropdown-item').each(function(i,item) {
-      $(item).removeClass('active');
-    });
-    $(this).addClass('active');
-    $('.dropdown-toggle').html($(this).html());
+  //Preview
+  $(document).on('click', '#btn-print', function(event) {
+    $('#filter-form').submit();
   });
-
-  function fetchData(page) {
-    var formData = new FormData();
-    formData.append('dataini', $('#dataini').val());
-    formData.append('datafim', $('#datafim').val());
-    formData.append('idcliente', $('#idcliente').val().toString());
-    formData.append('idguia', $('#idguia').val().toString());
-    formData.append('idtiposervico', $('#idtiposervico').val().toString());
-    formData.append('idmaterial', $('#idmaterial').val().toString());
-    formData.append('idcor', $('#idcor').val().toString());
-    formData.append('milesimos', $('#milesimos').val());
-    formData.append('sort', $('.dropdown-item.active').data('sort-col'));
-
-    var route = "{{ route('relatorio_servicos.search', '') }}";
-    route += page ? "page="+page : '';
-
-    return $.ajax({
-      url: route,
-      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      cache: false,
-      processData: false,
-      success: function (data)
-      {
-        $('#result').html(data.view);
-      },
-      error: function(jqXHR, textStatus, errorThrown)
-      {
-        alert('erro');
-        console.log(jqXHR);
-      }
-    });
-  }
   </script>
 @endpush
 
@@ -89,7 +61,8 @@
           </div>
         </div>
         <div class="panel-body">
-          <form id="filter-form" class="form-horizontal" autocomplete="off">
+          <form id="filter-form" method="POST" action="{{ route('relatorio_servicos.print') }}" target="_blank" class="form-horizontal" autocomplete="off">
+            @csrf
             <div class="form-group row">
               <label class="col-md-2 form-control-label">Período</label>
               <div class="col-md-6">
@@ -170,33 +143,68 @@
 
             <div class="form-group row">
               <label class="col-md-2 form-control-label">Camada</label>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-addon">De</span>
+                  <input type="text" class="form-control" name="milini" id="milini" data-plugin="asSpinner" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-addon">Até</span>
+                  <input type="text" class="form-control" name="milfim" id="milfim" data-plugin="asSpinner" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 form-control-label">Modelo</label>
               <div class="col-md-10">
-                <input type="text" id="milesimos" name="milesimos" data-plugin="ionRangeSlider" data-type="double"
-                  data-grid=true data-min={{ $milesimos->min() }} data-max={{ $milesimos->max() }}
-                  data-from={{ $milesimos->min() }} data-to={{ $milesimos->max() }} />
+                <select class="form-control" id="modelo" name="modelo">
+                  <option value="D">Detalhado</option>
+                  <option value="R">Resumido</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="sorter-det" class="form-group row">
+              <label class="col-md-2 form-control-label">Ordenar por</label>
+              <div class="col-md-10">
+                <select class="form-control" id="sortbydet" name="sortbydet">
+                  <option value="idservico">Código</option>
+                  <option value="servico.datavenda" selected>Data</option>
+                  <option value="cliente.nome">Cliente</option>
+                  <option value="guia.nome">Guia</option>
+                  <option value="tiposervico.descricao">Tipo Serviço</option>
+                  <option value="material.descricao">Material</option>
+                  <option value="cores.descricao">Cor</option>
+                  <option value="milesimos">Milésimos</option>
+                  <option value="valor">Valor</option>
+                  <option value="peso">Peso</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="sorter-res" class="form-group row d-none">
+              <label class="col-md-2 form-control-label">Ordenar por</label>
+              <div class="col-md-10">
+                <select class="form-control" id="sortbyres" name="sortbyres">
+                  <option value="id">Código</option>
+                  <option value="datavenda">Data</option>
+                  <option value="cliente.nome">Cliente</option>
+                  <option value="guia.nome">Guia</option>
+                </select>
               </div>
             </div>
 
             <div class="form-group row">
               <div class="col-md-10 offset-md-2">
-                <button type="submit" class="btn btn-primary"><i class="icon wb-search"></i> Pesquisar</button>
-                <div class="dropdown float-right">
-                  Ordenar por:
-                  <a class="dropdown-toggle inline-block" data-toggle="dropdown" href="#">Data</a>
-                  <div class="dropdown-menu animation-scale-up animation-top-right animation-duration-250"
-                    role="menu">
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="idservico">Código</a>
-                    <a class="active dropdown-item" href="javascript:void(0)" data-sort-col="servico.datavenda">Data</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="cliente.nome">Cliente</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="guia.nome">Guia</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="tiposervico.descricao">Tipo Serviço</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="material.descricao">Material</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="cores.descricao">Cor</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="milesimos">Milésimos</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="valor">Valor</a>
-                    <a class="dropdown-item" href="javascript:void(0)" data-sort-col="peso">Peso</a>
-                  </div>
-                </div>
+                <button type="button" id="btn-preview" class="btn btn-success">
+                  <i class="icon wb-search" aria-hidden="true"></i> Pesquisar
+                </button>
+                <button type="button" id="btn-print" class="btn btn-info">
+                  <i class="fa fa-print" aria-hidden="true"></i> Imprimir
+                </button>
               </div>
             </div>
           </form>
