@@ -194,7 +194,7 @@ button::-moz-focus-inner {
   margin: 0;
   margin-top: -55px;
   opacity: .65;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .mfp-arrow:active {

@@ -18,11 +18,11 @@
 }
 
 :root {
-  --button-text: #589ffc;
-  --button-selected-background: #3e8ef7;
-  --button-checkbox-selected-background: #0b69e3;
-  --button-selected-shadow: rgba(121, 178, 252, .45);
-  --button-interaction-shadow: #79b2fc;
+  --button-text: $color-primary-500;
+  --button-selected-background: $color-primary-600;
+  --button-checkbox-selected-background: $color-primary-800;
+  --button-selected-shadow: rgba($color-primary-400, .45);
+  --button-interaction-shadow: $color-primary-400;
 }
 
 .tablesaw-btn {
@@ -36,7 +36,7 @@
   text-transform: capitalize;
   cursor: pointer;
   background: none;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .25em;
   box-shadow: 0 1px 0 white;
   -webkit-appearance: none;
@@ -506,9 +506,9 @@ a.tablesaw-btn {
   display: block;
   padding: .5em .8em;
   background-color: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
-  box-shadow: 0 1px 2px #e4eaec;
+  box-shadow: 0 1px 2px #ccd5db;
 }
 
 .tablesaw-columntoggle-popup fieldset {

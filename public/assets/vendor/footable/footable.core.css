@@ -267,7 +267,7 @@
   color: #ccd5db;
   cursor: not-allowed;
   background-color: transparent;
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .footable > tfoot .pagination a {
@@ -279,13 +279,13 @@
   color: #76838f;
   text-decoration: none;
   background-color: transparent;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .footable > tfoot .pagination a:focus, .footable > tfoot .pagination a:hover {
   color: #589ffc;
   background-color: #f3f7f9;
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .footable.no-paging .hide-if-no-paging {

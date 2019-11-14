@@ -26,7 +26,7 @@
   height: 2px;
   margin-top: -1px;
   content: "";
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .spinnerUi > input[type="text"] {
@@ -34,7 +34,7 @@
   width: 170px;
   height: 100%;
   margin: 0;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem 0 0 .215rem;
   box-shadow: none;
 }
@@ -65,8 +65,8 @@
 
 .spinnerUi-up {
   background-color: #f3f7f9;
-  border-top: 1px solid #e4eaec;
-  border-right: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
+  border-right: 1px solid #ccd5db;
   border-radius: 0 .215rem 0 0;
 }
 
@@ -76,8 +76,8 @@
 
 .spinnerUi-down {
   background-color: #f3f7f9;
-  border-right: 1px solid #e4eaec;
-  border-bottom: 1px solid #e4eaec;
+  border-right: 1px solid #ccd5db;
+  border-bottom: 1px solid #ccd5db;
   border-radius: 0 0 .215rem;
 }
 
@@ -114,7 +114,7 @@
 }
 
 .spinnerUi_disabled input:hover, .spinnerUi_disabled input:focus, .spinnerUi_disabled:hover input:hover, .spinnerUi_disabled:hover input:focus {
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .spinnerUi_disabled .spinnerUi-down, .spinnerUi_disabled .spinnerUi-up, .spinnerUi_disabled:hover .spinnerUi-down, .spinnerUi_disabled:hover .spinnerUi-up {

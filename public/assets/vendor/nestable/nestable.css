@@ -38,7 +38,7 @@
   margin: 5px 0;
   text-decoration: none;
   background: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -51,7 +51,7 @@
   padding: 10px;
   margin-top: -5px;
   background: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-top: 0;
 }
 
@@ -127,7 +127,7 @@
 .dd-placeholder {
   min-height: 30px;
   background: #f3f7f9;
-  border: 1px dashed #e4eaec;
+  border: 1px dashed #ccd5db;
 }
 
 .dd-empty {
@@ -135,7 +135,7 @@
   background-color: #f3f7f9;
   background-position: 0 0, 30px 30px;
   background-size: 60px 60px;
-  border: 1px dashed #e4eaec;
+  border: 1px dashed #ccd5db;
 }
 
 .dd-item-alt .dd-handle {
@@ -183,7 +183,7 @@
   margin: 5px 0;
   text-decoration: none;
   background: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 

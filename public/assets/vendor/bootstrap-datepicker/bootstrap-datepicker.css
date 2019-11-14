@@ -30,7 +30,7 @@
   content: "";
   border-top: 0;
   border-right: 7px solid transparent;
-  border-bottom: 7px solid #e4eaec;
+  border-bottom: 7px solid #ccd5db;
   border-bottom-color: rgba(0, 0, 0, .2);
   border-left: 7px solid transparent;
 }
@@ -71,7 +71,7 @@
 
 .datepicker-dropdown.datepicker-orient-top:before {
   bottom: -7px;
-  border-top: 7px solid #e4eaec;
+  border-top: 7px solid #ccd5db;
   border-bottom: 0;
 }
 
@@ -486,7 +486,7 @@
   text-align: center;
   vertical-align: middle;
   background-color: #e4eaec;
-  border: solid #e4eaec;
+  border: solid #ccd5db;
   border-width: 1px 0;
 }
 

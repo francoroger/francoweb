@@ -27,7 +27,7 @@
   font-size: 12px;
   white-space: nowrap;
   background: white;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: 3px;
   opacity: .5;
 }
@@ -151,7 +151,7 @@
   position: relative;
   height: 1px;
   margin-top: 10px;
-  border-top: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
 }
 
 .rickshaw_annotation_timeline .annotation {

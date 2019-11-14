@@ -262,7 +262,7 @@
 .taskboard-stage-header {
   padding: 16px 20px;
   background-color: #fafafa;
-  border-bottom: 1px solid #e4eaec;
+  border-bottom: 1px solid #ccd5db;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
@@ -349,8 +349,8 @@
 .taskboard-list .list-group-item {
   padding: 12px 20px;
   cursor: pointer;
-  border-top: 1px solid #e4eaec;
-  border-bottom: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
+  border-bottom: 1px solid #ccd5db;
   border-left: 3px solid transparent;
 }
 
@@ -397,7 +397,7 @@
 }
 
 .taskboard-list .list-group-item.ui-sortable-helper {
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .taskboard-list .list-group-item.ui-sortable-placeholder {

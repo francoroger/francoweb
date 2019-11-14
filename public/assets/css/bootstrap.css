@@ -1876,16 +1876,16 @@ pre code {
 .table th, .table td {
   padding: .572rem;
   vertical-align: top;
-  border-top: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
 }
 
 .table thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #e4eaec;
+  border-bottom: 2px solid #ccd5db;
 }
 
 .table tbody + tbody {
-  border-top: 2px solid #e4eaec;
+  border-top: 2px solid #ccd5db;
 }
 
 .table .table {
@@ -1897,11 +1897,11 @@ pre code {
 }
 
 .table-bordered {
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .table-bordered th, .table-bordered td {
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .table-bordered thead th, .table-bordered thead td {
@@ -2033,7 +2033,7 @@ pre code {
 .table .thead-light th {
   color: #a3afb7;
   background-color: #e4eaec;
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .table-dark {
@@ -2149,7 +2149,7 @@ pre code {
   background-color: #fff;
   background-image: none;
   background-clip: padding-box;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
@@ -3158,7 +3158,7 @@ tbody.collapse.show {
   list-style: none;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
   box-shadow: 0 3px 12px rgba(0, 0, 0, .05);
 }
@@ -3434,7 +3434,7 @@ tbody.collapse.show {
   color: #76838f;
   text-align: center;
   background-color: #e4eaec;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -3772,7 +3772,7 @@ tbody.collapse.show {
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
   color: #fff;
   background-color: #3e8ef7;
-  border-color: #e4eaec #e4eaec #3e8ef7;
+  border-color: #ccd5db #ccd5db #3e8ef7;
 }
 
 .nav-tabs .dropdown-menu {
@@ -4340,7 +4340,7 @@ tbody.collapse.show {
   word-wrap: break-word;
   background-color: #fff;
   background-clip: border-box;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -4390,7 +4390,7 @@ tbody.collapse.show {
   padding: .858rem 1.429rem;
   margin-bottom: 0;
   background-color: #f3f7f9;
-  border-bottom: 1px solid #e4eaec;
+  border-bottom: 1px solid #ccd5db;
 }
 
 .card-header:first-child {
@@ -4404,7 +4404,7 @@ tbody.collapse.show {
 .card-footer {
   padding: .858rem 1.429rem;
   background-color: #f3f7f9;
-  border-top: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
 }
 
 .card-footer:last-child {
@@ -4638,7 +4638,7 @@ tbody.collapse.show {
   color: #ccd5db;
   pointer-events: none;
   background-color: transparent;
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .page-link {
@@ -4649,14 +4649,14 @@ tbody.collapse.show {
   line-height: 1.57142857;
   color: #76838f;
   background-color: transparent;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .page-link:focus, .page-link:hover {
   color: #589ffc;
   text-decoration: none;
   background-color: #f3f7f9;
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .pagination-lg .page-link {
@@ -5314,7 +5314,7 @@ button.close {
   align-items: flex-start;
   justify-content: space-between;
   padding: 15px;
-  border-bottom: 1px solid #e4eaec;
+  border-bottom: 1px solid #ccd5db;
   border-top-left-radius: .286rem;
   border-top-right-radius: .286rem;
 }
@@ -5344,7 +5344,7 @@ button.close {
   align-items: center;
   justify-content: flex-end;
   padding: 20px;
-  border-top: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
 }
 
 .modal-footer > :not(:first-child) {

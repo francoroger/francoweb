@@ -242,7 +242,7 @@
 /* Frame mode layout
 ------------------------------------------*/
 .note-editor.note-frame {
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   /* codeview mode */
   /* fullscreen mode */
   /* statusbar */
@@ -324,7 +324,7 @@
 .note-editor.note-frame .note-statusbar .note-resizebar .note-icon-bar {
   width: 20px;
   margin: 1px auto;
-  border-top: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
 }
 
 .note-editor.note-frame .note-placeholder {

@@ -47,7 +47,7 @@
 
 .page-profile .page-content .list-group-item {
   padding: 25px 15px;
-  border-top-color: #e4eaec;
+  border-top-color: #ccd5db;
 }
 
 .page-profile .page-content .list-group-item:first-child {
@@ -55,7 +55,7 @@
 }
 
 .page-profile .page-content .list-group-item:last-child {
-  border-bottom-color: #e4eaec;
+  border-bottom-color: #ccd5db;
 }
 
 .page-profile .page-content .list-group-item .media .avatar {

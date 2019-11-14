@@ -4,7 +4,7 @@
 
 .page-user .page-content .list-group-item {
   padding: 25px 0;
-  border-top-color: #e4eaec;
+  border-top-color: #ccd5db;
 }
 
 .page-user .page-content .list-group-item:first-child {
@@ -12,7 +12,7 @@
 }
 
 .page-user .page-content .list-group-item:last-child {
-  border-bottom-color: #e4eaec;
+  border-bottom-color: #ccd5db;
 }
 
 .page-user .page-content .list-group-item .media-heading > small {

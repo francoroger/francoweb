@@ -4,7 +4,7 @@
 }
 
 .page-invoice-table tbody {
-  border-bottom: 1px solid #e4eaec;
+  border-bottom: 1px solid #ccd5db;
 }
 
 .page-invoice-table .table > thead > tr > th, .page-invoice-table .table > tbody > tr > th, .page-invoice-table .table > tfoot > tr > th, .page-invoice-table .table > thead > tr > td, .page-invoice-table .table > tbody > tr > td, .page-invoice-table .table > tfoot > tr > td {
@@ -15,7 +15,7 @@
   padding-top: 10px;
   margin-bottom: 40px;
   font-size: 20px;
-  border-top: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
 }
 
 @media (max-width: 767px) {

@@ -87,6 +87,32 @@ const config = {
       'resources/src/scss/mixins'
     ]
   },
+  vendor: {
+    source: 'resources/src/vendor',
+    manifest: 'manifest.json',
+    dest: 'public/assets/vendor',
+    verbose: true,
+    override: true,
+    ignoreError: false,
+    flattenPackages: false,
+    flattenTypes: false,
+    flatten: false,
+    dests: {
+      images: "images",
+      fonts: "",
+      js: "",
+      css: ""
+    },
+    paths: {
+      css: 'resources/src/vendor/${package}/src/${file}',
+      coffee: 'resources/src/vendor/${package}/${file}',
+      es6: 'resources/src/vendor/${package}/src/${file}',
+      stylus: 'resources/src/vendor/${package}/src/${file}',
+      less: 'resources/src/vendor/${package}/src/${file}',
+      sass: 'resources/src/vendor/${package}/src/${file}',
+      scss: 'resources/src/vendor/${package}/src/${file}'
+    }
+  },
 
   enable: {
     notify: false
@@ -584,6 +610,74 @@ gulp.task('styles', gulp.series('lint:styles', 'make:styles', (done) => {
 
   done();
 }));
+
+// Vendor **********************************************************************
+gulp.task('clean:vendor', (done) => {
+  const manager = new AssetsManager('manifest.json', config.vendor);
+
+  manager.cleanPackages().then(()=>{
+    if (config.enable.notify) {
+      notifier.notify({
+        title: config.notify.title,
+        message: 'Vendor clean task complete',
+      });
+    }
+    done();
+  });
+});
+
+gulp.task('copy:vendor', (done) => {
+  // see https://github.com/amazingSurge/assets-manager
+  const manager = new AssetsManager('manifest.json', config.vendor);
+
+  manager.copyPackages().then(()=>{
+    done();
+  });
+});
+
+gulp.task('vendor:styles', (done) => {
+  return gulp
+    .src(`${config.vendor.source}/*/*.scss`)
+    .pipe(
+      sass({
+        precision: 10, // https://github.com/sass/sass/issues/1122
+        includePaths: config.styles.include,
+      })
+    )
+    .pipe(postcss())
+    .pipe(size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(`${config.vendor.dest}`))
+    .pipe(minify())
+    .pipe(rename({
+      extname: '.min.css'
+    }))
+    .pipe(size({gzip: true, showFiles: true}))
+    .pipe(gulp.dest(`${config.vendor.dest}`))
+    .pipe(
+      gulpif(
+        config.enable.notify,
+        notify({
+          title: config.notify.title,
+          message: 'Vendor task complete',
+          onLast: true,
+        })
+      )
+    );
+});
+
+gulp.task(
+  'vendor',
+  gulp.series('copy:vendor', 'vendor:styles', (done) => {
+    if (config.enable.notify) {
+      notifier.notify({
+        title: config.notify.title,
+        message: 'Vendor task complete',
+      });
+    }
+
+    done();
+  })
+);
 
 // Gulp tasks ******************************************************************
 gulp.task('dist', gulp.series(

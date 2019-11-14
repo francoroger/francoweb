@@ -128,7 +128,7 @@
   display: block;
   width: 100%;
   background-color: white;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -229,7 +229,7 @@
   font-size: 1rem;
   color: #76838f;
   background-color: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
   outline: 0;
 }
@@ -239,7 +239,7 @@
   font-size: 1rem;
   color: #76838f;
   background-color: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -378,7 +378,7 @@
   padding: .429rem 1.858rem .429rem 1rem;
   line-height: 1.57142857;
   background-color: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -491,7 +491,7 @@
 .select2-container--default .select2-selection--multiple {
   cursor: text;
   background-color: white;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -528,7 +528,7 @@
   color: #76838f;
   cursor: default;
   background: #e4eaec;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 

@@ -1,7 +1,7 @@
 .bootstrap-table .table {
   margin-bottom: 0 !important;
   border-collapse: collapse !important;
-  border-bottom: 1px solid #e4eaec;
+  border-bottom: 1px solid #ccd5db;
 }
 
 .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
@@ -19,7 +19,7 @@
 .fixed-table-container {
   position: relative;
   clear: both;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .fixed-table-container.table-no-bordered {
@@ -33,11 +33,11 @@
 }
 
 .fixed-table-header {
-  border-bottom: 1px solid #e4eaec;
+  border-bottom: 1px solid #ccd5db;
 }
 
 .fixed-table-footer {
-  border-top: 1px solid #e4eaec;
+  border-top: 1px solid #ccd5db;
 }
 
 .fixed-table-body {
@@ -54,7 +54,7 @@
   height: 0;
   padding: 0;
   margin: 0;
-  border-left: 1px solid #e4eaec;
+  border-left: 1px solid #ccd5db;
 }
 
 .fixed-table-container thead th:focus {
@@ -98,7 +98,7 @@
 }
 
 .fixed-table-container tbody td {
-  border-left: 1px solid #e4eaec;
+  border-left: 1px solid #ccd5db;
 }
 
 .fixed-table-container tbody tr:first-child td {
@@ -171,7 +171,7 @@
   color: #ccd5db;
   cursor: not-allowed;
   background-color: transparent;
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .fixed-table-pagination .pagination a {
@@ -183,13 +183,13 @@
   color: #76838f;
   text-decoration: none;
   background-color: transparent;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .fixed-table-pagination .pagination a:focus, .fixed-table-pagination .pagination a:hover {
   color: #589ffc;
   background-color: #f3f7f9;
-  border-color: #e4eaec;
+  border-color: #ccd5db;
 }
 
 .fixed-table-pagination .pagination-info {
@@ -295,7 +295,7 @@
 
 .bootstrap-table .table > thead > tr > th {
   vertical-align: bottom;
-  border-bottom: 1px solid #e4eaec;
+  border-bottom: 1px solid #ccd5db;
 }
 
 /* support bootstrap 3 */

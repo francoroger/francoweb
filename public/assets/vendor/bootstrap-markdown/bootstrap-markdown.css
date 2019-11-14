@@ -2,7 +2,7 @@
 
 .md-editor {
   display: block;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .md-editor.active {
-  border-color: #e4eaec;
+  border-color: #ccd5db;
   outline: 0;
 }
 

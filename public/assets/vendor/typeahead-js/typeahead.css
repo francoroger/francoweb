@@ -122,7 +122,7 @@ select .input-group.input-group-lg .twitter-typeahead .tt-input, select .input-g
   background-color: #fff;
   background-clip: padding-box;
   border: 1px solid #ccc;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: .215rem;
   box-shadow: 0 3px 12px rgba(0, 0, 0, .05);
 }

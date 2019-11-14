@@ -122,7 +122,7 @@
 }
 
 .jsgrid-grid-header, .jsgrid-grid-body, .jsgrid-header-row > th, .jsgrid-filter-row > td, .jsgrid-insert-row > td, .jsgrid-edit-row > td {
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .jsgrid-header-row > th {
@@ -342,7 +342,7 @@
   padding-top: 3em;
   text-align: center;
   background: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
 }
 
 .jsgrid-load-panel:before {

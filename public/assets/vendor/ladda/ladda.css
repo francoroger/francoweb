@@ -317,7 +317,7 @@
 .ladda-button[data-style=contract-overlay] {
   width: 100px;
   overflow: hidden;
-  box-shadow: 0 0 0 3000px transparent;
+  box-shadow: 0 0 0 3000px rgba(0, 0, 0, 0);
 }
 
 .ladda-button[data-style=contract-overlay] .ladda-spinner {

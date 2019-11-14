@@ -17,7 +17,7 @@
   width: 10px;
   height: 10px;
   background-color: #fff;
-  border: 1px solid #e4eaec;
+  border: 1px solid #ccd5db;
   border-radius: 50%;
   -webkit-transform: translate(-50%, 0%);
   transform: translate(-50%, 0%);
@@ -96,7 +96,7 @@
   top: 0;
   width: 1px;
   height: 4px;
-  background-color: #e4eaec;
+  background-color: #ccd5db;
 }
 
 .rangeUi-scale-inlineGrid {
