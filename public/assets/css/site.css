@@ -187,8 +187,8 @@ body {
   font-style: normal;
   font-weight: normal;
   transition: -webkit-transform .15s;
-  transition: transform .15s, -webkit-transform .15s;
   transition: transform .15s;
+  transition: transform .15s, -webkit-transform .15s;
   -webkit-transform: translate(0, 0);
   transform: translate(0, 0);
   -webkit-font-smoothing: antialiased;
@@ -2334,8 +2334,8 @@ body.site-gridmenu-active {
 
   .site-menubar-open .page, .site-menubar-open .site-footer {
     -webkit-transform: translate3d(260px, 0, 0);
-    -ms-transform: translate(260px, 0);
     transform: translate3d(260px, 0, 0);
+    -ms-transform: translate(260px, 0);
   }
 
   .site-menubar-changing {
@@ -2361,8 +2361,8 @@ body.site-gridmenu-active {
 
   .site-menubar-open .site-menubar {
     -webkit-transform: translate3d(0, 0, 0);
-    -ms-transform: translate(0, 0);
     transform: translate3d(0, 0, 0);
+    -ms-transform: translate(0, 0);
   }
 }
 
@@ -2470,8 +2470,8 @@ body.site-navbar-small {
     top: 66.01px;
     height: calc(100% - 66.01px);
     -webkit-transform: translate3d(-260px, 0, 0);
-    -ms-transform: translate(-260px, 0);
     transform: translate3d(-260px, 0, 0);
+    -ms-transform: translate(-260px, 0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     -webkit-perspective: 1000;
@@ -2576,14 +2576,14 @@ body.site-navbar-small {
 
   .site-menubar-flipped.site-menubar-open .page, .site-menubar-flipped.site-menubar-open .site-footer {
     -webkit-transform: translate3d(-260px, 0, 0);
-    -ms-transform: translate(-260px, 0);
     transform: translate3d(-260px, 0, 0);
+    -ms-transform: translate(-260px, 0);
   }
 
   .site-menubar-flipped.site-menubar-open .site-menubar {
     -webkit-transform: translate3d(0, 0, 0);
-    -ms-transform: translate(0, 0);
     transform: translate3d(0, 0, 0);
+    -ms-transform: translate(0, 0);
   }
 }
 
@@ -2628,9 +2628,13 @@ body.site-navbar-small {
 @media (max-width: 767px) {
   .site-menubar-flipped .site-menubar {
     -webkit-transform: translate3d(260px, 0, 0);
-    -ms-transform: translate(260px, 0);
     transform: translate3d(260px, 0, 0);
+    -ms-transform: translate(260px, 0);
   }
+}
+
+.modal-open .select2-container {
+  z-index: 1600 !important;
 }
 
 .radio-custom, .checkbox-custom {

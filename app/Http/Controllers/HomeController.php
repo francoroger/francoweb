@@ -29,6 +29,20 @@ class HomeController extends Controller
     //return view('dashboard.main');
   }
 
+  public function painel()
+  {
+    return view('dashboard.dashboard');
+  }
+
+  public function reforco()
+  {
+    $tanques = \App\Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
+
+    return view('dashboard.reforco')->with([
+      'tanques' => $tanques
+    ]);
+  }
+
   /**
   * Generate image thumbnail in cache.
   *

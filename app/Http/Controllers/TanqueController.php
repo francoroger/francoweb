@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Cliente;
-use App\Fornecedor;
-use App\Recebimento;
-use App\ResponsavelEntrega;
+use App\Tanque;
 use Illuminate\Http\Request;
 
-class RecebimentoController extends Controller
+class TanqueController extends Controller
 {
   /**
   * Create a new controller instance.
@@ -27,7 +24,7 @@ class RecebimentoController extends Controller
   */
   public function index()
   {
-    return view('recebimentos.index');
+    return view('tanques.index');
   }
 
   /**
@@ -37,20 +34,16 @@ class RecebimentoController extends Controller
   */
   public function ajax(Request $request)
   {
-    $recebimentos = Recebimento::all();
+    $tanques = Tanque::orderBy('pos')->get();
     $data = [];
-    foreach ($recebimentos as $recebimento) {
+    foreach ($tanques as $tanque) {
       $actions = '<div class="text-nowrap">';
-      $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('recebimentos.edit', $recebimento->id).'"><i class="icon wb-pencil"></i></a>';
-      $actions .= '<button class="btn btn-sm btn-icon btn-flat btn-danger btn-delete" title="Excluir" data-id="'.$recebimento->id.'"><i class="icon wb-trash"></i></button>';
+      $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('tanques.edit', $tanque->id).'"><i class="icon wb-pencil"></i></a>';
+      $actions .= '<button class="btn btn-sm btn-icon btn-flat btn-danger btn-delete" title="Excluir" data-id="'.$tanque->id.'"><i class="icon wb-trash"></i></button>';
       $actions .= '</div>';
       $data[] = [
-        'data_hora' => date("Y-m-d H:i:s", strtotime("$recebimento->data_receb $recebimento->hora_receb")),
-        'cliente' => $recebimento->cliente->nome ?? $recebimento->nome_cliente,
-        'fornecedor' => $recebimento->fornecedor->nome ?? $recebimento->nome_fornec,
-        'pesototal' => number_format($recebimento->pesototal, 2, ',', '.'),
-        'responsavel' => $recebimento->responsavel->descricao ?? '',
-        'status' => $recebimento->status == 'A' ? '<span class="badge badge-outline badge-success">Em O.S.</span>' : '<span class="badge badge-outline badge-info">Recebido</span>',
+        'descricao' => $tanque->descricao,
+        'ciclo_reforco' => $tanque->ciclo_reforco,
         'actions' => $actions,
       ];
     }
@@ -67,14 +60,7 @@ class RecebimentoController extends Controller
   */
   public function create()
   {
-    $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
-    $fornecedores = Fornecedor::select(['id', 'nome', 'ativo'])->orderBy('nome')->get();
-    $responsaveis = ResponsavelEntrega::select()->orderBy('descricao')->get();
-    return view('recebimentos.create')->with([
-      'clientes' => $clientes,
-      'fornecedores' => $fornecedores,
-      'responsaveis' => $responsaveis,
-    ]);
+    //
   }
 
   /**
@@ -96,7 +82,10 @@ class RecebimentoController extends Controller
   */
   public function show($id)
   {
-    //
+    $tanque = Tanque::findOrFail($id);
+    return view('tanques.show')->with([
+      'tanque' => $tanque,
+    ]);
   }
 
   /**
@@ -107,7 +96,10 @@ class RecebimentoController extends Controller
   */
   public function edit($id)
   {
-    //
+    $tanque = Tanque::findOrFail($id);
+    return view('tanques.edit')->with([
+      'tanque' => $tanque,
+    ]);
   }
 
   /**
@@ -119,7 +111,16 @@ class RecebimentoController extends Controller
   */
   public function update(Request $request, $id)
   {
-    //
+    $request->validate([
+      'descricao' => 'required|string|max:255',
+    ]);
+
+    $tanque = Tanque::findOrFail($id);
+    $tanque->descricao = $request->descricao;
+    $tanque->ciclo_reforco = $request->ciclo_reforco;
+    $tanque->save();
+
+    return redirect()->route('tanques.index');
   }
 
   /**
@@ -130,6 +131,9 @@ class RecebimentoController extends Controller
   */
   public function destroy($id)
   {
-    //
+    $tanque = Tanque::findOrFail($id);
+    if ($tanque->delete()) {
+      return response(200);
+    }
   }
 }

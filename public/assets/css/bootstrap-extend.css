@@ -468,8 +468,8 @@ pre {
   font-style: normal;
   font-weight: normal;
   text-align: center;
-  transition: transform .15s;
   transition: -webkit-transform .15s;
+  transition: transform .15s;
   transition: transform .15s, -webkit-transform .15s;
   -webkit-transform: translate(0, 0);
   transform: translate(0, 0);

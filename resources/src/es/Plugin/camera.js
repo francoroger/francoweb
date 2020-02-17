@@ -125,7 +125,9 @@ class Camera extends Plugin {
     this.$ajax_url = $el.data('url')
     this.$token = $el.data('token')
     this.$form_elem_name = 'snapshot'
-    this.$uploaded_file = $el.find('input[name="uploaded-file"]')
+    this.$uploaded_file_input = $el.find('input[name="uploaded-file"]')
+    this.$filename = '';
+    this.$filepath = '';
 
     let w = $(this.$preview).width()
     let h = $(this.$preview).height()
@@ -142,15 +144,17 @@ class Camera extends Plugin {
       // 'progress' will be between 0.0 and 1.0
     })
 
-    Webcam.on('uploadComplete', (code, text) => {
+    Webcam.on('uploadComplete', (code, text, status, callback) => {
       if (code == 200) {
         let json = JSON.parse(text)
-        this.$uploaded_file.val(json.filename)
+        this.$uploaded_file_input.val(json.filename)
         this.$preview.attr('src', json.path)
         this.$background.addClass('d-none')
         this.turnOff()
+        if (callback) callback.apply( self, [json.filename, json.path] );
       }
     })
+
   }
 
   toggleEnable() {
@@ -171,6 +175,16 @@ class Camera extends Plugin {
 
   turnOn() {
     if (this.isEnabled !== true) {
+      //Força a definição de tamanho
+      let w = $(this.$preview).width()
+      let h = $(this.$preview).height()
+      //Limpa atributos de resultado de captura
+      this.$filename = '';
+      this.$filepath = '';
+
+      this.$cam.width(w)
+      this.$cam.height(h)
+
       this.$preview.addClass('d-none')
       this.$cam.removeClass('d-none')
       this.$indicator.addClass('active')
@@ -219,7 +233,7 @@ class Camera extends Plugin {
     }
   }
 
-  upload() {
+  upload(callback) {
     if (this.isEnabled === true && this.$ajax_url) {
       Webcam.snap((data_uri) => {
         // detect image format from within image_data_uri
@@ -246,7 +260,7 @@ class Camera extends Plugin {
 
     		// completion handler
     		http.onload = () => {
-    			Webcam.dispatch('uploadComplete', http.status, http.responseText, http.statusText)
+    			Webcam.dispatch('uploadComplete', http.status, http.responseText, http.statusText, callback)
     		}
 
         // extract raw base64 data from Data URI

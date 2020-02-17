@@ -11,6 +11,12 @@
             </a>
           </li>
           <li class="site-menu-category">Processo</li>
+          <li class="site-menu-item{{ Request::is('painel*') ? ' active' : '' }}">
+            <a href="{{ route('painel') }}">
+              <i class="site-menu-icon wb-library" aria-hidden="true"></i>
+              <span class="site-menu-title">Painel</span>
+            </a>
+          </li>
           <li class="site-menu-item{{ Request::is('recebimento*') ? ' active' : '' }}">
             <a href="{{ route('recebimentos.index') }}">
               <i class="site-menu-icon wb-inbox" aria-hidden="true"></i>
@@ -39,6 +45,13 @@
             <a href="#">
               <i class="site-menu-icon wb-wrench" aria-hidden="true"></i>
               <span class="site-menu-title">Serviço</span>
+            </a>
+          </li>
+          <li class="site-menu-category">Produção</li>
+          <li class="site-menu-item{{ Request::is('controle_reforco*') ? ' active' : '' }}">
+            <a href="{{ route('controle_reforco') }}">
+              <i class="site-menu-icon wb-pluse" aria-hidden="true"></i>
+              <span class="site-menu-title">Controle de Reforço</span>
             </a>
           </li>
           <li class="site-menu-category">Manutenção</li>
@@ -87,6 +100,16 @@
               <li class="site-menu-item{{ Request::is('cadastros/tipos_transporte*') ? ' active' : '' }}">
                 <a class="animsition-link" href="{{ route('tipos_transporte.index') }}">
                   <span class="site-menu-title">Tipos de Transporte</span>
+                </a>
+              </li>
+              <li class="site-menu-item{{ Request::is('cadastros/tanques*') ? ' active' : '' }}">
+                <a href="{{ route('tanques.index') }}">
+                  <span class="site-menu-title">Tanques</span>
+                </a>
+              </li>
+              <li class="site-menu-item">
+                <a href="#">
+                  <span class="site-menu-title">Matéria Prima</span>
                 </a>
               </li>
               <li class="site-menu-item{{ Request::is('cadastros/usuarios*') ? ' active' : '' }}">

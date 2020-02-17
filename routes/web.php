@@ -19,6 +19,18 @@ Route::get('webcam', 'HomeController@webcam')->name('webcam');
 Route::post('webcam', 'HomeController@upload')->name('webcam.upload');
 Route::get('phpinfo', function() { phpinfo(); })->name('phpinfo');
 
+Route::get('/painel', 'HomeController@painel')->name('painel');
+Route::get('/controle_reforco', 'HomeController@reforco')->name('controle_reforco');
+
+Route::group(['prefix' => 'api'], function() {
+  Route::get('recebimento', 'APIController@recebimento')->name('api_recebimento');
+  Route::get('separacao', 'APIController@seaparacao')->name('api_separacao');
+  Route::get('catalogacao', 'APIController@catalogacao')->name('api_catalogacao');
+  Route::get('os', 'APIController@os')->name('api_os');
+  Route::get('revisao', 'APIController@revisao')->name('api_revisao');
+  Route::get('expedicao', 'APIController@expedicao')->name('api_expedicao');
+});
+
 Route::group(['prefix' => 'cadastros'], function() {
   //Clientes
   Route::get('clientes/ajax', 'ClienteController@ajax')->name('clientes.ajax');
@@ -52,6 +64,10 @@ Route::group(['prefix' => 'cadastros'], function() {
   Route::put('produtos/{id}', 'ProdutoController@update')->name('produtos.update');
   Route::delete('produtos/{id}', 'ProdutoController@destroy')->name('produtos.destroy');
 
+  //Tanques
+  Route::get('tanques/ajax', 'TanqueController@ajax')->name('tanques.ajax');
+  Route::resource('tanques', 'TanqueController');
+
   //Tipos de Serviço
   Route::get('tipos_servico', 'TipoServicoController@index')->name('tipos_servico.index');
   Route::post('tipos_servico', 'TipoServicoController@store')->name('tipos_servico.store');
@@ -84,6 +100,11 @@ Route::group(['prefix' => 'relatorios'], function() {
   Route::get('servicos', 'RelatorioServicoController@index')->name('relatorio_servicos.index');
   Route::post('servicos', 'RelatorioServicoController@preview')->name('relatorio_servicos.preview');
   Route::post('servicos/print', 'RelatorioServicoController@print')->name('relatorio_servicos.print');
+});
+
+Route::group(['prefix' => 'producao'], function() {
+
+
 });
 
 //Recebimentos

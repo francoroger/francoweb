@@ -68,7 +68,9 @@
         this.$ajax_url = $el.data('url');
         this.$token = $el.data('token');
         this.$form_elem_name = 'snapshot';
-        this.$uploaded_file = $el.find('input[name="uploaded-file"]');
+        this.$uploaded_file_input = $el.find('input[name="uploaded-file"]');
+        this.$filename = '';
+        this.$filepath = '';
 
         var w = (0, _jquery2.default)(this.$preview).width();
         var h = (0, _jquery2.default)(this.$preview).height();
@@ -85,13 +87,14 @@
           // 'progress' will be between 0.0 and 1.0
         });
 
-        Webcam.on('uploadComplete', function (code, text) {
+        Webcam.on('uploadComplete', function (code, text, status, callback) {
           if (code == 200) {
             var json = JSON.parse(text);
-            _this2.$uploaded_file.val(json.filename);
+            _this2.$uploaded_file_input.val(json.filename);
             _this2.$preview.attr('src', json.path);
             _this2.$background.addClass('d-none');
             _this2.turnOff();
+            if (callback) callback.apply(self, [json.filename, json.path]);
           }
         });
       }
@@ -117,6 +120,16 @@
       key: 'turnOn',
       value: function turnOn() {
         if (this.isEnabled !== true) {
+          //Força a definição de tamanho
+          var w = (0, _jquery2.default)(this.$preview).width();
+          var h = (0, _jquery2.default)(this.$preview).height();
+          //Limpa atributos de resultado de captura
+          this.$filename = '';
+          this.$filepath = '';
+
+          this.$cam.width(w);
+          this.$cam.height(h);
+
           this.$preview.addClass('d-none');
           this.$cam.removeClass('d-none');
           this.$indicator.addClass('active');
@@ -172,7 +185,7 @@
       }
     }, {
       key: 'upload',
-      value: function upload() {
+      value: function upload(callback) {
         var _this4 = this;
 
         if (this.isEnabled === true && this.$ajax_url) {
@@ -198,7 +211,7 @@
 
             // completion handler
             http.onload = function () {
-              Webcam.dispatch('uploadComplete', http.status, http.responseText, http.statusText);
+              Webcam.dispatch('uploadComplete', http.status, http.responseText, http.statusText, callback);
             };
 
             // extract raw base64 data from Data URI

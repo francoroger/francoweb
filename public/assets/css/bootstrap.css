@@ -144,8 +144,8 @@ p {
 }
 
 abbr[title], abbr[data-original-title] {
-  -webkit-text-decoration: underline dotted;
   text-decoration: underline;
+  -webkit-text-decoration: underline dotted;
   text-decoration: underline dotted;
   cursor: help;
   border-bottom: 0;
@@ -5394,8 +5394,8 @@ button.close {
   font-style: normal;
   font-weight: 300;
   line-height: 1.57142857;
-  text-align: start;
   text-align: left;
+  text-align: start;
   text-decoration: none;
   text-shadow: none;
   text-transform: none;
