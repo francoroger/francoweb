@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Catalogacao;
 use App\OrdemServico;
 use App\Recebimento;
+use App\ProcessoTanque;
+use App\TanqueCiclo;
+use App\Tanque;
+use DB;
 
 class APIController extends Controller
 {
@@ -154,4 +158,80 @@ class APIController extends Controller
 
     return response()->json($data);
   }
+
+  public function updateCatalogacao(Request $request)
+  {
+    $catalogacao = Catalogacao::findOrFail($request->id);
+    $catalogacao->status = $request->status;
+
+    if ($catalogacao->save()) {
+      return response(200);
+    }
+  }
+
+  public function tanques(Request $request)
+  {
+    $processos = ProcessoTanque::where('tiposervico_id', $request->get('idtiposervico'))
+                               ->where('material_id', $request->get('idmaterial'))
+                               ->where('cor_id', $request->get('idcor'))
+                               ->where('mil_ini', '<=', $request->get('milesimos'))
+                               ->where('mil_fim', '>=', $request->get('milesimos'))
+                               ->get();
+
+    $data = [];
+
+    foreach ($processos as $proc) {
+      $data[] = [
+        'id' => $proc->tanque_id,
+        'descricao' => $proc->tanque->descricao,
+      ];
+    }
+
+    return response()->json($data);
+  }
+
+  public function registra_ciclo(Request $request)
+  {
+    $processos = ProcessoTanque::where('tiposervico_id', $request->get('idtiposervico'))
+                               ->where('material_id', $request->get('idmaterial'))
+                               ->where('cor_id', $request->get('idcor'))
+                               ->where('mil_ini', '<=', $request->get('milesimos'))
+                               ->where('mil_fim', '>=', $request->get('milesimos'))
+                               ->get();
+
+    foreach ($processos as $proc) {
+      $ciclo = new TanqueCiclo;
+      $ciclo->tanque_id = $proc->tanque_id;
+      $ciclo->data_servico = \Carbon\Carbon::now();
+      $ciclo->peso = $request->get('peso');
+      $ciclo->status = 'P';
+      $ciclo->save();
+    }
+
+    $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
+    $data = [];
+
+    foreach ($tanques as $tanque) {
+      $data[] = [
+        'id' => '#tanque-' . $tanque->id,
+        'val' => $tanque->ciclos->where('status', 'P')->sum('peso'),
+      ];
+    }
+
+    return response()->json($data);
+
+  }
+
+  public function reset_ciclo(Request $request)
+  {
+    $affected = DB::table('tanque_ciclos')
+                  ->where('tanque_id', $request->get('id'))
+                  ->update(['status' => 'R']);
+
+    $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
+
+    return response(200);
+  }
+
+
 }

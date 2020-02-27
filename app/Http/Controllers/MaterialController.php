@@ -165,4 +165,23 @@ class MaterialController extends Controller
       'valorg' => $material->cotacoes->count() > 0 ? $material->cotacoes->sortByDesc('data')->first()->valorg : '0,00'
     ]);
   }
+
+  /**
+  * Obtem as cores disponíveis do material
+  *
+  * @param  int  $id
+  * @return \Illuminate\Http\JsonResponse
+  */
+  public function cores_disponiveis($id)
+  {
+    $material = Material::findOrFail($id);
+    $cores = [];
+    foreach ($material->cores->sortBy('descricao')->pluck('descricao', 'id') as $k => $cor) {
+      $cores[] = [
+        'id' => $k,
+        'descricao' => $cor
+      ];
+    }
+    return response()->json($cores);
+  }
 }

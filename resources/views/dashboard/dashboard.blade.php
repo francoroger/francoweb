@@ -41,7 +41,7 @@
 
     },
     boards: [
-      {
+      /*{
         'id': '_receb',
         'title': 'Recebimento',
         'class': 'bg-orange-600',
@@ -49,22 +49,22 @@
       },
       {
         'id': '_separ',
-        'title': 'Separação',
+        'title': 'Contato Cliente / Separação',
         'class': 'bg-blue-grey-600',
         'item': []
-      },
+      },*/
       {
         'id': '_catalog',
         'title': 'Catalogação',
         'class': 'bg-blue-600',
         'item': []
       },
-      {
+      /*{
         'id': '_os',
-        'title': 'O.S.',
+        'title': 'Preparação / Banho',
         'class': 'bg-red-600',
         'item': []
-      },
+      },*/
       {
         'id': '_rev',
         'title': 'Revisão',
@@ -80,6 +80,7 @@
       ]
   });
 
+  /*
   var xmlhttpRec = new XMLHttpRequest();
   xmlhttpRec.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -91,6 +92,7 @@
   };
   xmlhttpRec.open("GET", "{{ route('api_recebimento') }}", true);
   xmlhttpRec.send();
+  */
 
   var xmlhttpCat = new XMLHttpRequest();
   xmlhttpCat.onreadystatechange = function() {
@@ -104,6 +106,7 @@
   xmlhttpCat.open("GET", "{{ route('api_catalogacao') }}", true);
   xmlhttpCat.send();
 
+  /*
   var xmlhttpOs = new XMLHttpRequest();
   xmlhttpOs.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -115,6 +118,7 @@
   };
   xmlhttpOs.open("GET", "{{ route('api_os') }}", true);
   xmlhttpOs.send();
+  */
 
   var xmlhttpRev = new XMLHttpRequest();
   xmlhttpRev.onreadystatechange = function() {
@@ -143,7 +147,9 @@
   </script>
 @endpush
 
+{{--
 @section('body-class', 'site-menubar-fold site-menubar-fold-alt site-menubar-keep')
+--}}
 
 @section('content')
   <div class="page">

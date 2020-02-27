@@ -23,12 +23,16 @@ Route::get('/painel', 'HomeController@painel')->name('painel');
 Route::get('/controle_reforco', 'HomeController@reforco')->name('controle_reforco');
 
 Route::group(['prefix' => 'api'], function() {
+  Route::post('tanques', 'APIController@tanques')->name('api_tanques');
+  Route::post('registra_ciclo', 'APIController@registra_ciclo')->name('api_tanques.registrar');
+  Route::post('reset_ciclo', 'APIController@reset_ciclo')->name('api_tanques.reset');
   Route::get('recebimento', 'APIController@recebimento')->name('api_recebimento');
   Route::get('separacao', 'APIController@seaparacao')->name('api_separacao');
   Route::get('catalogacao', 'APIController@catalogacao')->name('api_catalogacao');
   Route::get('os', 'APIController@os')->name('api_os');
   Route::get('revisao', 'APIController@revisao')->name('api_revisao');
   Route::get('expedicao', 'APIController@expedicao')->name('api_expedicao');
+  Route::post('catalogacao', 'APIController@updateCatalogacao')->name('api_catalogacao.update');
 });
 
 Route::group(['prefix' => 'cadastros'], function() {
@@ -52,6 +56,7 @@ Route::group(['prefix' => 'cadastros'], function() {
 
   //Materiais
   Route::get('materiais/ajax', 'MaterialController@ajax')->name('materiais.ajax');
+  Route::get('materiais/cores_disponiveis/{id}', 'MaterialController@cores_disponiveis')->name('materiais.cores_disponiveis');
   Route::get('materiais/{id}/cotacao', 'MaterialController@cotacao')->name('materiais.cotacao');
   Route::get('materiais/{id}/cotacoes', 'CotacaoController@index')->name('materiais.cotacoes');
   Route::post('materiais/cotacoes', 'CotacaoController@store')->name('cotacoes.store');

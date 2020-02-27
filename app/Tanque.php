@@ -9,4 +9,9 @@ class Tanque extends Model
   protected $table = 'tanque';
 
   public $timestamps = false;
+
+  public function ciclos()
+  {
+    return $this->hasMany('App\TanqueCiclo', 'tanque_id', 'id');
+  }
 }

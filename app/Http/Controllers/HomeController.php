@@ -31,15 +31,47 @@ class HomeController extends Controller
 
   public function painel()
   {
-    return view('dashboard.dashboard');
+    $catalogacoes = \App\Catalogacao::where('status', 'A')
+                                    ->whereNotNull('idcliente')
+                                    ->orderBy('datacad', 'desc')
+                                    ->get();
+
+    $ordens = \App\Catalogacao::where('status', 'F')
+                              ->whereNotNull('idcliente')
+                              ->orderBy('datacad', 'desc')
+                              ->take(10)
+                              ->get();
+
+    $revisoes = \App\Catalogacao::where('status', 'P')
+                                ->whereNotNull('idcliente')
+                                ->orderBy('datacad', 'desc')
+                                ->get();
+
+    $expedicoes = \App\Catalogacao::where('status', 'C')
+                                 ->whereNotNull('idcliente')
+                                 ->orderBy('datacad', 'desc')
+                                 ->take(10)
+                                 ->get();
+
+    return view('dashboard.painel')->with([
+      'catalogacoes' => $catalogacoes,
+      'ordens' => $ordens,
+      'revisoes' => $revisoes,
+      'expedicoes' => $expedicoes,
+    ]);
   }
 
   public function reforco()
   {
     $tanques = \App\Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
 
+    $tiposServico = \App\TipoServico::orderBy('descricao')->get();
+    $materiais = \App\Material::orderBy('pos')->get();
+
     return view('dashboard.reforco')->with([
-      'tanques' => $tanques
+      'tanques' => $tanques,
+      'tiposServico' => $tiposServico,
+      'materiais' => $materiais,
     ]);
   }
 
