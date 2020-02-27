@@ -31,7 +31,7 @@ class CheckListCatalogacaoController extends Controller
 
   public function ajax(Request $request)
   {
-    $catalogacoes = Catalogacao::where('status', '<>', 'A')->get();
+    $catalogacoes = Catalogacao::where('status', '<>', 'A')->where('status', '<>', 'L')->get();
     $data = [];
     foreach ($catalogacoes as $catalogacao) {
       $actions = '<div class="text-nowrap">';
@@ -40,10 +40,10 @@ class CheckListCatalogacaoController extends Controller
       $actions .= '</div>';
       switch ($catalogacao->status) {
         case 'F':
-          $status = '<span class="badge badge-danger">Banho/Preparação</span>';
+          $status = '<span class="badge badge-info">Banho/Preparação</span>';
           break;
         case 'G':
-          $status = '<span class="badge badge-info">Aguardando</span>';
+          $status = '<span class="badge badge-danger">Aguardando</span>';
           break;
         case 'P':
           $status = '<span class="badge badge-warning">Em Andamento</span>';

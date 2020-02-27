@@ -113,7 +113,7 @@
 
           <div class="board">
             <div class="tasks border">
-              <h5 class="mt-0 task-header header-title bg-blue-600 text-white">
+              <h5 class="mt-0 task-header header-title bg-yellow-600">
                 Catalogação <span class="font-size-12 totalizador">({{ $catalogacoes->count() }})</span>
               </h5>
 
@@ -176,7 +176,7 @@
             </div>
 
             <div class="tasks border">
-              <h5 class="mt-0 task-header header-title bg-red-600 text-white">
+              <h5 class="mt-0 task-header header-title bg-blue-600 text-white">
                 Preparação / Banho <span class="font-size-12 totalizador">({{ $ordens->count() }})</span>
               </h5>
 
@@ -239,7 +239,7 @@
             </div>
 
             <div class="tasks border">
-              <h5 class="mt-0 task-header header-title bg-teal-600 text-white">
+              <h5 class="mt-0 task-header header-title bg-red-600 text-white">
                 Revisão <span class="font-size-12 totalizador">({{ $revisoes->count() }})</span>
               </h5>
               <div id="task-list-rev" class="task-list-items" data-plugin="kanban" data-status="G">
@@ -301,11 +301,73 @@
             </div>
 
             <div class="tasks border">
-              <h5 class="mt-0 task-header header-title bg-purple-600 text-white">
+              <h5 class="mt-0 task-header header-title bg-green-600 text-white">
                 Expedição <span class="font-size-12 totalizador">({{ $expedicoes->count() }})</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="C">
                 @foreach ($expedicoes as $item)
+                  <!-- Task Item -->
+                  <div class="card border mb-0" data-id="{{ $item->id }}">
+                    <div class="card-body p-5">
+                      <div class="dropdown float-right">
+                        <a href="#" class="dropdown-toggle text-muted arrow-none" data-toggle="dropdown" aria-expanded="false">
+                          <i class="icon wb-more-vertical px-5"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <!-- item-->
+                          <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-search mr-2"></i>Visualizar</a>
+                          <!-- item-->
+                          <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-edit mr-2"></i>Editar</a>
+                          <!-- item-->
+                          <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-print mr-2"></i>Imprimir</a>
+                          <div class="dropdown-divider"></div>
+                          <!-- item-->
+                          <a href="javascript:void(0);" class="dropdown-item text-danger"><i class="icon wb-trash mr-2"></i>Excluir</a>
+                        </div>
+                      </div>
+                      <h6 class="mt-0 mb-2 font-size-12">
+                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
+                      </h6>
+
+                      <!--
+                      <span class="badge badge-outline badge-danger">Alta</span>
+                      -->
+
+                      <p class="mb-0 mt-4">
+                        <!--
+                        <img src="{{ asset('assets/portraits/0.png') }}" alt="user-img" class="avatar-xs rounded-circle mr-2" />
+                        -->
+
+                        <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->itens->count() }} itens">
+                          <i class="icon wb-gallery text-muted mr-1"></i>{{ $item->itens->count() }}
+                        </span>
+
+                        <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->itens->where('status_check', '<>',null)->count() }} verificados">
+                          <i class="icon wb-check-mini mr-1 text-muted"></i>{{ $item->itens->where('status_check', '<>',null)->count() }}
+                        </span>
+
+                        @if ($item->observacoes)
+                          <span class="text-nowrap align-middle font-size-12" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->observacoes }}">
+                            <i class="icon wb-clipboard mr-1"></i>
+                            <span class="badge badge-pill up badge-warning">!</span>
+                          </span>
+                        @endif
+
+                        <small class="float-right text-muted">{{ date('d/m/Y', strtotime($item->datacad)) }}</small>
+                      </p>
+                    </div> <!-- end card-body -->
+                  </div>
+                  <!-- Task Item End -->
+                @endforeach
+              </div>
+            </div>
+
+            <div class="tasks border">
+              <h5 class="mt-0 task-header header-title bg-grey-600 text-white">
+                Enviado <span class="font-size-12 totalizador">({{ $concluidos->count() }})</span>
+              </h5>
+              <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="L">
+                @foreach ($concluidos as $item)
                   <!-- Task Item -->
                   <div class="card border mb-0" data-id="{{ $item->id }}">
                     <div class="card-body p-5">

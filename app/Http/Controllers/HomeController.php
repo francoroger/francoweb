@@ -34,16 +34,19 @@ class HomeController extends Controller
     $catalogacoes = \App\Catalogacao::where('status', 'A')
                                     ->whereNotNull('idcliente')
                                     ->orderBy('datacad', 'desc')
+                                    ->take(30)
                                     ->get();
 
     $ordens = \App\Catalogacao::where('status', 'F')
                               ->whereNotNull('idcliente')
                               ->orderBy('datacad', 'desc')
+                              ->take(30)
                               ->get();
 
     $revisoes = \App\Catalogacao::whereIn('status', ['P', 'G'])
                                 ->whereNotNull('idcliente')
                                 ->orderBy('datacad', 'desc')
+                                ->take(30)
                                 ->get();
 
     $expedicoes = \App\Catalogacao::where('status', 'C')
@@ -52,11 +55,18 @@ class HomeController extends Controller
                                  ->take(30)
                                  ->get();
 
+    $concluidos = \App\Catalogacao::where('status', 'L')
+                                ->whereNotNull('idcliente')
+                                ->orderBy('datacad', 'desc')
+                                ->take(30)
+                                ->get();
+
     return view('dashboard.painel')->with([
       'catalogacoes' => $catalogacoes,
       'ordens' => $ordens,
       'revisoes' => $revisoes,
       'expedicoes' => $expedicoes,
+      'concluidos' => $concluidos,
     ]);
   }
 
