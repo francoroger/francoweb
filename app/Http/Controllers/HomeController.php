@@ -49,7 +49,7 @@ class HomeController extends Controller
     $expedicoes = \App\Catalogacao::where('status', 'C')
                                  ->whereNotNull('idcliente')
                                  ->orderBy('datacad', 'desc')
-                                 ->take(10)
+                                 ->take(30)
                                  ->get();
 
     return view('dashboard.painel')->with([
