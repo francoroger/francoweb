@@ -35,12 +35,15 @@ class CheckListCatalogacaoController extends Controller
     $data = [];
     foreach ($catalogacoes as $catalogacao) {
       $actions = '<div class="text-nowrap">';
-      $actions .= ($catalogacao->status == 'F' || $catalogacao->status == 'P') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a>' : '';
+      $actions .= ($catalogacao->status == 'G' || $catalogacao->status == 'P') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a>' : '';
       $actions .= $catalogacao->status == 'C' ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a> <a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="'.route('catalogacao_checklist.show', $catalogacao->id).'"><i class="icon wb-search"></i></a>' : '';
       $actions .= '</div>';
       switch ($catalogacao->status) {
         case 'F':
-          $status = '<span class="badge badge-danger">Aguardando</span>';
+          $status = '<span class="badge badge-danger">Banho/Preparação</span>';
+          break;
+        case 'G':
+          $status = '<span class="badge badge-info">Aguardando</span>';
           break;
         case 'P':
           $status = '<span class="badge badge-warning">Em Andamento</span>';

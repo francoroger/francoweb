@@ -39,10 +39,9 @@ class HomeController extends Controller
     $ordens = \App\Catalogacao::where('status', 'F')
                               ->whereNotNull('idcliente')
                               ->orderBy('datacad', 'desc')
-                              ->take(10)
                               ->get();
 
-    $revisoes = \App\Catalogacao::where('status', 'P')
+    $revisoes = \App\Catalogacao::whereIn('status', ['P', 'G'])
                                 ->whereNotNull('idcliente')
                                 ->orderBy('datacad', 'desc')
                                 ->get();

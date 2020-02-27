@@ -242,7 +242,7 @@
               <h5 class="mt-0 task-header header-title bg-teal-600 text-white">
                 Revisão <span class="font-size-12 totalizador">({{ $revisoes->count() }})</span>
               </h5>
-              <div id="task-list-rev" class="task-list-items" data-plugin="kanban" data-status="P">
+              <div id="task-list-rev" class="task-list-items" data-plugin="kanban" data-status="G">
                 @foreach ($revisoes as $item)
                   <!-- Task Item -->
                   <div class="card border mb-0" data-id="{{ $item->id }}">
