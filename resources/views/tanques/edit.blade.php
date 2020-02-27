@@ -39,7 +39,7 @@
             <div class="form-group col-md-4">
               <label class="form-control-label" for="ciclo_reforco">Reforçar a cada</label>
               <div class="input-group">
-                <input type="text" class="form-control @error('ciclo_reforco') is-invalid @enderror" id="ciclo_reforco" name="ciclo_reforco" value="{{ old('ciclo_reforco') }}" />
+                <input type="text" class="form-control @error('ciclo_reforco') is-invalid @enderror" id="ciclo_reforco" name="ciclo_reforco" value="{{ old('ciclo_reforco', $tanque->ciclo_reforco) }}" />
                 <span class="input-group-addon">
                   gramas
                 </span>
