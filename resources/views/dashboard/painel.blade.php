@@ -114,7 +114,7 @@
           <div class="board">
             <div class="tasks border">
               <h5 class="mt-0 task-header header-title bg-yellow-600">
-                Catalogação <span class="font-size-12 totalizador">({{ $catalogacoes->count() }})</span>
+                Catalogando <span class="font-size-12 totalizador">({{ $catalogacoes->count() }})</span>
               </h5>
 
               <div id="task-list-catalog" class="task-list-items" data-plugin="kanban" data-status="A">
@@ -302,7 +302,7 @@
 
             <div class="tasks border">
               <h5 class="mt-0 task-header header-title bg-green-600 text-white">
-                Expedição <span class="font-size-12 totalizador">({{ $expedicoes->count() }})</span>
+                Peças Prontas - Expedição <span class="font-size-12 totalizador">({{ $expedicoes->count() }})</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="C">
                 @foreach ($expedicoes as $item)
