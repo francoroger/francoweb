@@ -19,4 +19,9 @@ class Catalogacao extends Model
   {
     return $this->belongsTo('App\Cliente', 'idcliente');
   }
+
+  public function getPesoTotalItensAttribute($value)
+  {
+    return $this->itens->sum('peso');
+  }
 }

@@ -1,7 +1,7 @@
 <div class="row">
   @foreach ($tanques as $tanque)
     <div class="col-md-4">
-      <div class="panel">
+      <div id="{{ "pnl-" . $tanque->id }}" class="panel{{ $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? " panel-danger"  : "" }}">
         <div class="panel-heading">
           <h3 class="panel-title">
             {{ $tanque->descricao }}

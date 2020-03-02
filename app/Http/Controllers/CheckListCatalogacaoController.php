@@ -51,6 +51,9 @@ class CheckListCatalogacaoController extends Controller
         case 'C':
           $status = '<span class="badge badge-success">Concluída</span>';
           break;
+        case 'L':
+          $status = '<span class="badge badge-success">Concluída</span>';
+          break;
         default:
           break;
       }

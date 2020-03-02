@@ -115,6 +115,10 @@
             <div class="tasks border">
               <h5 class="mt-0 task-header header-title bg-yellow-600">
                 Catalogando <span class="font-size-12 totalizador">({{ $catalogacoes->count() }})</span>
+
+                <br>
+
+                <span class="font-size-12 totalizador-peso">{{ $catalogacoes->sum('peso_total_itens') }} g</span>
               </h5>
 
               <div id="task-list-catalog" class="task-list-items" data-plugin="kanban" data-status="A">
@@ -141,6 +145,8 @@
                       <h6 class="mt-0 mb-2 font-size-12">
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
                       </h6>
+
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -178,6 +184,10 @@
             <div class="tasks border">
               <h5 class="mt-0 task-header header-title bg-blue-600 text-white">
                 Preparação / Banho <span class="font-size-12 totalizador">({{ $ordens->count() }})</span>
+
+                <br>
+
+                <span class="font-size-12 totalizador-peso">{{ $ordens->sum('peso_total_itens') }} g</span>
               </h5>
 
               <div id="task-list-os" class="task-list-items" data-plugin="kanban" data-status="F">
@@ -204,6 +214,8 @@
                       <h6 class="mt-0 mb-2 font-size-12">
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
                       </h6>
+
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -241,6 +253,10 @@
             <div class="tasks border">
               <h5 class="mt-0 task-header header-title bg-red-600 text-white">
                 Revisão <span class="font-size-12 totalizador">({{ $revisoes->count() }})</span>
+
+                <br>
+
+                <span class="font-size-12 totalizador-peso">{{ $revisoes->sum('peso_total_itens') }} g</span>
               </h5>
               <div id="task-list-rev" class="task-list-items" data-plugin="kanban" data-status="G">
                 @foreach ($revisoes as $item)
@@ -266,6 +282,8 @@
                       <h6 class="mt-0 mb-2 font-size-12">
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
                       </h6>
+
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -303,6 +321,10 @@
             <div class="tasks border">
               <h5 class="mt-0 task-header header-title bg-green-600 text-white">
                 Peças Prontas - Expedição <span class="font-size-12 totalizador">({{ $expedicoes->count() }})</span>
+
+                <br>
+
+                <span class="font-size-12 totalizador-peso">{{ $expedicoes->sum('peso_total_itens') }} g</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="C">
                 @foreach ($expedicoes as $item)
@@ -328,6 +350,8 @@
                       <h6 class="mt-0 mb-2 font-size-12">
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
                       </h6>
+
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -365,6 +389,10 @@
             <div class="tasks border">
               <h5 class="mt-0 task-header header-title bg-grey-600 text-white">
                 Enviado <span class="font-size-12 totalizador">({{ $concluidos->count() }})</span>
+
+                <br>
+
+                <span class="font-size-12 totalizador-peso">{{ $concluidos->sum('peso_total_itens') }} g</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="L">
                 @foreach ($concluidos as $item)
@@ -390,6 +418,8 @@
                       <h6 class="mt-0 mb-2 font-size-12">
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
                       </h6>
+
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>

@@ -93,8 +93,10 @@
               gauge.set(data[k].val);
               if (data[k].exd) {
                 $('#excedente-'+data[k].id).html(data[k].exd);
+                $('#pnl-'+data[k].id).addClass('panel-danger');
               } else {
                 $('#excedente-'+data[k].id).html("&nbsp;");
+                $('#pnl-'+data[k].id).removeClass('panel-danger');
               }
             }
           },
@@ -141,8 +143,10 @@
                 gauge.set(data[k].val);
                 if (data[k].exd) {
                   $('#excedente-'+data[k].id).html(data[k].exd);
+                  $('#pnl-'+data[k].id).addClass('panel-danger');
                 } else {
                   $('#excedente-'+data[k].id).html("&nbsp;");
+                  $('#pnl-'+data[k].id).removeClass('panel-danger');
                 }
               }
             },
@@ -185,8 +189,10 @@
                 gauge.set(data[k].val);
                 if (data[k].exd) {
                   $('#excedente-'+data[k].id).html(data[k].exd);
+                  $('#pnl-'+data[k].id).addClass('panel-danger');
                 } else {
                   $('#excedente-'+data[k].id).html("&nbsp;");
+                  $('#pnl-'+data[k].id).removeClass('panel-danger');
                 }
               }
             },
