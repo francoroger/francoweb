@@ -32,4 +32,9 @@ class TipoServico extends Model
         break;
     }
   }
+
+  public function processos_tanque()
+  {
+    return $this->hasMany('App\ProcessoTanque', 'tiposervico_id', 'id');
+  }
 }

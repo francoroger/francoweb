@@ -7,6 +7,7 @@ use App\Catalogacao;
 use App\OrdemServico;
 use App\Recebimento;
 use App\ProcessoTanque;
+use App\Reforco;
 use App\TanqueCiclo;
 use App\Tanque;
 use DB;
@@ -171,12 +172,26 @@ class APIController extends Controller
 
   public function tanques(Request $request)
   {
-    $processos = ProcessoTanque::where('tiposervico_id', $request->get('idtiposervico'))
-                               ->where('material_id', $request->get('idmaterial'))
-                               ->where('cor_id', $request->get('idcor'))
-                               ->where('mil_ini', '<=', $request->get('milesimos'))
-                               ->where('mil_fim', '>=', $request->get('milesimos'))
-                               ->get();
+    $processos = ProcessoTanque::orderBy('id');
+
+    if ($request->get('idtiposervico')) {
+      $processos->where('tiposervico_id', $request->get('idtiposervico'));
+    }
+
+    if ($request->get('idmaterial')) {
+      $processos->where('material_id', $request->get('idmaterial'));
+    }
+
+    if ($request->get('idcor')) {
+      $processos->where('cor_id', $request->get('idcor'));
+    }
+
+    if ($request->get('milesimos')) {
+      $processos->where('mil_ini', '<=', $request->get('milesimos'))
+                ->where('mil_fim', '>=', $request->get('milesimos'));
+    }
+
+    $processos = $processos->get();
 
     $data = [];
 
@@ -192,12 +207,26 @@ class APIController extends Controller
 
   public function registra_ciclo(Request $request)
   {
-    $processos = ProcessoTanque::where('tiposervico_id', $request->get('idtiposervico'))
-                               ->where('material_id', $request->get('idmaterial'))
-                               ->where('cor_id', $request->get('idcor'))
-                               ->where('mil_ini', '<=', $request->get('milesimos'))
-                               ->where('mil_fim', '>=', $request->get('milesimos'))
-                               ->get();
+    $processos = ProcessoTanque::orderBy('id');
+
+    if ($request->get('idtiposervico')) {
+      $processos->where('tiposervico_id', $request->get('idtiposervico'));
+    }
+
+    if ($request->get('idmaterial')) {
+      $processos->where('material_id', $request->get('idmaterial'));
+    }
+
+    if ($request->get('idcor')) {
+      $processos->where('cor_id', $request->get('idcor'));
+    }
+
+    if ($request->get('milesimos')) {
+      $processos->where('mil_ini', '<=', $request->get('milesimos'))
+                ->where('mil_fim', '>=', $request->get('milesimos'));
+    }
+
+    $processos = $processos->get();
 
     foreach ($processos as $proc) {
       $ciclo = new TanqueCiclo;
@@ -213,8 +242,9 @@ class APIController extends Controller
 
     foreach ($tanques as $tanque) {
       $data[] = [
-        'id' => '#tanque-' . $tanque->id,
+        'id' => $tanque->id,
         'val' => $tanque->ciclos->where('status', 'P')->sum('peso'),
+        'exd' => $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? "Excedeu " . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g'  : ""
       ];
     }
 
@@ -224,14 +254,84 @@ class APIController extends Controller
 
   public function reset_ciclo(Request $request)
   {
+    //Pega o excedente para criar uma nova transação após o reforço
+    $tanque = Tanque::findOrFail($request->get('id'));
+    $exd = $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? $tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco : 0;
+
+    //Gera um registro para o reforço que será associado com o item
+    $reforco = new Reforco;
+    $reforco->tanque_id = $request->get('id');
+    $reforco->save();
+
+    //Atualiza o item com o status de R (realizado) e a id do reforço
     $affected = DB::table('tanque_ciclos')
                   ->where('tanque_id', $request->get('id'))
-                  ->update(['status' => 'R']);
+                  ->update([
+                    'status' => 'R',
+                    'reforco_id' => $reforco->id,
+                  ]);
 
+    if ($exd > 0) {
+      $ciclo = new TanqueCiclo;
+      $ciclo->tanque_id = $request->get('id');
+      $ciclo->data_servico = \Carbon\Carbon::now();
+      $ciclo->peso = $exd;
+      $ciclo->status = 'P';
+      $ciclo->excedente = true;
+      $ciclo->save();
+    }
+
+    $data = [];
     $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
+    foreach ($tanques as $tanque) {
+      $data[] = [
+        'id' => $tanque->id,
+        'val' => $tanque->ciclos->where('status', 'P')->sum('peso'),
+        'exd' => $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? "Excedeu " . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g'  : ""
+      ];
+    }
 
-    return response(200);
+    return response()->json($data);
   }
 
+  public function undo_reforco(Request $request)
+  {
+    /*$tanque = Tanque::findOrFail($request->get('id'));
+    $reforco = $tanque->reforcos->sortByDesc('created_at')->first();
+
+    //Atualiza o item com o status de R (realizado) e a id do reforço
+    $affected = DB::table('tanque_ciclos')
+                  ->where('tanque_id', $request->get('id'))
+                  ->where('reforco_id', $reforco->id)
+                  ->update([
+                    'status' => 'P',
+                    'reforco_id' => null,
+                  ]);
+
+    $reforco->delete();
+
+    $ciclo = TanqueCiclo::where('tanque_id', $request->get('id'))
+                        ->where('status', 'P')
+                        ->where('excedente', true)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+
+    if ($ciclo->count() > 0) {
+      $exced = TanqueCiclo::findOrFail($ciclo->id);
+      $exced->delete();
+    }
+
+    $data = [];
+    $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
+    foreach ($tanques as $tanque) {
+      $data[] = [
+        'id' => $tanque->id,
+        'val' => $tanque->ciclos->where('status', 'P')->sum('peso'),
+        'exd' => $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? "Excedeu " . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g'  : ""
+      ];
+    }
+
+    return response()->json($data);*/
+  }
 
 }

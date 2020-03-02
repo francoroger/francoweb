@@ -71,9 +71,8 @@ class HomeController extends Controller
   {
     $tanques = \App\Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
 
-    $tiposServico = \App\TipoServico::orderBy('descricao')->get();
-    $materiais = \App\Material::orderBy('pos')->get();
-
+    $tiposServico = \App\TipoServico::whereHas('processos_tanque')->orderBy('descricao')->get();
+    $materiais = \App\Material::whereHas('processos_tanque')->orderBy('pos')->get();
     return view('dashboard.reforco')->with([
       'tanques' => $tanques,
       'tiposServico' => $tiposServico,

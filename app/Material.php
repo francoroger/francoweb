@@ -19,4 +19,9 @@ class Material extends Model
   {
     return $this->hasMany('App\Cotacao', 'idmaterial', 'id');
   }
+
+  public function processos_tanque()
+  {
+    return $this->hasMany('App\ProcessoTanque', 'material_id', 'id');
+  }
 }

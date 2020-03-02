@@ -14,4 +14,9 @@ class Tanque extends Model
   {
     return $this->hasMany('App\TanqueCiclo', 'tanque_id', 'id');
   }
+
+  public function reforcos()
+  {
+    return $this->hasMany('App\Reforco', 'tanque_id', 'id');
+  }
 }

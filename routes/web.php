@@ -26,6 +26,7 @@ Route::group(['prefix' => 'api'], function() {
   Route::post('tanques', 'APIController@tanques')->name('api_tanques');
   Route::post('registra_ciclo', 'APIController@registra_ciclo')->name('api_tanques.registrar');
   Route::post('reset_ciclo', 'APIController@reset_ciclo')->name('api_tanques.reset');
+  Route::post('undo_reforco', 'APIController@undo_reforco')->name('api_tanques.undo');
   Route::get('recebimento', 'APIController@recebimento')->name('api_recebimento');
   Route::get('separacao', 'APIController@seaparacao')->name('api_separacao');
   Route::get('catalogacao', 'APIController@catalogacao')->name('api_catalogacao');

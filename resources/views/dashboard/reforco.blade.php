@@ -2,14 +2,20 @@
 
 @push('stylesheets_plugins')
   <link rel="stylesheet" href="{{ asset('assets/vendor/gauge-js/gauge.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.css') }}">
 @endpush
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/vendor/gauge-js/gauge.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/toastr/toastr.js') }}"></script>
+  <script src="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.js') }}"></script>
 @endpush
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/gauge.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/toastr.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
 
   <script type="text/javascript">
     $(document).on('change', '#idtiposervico, #idmaterial, #idcor, #milesimos', function() {
@@ -45,51 +51,137 @@
     });
 
     $(document).on('click', '#btn-registrar', function() {
-      $.ajax({
-        url: "{{ route('api_tanques.registrar') }}",
-        headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-        type: 'POST',
-        data: {
-          'idtiposervico': $('#idtiposervico').val(),
-          'idmaterial': $('#idmaterial').val(),
-          'idcor': $('#idcor').val(),
-          'milesimos': $('#milesimos').val(),
-          'peso': $('#peso').val(),
-        },
-        success: function (data)
-        {
-          for(var k in data) {
-            var gauge = $(data[k].id).data('gauge');
-            gauge.set(data[k].val);
+      if($('#idtiposervico').val() == '') {
+        toastr.error("Informe o tipo de serviço!");
+        return false;
+      } else if($('#idmaterial').val() == '') {
+        toastr.error("Informe o material!");
+        return false;
+      } else if($('#peso').val() == '') {
+        toastr.error("Informe o peso!");
+        return false;
+      } else {
+        $.ajax({
+          url: "{{ route('api_tanques.registrar') }}",
+          headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+          type: 'POST',
+          data: {
+            'idtiposervico': $('#idtiposervico').val() ? $('#idtiposervico').val() : '',
+            'idmaterial': $('#idmaterial').val() ? $('#idmaterial').val() : '',
+            'idcor': $('#idcor').val() ? $('#idcor').val() : '',
+            'milesimos': $('#milesimos').val() ? $('#milesimos').val() : '',
+            'peso': $('#peso').val(),
+          },
+          success: function (data)
+          {
+            for(var k in data) {
+              var gauge = $('#tanque-'+data[k].id).data('gauge');
+              gauge.set(data[k].val);
+              if (data[k].exd) {
+                $('#excedente-'+data[k].id).html(data[k].exd);
+              } else {
+                $('#excedente-'+data[k].id).html("&nbsp;");
+              }
+            }
+          },
+          error: function(jqXHR, textStatus, errorThrown)
+          {
+            alert('erro');
+            console.log(jqXHR);
           }
-        },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
-          alert('erro');
-          console.log(jqXHR);
-        }
-      });
+        });
+
+        //fecha modal
+        $('#modalForm').modal('hide');
+      }
+
     });
 
     $(document).on('click', '.btn-reforco', function() {
       var id = $(this).data('id');
+      var descricao = $(this).data('descricao');
 
-      $.ajax({
-        url: "{{ route('api_tanques.reset') }}",
-        headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-        type: 'POST',
-        data: {
-          'id': id
-        },
-        success: function (data)
-        {
-          var gauge = $('#tanque-'+id).data('gauge');
-          gauge.set(0);
-        },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
-          alert('erro');
-          console.log(jqXHR);
+      swal({
+        title: "Confirmar Reforço",
+        text: "Confirma o reforço no tanque "+descricao+"?",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        //cancelButtonClass: "btn-danger",
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        closeOnConfirm: true,
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: "{{ route('api_tanques.reset') }}",
+            headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+            type: 'POST',
+            data: {
+              'id': id
+            },
+            success: function (data)
+            {
+              for(var k in data) {
+                var gauge = $('#tanque-'+data[k].id).data('gauge');
+                gauge.set(data[k].val);
+                if (data[k].exd) {
+                  $('#excedente-'+data[k].id).html(data[k].exd);
+                } else {
+                  $('#excedente-'+data[k].id).html("&nbsp;");
+                }
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+              alert('erro');
+              console.log(jqXHR);
+            }
+          });
+        }
+      });
+    });
+
+    $(document).on('click', '.desfazer_reforco', function() {
+      var id = $(this).data('id');
+
+      swal({
+        title: "Confirmação",
+        text: "Deseja realmente DESFAZER o último reforço?",
+        showCancelButton: true,
+        confirmButtonClass: "btn-success",
+        //cancelButtonClass: "btn-danger",
+        confirmButtonText: 'Sim, Desfazer!',
+        cancelButtonText: 'Não',
+        closeOnConfirm: true,
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: "{{ route('api_tanques.undo') }}",
+            headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+            type: 'POST',
+            data: {
+              'id': id
+            },
+            success: function (data)
+            {
+              for(var k in data) {
+                var gauge = $('#tanque-'+data[k].id).data('gauge');
+                gauge.set(data[k].val);
+                if (data[k].exd) {
+                  $('#excedente-'+data[k].id).html(data[k].exd);
+                } else {
+                  $('#excedente-'+data[k].id).html("&nbsp;");
+                }
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+              alert('erro');
+              console.log(jqXHR);
+            }
+          });
         }
       });
     });
@@ -101,10 +193,10 @@
         headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
         type: 'POST',
         data: {
-          'idtiposervico': $('#idtiposervico').val(),
-          'idmaterial': $('#idmaterial').val(),
-          'idcor': $('#idcor').val(),
-          'milesimos': $('#milesimos').val()
+          'idtiposervico': $('#idtiposervico').val() ? $('#idtiposervico').val() : '',
+          'idmaterial': $('#idmaterial').val() ? $('#idmaterial').val() : '',
+          'idcor': $('#idcor').val() ? $('#idcor').val() : '',
+          'milesimos': $('#milesimos').val() ? $('#milesimos').val() : ''
         },
         success: function (data)
         {
@@ -120,6 +212,19 @@
       });
 
     }
+
+    function limpaCampos()
+    {
+      $('#idtiposervico').val('');
+      $('#idmaterial').val('');
+      $('#idcor').val('');
+      $('#milesimos').val('');
+      $('#peso').val('');
+    }
+
+    $('#modalForm').on('show.bs.modal', function (e) {
+      limpaCampos();
+    })
 
   </script>
 @endpush
@@ -215,7 +320,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success" id="btn-registrar" data-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-success" id="btn-registrar"><i class="fa fa-tick"></i> OK</button>
         </div>
       </div>
     </div>
