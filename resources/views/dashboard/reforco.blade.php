@@ -4,20 +4,33 @@
   <link rel="stylesheet" href="{{ asset('assets/vendor/gauge-js/gauge.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}">
+
+  <style media="screen">
+    .modal-open .select2-container {
+      z-index: 1701!important;
+    }
+  </style>
 @endpush
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/vendor/gauge-js/gauge.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/toastr/toastr.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.js') }}"></script>
+  <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/gauge.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/toastr.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
 
   <script type="text/javascript">
+    $('#idcliente').select2({
+      dropdownParent: $('#modalForm')
+    });
+
     $(document).on('change', '#idtiposervico, #idmaterial, #idcor, #milesimos', function() {
       listaTanques();
     });
@@ -66,6 +79,7 @@
           headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
           type: 'POST',
           data: {
+            'idcliente': $('#idcliente').val() ? $('#idcliente').val() : '',
             'idtiposervico': $('#idtiposervico').val() ? $('#idtiposervico').val() : '',
             'idmaterial': $('#idmaterial').val() ? $('#idmaterial').val() : '',
             'idcor': $('#idcor').val() ? $('#idcor').val() : '',
@@ -215,6 +229,8 @@
 
     function limpaCampos()
     {
+      $('#idcliente').val('');
+      $('#idcliente').trigger('change');
       $('#idtiposervico').val('');
       $('#idmaterial').val('');
       $('#idcor').val('');
@@ -262,6 +278,18 @@
         <div class="modal-body">
 
           <div class="row">
+            <div class="form-group col-md-12">
+              <label class="form-control-label" for="idcliente">Cliente</label>
+              <select class="form-control" id="idcliente" name="idcliente" style="width:100%;">
+                <option value=""></option>
+                @foreach ($clientes as $cliente)
+                  <option value="{{ $cliente->id }}"{{ $cliente->ativo ? '' : ' disabled' }}>{{ $cliente->rzsc }} ({{ $cliente->nome }})</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
             <div class="form-group col-md-6">
               <label class="form-control-label" for="idtiposervico">Serviço</label>
               <select class="form-control" id="idtiposervico" name="idtiposervico">
@@ -295,7 +323,7 @@
             </div>
 
             <div class="form-group col-md-3">
-              <label class="form-control-label" for="peso">Peso</label>
+              <label class="form-control-label" for="peso">Peso (g)</label>
               <input type="number" class="form-control" id="peso" name="peso" min="0" />
             </div>
 

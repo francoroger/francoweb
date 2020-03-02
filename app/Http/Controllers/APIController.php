@@ -231,6 +231,11 @@ class APIController extends Controller
     foreach ($processos as $proc) {
       $ciclo = new TanqueCiclo;
       $ciclo->tanque_id = $proc->tanque_id;
+      $ciclo->cliente_id = $request->get('idcliente');
+      $ciclo->tiposervico_id = $request->get('idtiposervico');
+      $ciclo->material_id = $request->get('idmaterial');
+      $ciclo->cor_id = $request->get('idcor');
+      $ciclo->milesimos = $request->get('milesimos');
       $ciclo->data_servico = \Carbon\Carbon::now();
       $ciclo->peso = $request->get('peso');
       $ciclo->status = 'P';
