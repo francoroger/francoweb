@@ -31,7 +31,7 @@ class CheckListCatalogacaoController extends Controller
 
   public function ajax(Request $request)
   {
-    $catalogacoes = Catalogacao::where('status', '<>', 'A')->where('status', '<>', 'L')->get();
+    $catalogacoes = Catalogacao::where('status', '<>', 'A')->get();
     $data = [];
     foreach ($catalogacoes as $catalogacao) {
       $actions = '<div class="text-nowrap">';
