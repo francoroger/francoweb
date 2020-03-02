@@ -118,7 +118,7 @@
 
                 <br>
 
-                <span class="font-size-12 totalizador-peso">{{ $catalogacoes->sum('peso_total_itens') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ $catalogacoes->sum('peso_total_itens') }} g</span>
               </h5>
 
               <div id="task-list-catalog" class="task-list-items" data-plugin="kanban" data-status="A">
@@ -187,7 +187,7 @@
 
                 <br>
 
-                <span class="font-size-12 totalizador-peso">{{ $ordens->sum('peso_total_itens') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ $ordens->sum('peso_total_itens') }} g</span>
               </h5>
 
               <div id="task-list-os" class="task-list-items" data-plugin="kanban" data-status="F">
@@ -256,7 +256,7 @@
 
                 <br>
 
-                <span class="font-size-12 totalizador-peso">{{ $revisoes->sum('peso_total_itens') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ $revisoes->sum('peso_total_itens') }} g</span>
               </h5>
               <div id="task-list-rev" class="task-list-items" data-plugin="kanban" data-status="G">
                 @foreach ($revisoes as $item)
@@ -324,7 +324,7 @@
 
                 <br>
 
-                <span class="font-size-12 totalizador-peso">{{ $expedicoes->sum('peso_total_itens') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ $expedicoes->sum('peso_total_itens') }} g</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="C">
                 @foreach ($expedicoes as $item)
@@ -392,7 +392,7 @@
 
                 <br>
 
-                <span class="font-size-12 totalizador-peso">{{ $concluidos->sum('peso_total_itens') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ $concluidos->sum('peso_total_itens') }} g</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="L">
                 @foreach ($concluidos as $item)
