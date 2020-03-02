@@ -143,7 +143,7 @@
                         </div>
                       </div>
                       <h6 class="mt-0 mb-2 font-size-12">
-                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
+                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
                       <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
@@ -212,7 +212,7 @@
                         </div>
                       </div>
                       <h6 class="mt-0 mb-2 font-size-12">
-                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
+                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
                       <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
@@ -280,7 +280,7 @@
                         </div>
                       </div>
                       <h6 class="mt-0 mb-2 font-size-12">
-                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
+                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
                       <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
@@ -348,7 +348,7 @@
                         </div>
                       </div>
                       <h6 class="mt-0 mb-2 font-size-12">
-                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
+                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
                       <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
@@ -416,7 +416,7 @@
                         </div>
                       </div>
                       <h6 class="mt-0 mb-2 font-size-12">
-                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }}</a>
+                        <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
                       <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ $item->itens->sum('peso') }} g</span>
