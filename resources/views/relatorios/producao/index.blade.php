@@ -72,11 +72,11 @@
                 <div class="input-daterange" data-plugin="datepicker" data-language="pt-BR">
                   <div class="input-group">
                     <span class="input-group-addon">De</span>
-                    <input type="text" class="form-control" name="dataini" id="dataini" />
+                    <input type="text" class="form-control" name="dataini" id="dataini" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}" />
                   </div>
                   <div class="input-group">
                     <span class="input-group-addon">Até</span>
-                    <input type="text" class="form-control" name="datafim" id="datafim" />
+                    <input type="text" class="form-control" name="datafim" id="datafim" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}" />
                   </div>
                 </div>
               </div>

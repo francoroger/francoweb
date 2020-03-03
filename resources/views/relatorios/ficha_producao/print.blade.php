@@ -80,7 +80,7 @@
                 @foreach ($itens[0] as $item)
                   <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
                     <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                    <td>{{ $item->tipo == 'S' ? number_format($item->peso, 2, ',', '.') : 'REFORÇO' }}</td>
+                    <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
                   </tr>
                 @endforeach
               </tbody>
@@ -100,7 +100,7 @@
                 @foreach ($itens[1] as $item)
                   <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
                     <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                    <td>{{ $item->tipo == 'S' ? number_format($item->peso, 2, ',', '.') : 'REFORÇO' }}</td>
+                    <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
                   </tr>
                 @endforeach
               </tbody>

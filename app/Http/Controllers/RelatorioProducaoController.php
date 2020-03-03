@@ -65,7 +65,7 @@ class RelatorioProducaoController extends Controller
         'material' => $ciclo->material->descricao ?? '',
         'cor' => $ciclo->cor->descricao ?? '',
         'milesimos' => $ciclo->milesimos,
-        'peso' => $ciclo->peso
+        'peso' => number_format($ciclo->peso, 0, ',', '.')
       ];
     }
 
