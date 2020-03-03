@@ -229,6 +229,8 @@ class APIController extends Controller
     $processos = $processos->get();
 
     foreach ($processos as $proc) {
+      $fat = $proc->fator ?? 1;
+
       $ciclo = new TanqueCiclo;
       $ciclo->tanque_id = $proc->tanque_id;
       $ciclo->cliente_id = $request->get('idcliente');
@@ -237,7 +239,7 @@ class APIController extends Controller
       $ciclo->cor_id = $request->get('idcor');
       $ciclo->milesimos = $request->get('milesimos');
       $ciclo->data_servico = \Carbon\Carbon::now();
-      $ciclo->peso = $request->get('peso');
+      $ciclo->peso = $request->get('peso') * $fat;
       $ciclo->status = 'P';
       $ciclo->save();
     }
