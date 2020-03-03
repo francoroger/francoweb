@@ -106,6 +106,14 @@ Route::group(['prefix' => 'relatorios'], function() {
   Route::get('servicos', 'RelatorioServicoController@index')->name('relatorio_servicos.index');
   Route::post('servicos', 'RelatorioServicoController@preview')->name('relatorio_servicos.preview');
   Route::post('servicos/print', 'RelatorioServicoController@print')->name('relatorio_servicos.print');
+
+  Route::get('ficha_producao', 'RelatorioFichaProducaoController@index')->name('relatorio_ficha_producao.index');
+  Route::post('ficha_producao', 'RelatorioFichaProducaoController@preview')->name('relatorio_ficha_producao.preview');
+  Route::post('ficha_producao/print', 'RelatorioFichaProducaoController@print')->name('relatorio_ficha_producao.print');
+
+  Route::get('producao', 'RelatorioProducaoController@index')->name('relatorio_producao.index');
+  Route::post('producao', 'RelatorioProducaoController@preview')->name('relatorio_producao.preview');
+  Route::post('producao/print', 'RelatorioProducaoController@print')->name('relatorio_producao.print');
 });
 
 Route::group(['prefix' => 'producao'], function() {

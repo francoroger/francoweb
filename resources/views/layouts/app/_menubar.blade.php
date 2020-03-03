@@ -138,6 +138,16 @@
                   <span class="site-menu-title">Serviços</span>
                 </a>
               </li>
+              <li class="site-menu-item{{ Request::is('relatorios/ficha_producao*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('relatorio_ficha_producao.index') }}">
+                  <span class="site-menu-title">Ficha de Produção</span>
+                </a>
+              </li>
+              <li class="site-menu-item{{ Request::is('relatorios/producao*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('relatorio_producao.index') }}">
+                  <span class="site-menu-title">Produção</span>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>
