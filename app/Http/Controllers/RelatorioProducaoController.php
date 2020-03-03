@@ -59,7 +59,7 @@ class RelatorioProducaoController extends Controller
     $result = [];
     foreach ($ciclos as $ciclo) {
       $result[] = (object) [
-        'data_servico' => date('d/m/Y', strtotime($ciclo->data_servico)),
+        'data_servico' => date('Y-m-d', strtotime($ciclo->data_servico)),
         'cliente' => $ciclo->cliente->nome ?? '',
         'tipo_servico' => $ciclo->tipo_servico->descricao ?? '',
         'material' => $ciclo->material->descricao ?? '',

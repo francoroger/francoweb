@@ -61,7 +61,7 @@
 
     @foreach ($itens as $data => $servicos)
 
-      <p><b>{{ $data }}</b></p>
+      <p><b>{{ date('d/m/Y', strtotime($data)) }}</b></p>
 
       <!-- Conteúdo -->
       <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
@@ -76,7 +76,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($servicos as $item)
+          @foreach ($servicos->sortBy('cliente') as $item)
             <tr>
               <td>{{ $item->cliente }}</td>
               <td>{{ $item->tipo_servico }}</td>
