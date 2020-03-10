@@ -75,7 +75,7 @@ class RelatorioFichaProducaoController extends Controller
     foreach ($reforcos as $reforco) {
       $result[] = (object) [
         'tipo' => 'R',
-        'data' => $reforco->created_at,
+        'data' => \Carbon\Carbon::parse($reforco->created_at)->subSeconds(1),
         'peso' => 0,
       ];
     }

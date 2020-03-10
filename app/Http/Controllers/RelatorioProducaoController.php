@@ -7,6 +7,7 @@ use App\Tanque;
 use App\TanqueCiclo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use DB;
 use PDF;
 use Storage;
 use Illuminate\Pagination\Paginator;
@@ -39,38 +40,52 @@ class RelatorioProducaoController extends Controller
   * Do search according to request criteria.
   *
   * @param  \Illuminate\Http\Request  $request
-  * @return \App\TanqueCiclo
+  * @return Illuminate\Support\Collection
   */
   private function search(Request $request)
   {
     $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini)->startOfDay();
     $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim)->endOfDay();
 
-    $ciclos = TanqueCiclo::select(['data_servico', 'peso', 'cliente_id', 'tiposervico_id', 'material_id', 'cor_id', 'milesimos'])->distinct()->whereBetween('data_servico', [$dtini, $dtfim]);
-
-    if ($request->idtanque) {
-      $ciclos->where('tanque_id', $request->idtanque);
-    }
-
-    $ciclos->orderBy('data_servico');
-
+    //Com Cliente
+    $ciclos = DB::table('passagem_pecas')->select([
+      DB::raw('date(passagem_pecas.data_servico) as data_serv'),
+      DB::raw('cliente.nome as cliente'),
+      DB::raw('tiposervico.descricao as tipo_servico'),
+      DB::raw('material.descricao as material'),
+      DB::raw('cores.descricao as variacao_cor'),
+      DB::raw('passagem_pecas.milesimos'),
+      DB::raw('sum(passagem_pecas.peso) as total_peso'),
+    ])->leftJoin('cliente', 'passagem_pecas.cliente_id', '=', 'cliente.id')
+      ->leftJoin('tiposervico', 'passagem_pecas.tiposervico_id', '=', 'tiposervico.id')
+      ->leftJoin('material', 'passagem_pecas.material_id', '=', 'material.id')
+      ->leftJoin('cores', 'passagem_pecas.cor_id', '=', 'cores.id')
+      ->groupBy(DB::raw('date(passagem_pecas.data_servico), cliente.nome, tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos'))
+      ->orderByRaw('date(passagem_pecas.data_servico), cliente.nome, tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos');
+    $ciclos->whereBetween('data_servico', [$dtini, $dtfim]);
     $ciclos = $ciclos->get();
 
+    //Sem Cliente
+    $cicSemCli = DB::table('passagem_pecas')->select([
+      DB::raw('date(passagem_pecas.data_servico) as data_serv'),
+      DB::raw('tiposervico.descricao as tipo_servico'),
+      DB::raw('material.descricao as material'),
+      DB::raw('cores.descricao as variacao_cor'),
+      DB::raw('passagem_pecas.milesimos'),
+      DB::raw('sum(passagem_pecas.peso) as total_peso'),
+    ])->leftJoin('tiposervico', 'passagem_pecas.tiposervico_id', '=', 'tiposervico.id')
+      ->leftJoin('material', 'passagem_pecas.material_id', '=', 'material.id')
+      ->leftJoin('cores', 'passagem_pecas.cor_id', '=', 'cores.id')
+      ->groupBy(DB::raw('date(passagem_pecas.data_servico), tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos'))
+      ->orderByRaw('date(passagem_pecas.data_servico), tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos');
+    $cicSemCli->whereBetween('data_servico', [$dtini, $dtfim]);
+    $cicSemCli = $cicSemCli->get();
+
     $result = [];
-    foreach ($ciclos as $ciclo) {
-      $result[] = (object) [
-        'data_servico' => date('Y-m-d', strtotime($ciclo->data_servico)),
-        'cliente' => $ciclo->cliente->nome ?? '',
-        'tipo_servico' => $ciclo->tipo_servico->descricao ?? '',
-        'material' => $ciclo->material->descricao ?? '',
-        'cor' => $ciclo->cor->descricao ?? '',
-        'milesimos' => $ciclo->milesimos,
-        'peso' => number_format($ciclo->peso, 0, ',', '.')
-      ];
-    }
+    $result['ComCliente'] = $ciclos;
+    $result['SemCliente'] = $cicSemCli;
 
     $result = collect($result);
-    $result = $result->sortBy('data_servico');
 
     return $result;
   }
@@ -106,8 +121,6 @@ class RelatorioProducaoController extends Controller
   public function print(Request $request)
   {
     $itens = $this->search($request);
-    $itens = $itens->groupBy('data_servico');
-
 
     $pdf = \App::make('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Catalogacao;
 use App\OrdemServico;
 use App\Recebimento;
+use App\PassagemPeca;
 use App\ProcessoTanque;
 use App\Reforco;
 use App\TanqueCiclo;
@@ -207,6 +208,16 @@ class APIController extends Controller
 
   public function registra_ciclo(Request $request)
   {
+    $passagem = new PassagemPeca;
+    $passagem->data_servico =  \Carbon\Carbon::now();
+    $passagem->cliente_id = $request->get('idcliente');
+    $passagem->tiposervico_id = $request->get('idtiposervico');
+    $passagem->material_id = $request->get('idmaterial');
+    $passagem->cor_id = $request->get('idcor');
+    $passagem->milesimos = $request->get('milesimos');
+    $passagem->peso = str_replace(',', '.', $request->get('peso'));
+    $passagem->save();
+
     $processos = ProcessoTanque::orderBy('id');
 
     if ($request->get('idtiposervico')) {
@@ -239,7 +250,7 @@ class APIController extends Controller
       $ciclo->cor_id = $request->get('idcor');
       $ciclo->milesimos = $request->get('milesimos');
       $ciclo->data_servico = \Carbon\Carbon::now();
-      $ciclo->peso = $request->get('peso') * $fat;
+      $ciclo->peso = str_replace(',', '.', $request->get('peso')) * $fat;
       $ciclo->status = 'P';
       $ciclo->save();
     }
