@@ -97,6 +97,7 @@
       $sumarioGeral = $itens['SemCliente'];
     @endphp
 
+    @if ($servicosPorData->count() > 0)
     @foreach ($servicosPorData as $data => $servicosNaData)
 
       <p class="subtitulo-red">{{ date('d/m/Y', strtotime($data)) }}</p>
@@ -183,6 +184,7 @@
       <div class="spacer"></div>
 
     @endforeach
+  @endif
 
     <div class="item-group">
       <p class="subtitulo-black">RESUMO DO PERÍODO</p>
