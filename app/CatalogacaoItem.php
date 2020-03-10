@@ -35,6 +35,10 @@ class CatalogacaoItem extends Model
     return $this->hasMany('App\CatalogacaoServico', 'iditemtri', 'id');
   }
 
+  public function getPesoRealAttribute($value) {
+    return $this->peso * $this->quantidade;
+  }
+
   /**
   * Get foto - trata o caminho para localizar a foto na estrutura de pastas
   * Exemplo: CATALOGAÇÃO/FOTOS CATALOGO YYYY/MM-YYYY/FILENAME.jpg

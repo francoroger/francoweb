@@ -184,7 +184,7 @@
       <div class="spacer"></div>
 
     @endforeach
-  @endif
+
 
     <div class="item-group">
       <p class="subtitulo-black">RESUMO DO PERÍODO</p>
@@ -220,6 +220,8 @@
       </table>
       <!-- Fim Conteúdo -->
     </div>
+
+@endif
 
   </body>
 </html>

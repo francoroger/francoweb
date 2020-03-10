@@ -23,7 +23,7 @@
             <div class="gauge-label"></div>
             <canvas width="150" height="110"></canvas>
           </div>
-          <span id="{{ "excedente-" . $tanque->id }}" class="font-size-10 text-danger">{!! $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? "Excedeu " . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g'  : "&nbsp;" !!}</span>
+          <span id="{{ "excedente-" . $tanque->id }}" class="font-size-12 font-weight-500 text-danger">{!! $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? "Excedeu " . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g'  : "&nbsp;" !!}</span>
         </div>
         <div class="panel-footer text-center">
           <button type="button" data-id="{{ $tanque->id }}" data-descricao="{{ $tanque->descricao }}" class="btn btn-success btn-reforco"><i class="fa fa-flask"></i> Reforço</button>

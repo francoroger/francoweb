@@ -145,7 +145,7 @@
 
                 <br>
 
-                <span class="font-size-14 totalizador-peso">{{ number_format($catalogacoes->sum('peso_total_itens'), 2, ',', '.') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ number_format($catalogacoes->sum('peso_real_total_itens'), 2, ',', '.') }} g</span>
               </h5>
 
               <div id="task-list-catalog" class="task-list-items" data-plugin="kanban" data-status="A">
@@ -173,7 +173,7 @@
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
-                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso'), 2, ',', '.') }} g</span>
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso_real'), 0, ',', '.') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -214,7 +214,7 @@
 
                 <br>
 
-                <span class="font-size-14 totalizador-peso">{{ number_format($ordens->sum('peso_total_itens'), 2, ',', '.') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ number_format($ordens->sum('peso_real_total_itens'), 2, ',', '.') }} g</span>
               </h5>
 
               <div id="task-list-os" class="task-list-items" data-plugin="kanban" data-status="F">
@@ -242,7 +242,7 @@
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
-                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso'), 2, ',', '.') }} g</span>
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso_real'), 0, ',', '.') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -283,7 +283,7 @@
 
                 <br>
 
-                <span class="font-size-14 totalizador-peso">{{ number_format($revisoes->sum('peso_total_itens'), 2, ',', '.') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ number_format($revisoes->sum('peso_real_total_itens'), 2, ',', '.') }} g</span>
               </h5>
               <div id="task-list-rev" class="task-list-items" data-plugin="kanban" data-status="G">
                 @foreach ($revisoes as $item)
@@ -310,7 +310,7 @@
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
-                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso'), 2, ',', '.') }} g</span>
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso_real'), 0, ',', '.') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -351,7 +351,7 @@
 
                 <br>
 
-                <span class="font-size-14 totalizador-peso">{{ number_format($expedicoes->sum('peso_total_itens'), 2, ',', '.') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ number_format($expedicoes->sum('peso_real_total_itens'), 2, ',', '.') }} g</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="C">
                 @foreach ($expedicoes as $item)
@@ -378,7 +378,7 @@
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
-                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso'), 2, ',', '.') }} g</span>
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso_real'), 0, ',', '.') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
@@ -419,7 +419,7 @@
 
                 <br>
 
-                <span class="font-size-14 totalizador-peso">{{ number_format($concluidos->sum('peso_total_itens'), 2, ',', '.') }} g</span>
+                <span class="font-size-14 totalizador-peso">{{ number_format($concluidos->sum('peso_real_total_itens'), 2, ',', '.') }} g</span>
               </h5>
               <div id="task-list-exped" class="task-list-items" data-plugin="kanban" data-status="L">
                 @foreach ($concluidos as $item)
@@ -446,7 +446,7 @@
                         <a href="#" data-toggle="modal" data-target="#task-detail-modal" class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
                       </h6>
 
-                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso'), 2, ',', '.') }} g</span>
+                      <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso_real'), 0, ',', '.') }} g</span>
 
                       <!--
                       <span class="badge badge-outline badge-danger">Alta</span>
