@@ -96,6 +96,24 @@
       });
 
     }
+
+    //Declaração da nova função (icontains) para usar ao invés do contains
+    //Permite busca com case insensitive
+    jQuery.expr[':'].icontains = function(a, i, m) {
+      return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+    };
+
+    $(document).on('keyup', '#search', function(key) {
+      var term = $(this).val();
+
+      if (term != '') {
+        $('.card').addClass('d-none');
+      } else {
+        $('.card').removeClass('d-none');
+      }
+
+      $(".text-body:icontains('"+term+"')").parent().parent().parent().removeClass('d-none');
+    });
   </script>
 @endpush
 
@@ -105,6 +123,15 @@
   <div class="page">
     <div class="page-header">
       <h1 class="page-title font-size-26 font-weight-100">Painel de Acompanhamento do Processo</h1>
+
+      <div class="page-header-actions">
+        <form>
+          <div class="input-search input-search-dark">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" id="search" placeholder="Pesquisar...">
+          </div>
+        </form>
+      </div>
     </div>
     <div class="page-content container-fluid">
 
