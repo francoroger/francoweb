@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="{{ asset('assets/vendor/gauge-js/gauge.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}">
 
   <style media="screen">
@@ -17,7 +18,10 @@
   <script src="{{ asset('assets/vendor/gauge-js/gauge.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/toastr/toastr.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.js') }}"></script>
+  <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
+  <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/formatter/jquery.formatter.js') }}"></script>
 @endpush
 
 @push('scripts_page')
@@ -25,6 +29,8 @@
   <script src="{{ asset('assets/js/Plugin/toastr.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/bootstrap-datepicker.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/formatter.js') }}"></script>
 
   <script type="text/javascript">
     $('#idcliente').select2({
@@ -85,6 +91,8 @@
             'idcor': $('#idcor').val() ? $('#idcor').val() : '',
             'milesimos': $('#milesimos').val() ? $('#milesimos').val() : '',
             'peso': $('#peso').val(),
+            'data_servico': $('#data_servico').val(),
+            'hora_servico': $('#hora_servico').val(),
           },
           success: function (data)
           {
@@ -160,7 +168,8 @@
       });
     });
 
-    $(document).on('click', '.desfazer_reforco', function() {
+    $(document).on('click', '.desfazer_reforco', function(event) {
+      event.preventDefault();
       var id = $(this).data('id');
 
       swal({
@@ -242,6 +251,13 @@
       $('#idcor').val('');
       $('#milesimos').val('');
       $('#peso').val('');
+
+      var currentdate = new Date();
+      //var data = currentdate.getDate().toString().padStart(2, "0") + "-" + (currentdate.getMonth()+1).toString().padStart(2, "0") + '-' + currentdate.getFullYear();
+      var hora = currentdate.getHours().toString().padStart(2, "0") + ":" + currentdate.getMinutes().toString().padStart(2, "0");
+
+      $('#hora_servico').val(hora);
+      $('#data_servico').datepicker("update", new Date());
     }
 
     $('#modalForm').on('show.bs.modal', function (e) {
@@ -256,12 +272,13 @@
     <div class="page-header">
       <h1 class="page-title font-size-26 font-weight-100">Controle de Reforço de Tanques</h1>
       <div class="page-header-actions">
-        <div class="btn-group btn-group-sm" aria-label="Ações" role="group">
-          <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modalForm">
-            <i class="icon wb-check-circle" aria-hidden="true"></i>
-            <span class="hidden-sm-down">Passagem de Peças</span>
-          </a>
-        </div>
+        <a class="btn btn-icon btn-info btn-outline" href="{{ route('controle_reforco.consulta') }}" data-placement="bottom" data-toggle="tooltip" data-original-title="Consultar">
+          <i class="fa fa-search"></i>
+        </a>
+        <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modalForm">
+          <i class="icon wb-check-circle" aria-hidden="true"></i>
+          <span class="hidden-sm-down">Passagem de Peças</span>
+        </a>
       </div>
     </div>
     <div class="page-content container-fluid" id="ciclos-reforco">.
@@ -282,6 +299,20 @@
           </button>
         </div>
         <div class="modal-body">
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label" for="data_servico">Data</label>
+              <input type="text" class="form-control" id="data_servico" name="data_servico" data-plugin="datepicker" data-language="pt-BR" />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="form-control-label" for="hora_servico">Hora</label>
+              <input type="text" class="form-control" id="hora_servico" name="hora_servico" data-plugin="formatter"
+                data-pattern="[[99]]:[[99]]" />
+            </div>
+          </div>
+
 
           <div class="row">
             <div class="form-group col-md-12">

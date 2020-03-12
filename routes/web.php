@@ -21,6 +21,8 @@ Route::get('phpinfo', function() { phpinfo(); })->name('phpinfo');
 
 Route::get('/painel', 'HomeController@painel')->name('painel');
 Route::get('/controle_reforco', 'HomeController@reforco')->name('controle_reforco');
+Route::get('/controle_reforco/consulta', 'HomeController@consulta_reforco')->name('controle_reforco.consulta');
+Route::delete('controle_reforco/consulta/{id}', 'HomeController@destroy_reforco')->name('controle_reforco.destroy');
 
 Route::group(['prefix' => 'api'], function() {
   Route::post('tanques', 'APIController@tanques')->name('api_tanques');

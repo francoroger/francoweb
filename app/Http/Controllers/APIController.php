@@ -209,7 +209,7 @@ class APIController extends Controller
   public function registra_ciclo(Request $request)
   {
     $passagem = new PassagemPeca;
-    $passagem->data_servico =  \Carbon\Carbon::now();
+    $passagem->data_servico = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->get('data_servico') . ' ' . $request->get('hora_servico'));
     $passagem->cliente_id = $request->get('idcliente');
     $passagem->tiposervico_id = $request->get('idtiposervico');
     $passagem->material_id = $request->get('idmaterial');
@@ -249,7 +249,7 @@ class APIController extends Controller
       $ciclo->material_id = $request->get('idmaterial');
       $ciclo->cor_id = $request->get('idcor');
       $ciclo->milesimos = $request->get('milesimos');
-      $ciclo->data_servico = \Carbon\Carbon::now();
+      $ciclo->data_servico = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->get('data_servico') . ' ' . $request->get('hora_servico'));
       $ciclo->peso = str_replace(',', '.', $request->get('peso')) * $fat;
       $ciclo->status = 'P';
       $ciclo->save();
@@ -284,6 +284,7 @@ class APIController extends Controller
     //Atualiza o item com o status de R (realizado) e a id do reforço
     $affected = DB::table('tanque_ciclos')
                   ->where('tanque_id', $request->get('id'))
+                  ->whereNull('reforco_id')
                   ->update([
                     'status' => 'R',
                     'reforco_id' => $reforco->id,
@@ -296,6 +297,7 @@ class APIController extends Controller
       $ciclo->peso = $exd;
       $ciclo->status = 'P';
       $ciclo->excedente = true;
+      $ciclo->reforco_id = $reforco->id;
       $ciclo->save();
     }
 
@@ -314,30 +316,29 @@ class APIController extends Controller
 
   public function undo_reforco(Request $request)
   {
-    /*$tanque = Tanque::findOrFail($request->get('id'));
+    $tanque = Tanque::findOrFail($request->get('id'));
     $reforco = $tanque->reforcos->sortByDesc('created_at')->first();
+    $reforco_id = $reforco->id;
+
+    //Exclui os excedentes
+    $exced = DB::table('tanque_ciclos')
+               ->where('tanque_id', $request->get('id'))
+               ->where('reforco_id', $reforco_id)
+               ->where('status', 'P')
+               ->where('excedente', true)
+               ->delete();
 
     //Atualiza o item com o status de R (realizado) e a id do reforço
-    $affected = DB::table('tanque_ciclos')
-                  ->where('tanque_id', $request->get('id'))
-                  ->where('reforco_id', $reforco->id)
-                  ->update([
-                    'status' => 'P',
-                    'reforco_id' => null,
-                  ]);
+    $updt = DB::table('tanque_ciclos')
+              ->where('tanque_id', $request->get('id'))
+              ->where('reforco_id', $reforco_id)
+              ->update([
+                'status' => 'P',
+                'reforco_id' => null,
+              ]);
 
+    //Exclui o reforço
     $reforco->delete();
-
-    $ciclo = TanqueCiclo::where('tanque_id', $request->get('id'))
-                        ->where('status', 'P')
-                        ->where('excedente', true)
-                        ->orderBy('created_at', 'desc')
-                        ->first();
-
-    if ($ciclo->count() > 0) {
-      $exced = TanqueCiclo::findOrFail($ciclo->id);
-      $exced->delete();
-    }
 
     $data = [];
     $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
@@ -349,7 +350,7 @@ class APIController extends Controller
       ];
     }
 
-    return response()->json($data);*/
+    return response()->json($data);
   }
 
 }
