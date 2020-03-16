@@ -284,7 +284,7 @@ class APIController extends Controller
     //Atualiza o item com o status de R (realizado) e a id do reforço
     $affected = DB::table('tanque_ciclos')
                   ->where('tanque_id', $request->get('id'))
-                  ->whereNull('reforco_id')
+                  ->where('status', 'P')
                   ->update([
                     'status' => 'R',
                     'reforco_id' => $reforco->id,

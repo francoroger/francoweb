@@ -77,12 +77,14 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($itens[0] as $item)
-                  <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
-                    <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                    <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
-                  </tr>
-                @endforeach
+                @if ($itens->count())
+                  @foreach ($itens[0] as $item)
+                    <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
+                      <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
+                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
+                    </tr>
+                  @endforeach
+                @endif
               </tbody>
             </table>
 
@@ -97,12 +99,14 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($itens[1] as $item)
-                  <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
-                    <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                    <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
-                  </tr>
-                @endforeach
+                @if ($itens->count())
+                  @foreach ($itens[1] as $item)
+                    <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
+                      <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
+                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
+                    </tr>
+                  @endforeach
+                @endif
               </tbody>
             </table>
 

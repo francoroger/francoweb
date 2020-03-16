@@ -4,7 +4,7 @@
       <div id="{{ "pnl-" . $tanque->id }}" class="panel{{ $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? " panel-danger"  : "" }}">
         <div class="panel-heading">
           <h3 class="panel-title">
-            {{ $tanque->descricao }}
+            {{ $tanque->descricao }} <br>
             <small> a cada {{ $tanque->ciclo_reforco }} g</small>
           </h3>
           <div class="panel-actions panel-actions-keep">
