@@ -2,173 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Catalogacao;
-use App\OrdemServico;
-use App\Recebimento;
+use App\Cliente;
+use App\Material;
 use App\PassagemPeca;
 use App\ProcessoTanque;
 use App\Reforco;
-use App\TanqueCiclo;
 use App\Tanque;
-use DB;
+use App\TanqueCiclo;
+use App\TipoServico;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class APIController extends Controller
+class ReforcoController extends Controller
 {
-  /**
-  * Process ajax request.
-  *
-  * @return \Illuminate\Http\JsonResponse
-  */
-  public function recebimento(Request $request)
+  public function index()
   {
-    $data = [];
-    $recebimentos = Recebimento::whereNull('status')
-                               ->orderBy('data_receb', 'desc')
-                               ->take(10)
-                               ->get();
+    $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
 
-    foreach ($recebimentos as $recebimento) {
-      $data[] = [
-        'id' => 'REC-' . $recebimento->id,
-        'title' => $recebimento->cliente->nome ?? $recebimento->nome_cliente,
-        'codigo' => $recebimento->id,
-        'cliente' => $recebimento->cliente->rzsc ?? ($recebimento->cliente->nome ?? $recebimento->nome_cliente),
-        'data_evento' => date('d/m/Y', strtotime($recebimento->data_receb)),
-      ];
-    }
+    $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
 
-    return response()->json($data);
-  }
-
-  /**
-  * Process ajax request.
-  *
-  * @return \Illuminate\Http\JsonResponse
-  */
-  public function separacao(Request $request)
-  {
-    $data = [];
-
-    return response()->json($data);
-  }
-
-  /**
-  * Process ajax request.
-  *
-  * @return \Illuminate\Http\JsonResponse
-  */
-  public function catalogacao(Request $request)
-  {
-    $data = [];
-
-    $catalogacoes = Catalogacao::whereIn('status', ['A', 'F'])
-                               ->whereNotNull('idcliente')
-                               ->orderBy('datacad', 'desc')
-                               ->take(10)
-                               ->get();
-
-    foreach ($catalogacoes as $catalogacao) {
-      $data[] = [
-        'id' => 'CAT-' . $catalogacao->id,
-        'title' => $catalogacao->cliente->nome ?? '',
-        'codigo' => $catalogacao->id,
-        'cliente' => $catalogacao->cliente->rzsc ?? $catalogacao->cliente->nome,
-        'data_evento' => date('d/m/Y', strtotime($catalogacao->datacad)),
-      ];
-    }
-
-    return response()->json($data);
-  }
-
-  /**
-  * Process ajax request.
-  *
-  * @return \Illuminate\Http\JsonResponse
-  */
-  public function os(Request $request)
-  {
-    $data = [];
-    $ordens = OrdemServico::whereNotNull('idcliente')
-                          ->orderBy('datavenda', 'desc')
-                          ->take(10)
-                          ->get();
-
-    foreach ($ordens as $ordem) {
-      $data[] = [
-        'id' => 'OS-' . $ordem->id,
-        'title' => $ordem->cliente->nome ?? '',
-        'codigo' => $ordem->id,
-        'cliente' => $ordem->cliente->rzsc ?? $ordem->cliente->nome,
-        'data_evento' => date('d/m/Y', strtotime($ordem->datavenda)),
-      ];
-    }
-
-    return response()->json($data);
-  }
-
-  /**
-  * Process ajax request.
-  *
-  * @return \Illuminate\Http\JsonResponse
-  */
-  public function revisao(Request $request)
-  {
-    $data = [];
-    $catalogacoes = Catalogacao::where('status', 'P')
-                               ->whereNotNull('idcliente')
-                               ->orderBy('datacad', 'desc')
-                               ->take(10)
-                               ->get();
-
-    foreach ($catalogacoes as $catalogacao) {
-      $data[] = [
-        'id' => 'REV-' . $catalogacao->id,
-        'title' => $catalogacao->cliente->nome ?? '',
-        'codigo' => $catalogacao->id,
-        'cliente' => $catalogacao->cliente->rzsc ?? $catalogacao->cliente->nome,
-        'data_evento' => date('d/m/Y', strtotime($catalogacao->datacad)),
-      ];
-    }
-
-    return response()->json($data);
-  }
-
-  /**
-  * Process ajax request.
-  *
-  * @return \Illuminate\Http\JsonResponse
-  */
-  public function expedicao(Request $request)
-  {
-    $data = [];
-    $catalogacoes = Catalogacao::where('status', 'C')
-                               ->whereNotNull('idcliente')
-                               ->orderBy('datacad', 'desc')
-                               ->take(10)
-                               ->get();
-
-    foreach ($catalogacoes as $catalogacao) {
-      $data[] = [
-        'id' => 'EXP-' . $catalogacao->id,
-        'title' => $catalogacao->cliente->nome ?? '',
-        'codigo' => $catalogacao->id,
-        'cliente' => $catalogacao->cliente->rzsc ?? $catalogacao->cliente->nome,
-        'data_evento' => date('d/m/Y', strtotime($catalogacao->datacad)),
-      ];
-    }
-
-    return response()->json($data);
-  }
-
-  public function updateCatalogacao(Request $request)
-  {
-    $catalogacao = Catalogacao::findOrFail($request->id);
-    $catalogacao->status = $request->status;
-
-    if ($catalogacao->save()) {
-      return response(200);
-    }
+    $tiposServico = TipoServico::whereHas('processos_tanque')->orderBy('descricao')->get();
+    $materiais = Material::whereHas('processos_tanque')->orderBy('pos')->get();
+    return view('controle_reforco.index')->with([
+      'tanques' => $tanques,
+      'tiposServico' => $tiposServico,
+      'materiais' => $materiais,
+      'clientes' => $clientes,
+    ]);
   }
 
   public function tanques(Request $request)
@@ -276,6 +136,9 @@ class APIController extends Controller
     $tanque = Tanque::findOrFail($request->get('id'));
     $exd = $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? $tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco : 0;
 
+    //Obter a quantidade mínima necessária pra zerar, o que sobra é o negativo
+    $neg = $tanque->ciclos->where('status', 'P')->sum('peso') < $tanque->ciclo_reforco ? $tanque->ciclo_reforco - $tanque->ciclos->where('status', 'P')->sum('peso') : 0;
+
     //Gera um registro para o reforço que será associado com o item
     $reforco = new Reforco;
     $reforco->tanque_id = $request->get('id');
@@ -290,11 +153,24 @@ class APIController extends Controller
                     'reforco_id' => $reforco->id,
                   ]);
 
+    //Cria a transação do excedente
     if ($exd > 0) {
       $ciclo = new TanqueCiclo;
       $ciclo->tanque_id = $request->get('id');
       $ciclo->data_servico = \Carbon\Carbon::now();
       $ciclo->peso = $exd;
+      $ciclo->status = 'P';
+      $ciclo->excedente = true;
+      $ciclo->reforco_id = $reforco->id;
+      $ciclo->save();
+    }
+
+    //Cria a transação do negativo
+    if ($neg > 0) {
+      $ciclo = new TanqueCiclo;
+      $ciclo->tanque_id = $request->get('id');
+      $ciclo->data_servico = \Carbon\Carbon::now();
+      $ciclo->peso = - $neg;
       $ciclo->status = 'P';
       $ciclo->excedente = true;
       $ciclo->reforco_id = $reforco->id;
@@ -353,4 +229,67 @@ class APIController extends Controller
     return response()->json($data);
   }
 
+  public function consulta(Request $request)
+  {
+    $passagens = PassagemPeca::latest('created_at');
+    $passagens = $passagens->paginate(10);
+
+    if ($request->ajax()) {
+      return response()->json([
+        'view' => view('consulta_reforco.data', compact('passagens'))->render()
+      ]);
+    } else {
+      return view('consulta_reforco.index')->with([
+        'passagens' => $passagens
+      ]);
+    }
+  }
+
+  public function destroy_reforco($id)
+  {
+    $passagem = PassagemPeca::findOrFail($id);
+
+    $processos = ProcessoTanque::orderBy('id');
+
+    if ($passagem->tiposervico_id) {
+      $processos->where('tiposervico_id', $passagem->tiposervico_id);
+    }
+
+    if ($passagem->material_id) {
+      $processos->where('material_id', $passagem->material_id);
+    }
+
+    if ($passagem->cor_id) {
+      $processos->where('cor_id', $passagem->cor_id);
+    }
+
+    if ($passagem->milesimos) {
+      $processos->where('mil_ini', '<=', $passagem->milesimos)
+                ->where('mil_fim', '>=', $passagem->milesimos);
+    }
+
+    $processos = $processos->get();
+
+    foreach ($processos as $proc) {
+      $fat = $proc->fator ?? 1;
+      $peso = $passagem->peso * $fat;
+
+      $ciclo = TanqueCiclo::where('tanque_id', $proc->tanque_id)
+                          ->where('cliente_id', $passagem->cliente_id)
+                          ->where('tiposervico_id', $passagem->tiposervico_id)
+                          ->where('material_id', $passagem->material_id)
+                          ->where('peso', $peso)
+                          ->get();
+
+      if ($ciclo->count() > 0) {
+        $toDel = TanqueCiclo::findOrFail($ciclo->first()->id);
+        $toDel->delete();
+      }
+
+    }
+
+    if ($passagem->delete()) {
+      return response(200);
+    }
+  }
 }

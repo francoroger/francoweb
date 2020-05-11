@@ -17,8 +17,8 @@ class AppCamera extends BaseApp {
   }
 
   handleWebcam() {
-    let w = $(this.$preview).width()
-    let h = $(this.$preview).height()
+    const w = $(this.$preview).width()
+    const h = $(this.$preview).height()
 
     const camOptions = {
       width: w,
@@ -30,25 +30,25 @@ class AppCamera extends BaseApp {
       force_flash: false
     }
 
-    Webcam.set(camOptions);
+    Webcam.set(camOptions)
   }
 
   setupControls() {
     const self = this
 
     this.$turnOnBtn.on('click', (e) => {
-      this.$preview.addClass('d-none');
-      $(this.$cam).removeClass('d-none');
-      Webcam.attach(this.$cam);
+      this.$preview.addClass('d-none')
+      $(this.$cam).removeClass('d-none')
+      Webcam.attach(this.$cam)
     })
 
     this.$takeSnapshotBtn.on('click', (e) => {
       Webcam.snap((data_uri) => {
-        this.$preview.removeClass('d-none');
-        $(self.$cam).addClass('d-none');
-        self.$preview.attr('src', data_uri);
-        Webcam.reset();
-      });
+        this.$preview.removeClass('d-none')
+        $(self.$cam).addClass('d-none')
+        self.$preview.attr('src', data_uri)
+        Webcam.reset()
+      })
     })
   }
 

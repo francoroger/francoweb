@@ -13,20 +13,21 @@ $(document).ready(function($) {
     api1.upload(function(fname, fpath) {
       $('#capturaModal').modal('hide')
 
-      let elem = '<li>\
-        <div class="panel">\
-          <figure class="overlay overlay-hover animation-hover">\
-            <img class="caption-figure overlay-figure" src="'+fpath+'">\
-            <figcaption class="overlay-panel overlay-background overlay-fade text-center vertical-align">\
-              <div class="btn-group">\
-                <button type="button" class="btn btn-icon btn-pure btn-default" title="Excluir" data-tag="project-delete">\
-                  <i class="icon wb-trash" aria-hidden="true"></i>\
-                </button>\
-              </div>\
-            </figcaption>\
-          </figure>\
-        </div>\
-      </li>';
+      let elem = `<li>
+        <div class="panel">
+          <figure class="overlay overlay-hover animation-hover">
+            <img class="caption-figure overlay-figure" src="${fpath}">
+            <input type="hidden" name="fotos[]" value="${fname}">
+            <figcaption class="overlay-panel overlay-background overlay-fade text-center vertical-align">
+              <div class="btn-group">
+                <button type="button" class="btn btn-icon btn-pure btn-default btn-delete" title="Excluir" data-id="">
+                  <i class="icon wb-trash"></i>
+                </button>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </li>`;
 
       $('#foto-container').append(elem)
 

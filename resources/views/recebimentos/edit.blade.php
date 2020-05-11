@@ -57,17 +57,18 @@
 @section('content')
   <div class="page">
     <div class="page-header">
-      <h1 class="page-title font-size-26 font-weight-100">Novo Recebimento</h1>
+      <h1 class="page-title font-size-26 font-weight-100">Editar Recebimento</h1>
     </div>
 
     <div class="page-content">
-      <form class="panel" method="post" action="{{ route('recebimentos.store') }}" autocomplete="off">
+      <form class="panel" method="post" action="{{ route('recebimentos.update', $recebimento->id) }}" autocomplete="off">
+        <input type="hidden" name="_method" value="PUT">
         @csrf
         <div class="panel-body">
           <div class="row">
             <div class="form-group col-md-2">
               <label class="form-control-label" for="data_receb">Data de Entrada <span class="text-danger">*</span></label>
-              <input type="text" class="form-control @error('data_receb') is-invalid @enderror" id="data_receb" name="data_receb" value="{{ old('data_receb', \Carbon\Carbon::now()->format('d/m/Y')) }}" data-plugin="datepicker" data-language="pt-BR" required />
+              <input type="text" class="form-control @error('data_receb') is-invalid @enderror" id="data_receb" name="data_receb" value="{{ old('data_receb', date('d/m/Y', strtotime($recebimento->data_receb))) }}" data-plugin="datepicker" data-language="pt-BR" required />
               @error('data_receb')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -77,7 +78,7 @@
 
             <div class="form-group col-md-2">
               <label class="form-control-label" for="hora_receb">Hora de Entrada <span class="text-danger">*</span></label>
-              <input type="text" class="form-control @error('hora_receb') is-invalid @enderror" id="hora_receb" name="hora_receb" value="{{ old('hora_receb', \Carbon\Carbon::now()->format('H:i')) }}" data-plugin="clockpicker" data-autoclose="true" required />
+              <input type="text" class="form-control @error('hora_receb') is-invalid @enderror" id="hora_receb" name="hora_receb" value="{{ old('hora_receb', date('H:i', strtotime($recebimento->hora_receb))) }}" data-plugin="clockpicker" data-autoclose="true" required />
               @error('hora_receb')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -90,7 +91,7 @@
               <select class="form-control @error('idresp') is-invalid @enderror" id="idresp" name="idresp" data-plugin="select2">
                 <option value=""></option>
                 @foreach ($responsaveis as $resp)
-                  <option value="{{ $resp->id }}"{{ old('idresp') == $resp->id ? ' selected' : '' }}>{{ $resp->descricao }}</option>
+                  <option value="{{ $resp->id }}"{{ old('idresp', $recebimento->idresp) == $resp->id ? ' selected' : '' }}>{{ $resp->descricao }}</option>
                 @endforeach
               </select>
               @error('idresp')
@@ -107,7 +108,7 @@
               <select class="form-control @error('idcliente') is-invalid @enderror" id="idcliente" name="idcliente" data-plugin="select2" required>
                 <option value=""></option>
                 @foreach ($clientes as $cliente)
-                  <option value="{{ $cliente->id }}"{{ old('idcliente') == $cliente->id ? ' selected' : '' }}{{ $cliente->ativo ? '' : ' disabled' }}>{{ $cliente->identificacao }}</option>
+                  <option value="{{ $cliente->id }}"{{ old('idcliente', $recebimento->idcliente) == $cliente->id ? ' selected' : '' }}{{ $cliente->ativo ? '' : ' disabled' }}>{{ $cliente->identificacao }}</option>
                 @endforeach
               </select>
               @error('idcliente')
@@ -122,7 +123,7 @@
             <div class="form-group col-md-4">
               <label class="form-control-label" for="pesototal">Peso Total</label>
               <div class="input-group">
-                <input type="text" class="form-control @error('pesototal') is-invalid @enderror" id="pesototal" name="pesototal" value="{{ old('pesototal') }}" />
+                <input type="text" class="form-control @error('pesototal') is-invalid @enderror" id="pesototal" name="pesototal" value="{{ old('pesototal', $recebimento->pesototal) }}" />
                 <span class="input-group-addon">
                   gramas
                 </span>
@@ -139,7 +140,7 @@
               <select class="form-control @error('idfornec') is-invalid @enderror" id="idfornec" name="idfornec" data-plugin="select2">
                 <option value=""></option>
                 @foreach ($fornecedores as $fornec)
-                  <option value="{{ $fornec->id }}"{{ old('idfornec') == $fornec->id ? ' selected' : '' }}{{ $fornec->ativo ? '' : ' disabled' }}>{{ $fornec->nome }}</option>
+                  <option value="{{ $fornec->id }}"{{ old('idfornec', $recebimento->idfornec) == $fornec->id ? ' selected' : '' }}{{ $fornec->ativo ? '' : ' disabled' }}>{{ $fornec->nome }}</option>
                 @endforeach
               </select>
               @error('idfornec')
@@ -153,7 +154,7 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label class="form-control-label" for="obs">Observações</label>
-              <textarea class="form-control @error('obs') is-invalid @enderror" id="obs" name="obs" rows="5" placeholder="Observações">{{ old('obs') }}</textarea>
+              <textarea class="form-control @error('obs') is-invalid @enderror" id="obs" name="obs" rows="5" placeholder="Observações">{{ old('obs', $recebimento->obs) }}</textarea>
               @error('obs')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -166,6 +167,23 @@
 
           <div class="recebimento-gallery">
             <ul class="blocks blocks-100 blocks-xxl-5 blocks-lg-4 blocks-md-3 blocks-sm-2" id="foto-container">
+              @foreach ($recebimento->fotos as $foto)
+              <li>
+                <div class="panel">
+                  <figure class="overlay overlay-hover animation-hover">
+                    <img class="caption-figure overlay-figure" src="{{ asset("fotos/{$foto->foto}") }}">
+                    <input type="hidden" name="fotos[]" value="{{ $foto->foto }}">
+                    <figcaption class="overlay-panel overlay-background overlay-fade text-center vertical-align">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-icon btn-pure btn-default btn-delete" title="Excluir" data-id="{{ $foto->id }}">
+                          <i class="icon wb-trash"></i>
+                        </button>
+                      </div>
+                    </figcaption>
+                  </figure>
+                </div>
+              </li>
+              @endforeach
             </ul>
           </div>
 

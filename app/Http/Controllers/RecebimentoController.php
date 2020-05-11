@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Cliente;
 use App\Fornecedor;
 use App\Recebimento;
+use App\RecebimentoFoto;
 use App\ResponsavelEntrega;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RecebimentoController extends Controller
 {
@@ -48,7 +51,7 @@ class RecebimentoController extends Controller
         'data_hora' => date("Y-m-d H:i:s", strtotime("$recebimento->data_receb $recebimento->hora_receb")),
         'cliente' => $recebimento->cliente->nome ?? $recebimento->nome_cliente,
         'fornecedor' => $recebimento->fornecedor->nome ?? $recebimento->nome_fornec,
-        'pesototal' => number_format($recebimento->pesototal, 2, ',', '.'),
+        'pesototal' => $recebimento->pesototal,
         'responsavel' => $recebimento->responsavel->descricao ?? '',
         'status' => $recebimento->status == 'A' ? '<span class="badge badge-outline badge-success">Em O.S.</span>' : '<span class="badge badge-outline badge-info">Recebido</span>',
         'actions' => $actions,
@@ -85,7 +88,31 @@ class RecebimentoController extends Controller
   */
   public function store(Request $request)
   {
-    //
+    $request->validate([
+      'data_receb' => 'required',
+      'hora_receb' => 'required',
+      'idcliente' => 'required',
+    ]);
+
+    $recebimento = new Recebimento;
+    $recebimento->data_receb = Carbon::createFromFormat('d/m/Y', $request->data_receb);
+    $recebimento->hora_receb = $request->hora_receb;
+    $recebimento->idcliente = $request->idcliente;
+    $recebimento->idfornec = $request->idfornec;
+    $recebimento->pesototal = $request->pesototal;
+    $recebimento->obs = $request->obs;
+    $recebimento->idresp = $request->idresp;
+    $recebimento->save();
+
+    foreach ($request->fotos as $foto) {
+      $recebimento_foto = new RecebimentoFoto;
+      $recebimento_foto->receb_id = $recebimento->id;
+      $recebimento_foto->foto = 'T:\\' . str_replace('/', '\\', $foto);
+      $recebimento_foto->save();
+    }
+
+    return redirect()->route('recebimentos.index');
+
   }
 
   /**
@@ -96,7 +123,11 @@ class RecebimentoController extends Controller
   */
   public function show($id)
   {
-    //
+    $recebimento = Recebimento::findOrFail($id);
+
+    return view('recebimentos.show')->with([
+      'recebimento' => $recebimento,
+    ]);
   }
 
   /**
@@ -107,7 +138,16 @@ class RecebimentoController extends Controller
   */
   public function edit($id)
   {
-    //
+    $recebimento = Recebimento::findOrFail($id);
+    $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
+    $fornecedores = Fornecedor::select(['id', 'nome', 'ativo'])->orderBy('nome')->get();
+    $responsaveis = ResponsavelEntrega::select()->orderBy('descricao')->get();
+    return view('recebimentos.edit')->with([
+      'recebimento' => $recebimento,
+      'clientes' => $clientes,
+      'fornecedores' => $fornecedores,
+      'responsaveis' => $responsaveis,
+    ]);
   }
 
   /**
@@ -119,7 +159,33 @@ class RecebimentoController extends Controller
   */
   public function update(Request $request, $id)
   {
-    //
+    $request->validate([
+      'data_receb' => 'required',
+      'hora_receb' => 'required',
+      'idcliente' => 'required',
+    ]);
+
+    $recebimento = Recebimento::findOrFail($id);
+    $recebimento->data_receb = Carbon::createFromFormat('d/m/Y', $request->data_receb);
+    $recebimento->hora_receb = $request->hora_receb;
+    $recebimento->idcliente = $request->idcliente;
+    $recebimento->idfornec = $request->idfornec;
+    $recebimento->pesototal = $request->pesototal;
+    $recebimento->obs = $request->obs;
+    $recebimento->idresp = $request->idresp;
+    $recebimento->save();
+
+    foreach ($request->fotos as $foto) {
+      $exists = RecebimentoFoto::where('foto', '=', 'T:\\' . str_replace('/', '\\', $foto))->get()->first();
+      if (!$exists) {
+        $recebimento_foto = new RecebimentoFoto;
+        $recebimento_foto->receb_id = $recebimento->id;
+        $recebimento_foto->foto = 'T:\\' . str_replace('/', '\\', $foto);
+        $recebimento_foto->save();
+      }
+    }
+
+    return redirect()->route('recebimentos.index');
   }
 
   /**
@@ -130,6 +196,31 @@ class RecebimentoController extends Controller
   */
   public function destroy($id)
   {
-    //
+    $recebimento = Recebimento::findOrFail($id);
+    foreach ($recebimento->fotos as $foto) {
+      $foto->delete();
+    }
+
+    if ($recebimento->delete()) {
+      return response(200);
+    }
+  }
+
+  public function destroyFoto($id)
+  {
+    $foto = RecebimentoFoto::findOrFail($id);
+    if ($foto->delete()) {
+      return response(200);
+    }
+  }
+
+  public function upload(Request $request)
+  {
+    $filename = Storage::disk('fotos')->put('Recebimentos', $request->file('snapshot'));
+    $path = Storage::disk('fotos')->url($filename);
+    return response()->json([
+      'path' => $path,
+      'filename' => $filename
+    ]);
   }
 }

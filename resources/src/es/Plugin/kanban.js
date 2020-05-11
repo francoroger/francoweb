@@ -12,7 +12,7 @@ class Kanban extends Plugin {
       group: 'shared',
       animation: 150,
       onEnd: (evt) => {
-        doChangeEvent(evt);
+        doChangeEvent(evt)
       }
     }
   }

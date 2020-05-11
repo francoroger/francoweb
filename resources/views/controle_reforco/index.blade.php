@@ -102,9 +102,13 @@
               if (data[k].exd) {
                 $('#excedente-'+data[k].id).html(data[k].exd);
                 $('#pnl-'+data[k].id).addClass('panel-danger');
+                $('#pnl-'+data[k].id).addClass('border-danger');
+                  $('#pnl-'+data[k].id).find('.panel-desc').addClass('text-white');
               } else {
                 $('#excedente-'+data[k].id).html("&nbsp;");
                 $('#pnl-'+data[k].id).removeClass('panel-danger');
+                $('#pnl-'+data[k].id).removeClass('border-danger');
+                  $('#pnl-'+data[k].id).find('.panel-desc').removeClass('text-white');
               }
             }
           },
@@ -152,9 +156,13 @@
                 if (data[k].exd) {
                   $('#excedente-'+data[k].id).html(data[k].exd);
                   $('#pnl-'+data[k].id).addClass('panel-danger');
+                  $('#pnl-'+data[k].id).addClass('border-danger');
+                  $('#pnl-'+data[k].id).find('.panel-desc').addClass('text-white');
                 } else {
                   $('#excedente-'+data[k].id).html("&nbsp;");
                   $('#pnl-'+data[k].id).removeClass('panel-danger');
+                  $('#pnl-'+data[k].id).removeClass('border-danger');
+                  $('#pnl-'+data[k].id).find('.panel-desc').removeClass('text-white');
                 }
               }
             },
@@ -283,7 +291,7 @@
     </div>
     <div class="page-content container-fluid" id="ciclos-reforco">.
 
-      @include('dashboard.data_reforco', ['tanques' => $tanques])
+      @include('controle_reforco.data', ['tanques' => $tanques])
 
     </div>
   </div>

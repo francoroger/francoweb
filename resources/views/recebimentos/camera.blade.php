@@ -8,7 +8,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="capture_cam" data-url="{{ route('webcam.upload') }}" data-token="{{ csrf_token() }}">
+      <div class="modal-body" id="capture_cam" data-url="{{ route('recebimentos.upload') }}" data-token="{{ csrf_token() }}">
 
         <div class="live-cam"></div>
         <figure class="overlay">

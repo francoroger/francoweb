@@ -81,7 +81,7 @@
 
         $el.data('cameraAPI', this);
 
-        //Webcam events
+        // Webcam events
         Webcam.on('uploadProgress', function (progress) {
           // Upload in progress
           // 'progress' will be between 0.0 and 1.0
@@ -94,7 +94,9 @@
             _this2.$preview.attr('src', json.path);
             _this2.$background.addClass('d-none');
             _this2.turnOff();
-            if (callback) callback.apply(self, [json.filename, json.path]);
+            if (callback) {
+              callback.apply(self, [json.filename, json.path]);
+            }
           }
         });
       }
@@ -120,10 +122,10 @@
       key: 'turnOn',
       value: function turnOn() {
         if (this.isEnabled !== true) {
-          //Força a definição de tamanho
+          // Força a definição de tamanho
           var w = (0, _jquery2.default)(this.$preview).width();
           var h = (0, _jquery2.default)(this.$preview).height();
-          //Limpa atributos de resultado de captura
+          // Limpa atributos de resultado de captura
           this.$filename = '';
           this.$filepath = '';
 
@@ -192,11 +194,15 @@
           Webcam.snap(function (data_uri) {
             // detect image format from within image_data_uri
             var image_fmt = '';
-            if (data_uri.match(/^data\:image\/(\w+)/)) image_fmt = RegExp.$1;else throw "Cannot locate image format in Data URI";
+            if (data_uri.match(/^data\:image\/(\w+)/)) {
+              image_fmt = RegExp.$1;
+            } else {
+              throw 'Cannot locate image format in Data URI';
+            }
 
             // contruct use AJAX object
             var http = new XMLHttpRequest();
-            http.open("POST", _this4.$ajax_url, true);
+            http.open('POST', _this4.$ajax_url, true);
             http.setRequestHeader('X-CSRF-TOKEN', _this4.$token);
 
             // setup progress events
@@ -218,11 +224,13 @@
             var raw_image_data = data_uri.replace(/^data\:image\/\w+\;base64\,/, '');
 
             // create a blob and decode our base64 to binary
-            var blob = new Blob([_this4._base64DecToArr(raw_image_data)], { type: 'image/' + image_fmt });
+            var blob = new Blob([_this4._base64DecToArr(raw_image_data)], {
+              type: 'image/' + image_fmt
+            });
 
             // stuff into a form, so servers can easily receive it as a standard file upload
             var form = new FormData();
-            form.append(_this4.$form_elem_name, blob, _this4.$form_elem_name + "." + image_fmt.replace(/e/, ''));
+            form.append(_this4.$form_elem_name, blob, _this4.$form_elem_name + '.' + image_fmt.replace(/e/, ''));
             form.append('data_uri', data_uri);
             form.append('image_fmt', image_fmt);
 
@@ -243,12 +251,12 @@
       value: function _base64DecToArr(sBase64, nBlocksSize) {
         // convert base64 encoded string to Uintarray
         // from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
-        var sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ""),
+        var sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ''),
             nInLen = sB64Enc.length,
             nOutLen = nBlocksSize ? Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize : nInLen * 3 + 1 >> 2,
             taBytes = new Uint8Array(nOutLen);
 
-        for (var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++) {
+        for (var nInIdx = 0, nMod3, nMod4, nOutIdx = 0, nUint24 = 0; nInIdx < nInLen; nInIdx++) {
           nMod4 = nInIdx & 3;
           nUint24 |= this._b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
           if (nMod4 === 3 || nInLen - nInIdx === 1) {

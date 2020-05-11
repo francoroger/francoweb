@@ -27,20 +27,7 @@
       api1.upload(function (fname, fpath) {
         $$$1('#capturaModal').modal('hide');
 
-        var elem = '<li>\
-        <div class="panel">\
-          <figure class="overlay overlay-hover animation-hover">\
-            <img class="caption-figure overlay-figure" src="' + fpath + '">\
-            <figcaption class="overlay-panel overlay-background overlay-fade text-center vertical-align">\
-              <div class="btn-group">\
-                <button type="button" class="btn btn-icon btn-pure btn-default" title="Excluir" data-tag="project-delete">\
-                  <i class="icon wb-trash" aria-hidden="true"></i>\
-                </button>\
-              </div>\
-            </figcaption>\
-          </figure>\
-        </div>\
-      </li>';
+        var elem = '<li>\n        <div class="panel">\n          <figure class="overlay overlay-hover animation-hover">\n            <img class="caption-figure overlay-figure" src="' + fpath + '">\n            <input type="hidden" name="fotos[]" value="' + fname + '">\n            <figcaption class="overlay-panel overlay-background overlay-fade text-center vertical-align">\n              <div class="btn-group">\n                <button type="button" class="btn btn-icon btn-pure btn-default" title="Excluir" data-tag="project-delete">\n                  <i class="icon wb-trash" aria-hidden="true"></i>\n                </button>\n              </div>\n            </figcaption>\n          </figure>\n        </div>\n      </li>';
 
         $$$1('#foto-container').append(elem);
       });
