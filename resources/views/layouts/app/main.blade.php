@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/intro-js/introjs.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/slidepanel/slidePanel.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/flag-icon-css/flag-icon.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.css') }}">
     @stack('stylesheets_plugins')
 
     <!-- Fonts -->
@@ -84,6 +85,7 @@
     <script src="{{ asset('assets/vendor/intro-js/intro.js') }}"></script>
     <script src="{{ asset('assets/vendor/screenfull/screenfull.js') }}"></script>
     <script src="{{ asset('assets/vendor/slidepanel/jquery-slidePanel.js') }}"></script>
+    <script src="{{ asset('assets/vendor/toastr/toastr.js') }}"></script>
     @stack('scripts_plugins')
 
     <!-- Scripts -->
@@ -108,6 +110,8 @@
     <script src="{{ asset('assets/js/Plugin/slidepanel.js') }}"></script>
     <script src="{{ asset('assets/js/Plugin/switchery.js') }}"></script>
     @stack('scripts_page')
+
+    @include('layouts.app._toastr')
 
     <script>
       (function(document, window, $){
