@@ -245,7 +245,7 @@ class ReforcoController extends Controller
     }
   }
 
-  public function destroy_reforco($id)
+  public function destroy($id)
   {
     $passagem = PassagemPeca::findOrFail($id);
 
