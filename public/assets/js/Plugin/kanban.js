@@ -45,6 +45,8 @@
         return {
           group: 'shared',
           animation: 150,
+          selectedClass: 'border-danger',
+          fallbackTolerance: 3,
           onEnd: function onEnd(evt) {
             doChangeEvent(evt);
           }

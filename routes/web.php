@@ -100,7 +100,8 @@ Route::group(['prefix' => 'catalogacao'], function() {
 
 // Painel
 Route::get('/painel', 'PainelAcompanhamentoController@index')->name('painel');
-Route::post('catalogacao', 'PainelAcompanhamentoController@updateCatalogacao')->name('api_catalogacao.update');
+Route::post('catalogacao', 'PainelAcompanhamentoController@move')->name('painel.move');
+Route::get('/painel/column', 'PainelAcompanhamentoController@column')->name('painel.column');
 
 // Recebimentos
 Route::get('recebimentos/ajax', 'RecebimentoController@ajax')->name('recebimentos.ajax');
@@ -108,14 +109,16 @@ Route::post('recebimentos/upload', 'RecebimentoController@upload')->name('recebi
 Route::delete('recebimentos/fotos/{id}', 'RecebimentoController@destroyFoto')->name('recebimentos.destroyFoto');
 Route::resource('recebimentos', 'RecebimentoController');
 
-// Reforço
-Route::get('/controle_reforco', 'ReforcoController@index')->name('controle_reforco');
-Route::get('/controle_reforco/consulta', 'ReforcoController@consulta')->name('controle_reforco.consulta');
-Route::delete('controle_reforco/consulta/{id}', 'ReforcoController@destroy')->name('controle_reforco.destroy');
-Route::post('tanques', 'ReforcoController@tanques')->name('api_tanques');
-Route::post('registra_ciclo', 'ReforcoController@registra_ciclo')->name('api_tanques.registrar');
-Route::post('reset_ciclo', 'ReforcoController@reset_ciclo')->name('api_tanques.reset');
-Route::post('undo_reforco', 'ReforcoController@undo_reforco')->name('api_tanques.undo');
+Route::group(['prefix' => 'producao'], function() {
+  // Reforço
+  Route::get('/controle_reforco', 'ReforcoController@index')->name('controle_reforco');
+  Route::get('/controle_reforco/consulta', 'ReforcoController@consulta')->name('controle_reforco.consulta');
+  Route::delete('controle_reforco/consulta/{id}', 'ReforcoController@destroy')->name('controle_reforco.destroy');
+  Route::post('tanques', 'ReforcoController@tanques')->name('api_tanques');
+  Route::post('registra_ciclo', 'ReforcoController@registra_ciclo')->name('api_tanques.registrar');
+  Route::post('reset_ciclo', 'ReforcoController@reset_ciclo')->name('api_tanques.reset');
+  Route::post('undo_reforco', 'ReforcoController@undo_reforco')->name('api_tanques.undo');
+});
 
 // Relatórios
 Route::group(['prefix' => 'relatorios'], function() {

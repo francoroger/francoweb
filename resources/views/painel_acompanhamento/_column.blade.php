@@ -3,17 +3,17 @@
     <div class="font-size-12 float-right totalizador">({{ $data->count() }})</div>
     <div class="example-title text-truncate font-weight-500">{{ $label }}</div>
     <div class="font-size-14 totalizador-peso">
-      @if ($data->sum('peso_total_itens') < 1000)
-        {{ number_format($data->sum('peso_total_itens'), 2, ',', '.') }} g 
+      @if ($data->sum('peso') < 1000)
+        {{ number_format($data->sum('peso'), 0, ',', '.') }} g 
       @else
-        {{ number_format($data->sum('peso_total_itens')/1000, 2, ',', '.') }} Kg 
+        {{ number_format($data->sum('peso')/1000, 2, ',', '.') }} Kg 
       @endif 
     </div> 
   </div> 
   <div class="h-450" data-plugin="scrollable">
     <div data-role="container">
       <div data-role="content">
-        <div id="task-list-catalog" class="task-list-items" data-plugin="kanban" data-status="A">
+        <div id="task-list-catalog" class="task-list-items" data-plugin="kanban" data-multi-drag="{{ $multi_drag }}" data-status="{{ $status }}">
           @foreach ($data as $item)
           <div class="card border mb-0" data-id="{{ $item->id }}">
             <div class="card-body p-5">
@@ -29,25 +29,26 @@
                   <a href="javascript:void(0);" class="dropdown-item text-danger"><i class="icon wb-trash mr-2"></i>Excluir</a>
                 </div>
               </div>
-              <h6 class="mt-0 mb-2 font-size-12">
+              <h6 class="mt-0 mb-0 font-size-12">
                 <a href="#" data-toggle="modal" data-target="#task-detail-modal"
-                  class="text-body">{{ $item->cliente->nome ?? '' }} ({{$item->id }})</a>
+                  class="text-body">{{ $item->cliente }}</a>
               </h6>
-              <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->itens->sum('peso_real'), 0, ',', '.') }} g</span>
+              <span class="d-block mb-2 font-size-10">#{{$item->id }}</span>
+              <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->peso, 0, ',', '.') }} g</span>
               <p class="mb-0 mt-4">
-                <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->itens->count() }} itens">
-                  <i class="icon wb-gallery text-muted mr-1"></i>{{ $item->itens->count() }}
+                <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->qtde_itens }} itens">
+                  <i class="icon wb-gallery text-muted mr-1"></i>{{ $item->qtde_itens }}
                 </span>
-                <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->itens->where('status_check', '<>',null)->count() }} verificados">
-                  <i class="icon wb-check-mini mr-1 text-muted"></i>{{ $item->itens->where('status_check', '<>',null)->count() }}
+                <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->qtde_check }} verificados">
+                  <i class="icon wb-check-mini mr-1 text-muted"></i>{{ $item->qtde_check }}
                 </span>
-                @if ($item->observacoes)
-                <span class="text-nowrap align-middle font-size-12" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->observacoes }}">
+                @if ($item->obs)
+                <span class="text-nowrap align-middle font-size-12" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->obs }}">
                   <i class="icon wb-clipboard mr-1"></i>
                   <span class="badge badge-pill up badge-warning">!</span>
                 </span>
                 @endif
-                <small class="float-right text-muted">{{ date('d/m/Y', strtotime($item->datacad)) }}</small>
+                <small class="float-right text-muted">{{ date('d/m/Y', strtotime($item->data_situacao)) }}</small>
               </p>
             </div>
           </div>

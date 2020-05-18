@@ -11,6 +11,8 @@ class Kanban extends Plugin {
     return {
       group: 'shared',
       animation: 150,
+      selectedClass: 'border-danger',
+	    fallbackTolerance: 3,
       onEnd: (evt) => {
         doChangeEvent(evt)
       }

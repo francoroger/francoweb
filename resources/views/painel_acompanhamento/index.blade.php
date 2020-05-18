@@ -74,54 +74,131 @@
 
 <script src="{{ asset('assets/js/Plugin/kanban.js') }}"></script>
 <script type="text/javascript">
-  (function() {
-      //$('.tasks').asScrollable();
-    })();
+  //
+  //Nested
+  //
+  /*(function() {
+    var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
 
-    function doChangeEvent(evt) {
-      var from = $(evt.from);
-      var to = $(evt.to);
-      var item = $(evt.item)
-
-      $.ajax({
-        url: "{{ route('api_catalogacao.update') }}",
-        headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-        type: 'POST',
-        data: {
-          'id': item.data('id'),
-          'status': to.data('status')
-        },
-        success: function ()
-        {
-          from.parent().find('.totalizador').html('(' + from.children('.card').length + ')')
-          to.parent().find('.totalizador').html('(' + to.children('.card').length + ')')
-        },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
-          alert('erro');
-          console.log(jqXHR);
-        }
+    // Loop through each nested sortable element
+    for (var i = 0; i < nestedSortables.length; i++) {
+      new Sortable(nestedSortables[i], {
+        group: 'nested',
+        animation: 150,
+        fallbackOnBody: true,
+        swapThreshold: 0.65
       });
+    }
+  })();*/
 
+  function doChangeEvent(evt) {
+    var from = $(evt.from);
+    var to = $(evt.to);
+    var item = $(evt.item);
+    var items = $(evt.items);
+    var ids = [];
+    
+    if (items.length > 0) {
+      items.each(function(index, element) {
+        ids.push($(element).data('id'));
+      });
+    } else {
+      ids.push(item.data('id'));
     }
 
-    //Declaração da nova função (icontains) para usar ao invés do contains
-    //Permite busca com case insensitive
-    jQuery.expr[':'].icontains = function(a, i, m) {
-      return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
-    };
-
-    $(document).on('keyup', '#search', function(key) {
-      var term = $(this).val();
-
-      if (term != '') {
-        $('.card').addClass('d-none');
-      } else {
-        $('.card').removeClass('d-none');
+    $.ajax({
+      url: "{{ route('painel.move') }}",
+      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+      type: 'POST',
+      data: {
+        'ids': ids,
+        'from': from.data('status'),
+        'to': to.data('status')
+      },
+      success: function(data) {
+        refreshColumn(to.data('status'));
+        refreshColumn(from.data('status'));
+      },
+      error: function(jqXHR, textStatus, error) {
+        alert('Erro: ' + jqXHR.responseText);
+        refreshColumn(to.data('status'));
+        refreshColumn(from.data('status'));
       }
-
-      $(".text-body:icontains('"+term+"')").parent().parent().parent().removeClass('d-none');
     });
+  }
+
+  function refreshColumn(col)
+  {
+    var container;
+    var route = "{{ route('painel.column') }}";
+    
+    switch (col) {
+      case 'R':
+        container = $('#recebimentos');
+        break;
+      case 'S':
+        container = $('#separacoes');
+        break;
+      case 'A':
+        container = $('#catalogacoes');
+        break;
+      case 'F':
+        container = $('#ordens');
+        break;
+      case 'G':
+        container = $('#revisoes');
+        break;
+      case 'C':
+        container = $('#expedicoes');
+        break;
+      case 'L':
+        container = $('#concluidos');
+        break;
+      default:
+        break;
+    }
+
+    $.ajax({
+      url: route,
+      type: 'GET',
+      data: {
+        'col': col
+      },
+      success: function(data) {
+        container.html(data.view);
+        //Sortable
+        kban = container.find('*[data-plugin="kanban"]');
+        opkb = Plugin.getDefaults("kanban");
+        opkb.multiDrag = kban.data('multi-drag');
+        Sortable.create(kban[0], opkb);
+        //Scrollable
+        scrlb = container.find('*[data-plugin="scrollable"]');
+        opscr = Plugin.getDefaults("scrollable");
+        scrlb.asScrollable(opscr);
+      },
+      error: function(jqXHR, textStatus, error) {
+        alert('Erro: ' + jqXHR.responseText);
+      }
+    });
+  }
+
+  //Declaração da nova função (icontains) para usar ao invés do contains
+  //Permite busca com case insensitive
+  jQuery.expr[':'].icontains = function(a, i, m) {
+    return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+  };
+
+  $(document).on('keyup', '#search', function(key) {
+    var term = $(this).val();
+
+    if (term != '') {
+      $('.card').addClass('d-none');
+    } else {
+      $('.card').removeClass('d-none');
+    }
+
+    $(".text-body:icontains('"+term+"')").parent().parent().parent().removeClass('d-none');
+  });
 </script>
 @endpush
 
@@ -156,17 +233,84 @@
       <div class="row">
         <div class="col-md-12">
           <div class="board">
-
-            @include('painel_acompanhamento._column', ['data' => $catalogacoes, 'label' => 'Catalogando', 'bg_color' => 'bg-yellow-600', 'text_color' => 'blue-grey-700'])
-
-            @include('painel_acompanhamento._column', ['data' => $ordens, 'label' => 'Preparação / Banho', 'bg_color' => 'bg-blue-600', 'text_color' => 'text-white'])
-
-            @include('painel_acompanhamento._column', ['data' => $revisoes, 'label' => 'Revisão', 'bg_color' => 'bg-red-600', 'text_color' => 'text-white'])
-
-            @include('painel_acompanhamento._column', ['data' => $expedicoes, 'label' => 'Peças Prontas - Expedição', 'bg_color' => 'bg-green-600', 'text_color' => 'text-white'])
-
-            @include('painel_acompanhamento._column', ['data' => $concluidos, 'label' => 'Enviado', 'bg_color' => 'bg-grey-600', 'text_color' => 'text-white'])
-
+            
+            <div id="recebimentos" class="d-inline-block">
+              @include('painel_acompanhamento._column', [
+                'data' => $painel->get('recebimentos'), 
+                'label' => 'Recebimento', 
+                'bg_color' => 'bg-teal-400', 
+                'text_color' => 'blue-grey-700',
+                'multi_drag' => true,
+                'status' => 'R',
+              ])
+            </div>
+            
+            <div id="separacoes" class="d-inline-block">
+              @include('painel_acompanhamento._column', [
+                'data' => $painel->get('separacoes'), 
+                'label' => 'Separação', 
+                'bg_color' => 'bg-orange-500', 
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'S',
+              ])
+            </div>
+            
+            <div id="catalogacoes" class="d-inline-block">
+              @include('painel_acompanhamento._column', [
+                'data' => $painel->get('catalogacoes'), 
+                'label' => 'Catalogando', 
+                'bg_color' => 'bg-yellow-600', 
+                'text_color' => 'blue-grey-700',
+                'multi_drag' => false,
+                'status' => 'A',
+              ])
+            </div>
+            
+            <div id="ordens" class="d-inline-block">
+              @include('painel_acompanhamento._column', [
+                'data' => $painel->get('ordens'), 
+                'label' => 'Preparação / Banho', 
+                'bg_color' => 'bg-blue-600', 
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'F',
+              ])
+            </div>
+            
+            <div id="revisoes" class="d-inline-block">
+              @include('painel_acompanhamento._column', [
+                'data' => $painel->get('revisoes'), 
+                'label' => 'Revisão', 
+                'bg_color' => 'bg-red-600', 
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'G',
+              ])
+            </div>
+            
+            <div id="expedicoes" class="d-inline-block">
+              @include('painel_acompanhamento._column', [
+                'data' => $painel->get('expedicoes'), 
+                'label' => 'Peças Prontas - Expedição', 
+                'bg_color' => 'bg-green-600', 
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'C',
+              ])
+            </div>
+            
+            <div id="concluidos" class="d-inline-block">
+              @include('painel_acompanhamento._column', [
+                'data' => $painel->get('concluidos'), 
+                'label' => 'Enviado', 
+                'bg_color' => 'bg-grey-600', 
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'L',
+              ])
+            </div>
+            
           </div>
         </div>
       </div>

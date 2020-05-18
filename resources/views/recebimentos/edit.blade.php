@@ -123,7 +123,7 @@
             <div class="form-group col-md-4">
               <label class="form-control-label" for="pesototal">Peso Total</label>
               <div class="input-group">
-                <input type="text" class="form-control @error('pesototal') is-invalid @enderror" id="pesototal" name="pesototal" value="{{ old('pesototal', $recebimento->pesototal) }}" />
+                <input type="number" class="form-control @error('pesototal') is-invalid @enderror" id="pesototal" name="pesototal" min="0" pattern="[0-9]*" value="{{ old('pesototal', $recebimento->pesototal) }}" />
                 <span class="input-group-addon">
                   gramas
                 </span>

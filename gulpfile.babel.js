@@ -690,6 +690,10 @@ gulp.task('watch:scripts', () => {
   gulp.watch(`${config.scripts.source}/**/*.js`, gulp.series('scripts'));
 });
 
+gulp.task('watch:modules', () => {
+  gulp.watch(`${config.modules.source}/**/*.js`, gulp.series('modules'));
+});
+
 gulp.task('watch:images', () => {
   gulp.watch(`${config.images.source}/**/*`, gulp.series('images'));
 });
@@ -699,6 +703,7 @@ gulp.task(
   gulp.parallel(
     'watch:styles',
     'watch:scripts',
+    'watch:modules',
     'watch:images'
   )
 );

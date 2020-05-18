@@ -23,22 +23,29 @@
               <span class="site-menu-title">Recebimento</span>
             </a>
           </li>
-          <li class="site-menu-item">
-            <a href="#">
+          <li class="site-menu-item has-sub{{ Request::is('catalogacao/*') ? ' active open' : '' }}">
+            <a href="javascript:void(0)">
               <i class="site-menu-icon wb-tag" aria-hidden="true"></i>
               <span class="site-menu-title">Catalogação</span>
+              <span class="site-menu-arrow"></span>
             </a>
+            <ul class="site-menu-sub">
+              <li class="site-menu-item">
+                <a href="#">
+                  <span class="site-menu-title">Catalogação</span>
+                </a>
+              </li>
+              <li class="site-menu-item{{ Request::is('catalogacao/checklist*') ? ' active' : '' }}">
+                <a href="{{ route('catalogacao_checklist.index') }}">
+                  <span class="site-menu-title">Check List</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="site-menu-item">
             <a href="#">
               <i class="site-menu-icon wb-order" aria-hidden="true"></i>
               <span class="site-menu-title">Ordem de Serviço</span>
-            </a>
-          </li>
-          <li class="site-menu-item{{ Request::is('catalogacao/checklist*') ? ' active' : '' }}">
-            <a href="{{ route('catalogacao_checklist.index') }}">
-              <i class="site-menu-icon fa-check-square-o" aria-hidden="true"></i>
-              <span class="site-menu-title">Check List Catalogação</span>
             </a>
           </li>
           <li class="site-menu-item">
@@ -48,11 +55,19 @@
             </a>
           </li>
           <li class="site-menu-category">Produção</li>
-          <li class="site-menu-item{{ Request::is('controle_reforco*') ? ' active' : '' }}">
-            <a href="{{ route('controle_reforco') }}">
+          <li class="site-menu-item has-sub{{ Request::is('producao/*') ? ' active open' : '' }}">
+            <a href="javascript:void(0)">
               <i class="site-menu-icon wb-pluse" aria-hidden="true"></i>
-              <span class="site-menu-title">Controle de Reforço</span>
+              <span class="site-menu-title">Produção</span>
+              <span class="site-menu-arrow"></span>
             </a>
+            <ul class="site-menu-sub">
+              <li class="site-menu-item{{ Request::is('producao/controle_reforco*') ? ' active' : '' }}">
+                <a href="{{ route('controle_reforco') }}">
+                  <span class="site-menu-title">Controle de Reforço</span>
+                </a>
+              </li>
+            </ul>
           </li>
           <li class="site-menu-category">Manutenção</li>
           <li class="site-menu-item has-sub{{ Request::is('cadastros/*') ? ' active open' : '' }}">
@@ -112,18 +127,17 @@
                   <span class="site-menu-title">Matéria Prima</span>
                 </a>
               </li>
+              <li class="site-menu-item">
+                <a href="#">
+                  <span class="site-menu-title">Tabela de Preços</span>
+                </a>
+              </li>
               <li class="site-menu-item{{ Request::is('cadastros/usuarios*') ? ' active' : '' }}">
                 <a class="animsition-link" href="{{ route('usuarios.index') }}">
                   <span class="site-menu-title">Usuários</span>
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="site-menu-item">
-            <a href="#">
-              <i class="site-menu-icon wb-grid-9" aria-hidden="true"></i>
-              <span class="site-menu-title">Tabela de Preços</span>
-            </a>
           </li>
           <li class="site-menu-category">Consultas</li>
           <li class="site-menu-item has-sub{{ Request::is('relatorios/*') ? ' active open' : '' }}">
