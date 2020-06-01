@@ -10,7 +10,7 @@
       @endif 
     </div> 
   </div> 
-  <div class="h-450" data-plugin="scrollable">
+  <div class="h-calculated" data-plugin="scrollable">
     <div data-role="container">
       <div data-role="content">
         <div id="task-list-catalog" class="task-list-items" data-plugin="kanban" data-multi-drag="{{ $multi_drag }}" data-status="{{ $status }}">

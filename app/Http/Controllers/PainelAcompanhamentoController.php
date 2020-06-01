@@ -57,18 +57,18 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Catalogação
   private function catalogacoes()
   {
-    $catalogacoes = Catalogacao::where('status', 'A')->whereNotNull('idcliente')->orderBy('datacad', 'desc')->get();
+    $catalogacoes = Separacao::where('status', 'A')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->get();
 
     $colCatalogacao = [];
-    foreach ($catalogacoes as $catalogacao) {
+    foreach ($catalogacoes as $separacao) {
       $obj = new stdClass();
-      $obj->id = $catalogacao->id;
-      $obj->cliente = $catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $catalogacao->itens->sum('peso_real');
-      $obj->qtde_itens = $catalogacao->itens->count();
-      $obj->qtde_check = $catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $catalogacao->datacad;
-      $obj->obs = $catalogacao->observacoes;
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->obs = $separacao->catalogacao->observacoes;
       $colCatalogacao[] = $obj;
     }
 
@@ -78,18 +78,18 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Ordens
   private function ordens()
   {
-    $ordens = Catalogacao::where('status', 'F')->whereNotNull('idcliente')->orderBy('datacad', 'desc')->get();
+    $ordens = Separacao::where('status', 'F')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->get();
 
     $colOrdens = [];
-    foreach ($ordens as $catalogacao) {
+    foreach ($ordens as $separacao) {
       $obj = new stdClass();
-      $obj->id = $catalogacao->id;
-      $obj->cliente = $catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $catalogacao->itens->sum('peso_real');
-      $obj->qtde_itens = $catalogacao->itens->count();
-      $obj->qtde_check = $catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $catalogacao->datacad;
-      $obj->obs = $catalogacao->observacoes;
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->obs = $separacao->catalogacao->observacoes;
       $colOrdens[] = $obj;
     }
 
@@ -99,18 +99,18 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Revisões
   private function revisoes()
   {
-    $revisoes = Catalogacao::whereIn('status', ['P', 'G'])->whereNotNull('idcliente')->orderBy('datacad', 'desc')->get();
+    $revisoes = Separacao::whereIn('status', ['P', 'G'])->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->get();
 
     $colRevisoes = [];
-    foreach ($revisoes as $catalogacao) {
+    foreach ($revisoes as $separacao) {
       $obj = new stdClass();
-      $obj->id = $catalogacao->id;
-      $obj->cliente = $catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $catalogacao->itens->sum('peso_real');
-      $obj->qtde_itens = $catalogacao->itens->count();
-      $obj->qtde_check = $catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $catalogacao->datacad;
-      $obj->obs = $catalogacao->observacoes;
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->obs = $separacao->catalogacao->observacoes;
       $colRevisoes[] = $obj;
     }
 
@@ -120,18 +120,18 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Expedições
   private function expedicoes()
   {
-    $expedicoes = Catalogacao::where('status', 'C')->whereNotNull('idcliente')->orderBy('datacad', 'desc')->take(30)->get();
+    $expedicoes = Separacao::where('status', 'C')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->take(30)->get();
 
     $colExpedicoes = [];
-    foreach ($expedicoes as $catalogacao) {
+    foreach ($expedicoes as $separacao) {
       $obj = new stdClass();
-      $obj->id = $catalogacao->id;
-      $obj->cliente = $catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $catalogacao->itens->sum('peso_real');
-      $obj->qtde_itens = $catalogacao->itens->count();
-      $obj->qtde_check = $catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $catalogacao->datacad;
-      $obj->obs = $catalogacao->observacoes;
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->obs = $separacao->catalogacao->observacoes;
       $colExpedicoes[] = $obj;
     }
 
@@ -141,18 +141,18 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Concluídos
   private function concluidos()
   {
-    $concluidos = Catalogacao::where('status', 'L')->whereNotNull('idcliente')->orderBy('datacad', 'desc')->take(30)->get();
+    $concluidos = Separacao::where('status', 'L')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->take(30)->get();
 
     $colConcluidos = [];
-    foreach ($concluidos as $catalogacao) {
+    foreach ($concluidos as $separacao) {
       $obj = new stdClass();
-      $obj->id = $catalogacao->id;
-      $obj->cliente = $catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $catalogacao->itens->sum('peso_real');
-      $obj->qtde_itens = $catalogacao->itens->count();
-      $obj->qtde_check = $catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $catalogacao->datacad;
-      $obj->obs = $catalogacao->observacoes;
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->obs = $separacao->catalogacao->observacoes;
       $colConcluidos[] = $obj;
     }
 
@@ -182,57 +182,99 @@ class PainelAcompanhamentoController extends Controller
     $to = $request->to;
     $ids = $request->ids;
 
-    if ($from == 'R' && $to == 'S') {
-      //de Recebimentos para Separação
-      //Validando cliente
-      $cliente_id = null;
-      foreach ($ids as $id) {
-        $recebimento = Recebimento::findOrFail($id);
-
-        if ($cliente_id != null) {
-          if ($cliente_id != $recebimento->idcliente) {
-            return response('Os recebimentos não são do mesmo cliente', 503);
+    do {
+      /**
+       * De Recebimentos para Separação
+       */
+      if ($from == 'R' && $to == 'S') {
+        //Validando cliente
+        $cliente_id = null;
+        foreach ($ids as $id) {
+          $recebimento = Recebimento::findOrFail($id);
+  
+          if ($cliente_id != null) {
+            if ($cliente_id != $recebimento->idcliente) {
+              return response('Os recebimentos não são do mesmo cliente', 503);
+            }
           }
+          $cliente_id = $recebimento->idcliente;
         }
-        $cliente_id = $recebimento->idcliente;
+  
+        //Criando a separação
+        $separacao = new Separacao;
+        $separacao->cliente_id = $cliente_id;
+        $separacao->status = 'S';
+        $separacao->save();
+        //Adicionando os recebimentos
+        $separacao->recebimentos()->sync($ids);
+  
+        //Mudando o status dos recebimentos
+        foreach ($ids as $id) {
+          $recebimento = Recebimento::findOrFail($id);
+          $recebimento->status = 'S';
+          $recebimento->save();
+        }
+        break;
       }
 
-      //Criando a separação
-      $separacao = new Separacao;
-      $separacao->cliente_id = $cliente_id;
-      $separacao->status = 'S';
-      $separacao->save();
-      //Adicionando os recebimentos
-      $separacao->recebimentos()->sync($ids);
-
-      //Mudando o status dos recebimentos
-      foreach ($ids as $id) {
-        $recebimento = Recebimento::findOrFail($id);
-        $recebimento->status = 'S';
-        $recebimento->save();
+      /**
+       * Do Recebimento para outros que não sejam Separação
+       */
+      if ($from == 'R' && $to != 'S') {
+        return response('Os recebimentos precisam passar pela separação', 503);
+        break;
       }
+      
+      //De Separação para Recebimento
+      if ($from == 'S' && $to == 'R') {
+        $separacao = Separacao::findOrFail($ids[0]);
+        //Se já tiver catalogação relacionada, não permite voltar
+        if ($separacao->catalogacoes->count() > 0) {
+          return response('A separação já entrou em fase de catalogação. Não é possível voltar ao recebimento', 503);
+          break;
+        }
 
-    }
-    else if ($from == 'S' && $to == 'R') {
-      //de Separação para Recebimento
-      $separacao = Separacao::findOrFail($ids[0]);
-      //Mudando o status dos recebimentos
-      foreach ($separacao->recebimentos as $receb) {
-        $recebimento = Recebimento::findOrFail($receb->id);
-        $recebimento->status = null;
-        $recebimento->save();
+        //Mudando o status dos recebimentos
+        foreach ($separacao->recebimentos as $receb) {
+          $recebimento = Recebimento::findOrFail($receb->id);
+          $recebimento->status = null;
+          $recebimento->save();
+        }
+        //Excluindo a separação
+        $separacao->delete();
+        break;
+      } 
+
+      /**
+       * De Separação para Catalogação (A, F, G, C, L)
+       */
+      if ($from == 'S') {
+        $separacao = Separacao::findOrFail($ids[0]);
+
+        $catalogacao = new Catalogacao;
+        $catalogacao->idcliente = $separacao->cliente_id;
+        $catalogacao->datacad = Carbon::now();
+        $catalogacao->horacad = Carbon::now();
+        $catalogacao->save();
+
+        $separacao->catalogacao_id = $catalogacao->id;
+        $separacao->status = $to;
+        $separacao->save();
+
+        break;
       }
-      //Excluindo a separação
-      $separacao->delete();
-    } 
-    else {
-      //Catalogação
+      
+      /**
+       * Catalogação (se chegou até aqui é de catalogação para catalogação)
+       */
       foreach ($ids as $id) {
         $catalogacao = Catalogacao::findOrFail($id);
-        //$catalogacao->status = $to;
-        //$catalogacao->save();
+        $catalogacao->status = $to;
+        $catalogacao->save();
       }
-    }
+      break;
+
+    } while (0);
 
     return response(200);
   }

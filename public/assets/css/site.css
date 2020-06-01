@@ -2643,6 +2643,10 @@ body.site-navbar-small {
   background: #f1f4f5;
 }
 
+.h-calculated {
+  height: calc(100vh - 224px) !important;
+}
+
 .radio-custom, .checkbox-custom {
   position: relative;
   display: block;

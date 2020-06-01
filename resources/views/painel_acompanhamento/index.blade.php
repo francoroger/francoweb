@@ -120,6 +120,7 @@
         refreshColumn(from.data('status'));
       },
       error: function(jqXHR, textStatus, error) {
+        console.log(jqXHR);
         alert('Erro: ' + jqXHR.responseText);
         refreshColumn(to.data('status'));
         refreshColumn(from.data('status'));
@@ -175,6 +176,7 @@
         scrlb = container.find('*[data-plugin="scrollable"]');
         opscr = Plugin.getDefaults("scrollable");
         scrlb.asScrollable(opscr);
+        filtrar();
       },
       error: function(jqXHR, textStatus, error) {
         alert('Erro: ' + jqXHR.responseText);
@@ -188,8 +190,9 @@
     return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
   };
 
-  $(document).on('keyup', '#search', function(key) {
-    var term = $(this).val();
+  function filtrar()
+  {
+    var term = $('#search').val();
 
     if (term != '') {
       $('.card').addClass('d-none');
@@ -198,6 +201,10 @@
     }
 
     $(".text-body:icontains('"+term+"')").parent().parent().parent().removeClass('d-none');
+  }
+
+  $(document).on('keyup', '#search', function(key) {
+    filtrar();
   });
 </script>
 @endpush
