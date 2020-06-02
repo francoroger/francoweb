@@ -22,7 +22,7 @@
                   <i class="icon wb-more-vertical px-5"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                  <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-search mr-2"></i>Visualizar</a>
+                  <a href="javascript:void(0);" data-toggle="modal" data-target="#task-detail-modal" class="dropdown-item"><i class="icon wb-search mr-2"></i>Visualizar</a>
                   <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-edit mr-2"></i>Editar</a>
                   <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-print mr-2"></i>Imprimir</a>
                   <div class="dropdown-divider"></div>
@@ -30,8 +30,7 @@
                 </div>
               </div>
               <h6 class="mt-0 mb-0 font-size-12">
-                <a href="#" data-toggle="modal" data-target="#task-detail-modal"
-                  class="text-body">{{ $item->cliente }}</a>
+                <a href="javascript:void(0);" class="text-body">{{ $item->cliente }}</a>
               </h6>
               <span class="d-block mb-2 font-size-10">#{{$item->id }}</span>
               <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->peso, 0, ',', '.') }} g</span>
