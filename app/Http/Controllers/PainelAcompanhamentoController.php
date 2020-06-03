@@ -15,7 +15,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Recebimento
   private function recebimentos()
   {
-    $recebimentos = Recebimento::whereNull('status')->where('data_receb', '>=', date('Y-m-d', strtotime('2020-01-01')) )->orderBy('data_receb', 'desc')->get();
+    $recebimentos = Recebimento::whereNull('status')->where('data_receb', '>=', date('Y-m-d', strtotime('2020-03-01')) )->orderBy('data_receb', 'desc')->get();
 
     $colRecebimento = [];
     foreach ($recebimentos as $recebimento) {
@@ -57,7 +57,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Catalogação
   private function catalogacoes()
   {
-    $catalogacoes = Separacao::where('status', 'A')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->get();
+    $catalogacoes = Separacao::where('status', 'A')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->get();
 
     $colCatalogacao = [];
     foreach ($catalogacoes as $separacao) {
@@ -78,7 +78,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Ordens
   private function ordens()
   {
-    $ordens = Separacao::where('status', 'F')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->get();
+    $ordens = Separacao::where('status', 'F')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->get();
 
     $colOrdens = [];
     foreach ($ordens as $separacao) {
@@ -99,7 +99,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Revisões
   private function revisoes()
   {
-    $revisoes = Separacao::whereIn('status', ['P', 'G'])->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->get();
+    $revisoes = Separacao::whereIn('status', ['P', 'G'])->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->get();
 
     $colRevisoes = [];
     foreach ($revisoes as $separacao) {
@@ -120,7 +120,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Expedições
   private function expedicoes()
   {
-    $expedicoes = Separacao::where('status', 'C')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->take(30)->get();
+    $expedicoes = Separacao::where('status', 'C')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->take(30)->get();
 
     $colExpedicoes = [];
     foreach ($expedicoes as $separacao) {
@@ -141,7 +141,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Concluídos
   private function concluidos()
   {
-    $concluidos = Separacao::where('status', 'L')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->take(30)->get();
+    $concluidos = Separacao::where('status', 'L')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->take(30)->get();
 
     $colConcluidos = [];
     foreach ($concluidos as $separacao) {
@@ -229,7 +229,7 @@ class PainelAcompanhamentoController extends Controller
       if ($from == 'S' && $to == 'R') {
         $separacao = Separacao::findOrFail($ids[0]);
         //Se já tiver catalogação relacionada, não permite voltar
-        if ($separacao->catalogacoes->count() > 0) {
+        if ($separacao->catalogacao_id) {
           return response('A separação já entrou em fase de catalogação. Não é possível voltar ao recebimento', 503);
           break;
         }
