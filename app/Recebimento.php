@@ -30,6 +30,11 @@ class Recebimento extends Model
     return $this->hasMany('App\RecebimentoFoto', 'receb_id', 'id');
   }
 
+  public function separacao()
+  {
+    return $this->belongsToMany('App\Separacao', 'separacoes_recebimentos', 'recebimento_id', 'separacao_id');
+  }
+
   public function setPesototalAttribute($value)
   {
     isset($value) ? $this->attributes['pesototal'] = str_replace(',', '.', str_replace('.', '', $value)) : $this->attributes['pesototal'] = null;
