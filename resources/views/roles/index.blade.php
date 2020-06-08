@@ -39,7 +39,7 @@
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/datatables.js') }}"></script>
-  <script src="{{ asset('assets/modules/js/usuarios/index.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/roles/index.js') }}"></script>
 
   <script src="{{ asset('assets/js/Plugin/bootbox.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
@@ -48,17 +48,17 @@
   <script src="{{ asset('assets/examples/js/advanced/bootbox-sweetalert.js') }}"></script>
 
   <script type="text/javascript">
-    function excluirUsuario(id)
+    function excluirRole(id)
     {
       if (id) {
         $.ajax({
-          url: "{{ route('usuarios.destroy', '') }}/" + id,
+          url: "{{ route('roles.destroy', '') }}/" + id,
           headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
           type: 'DELETE',
           dataType: "json",
           success: function (data)
           {
-            var el = $("#usuarios-table").find("[data-id='" + id + "']");
+            var el = $("#roles-table").find("[data-id='" + id + "']");
             var row = el.parent().parent().parent();
             removeTableRow(row);
           },
@@ -76,10 +76,10 @@
 @section('content')
   <div class="page">
     <div class="page-header">
-      <h1 class="page-title font-size-26 font-weight-100">Usuários</h1>
+      <h1 class="page-title font-size-26 font-weight-100">Perfis de Acesso</h1>
       <div class="page-header-actions">
         <div class="btn-group btn-group-sm" aria-label="Ações" role="group">
-          <a href="{{ route('usuarios.create') }}" class="btn btn-info">
+          <a href="{{ route('roles.create') }}" class="btn btn-info">
             <i class="icon wb-plus" aria-hidden="true"></i>
             <span class="hidden-sm-down">Adicionar</span>
           </a>
@@ -90,13 +90,11 @@
     <div class="page-content">
       <div class="panel">
         <div class="panel-body">
-          <table class="table table-hover dataTable table-striped w-full" id="usuarios-table" data-ajax="{{ route('usuarios.ajax') }}" data-processing="true">
+          <table class="table table-hover dataTable table-striped w-full" id="roles-table" data-ajax="{{ route('roles.ajax') }}" data-processing="true">
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>E-mail</th>
-                <th>Perfil</th>
-                <th class="text-center">Ações</th>
+                <th class="text-center w-100">Ações</th>
               </tr>
             </thead>
             <tbody></tbody>

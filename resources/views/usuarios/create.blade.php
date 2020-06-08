@@ -47,6 +47,23 @@
           </div>
 
           <div class="row">
+            <div class="form-group col-md-12">
+              <label class="form-control-label" for="role_id">Perfil</label>
+              <select class="form-control @error('role_id') is-invalid @enderror" id="role_id" name="role_id" data-plugin="select2">
+                <option value=""></option>
+                @foreach ($roles as $role)
+                  <option value="{{ $role->id }}"{{ old('role_id') == $role->id ? ' selected' : '' }}>{{ $role->name }}</option>
+                @endforeach
+              </select>
+              @error('role_id')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+
+          <div class="row">
             <div class="form-group col-md-6">
               <label class="form-control-label" for="password">Senha <span class="text-danger">*</span></label>
               <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Senha" required />

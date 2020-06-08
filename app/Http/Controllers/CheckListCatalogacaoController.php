@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Catalogacao;
 use App\CatalogacaoItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use PDF;
 
 class CheckListCatalogacaoController extends Controller
@@ -215,7 +216,7 @@ class CheckListCatalogacaoController extends Controller
       'itens' => $itens,
     ]);*/
 
-    $pdf = \App::make('dompdf.wrapper');
+    $pdf = App::make('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
     $pdf->loadView('catalogacao_checklist.print', [
       'catalogacao' => $catalogacao,

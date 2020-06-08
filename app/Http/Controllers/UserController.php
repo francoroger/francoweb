@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -40,6 +41,7 @@ class UserController extends Controller
       $data[] = [
         'name' => $user->name,
         'email' => $user->email,
+        'role' => $user->roles->implode('name', ', '),
         'actions' => $actions,
       ];
     }
@@ -56,7 +58,10 @@ class UserController extends Controller
   */
   public function create()
   {
-    return view('usuarios.create');
+    $roles = Role::select(['id', 'name'])->orderBy('name')->get();
+    return view('usuarios.create')->with([
+      'roles' => $roles,
+    ]);
   }
 
   /**
@@ -73,11 +78,13 @@ class UserController extends Controller
       'password' => 'required|string|min:4|confirmed',
     ]);
 
-    User::create([
+    $usuario = User::create([
       'name' => $request->name,
       'email' => $request->email,
       'password' => Hash::make($request->password),
     ]);
+
+    $usuario->syncRoles([$request->role_id]);
 
     return redirect()->route('usuarios.index');
   }
@@ -105,8 +112,10 @@ class UserController extends Controller
   public function edit($id)
   {
     $usuario = User::findOrFail($id);
+    $roles = Role::select(['id', 'name'])->orderBy('name')->get();
     return view('usuarios.edit')->with([
       'usuario' => $usuario,
+      'roles' => $roles,
     ]);
   }
 
@@ -119,18 +128,30 @@ class UserController extends Controller
   */
   public function update(Request $request, $id)
   {
-    $request->validate([
-      'name' => 'required|string|max:255',
-      'email' => 'required|string|email|max:255|unique:users,email,'.$id,
-      'password' => 'required|string|min:4|confirmed',
-    ]);
-
+    if ($request->password) {
+      $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+        'password' => 'required|string|min:4|confirmed',
+      ]);
+    } else {
+      $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+      ]);
+    }
+    
     $usuario = User::findOrFail($id);
     $usuario->name = $request->name;
     $usuario->email = $request->email;
-    $usuario->password = Hash::make($request->password);
+    
+    if ($request->password) {
+      $usuario->password = Hash::make($request->password);
+    }
 
     if ($usuario->save()) {
+      $usuario->syncRoles([$request->role_id]);
+
       return redirect()->route('usuarios.index');
     }
   }

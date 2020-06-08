@@ -20,6 +20,11 @@ class Catalogacao extends Model
     return $this->belongsTo('App\Cliente', 'idcliente');
   }
 
+  public function separacao()
+  {
+    return $this->hasOne('App\Separacao', 'catalogacao_id');
+  }
+
   public function getPesoTotalItensAttribute($value)
   {
     return $this->itens->sum('peso');

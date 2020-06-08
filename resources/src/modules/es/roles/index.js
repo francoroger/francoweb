@@ -5,13 +5,13 @@ $(document).ready(function($) {
   Site.run();
 });
 
-var tbUsuarios;
+var tbRoles;
 
 window.removeTableRow = function(row) {
-  tbUsuarios.row(row).remove().draw();
+  tbRoles.row(row).remove().draw();
 };
 
-// Tabela Usuários
+// Tabela Roles
 // ---------------------------
 (function() {
   $(document).ready(function() {
@@ -20,23 +20,21 @@ window.removeTableRow = function(row) {
     var options = $.extend(true, {}, defaults, {
       columns: [
         { data: 'name' },
-        { data: 'email' },
-        { data: 'role' },
         { data: 'actions', sClass: "text-center", orderable: false, searchable: false }
       ]
     });
 
-    tbUsuarios = $('#usuarios-table').DataTable(options);
+    tbRoles = $('#roles-table').DataTable(options);
   });
 })();
 
-// Excluir Usuário
+// Excluir Role
 (function() {
   $(document).on("click", '.btn-delete', function() {
     var id = this.getAttribute('data-id');
     swal({
         title: "Excluir",
-        text: "Deseja realmente excluir este usuário?",
+        text: "Deseja realmente excluir este perfil?",
         type: "error",
         showCancelButton: true,
         confirmButtonClass: "btn-danger",
@@ -45,7 +43,7 @@ window.removeTableRow = function(row) {
         closeOnConfirm: true,
       },
       function() {
-        excluirUsuario(id);
+        excluirRole(id);
       });
   });
 })();

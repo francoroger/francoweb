@@ -10,6 +10,15 @@
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
+  <script>
+    $(document).on('change', 'input[name="alterar_senha"]', function() {
+      if ($(this).val() == 'true') {
+        $('.password-change').removeClass('d-none');
+      } else {
+        $('.password-change').addClass('d-none');
+      }
+    });
+  </script>
 @endpush
 
 @section('content')
@@ -48,18 +57,49 @@
           </div>
 
           <div class="row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-12">
+              <label class="form-control-label" for="role_id">Perfil</label>
+              <select class="form-control @error('role_id') is-invalid @enderror" id="role_id" name="role_id" data-plugin="select2">
+                <option value=""></option>
+                @foreach ($roles as $role)
+                  <option value="{{ $role->id }}"{{ $usuario->hasRole($role->id) ? ' selected' : '' }}>{{ $role->name }}</option>
+                @endforeach
+              </select>
+              @error('role_id')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label class="form-control-label">Alterar Senha</label>
+              <div>
+                <div class="radio-custom radio-default radio-inline">
+                  <input type="radio" id="alterar_senha_nao" name="alterar_senha" value="false" {{ old('alterar_senha', true) == 'false' ? 'checked' : '' }} />
+                  <label for="alterar_senha_nao">Não</label>
+                </div>
+                <div class="radio-custom radio-default radio-inline">
+                  <input type="radio" id="alterar_senha_sim" name="alterar_senha" value="true" {{ old('alterar_senha') == 'true' ? 'checked' : '' }} />
+                  <label for="alterar_senha_sim">Sim</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="password-change form-group col-md-4 d-none">
               <label class="form-control-label" for="password">Senha <span class="text-danger">*</span></label>
-              <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Senha" required />
+              <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Senha" />
               @error('password')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
             </div>
-            <div class="form-group col-md-6">
+            <div class="password-change form-group col-md-4 d-none">
               <label class="form-control-label" for="password-confirm">Confirmar Senha <span class="text-danger">*</span></label>
-              <input type="password" class="form-control" id="password-confirm" name="password_confirmation" placeholder="Digite a senha novamente" required />
+              <input type="password" class="form-control" id="password-confirm" name="password_confirmation" placeholder="Digite a senha novamente" />
             </div>
           </div>
 

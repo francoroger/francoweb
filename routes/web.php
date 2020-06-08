@@ -65,6 +65,16 @@ Route::group(['prefix' => 'cadastros'], function() {
   Route::put('produtos/{id}', 'ProdutoController@update')->name('produtos.update');
   Route::delete('produtos/{id}', 'ProdutoController@destroy')->name('produtos.destroy');
 
+  //Roles
+  Route::get('roles', 'RoleController@index')->name('roles.index');
+  Route::get('roles/ajax', 'RoleController@ajax')->name('roles.ajax');
+  Route::get('roles/create', 'RoleController@create')->name('roles.create');
+  Route::post('roles', 'RoleController@store')->name('roles.store');
+  Route::get('roles/{id}', 'RoleController@show')->name('roles.show');
+  Route::put('roles/{id}', 'RoleController@update')->name('roles.update');
+  Route::get('roles/{id}/edit', 'RoleController@edit')->name('roles.edit');
+  Route::delete('roles/{id}', 'RoleController@destroy')->name('roles.destroy');
+
   // Tanques
   Route::get('tanques/ajax', 'TanqueController@ajax')->name('tanques.ajax');
   Route::resource('tanques', 'TanqueController');
