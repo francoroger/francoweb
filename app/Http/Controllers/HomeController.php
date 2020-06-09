@@ -25,8 +25,7 @@ class HomeController extends Controller
   */
   public function index()
   {
-    return redirect()->route('catalogacao_checklist.index');
-    //return view('dashboard.main');
+    return view('dashboard.main');
   }
 
   /**

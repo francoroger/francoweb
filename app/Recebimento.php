@@ -40,8 +40,4 @@ class Recebimento extends Model
     isset($value) ? $this->attributes['pesototal'] = str_replace(',', '.', str_replace('.', '', $value)) : $this->attributes['pesototal'] = null;
   }
 
-  public function getPesototalAttribute($value)
-  {
-    return is_numeric( $value ) && floor( $value ) != $value ? number_format($value, 4, ',', '.') : number_format($value, 0, ',', '.');
-  }
 }
