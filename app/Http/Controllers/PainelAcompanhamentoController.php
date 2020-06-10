@@ -271,6 +271,10 @@ class PainelAcompanhamentoController extends Controller
         $catalogacao = Catalogacao::findOrFail($id);
         $catalogacao->status = $to;
         $catalogacao->save();
+
+        $separacao = Separacao::where('catalogacao_id', $id)->get()->first();
+        $separacao->status = $to;
+        $separacao->save();
       }
       break;
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AdicionarCampoCatalogacaoNaTabelaSeparacoes extends Migration
+class CorrecaoFkSeparacaoCatalogacao extends Migration
 {
   /**
    * Run the migrations.
@@ -14,7 +14,10 @@ class AdicionarCampoCatalogacaoNaTabelaSeparacoes extends Migration
   public function up()
   {
     Schema::table('separacoes', function (Blueprint $table) {
-      $table->integer('catalogacao_id')->unsigned()->nullable()->after('cliente_id');
+      $table->dropForeign('separacoes_catalogacao_id_foreign');
+    });
+
+    Schema::table('separacoes', function (Blueprint $table) {
       $table->foreign('catalogacao_id')->references('id')->on('triagem')->onUpdate('cascade')->onDelete('set null');
     });
   }
@@ -26,9 +29,6 @@ class AdicionarCampoCatalogacaoNaTabelaSeparacoes extends Migration
    */
   public function down()
   {
-    Schema::table('separacoes', function (Blueprint $table) {
-      $table->dropForeign('separacoes_catalogacao_id_foreign');
-      $table->dropColumn('catalogacao_id');
-    });
+    //
   }
 }
