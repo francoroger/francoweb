@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Reforco;
-use App\Tanque;
-use App\TanqueCiclo;
+use App\Cliente;
+use App\Cor;
+use App\Material;
+use App\TipoServico;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use DB;
-use PDF;
-use Storage;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 
 class RelatorioProducaoController extends Controller
 {
@@ -33,7 +33,17 @@ class RelatorioProducaoController extends Controller
   */
   public function index()
   {
-    return view('relatorios.producao.index');
+    $clientes = Cliente::select(['id','nome'])->orderBy('nome')->get();
+    $tipos = TipoServico::whereHas('processos_tanque')->orderBy('descricao')->get();
+    $materiais = Material::select(['id','descricao'])->orderBy('descricao')->get();
+    $cores = Cor::select(['id','descricao'])->orderBy('descricao')->get();
+    
+    return view('relatorios.producao.index')->with([
+      'clientes' => $clientes,
+      'tipos' => $tipos,
+      'materiais' => $materiais,
+      'cores' => $cores,
+    ]);
   }
 
   /**
@@ -63,6 +73,27 @@ class RelatorioProducaoController extends Controller
       ->groupBy(DB::raw('date(passagem_pecas.data_servico), cliente.nome, tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos'))
       ->orderByRaw('date(passagem_pecas.data_servico), cliente.nome, tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos');
     $ciclos->whereBetween('data_servico', [$dtini, $dtfim]);
+
+    if ($request->idcliente) {
+      $ciclos->whereIn('cliente_id', $request->idcliente);
+    }
+
+    if ($request->idtiposervico) {
+      $ciclos->whereIn('tiposervico_id', $request->idtiposervico);
+    }
+
+    if ($request->idmaterial) {
+      $ciclos->whereIn('material_id', $request->idmaterial);
+    }
+
+    if ($request->idcor) {
+      $ciclos->whereIn('cor_id', $request->idcor);
+    }
+
+    if ($request->milini && $request->milfim) {
+      $ciclos->whereBetween('milesimos', [$request->milini, $request->milfim]);
+    }
+
     $ciclos = $ciclos->get();
 
     //Sem Cliente
@@ -79,6 +110,27 @@ class RelatorioProducaoController extends Controller
       ->groupBy(DB::raw('date(passagem_pecas.data_servico), tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos'))
       ->orderByRaw('date(passagem_pecas.data_servico), tiposervico.descricao, material.descricao, cores.descricao, passagem_pecas.milesimos');
     $cicSemCli->whereBetween('data_servico', [$dtini, $dtfim]);
+
+    if ($request->idcliente) {
+      $cicSemCli->whereIn('cliente_id', $request->idcliente);
+    }
+
+    if ($request->idtiposervico) {
+      $cicSemCli->whereIn('tiposervico_id', $request->idtiposervico);
+    }
+
+    if ($request->idmaterial) {
+      $cicSemCli->whereIn('material_id', $request->idmaterial);
+    }
+
+    if ($request->idcor) {
+      $cicSemCli->whereIn('cor_id', $request->idcor);
+    }
+
+    if ($request->milini && $request->milfim) {
+      $cicSemCli->whereBetween('milesimos', [$request->milini, $request->milfim]);
+    }
+
     $cicSemCli = $cicSemCli->get();
 
     $result = [];
@@ -122,7 +174,9 @@ class RelatorioProducaoController extends Controller
   {
     $itens = $this->search($request);
 
-    $pdf = \App::make('dompdf.wrapper');
+    //return view('relatorios.producao.print', compact('itens'));
+
+    $pdf = App::make('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
     $pdf->setPaper('a4', 'portrait');
     $pdf->loadView('relatorios.producao.print', [

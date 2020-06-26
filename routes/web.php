@@ -111,6 +111,7 @@ Route::group(['prefix' => 'catalogacao'], function() {
 // Painel
 Route::get('/painel', 'PainelAcompanhamentoController@index')->name('painel');
 Route::post('catalogacao', 'PainelAcompanhamentoController@move')->name('painel.move');
+Route::post('arquivar', 'PainelAcompanhamentoController@arquivar')->name('painel.arquivar');
 Route::get('/painel/column', 'PainelAcompanhamentoController@column')->name('painel.column');
 
 // Recebimentos
@@ -119,6 +120,7 @@ Route::post('recebimentos/upload', 'RecebimentoController@upload')->name('recebi
 Route::delete('recebimentos/fotos/{id}', 'RecebimentoController@destroyFoto')->name('recebimentos.destroyFoto');
 Route::resource('recebimentos', 'RecebimentoController');
 
+//Produção
 Route::group(['prefix' => 'producao'], function() {
   // Reforço
   Route::get('/controle_reforco', 'ReforcoController@index')->name('controle_reforco');
@@ -128,6 +130,16 @@ Route::group(['prefix' => 'producao'], function() {
   Route::post('registra_ciclo', 'ReforcoController@registra_ciclo')->name('api_tanques.registrar');
   Route::post('reset_ciclo', 'ReforcoController@reset_ciclo')->name('api_tanques.reset');
   Route::post('undo_reforco', 'ReforcoController@undo_reforco')->name('api_tanques.undo');
+
+  //Relatório Ficha de Produção
+  Route::get('ficha_producao', 'RelatorioFichaProducaoController@index')->name('relatorio_ficha_producao.index');
+  Route::post('ficha_producao', 'RelatorioFichaProducaoController@preview')->name('relatorio_ficha_producao.preview');
+  Route::post('ficha_producao/print', 'RelatorioFichaProducaoController@print')->name('relatorio_ficha_producao.print');
+
+  //Relatório de Produção
+  Route::get('relatorio_producao', 'RelatorioProducaoController@index')->name('relatorio_producao.index');
+  Route::post('relatorio_producao', 'RelatorioProducaoController@preview')->name('relatorio_producao.preview');
+  Route::post('relatorio_producao/print', 'RelatorioProducaoController@print')->name('relatorio_producao.print');
 });
 
 // Relatórios
@@ -135,17 +147,4 @@ Route::group(['prefix' => 'relatorios'], function() {
   Route::get('servicos', 'RelatorioServicoController@index')->name('relatorio_servicos.index');
   Route::post('servicos', 'RelatorioServicoController@preview')->name('relatorio_servicos.preview');
   Route::post('servicos/print', 'RelatorioServicoController@print')->name('relatorio_servicos.print');
-
-  Route::get('ficha_producao', 'RelatorioFichaProducaoController@index')->name('relatorio_ficha_producao.index');
-  Route::post('ficha_producao', 'RelatorioFichaProducaoController@preview')->name('relatorio_ficha_producao.preview');
-  Route::post('ficha_producao/print', 'RelatorioFichaProducaoController@print')->name('relatorio_ficha_producao.print');
-
-  Route::get('producao', 'RelatorioProducaoController@index')->name('relatorio_producao.index');
-  Route::post('producao', 'RelatorioProducaoController@preview')->name('relatorio_producao.preview');
-  Route::post('producao/print', 'RelatorioProducaoController@print')->name('relatorio_producao.print');
-});
-
-// Produção
-Route::group(['prefix' => 'producao'], function() {
-
 });

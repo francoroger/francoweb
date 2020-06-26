@@ -214,7 +214,7 @@
         <tfoot>
           <tr>
             <td colspan="4" class="text-right cell-total"></td>
-            <td>Total: {{ $sumarioGeral->where('data_serv', '=', $data)->sum('total_peso') > 1000 ? number_format($sumarioGeral->where('data_serv', '=', $data)->sum('total_peso')/1000, 1, ',', '.') . ' Kg' : number_format($sumarioGeral->where('data_serv', '=', $data)->sum('total_peso'), 0, ',', '.') . ' g' }}</td>
+            <td>Total: {{ $sumarioGeral->sum('total_peso') > 1000 ? number_format($sumarioGeral->sum('total_peso')/1000, 1, ',', '.') . ' Kg' : number_format($sumarioGeral->sum('total_peso'), 0, ',', '.') . ' g' }}</td>
           </tr>
         </tfoot>
       </table>

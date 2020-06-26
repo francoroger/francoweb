@@ -83,6 +83,72 @@
             </div>
 
             <div class="form-group row">
+              <label class="col-md-2 form-control-label">Cliente</label>
+              <div class="col-md-10">
+                <select class="form-control" id="idcliente" name="idcliente[]" data-plugin="select2" multiple>
+                  <option value=""></option>
+                  @foreach ($clientes as $cliente)
+                    <option value="{{ $cliente->id }}">{{ $cliente->nome }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 form-control-label">Tipo de Serviço</label>
+              <div class="col-md-10">
+                <select class="form-control" id="idtiposervico" name="idtiposervico[]" data-plugin="select2" multiple>
+                  <option value=""></option>
+                  @foreach ($tipos as $tipo)
+                    <option value="{{ $tipo->id }}">{{ $tipo->descricao }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 form-control-label">Material</label>
+              <div class="col-md-10">
+                <div class="form-group mb-0">
+                  <select class="form-control" id="idmaterial" name="idmaterial[]" data-plugin="select2" multiple>
+                    <option value=""></option>
+                    @foreach ($materiais as $material)
+                      <option value="{{ $material->id }}">{{ $material->descricao }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 form-control-label">Cor</label>
+              <div class="col-md-10">
+                <select class="form-control" id="idcor" name="idcor[]" data-plugin="select2" multiple>
+                  <option value=""></option>
+                  @foreach ($cores as $cor)
+                    <option value="{{ $cor->id }}">{{ $cor->descricao }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 form-control-label">Camada</label>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-addon">De</span>
+                  <input type="text" class="form-control" name="milini" id="milini" data-plugin="asSpinner" />
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <span class="input-group-addon">Até</span>
+                  <input type="text" class="form-control" name="milfim" id="milfim" data-plugin="asSpinner" />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
               <div class="col-md-10 offset-md-2">
                 <!--
                 <button type="button" id="btn-preview" class="btn btn-success">

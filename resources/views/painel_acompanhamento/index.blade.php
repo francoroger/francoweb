@@ -128,6 +128,25 @@
     });
   }
 
+  function arquivarRecebimento(id)
+  {
+    $.ajax({
+      url: "{{ route('painel.arquivar') }}",
+      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+      type: 'POST',
+      data: {
+        'id': id
+      },
+      success: function(data) {
+        refreshColumn('R');
+      },
+      error: function(jqXHR, textStatus, error) {
+        console.log(jqXHR);
+        alert('Erro: ' + jqXHR.responseText);
+      }
+    });
+  }
+
   function refreshColumn(col)
   {
     var container;
@@ -205,6 +224,11 @@
 
   $(document).on('keyup', '#search', function(key) {
     filtrar();
+  });
+
+  $(document).on('click', '.action-arquivar', function(event) {
+    var id = $(this).parent().parent().parent().parent().data('id');
+    arquivarRecebimento(id);
   });
 </script>
 @endpush

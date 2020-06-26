@@ -66,13 +66,14 @@
           <th style="width:5%;">Código</th>
           <th style="width:8%;">Data</th>
           <th style="width:20%;">Cliente</th>
-          <th style="width:15%;">Guia</th>
-          <th style="width:12%;">Tipo Serviço</th>
-          <th style="width:12%;">Material</th>
+          <th style="width:12%;">Guia</th>
+          <th style="width:11%;">Tipo Serviço</th>
+          <th style="width:11%;">Material</th>
           <th style="width:8%;">Cor</th>
           <th style="width:3%;">Ml</th>
-          <th style="width:10%;">Valor</th>
+          <th style="width:8%;">Valor</th>
           <th style="width:7%;">Peso (g)</th>
+          <th style="width:7%;">Cons.(g)</th>
         </tr>
       </thead>
       <tbody>
@@ -88,6 +89,7 @@
             <td>{{ $item->milesimos }}</td>
             <td>R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
             <td>{{ number_format($item->peso, 0, ',', '.') }}</td>
+            <td>{{ number_format(($item->peso * $item->milesimos) / 1000, 0, ',', '.') }}</td>
           </tr>
         @endforeach
       </tbody>
@@ -96,6 +98,7 @@
           <td colspan="8" align="right">Totais:</td>
           <td>R$ {{ number_format($total['valor'], 2, ',', '.') }}</td>
           <td>{{ number_format($total['peso'], 2, ',', '.') }} Kg</td>
+          <td></td>
         </tr>
       </tfoot>
     </table>

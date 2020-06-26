@@ -81,6 +81,20 @@
                 </a>
               </li>
               @endcan
+              @can('relatorio_ficha_producao.index')
+              <li class="site-menu-item{{ Request::is('producao/ficha_producao*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('relatorio_ficha_producao.index') }}">
+                  <span class="site-menu-title">Ficha de Produção</span>
+                </a>
+              </li>
+              @endcan
+              @can('relatorio_producao.index')
+              <li class="site-menu-item{{ Request::is('producao/relatorio_producao*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('relatorio_producao.index') }}">
+                  <span class="site-menu-title">Relatório de Produção</span>
+                </a>
+              </li>
+              @endcan
             </ul>
           </li>
           <li class="site-menu-category">Manutenção</li>
@@ -192,21 +206,13 @@
               <span class="site-menu-arrow"></span>
             </a>
             <ul class="site-menu-sub">
+              @can('relatorio_servicos.index')
               <li class="site-menu-item{{ Request::is('relatorios/servicos*') ? ' active' : '' }}">
                 <a class="animsition-link" href="{{ route('relatorio_servicos.index') }}">
-                  <span class="site-menu-title">Serviços</span>
+                  <span class="site-menu-title">Relatório de Serviços</span>
                 </a>
               </li>
-              <li class="site-menu-item{{ Request::is('relatorios/ficha_producao*') ? ' active' : '' }}">
-                <a class="animsition-link" href="{{ route('relatorio_ficha_producao.index') }}">
-                  <span class="site-menu-title">Ficha de Produção</span>
-                </a>
-              </li>
-              <li class="site-menu-item{{ Request::is('relatorios/producao*') ? ' active' : '' }}">
-                <a class="animsition-link" href="{{ route('relatorio_producao.index') }}">
-                  <span class="site-menu-title">Produção</span>
-                </a>
-              </li>
+              @endcan
             </ul>
           </li>
         </ul>

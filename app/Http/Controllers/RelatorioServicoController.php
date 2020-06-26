@@ -11,8 +11,7 @@ use App\Servico;
 use App\ServicoItem;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use PDF;
-use Storage;
+use Illuminate\Support\Facades\App;
 
 class RelatorioServicoController extends Controller
 {
@@ -77,23 +76,23 @@ class RelatorioServicoController extends Controller
         $query->whereBetween('datavenda', [$dtini, $dtfim]);
       }
       if ($request->idcliente) {
-        $query->whereIn('idcliente', explode(',', $request->idcliente));
+        $query->whereIn('idcliente', $request->idcliente);
       }
       if ($request->idguia) {
-        $query->whereIn('idguia', explode(',', $request->idguia));
+        $query->whereIn('idguia', $request->idguia);
       }
     });
 
     if ($request->idtiposervico) {
-      $itens->whereIn('idtiposervico', explode(',', $request->idtiposervico));
+      $itens->whereIn('idtiposervico', $request->idtiposervico);
     }
 
     if ($request->idmaterial) {
-      $itens->whereIn('idmaterial', explode(',', $request->idmaterial));
+      $itens->whereIn('idmaterial', $request->idmaterial);
     }
 
     if ($request->idcor) {
-      $itens->whereIn('idcor', explode(',', $request->idcor));
+      $itens->whereIn('idcor', $request->idcor);
     }
 
     if ($request->milini && $request->milfim) {
@@ -123,15 +122,15 @@ class RelatorioServicoController extends Controller
 
     $servicos->whereHas('itens', function($query) use ($request) {
       if ($request->idtiposervico) {
-        $query->whereIn('idtiposervico', explode(',', $request->idtiposervico));
+        $query->whereIn('idtiposervico', $request->idtiposervico);
       }
 
       if ($request->idmaterial) {
-        $query->whereIn('idmaterial', explode(',', $request->idmaterial));
+        $query->whereIn('idmaterial', $request->idmaterial);
       }
 
       if ($request->idcor) {
-        $query->whereIn('idcor', explode(',', $request->idcor));
+        $query->whereIn('idcor', $request->idcor);
       }
 
       if ($request->milini && $request->milfim) {
@@ -145,10 +144,10 @@ class RelatorioServicoController extends Controller
       $servicos->whereBetween('datavenda', [$dtini, $dtfim]);
     }
     if ($request->idcliente) {
-      $servicos->whereIn('idcliente', explode(',', $request->idcliente));
+      $servicos->whereIn('idcliente', $request->idcliente);
     }
     if ($request->idguia) {
-      $servicos->whereIn('idguia', explode(',', $request->idguia));
+      $servicos->whereIn('idguia', $request->idguia);
     }
 
     $servicos->orderBy($request->sortbyres);
@@ -211,7 +210,7 @@ class RelatorioServicoController extends Controller
 
         $itens = $itens->get();
 
-        $pdf = \App::make('dompdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
         $pdf->setPaper('a4', 'landscape');
         $pdf->loadView('relatorios.servicos.print_detalhado', [

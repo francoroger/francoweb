@@ -15,7 +15,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Recebimento
   private function recebimentos()
   {
-    $recebimentos = Recebimento::whereNull('status')->where('data_receb', '>=', date('Y-m-d', strtotime('2020-03-01')) )->orderBy('data_receb', 'desc')->get();
+    $recebimentos = Recebimento::whereNull('status')->whereNull('arquivado')->where('data_receb', '>=', date('Y-m-d', strtotime('2020-03-01')) )->orderBy('data_receb', 'desc')->get();
 
     $colRecebimento = [];
     foreach ($recebimentos as $recebimento) {
@@ -280,6 +280,14 @@ class PainelAcompanhamentoController extends Controller
 
     } while (0);
 
+    return response(200);
+  }
+
+  public function arquivar(Request $request)
+  {
+    $recebimento = Recebimento::findOrFail($request->id);
+    $recebimento->arquivado = true;
+    $recebimento->save();
     return response(200);
   }
 
