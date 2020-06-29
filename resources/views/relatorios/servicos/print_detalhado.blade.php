@@ -89,7 +89,7 @@
             <td>{{ $item->milesimos }}</td>
             <td>R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
             <td>{{ number_format($item->peso, 0, ',', '.') }}</td>
-            <td>{{ number_format(($item->peso * $item->milesimos) / 1000, 0, ',', '.') }}</td>
+            <td>{{ number_format(($item->peso * $item->milesimos) / 1000, 2, ',', '.') }}</td>
           </tr>
         @endforeach
       </tbody>

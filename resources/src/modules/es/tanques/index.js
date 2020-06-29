@@ -21,6 +21,7 @@ window.removeTableRow = function(row) {
       columns: [
         { data: 'descricao' },
         { data: 'ciclo_reforco' },
+        { data: 'tipo_consumo' },
         { data: 'actions', sClass: "text-center", orderable: false, searchable: false }
       ]
     });

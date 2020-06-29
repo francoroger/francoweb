@@ -50,6 +50,20 @@
                 </span>
               @enderror
             </div>
+
+            <div class="form-group col-md-4">
+              <label class="form-control-label" for="tipo_consumo">Tipo Cálculo</label>
+              <select class="form-control @error('tipo_consumo') is-invalid @enderror" id="tipo_consumo" name="tipo_consumo">
+                <option value=""></option>
+                <option value="P"{{ old('tipo_consumo', $tanque->tipo_consumo) == 'P' ? ' selected' : '' }}>Padrão</option>
+                <option value="M"{{ old('tipo_consumo', $tanque->tipo_consumo) == 'M' ? ' selected' : '' }}>Metal Nobre</option>
+              </select>
+              @error('tipo_consumo')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
           </div>
 
         </div>

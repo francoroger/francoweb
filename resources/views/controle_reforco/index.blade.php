@@ -207,9 +207,62 @@
                 if (data[k].exd) {
                   $('#excedente-'+data[k].id).html(data[k].exd);
                   $('#pnl-'+data[k].id).addClass('panel-danger');
+                  $('#pnl-'+data[k].id).addClass('border-danger');
+                  $('#pnl-'+data[k].id).find('.panel-desc').addClass('text-white');
                 } else {
                   $('#excedente-'+data[k].id).html("&nbsp;");
                   $('#pnl-'+data[k].id).removeClass('panel-danger');
+                  $('#pnl-'+data[k].id).removeClass('border-danger');
+                  $('#pnl-'+data[k].id).find('.panel-desc').removeClass('text-white');
+                }
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+              alert('erro');
+              console.log(jqXHR);
+            }
+          });
+        }
+      });
+    });
+
+    $(document).on('click', '.reset_tanque', function(event) {
+      event.preventDefault();
+      var id = $(this).data('id');
+
+      swal({
+        title: "Confirmação",
+        text: "Deseja realmente REINICIAR a contagem do tanque? ATENÇÃO: essa ação removerá todas as passagens no tanque",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        //cancelButtonClass: "btn-danger",
+        confirmButtonText: 'Confirmar RESET!',
+        cancelButtonText: 'Não',
+        closeOnConfirm: true,
+      },
+      function(isConfirm) {
+        if (isConfirm) {
+          $.ajax({
+            url: "{{ route('api_tanques.reset') }}",
+            headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+            type: 'POST',
+            data: {
+              'id': id
+            },
+            success: function (data)
+            {
+              for(var k in data) {
+                var gauge = $('#tanque-'+data[k].id).data('gauge');
+                gauge.set(data[k].val);
+                if (data[k].exd) {
+                  $('#excedente-'+data[k].id).html(data[k].exd);
+                  $('#pnl-'+data[k].id).addClass('panel-danger');
+                  $('#pnl-'+data[k].id).addClass('border-danger');
+                } else {
+                  $('#excedente-'+data[k].id).html("&nbsp;");
+                  $('#pnl-'+data[k].id).removeClass('panel-danger');
+                  $('#pnl-'+data[k].id).removeClass('border-danger');
                 }
               }
             },

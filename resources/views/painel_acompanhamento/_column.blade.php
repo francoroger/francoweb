@@ -24,7 +24,7 @@
                 <div class="dropdown-menu dropdown-menu-right">
                   <a href="javascript:void(0);" data-toggle="modal" data-target="#task-detail-modal" class="dropdown-item"><i class="icon wb-search mr-2"></i>Visualizar</a>
                   <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-edit mr-2"></i>Editar</a>
-                  @if ($status = 'R')
+                  @if ($status == 'R')
                   <a href="javascript:void(0);" class="dropdown-item action-arquivar"><i class="fa fa-folder-open-o mr-2"></i>Arquivar</a>
                   @endif
                   <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-print mr-2"></i>Imprimir</a>

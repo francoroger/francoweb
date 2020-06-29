@@ -100,9 +100,18 @@ class ReforcoController extends Controller
     $processos = $processos->get();
 
     foreach ($processos as $proc) {
-      $fat = $proc->fator ?? 1;
-
       $ciclo = new TanqueCiclo;
+
+      if ($proc->tanque->tipo_consumo == 'M') {
+        $NPeso = str_replace(',', '.', $request->get('peso'));
+        $NMilesimos = $request->get('milesimos');
+        $peso_consumido = ($NPeso * $NMilesimos) / 1000;
+        $ciclo->peso = $peso_consumido;
+      } else {
+        $fat = $proc->fator ?? 1;
+        $ciclo->peso = str_replace(',', '.', $request->get('peso')) * $fat;
+      }
+
       $ciclo->tanque_id = $proc->tanque_id;
       $ciclo->cliente_id = $request->get('idcliente');
       $ciclo->tiposervico_id = $request->get('idtiposervico');
@@ -110,7 +119,6 @@ class ReforcoController extends Controller
       $ciclo->cor_id = $request->get('idcor');
       $ciclo->milesimos = $request->get('milesimos');
       $ciclo->data_servico = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->get('data_servico') . ' ' . $request->get('hora_servico'));
-      $ciclo->peso = str_replace(',', '.', $request->get('peso')) * $fat;
       $ciclo->status = 'P';
       $ciclo->save();
     }
@@ -176,6 +184,26 @@ class ReforcoController extends Controller
       $ciclo->reforco_id = $reforco->id;
       $ciclo->save();
     }
+
+    $data = [];
+    $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
+    foreach ($tanques as $tanque) {
+      $data[] = [
+        'id' => $tanque->id,
+        'val' => $tanque->ciclos->where('status', 'P')->sum('peso'),
+        'exd' => $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? "Excedeu " . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g'  : ""
+      ];
+    }
+
+    return response()->json($data);
+  }
+
+  public function reset_tanque(Request $request)
+  {
+    //Pega o excedente para criar uma nova transação após o reforço
+    $tanque = Tanque::findOrFail($request->get('id'));
+    
+    DB::table('tanque_ciclos')->where('tanque_id', $request->get('id'))->delete();
 
     $data = [];
     $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();

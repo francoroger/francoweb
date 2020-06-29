@@ -130,6 +130,7 @@ Route::group(['prefix' => 'producao'], function() {
   Route::post('registra_ciclo', 'ReforcoController@registra_ciclo')->name('api_tanques.registrar');
   Route::post('reset_ciclo', 'ReforcoController@reset_ciclo')->name('api_tanques.reset');
   Route::post('undo_reforco', 'ReforcoController@undo_reforco')->name('api_tanques.undo');
+  Route::post('reset_tanque', 'ReforcoController@reset_tanque')->name('api_tanques.reset');
 
   //Relatório Ficha de Produção
   Route::get('ficha_producao', 'RelatorioFichaProducaoController@index')->name('relatorio_ficha_producao.index');

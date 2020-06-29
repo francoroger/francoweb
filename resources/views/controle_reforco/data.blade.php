@@ -12,6 +12,8 @@
               <a class="panel-action" data-toggle="dropdown" href="#"><i class="fa fa-sort-down"></i></a>
               <div class="dropdown-menu dropdown-menu-right">
                 <a class="desfazer_reforco dropdown-item" href="#" data-id="{{ $tanque->id }}"><i class="fa fa-undo"></i> Defazer último reforço</a>
+                <div class="dropdown-divider"></div>
+                <a class="reset_tanque dropdown-item text-danger" href="#" data-id="{{ $tanque->id }}"><i class="fa fa-power-off"></i> Reset</a>
               </div>
             </div>
           </div>

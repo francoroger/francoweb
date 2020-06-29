@@ -28,7 +28,7 @@
           <td class="text-nowrap text-right">{{ $item->milesimos }}</td>
           <td class="text-nowrap text-right">R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
           <td class="text-nowrap text-right">{{ number_format($item->peso, 0, ',', '.') }}</td>
-          <td class="text-nowrap text-right">{{ number_format(($item->peso * $item->milesimos) / 1000, 0, ',', '.') }}</td>
+          <td class="text-nowrap text-right">{{ number_format(($item->peso * $item->milesimos) / 1000, 2, ',', '.') }}</td>
         </tr>
       @endforeach
     </tbody>

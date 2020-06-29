@@ -76,23 +76,23 @@ class RelatorioServicoController extends Controller
         $query->whereBetween('datavenda', [$dtini, $dtfim]);
       }
       if ($request->idcliente) {
-        $query->whereIn('idcliente', $request->idcliente);
+        $query->whereIn('idcliente', explode(',', $request->idcliente));
       }
       if ($request->idguia) {
-        $query->whereIn('idguia', $request->idguia);
+        $query->whereIn('idguia', explode(',', $request->idguia));
       }
     });
 
     if ($request->idtiposervico) {
-      $itens->whereIn('idtiposervico', $request->idtiposervico);
+      $itens->whereIn('idtiposervico', explode(',', $request->idtiposervico));
     }
 
     if ($request->idmaterial) {
-      $itens->whereIn('idmaterial', $request->idmaterial);
+      $itens->whereIn('idmaterial', explode(',', $request->idmaterial));
     }
 
     if ($request->idcor) {
-      $itens->whereIn('idcor', $request->idcor);
+      $itens->whereIn('idcor', explode(',', $request->idcor));
     }
 
     if ($request->milini && $request->milfim) {
@@ -122,15 +122,15 @@ class RelatorioServicoController extends Controller
 
     $servicos->whereHas('itens', function($query) use ($request) {
       if ($request->idtiposervico) {
-        $query->whereIn('idtiposervico', $request->idtiposervico);
+        $query->whereIn('idtiposervico', explode(',', $request->idtiposervico));
       }
 
       if ($request->idmaterial) {
-        $query->whereIn('idmaterial', $request->idmaterial);
+        $query->whereIn('idmaterial', explode(',', $request->idmaterial));
       }
 
       if ($request->idcor) {
-        $query->whereIn('idcor', $request->idcor);
+        $query->whereIn('idcor', explode(',', $request->idcor));
       }
 
       if ($request->milini && $request->milfim) {
@@ -144,10 +144,10 @@ class RelatorioServicoController extends Controller
       $servicos->whereBetween('datavenda', [$dtini, $dtfim]);
     }
     if ($request->idcliente) {
-      $servicos->whereIn('idcliente', $request->idcliente);
+      $servicos->whereIn('idcliente', explode(',', $request->idcliente));
     }
     if ($request->idguia) {
-      $servicos->whereIn('idguia', $request->idguia);
+      $servicos->whereIn('idguia', explode(',', $request->idguia));
     }
 
     $servicos->orderBy($request->sortbyres);

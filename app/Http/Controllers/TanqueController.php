@@ -41,9 +41,23 @@ class TanqueController extends Controller
       $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('tanques.edit', $tanque->id).'"><i class="icon wb-pencil"></i></a>';
       $actions .= '<button class="btn btn-sm btn-icon btn-flat btn-danger btn-delete" title="Excluir" data-id="'.$tanque->id.'"><i class="icon wb-trash"></i></button>';
       $actions .= '</div>';
+
+      switch ($tanque->tipo_consumo) {
+        case 'P':
+          $tipo_consumo = 'Padrão';
+          break;
+        case 'M':
+          $tipo_consumo = 'Metal Nobre';
+          break;
+        default:
+          $tipo_consumo = '';
+          break;
+      }
+      
       $data[] = [
         'descricao' => $tanque->descricao,
         'ciclo_reforco' => $tanque->ciclo_reforco,
+        'tipo_consumo' => $tipo_consumo,
         'actions' => $actions,
       ];
     }
@@ -118,6 +132,7 @@ class TanqueController extends Controller
     $tanque = Tanque::findOrFail($id);
     $tanque->descricao = $request->descricao;
     $tanque->ciclo_reforco = $request->ciclo_reforco;
+    $tanque->tipo_consumo = $request->tipo_consumo;
     $tanque->save();
 
     return redirect()->route('tanques.index');

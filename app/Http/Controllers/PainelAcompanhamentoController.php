@@ -15,7 +15,12 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Recebimento
   private function recebimentos()
   {
-    $recebimentos = Recebimento::whereNull('status')->whereNull('arquivado')->where('data_receb', '>=', date('Y-m-d', strtotime('2020-03-01')) )->orderBy('data_receb', 'desc')->get();
+    $recebimentos = Recebimento::where('data_receb', '>=', date('Y-m-d', strtotime('2020-03-01')) )
+      ->whereNull('status')
+      ->where(function($query) {
+        $query->where('arquivado', '=', '0')->orWhereNull('arquivado');
+      })
+      ->orderBy('data_receb', 'desc')->get();
 
     $colRecebimento = [];
     foreach ($recebimentos as $recebimento) {
@@ -120,7 +125,9 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Expedições
   private function expedicoes()
   {
-    $expedicoes = Separacao::where('status', 'C')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->take(30)->get();
+    $expedicoes = Separacao::where('status', 'C')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao', function ($query) {
+      $query->where('datacad', '>=', date('Y-m-d', strtotime('2020-03-01')));
+    })->get();
 
     $colExpedicoes = [];
     foreach ($expedicoes as $separacao) {
@@ -141,7 +148,7 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Concluídos
   private function concluidos()
   {
-    $concluidos = Separacao::where('status', 'L')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->take(30)->get();
+    $concluidos = Separacao::where('status', 'L')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->take(10)->get();
 
     $colConcluidos = [];
     foreach ($concluidos as $separacao) {
