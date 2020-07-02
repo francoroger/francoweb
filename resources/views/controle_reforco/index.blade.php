@@ -142,7 +142,7 @@
       function(isConfirm) {
         if (isConfirm) {
           $.ajax({
-            url: "{{ route('api_tanques.reset') }}",
+            url: "{{ route('api_tanques.reforco') }}",
             headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
             type: 'POST',
             data: {

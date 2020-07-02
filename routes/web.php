@@ -128,7 +128,7 @@ Route::group(['prefix' => 'producao'], function() {
   Route::delete('controle_reforco/consulta/{id}', 'ReforcoController@destroy')->name('controle_reforco.destroy');
   Route::post('tanques', 'ReforcoController@tanques')->name('api_tanques');
   Route::post('registra_ciclo', 'ReforcoController@registra_ciclo')->name('api_tanques.registrar');
-  Route::post('reset_ciclo', 'ReforcoController@reset_ciclo')->name('api_tanques.reset');
+  Route::post('reset_ciclo', 'ReforcoController@reset_ciclo')->name('api_tanques.reforco');
   Route::post('undo_reforco', 'ReforcoController@undo_reforco')->name('api_tanques.undo');
   Route::post('reset_tanque', 'ReforcoController@reset_tanque')->name('api_tanques.reset');
 
