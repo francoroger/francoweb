@@ -19,6 +19,12 @@ Auth::routes();
 
 // Home - Dashboard
 Route::get('/', 'HomeController@index')->name('home');
+/**
+ * 
+ * APAGAR APÓS ATUALIZAR
+ * 
+ */
+Route::get('/restaurar', 'HomeController@restaurar')->name('restaurar');
 
 // PHP Info
 Route::get('phpinfo', function() { phpinfo(); })->name('phpinfo');
