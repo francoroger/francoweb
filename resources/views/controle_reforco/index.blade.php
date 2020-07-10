@@ -98,6 +98,7 @@
           {
             for(var k in data) {
               var gauge = $('#tanque-'+data[k].id).data('gauge');
+              $('#tanque-'+data[k].id).data('value', data[k].val);
               gauge.set(data[k].val);
               if (data[k].exd) {
                 $('#excedente-'+data[k].id).html(data[k].exd);
@@ -152,6 +153,7 @@
             {
               for(var k in data) {
                 var gauge = $('#tanque-'+data[k].id).data('gauge');
+                $('#tanque-'+data[k].id).data('value', data[k].val);
                 gauge.set(data[k].val);
                 if (data[k].exd) {
                   $('#excedente-'+data[k].id).html(data[k].exd);
@@ -203,6 +205,7 @@
             {
               for(var k in data) {
                 var gauge = $('#tanque-'+data[k].id).data('gauge');
+                $('#tanque-'+data[k].id).data('value', data[k].val);
                 gauge.set(data[k].val);
                 if (data[k].exd) {
                   $('#excedente-'+data[k].id).html(data[k].exd);
@@ -254,6 +257,7 @@
             {
               for(var k in data) {
                 var gauge = $('#tanque-'+data[k].id).data('gauge');
+                $('#tanque-'+data[k].id).data('value', data[k].val);
                 gauge.set(data[k].val);
                 if (data[k].exd) {
                   $('#excedente-'+data[k].id).html(data[k].exd);
@@ -274,6 +278,55 @@
           });
         }
       });
+    });
+
+    $(document).on('click', '.reforco_analise', function(event) {
+      event.preventDefault();
+      var id = $(this).data('id');
+
+      var current_val = $(this).parent().parent().parent().parent().parent().parent().find('.panel-body').find('.gauge').data('value');
+      $('#reforco_analise_id').val(id);
+      $('#reforco_analise_valor').val(Math.round(current_val));
+      $('#modalReforco').modal('show');
+    });
+
+    $(document).on('click', '#btn-analise', function(event) {
+      $.ajax({
+        url: "{{ route('api_tanques.reforco_analise') }}",
+        headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+        type: 'POST',
+        data: {
+          'id': $('#reforco_analise_id').val() ? $('#reforco_analise_id').val() : '',
+          'reforco_analise_valor': $('#reforco_analise_valor').val() ? $('#reforco_analise_valor').val() : '0',
+        },
+        success: function (data)
+        {
+          for(var k in data) {
+            var gauge = $('#tanque-'+data[k].id).data('gauge');
+            $('#tanque-'+data[k].id).data('value', data[k].val);
+            gauge.set(data[k].val);
+            if (data[k].exd) {
+              $('#excedente-'+data[k].id).html(data[k].exd);
+              $('#pnl-'+data[k].id).addClass('panel-danger');
+              $('#pnl-'+data[k].id).addClass('border-danger');
+              $('#pnl-'+data[k].id).find('.panel-desc').addClass('text-white');
+            } else {
+              $('#excedente-'+data[k].id).html("&nbsp;");
+              $('#pnl-'+data[k].id).removeClass('panel-danger');
+              $('#pnl-'+data[k].id).removeClass('border-danger');
+              $('#pnl-'+data[k].id).find('.panel-desc').removeClass('text-white');
+            }
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown)
+        {
+          alert('erro');
+          console.log(jqXHR);
+        }
+      });
+
+      //fecha modal
+      $('#modalReforco').modal('hide');
     });
 
     function listaTanques()
@@ -349,7 +402,7 @@
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Modal passagem -->
   <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -447,6 +500,33 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           <button type="button" class="btn btn-success" id="btn-registrar"><i class="fa fa-tick"></i> OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal reforço -->
+  <div class="modal fade" id="modalReforco" tabindex="-1" role="dialog" aria-labelledby="modalReforcoLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalReforcoLabel">Reforço por Análise</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="reforco_analise_id" id="reforco_analise_id">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="form-control-label" for="reforco_analise_valor">Valor do tanque após análise</label>
+              <input type="number" class="form-control" id="reforco_analise_valor" name="reforco_analise_valor" min="0" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success" id="btn-analise"><i class="fa fa-tick"></i> OK</button>
         </div>
       </div>
     </div>

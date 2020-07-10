@@ -79,9 +79,9 @@
               <tbody>
                 @if ($itens->count())
                   @foreach ($itens[0] as $item)
-                    <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
+                    <tr class="{{ ($item->tipo == 'R') || ($item->tipo == 'A') ? ' bg-yellow-100' : '' }}">
                       <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
+                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : ($item->tipo == 'A' ? 'REFORÇO POR ANÁLISE' : 'REFORÇO') }}</td>
                     </tr>
                   @endforeach
                 @endif
@@ -101,9 +101,9 @@
               <tbody>
                 @if ($itens->count())
                   @foreach ($itens[1] as $item)
-                    <tr class="{{ $item->tipo == 'R' ? ' bg-yellow-100' : '' }}">
+                    <tr class="{{ ($item->tipo == 'R') || ($item->tipo == 'A') ? ' bg-yellow-100' : '' }}">
                       <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : 'REFORÇO' }}</td>
+                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : ($item->tipo == 'A' ? 'REFORÇO POR ANÁLISE' : 'REFORÇO') }}</td>
                     </tr>
                   @endforeach
                 @endif

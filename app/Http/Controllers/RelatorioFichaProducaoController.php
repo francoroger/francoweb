@@ -12,6 +12,7 @@ use Storage;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\App;
 
 class RelatorioFichaProducaoController extends Controller
 {
@@ -74,7 +75,7 @@ class RelatorioFichaProducaoController extends Controller
 
     foreach ($reforcos as $reforco) {
       $result[] = (object) [
-        'tipo' => 'R',
+        'tipo' => $reforco->tipo == 'A' ? 'A' : 'R',
         'data' => \Carbon\Carbon::parse($reforco->created_at)->subSeconds(1),
         'peso' => 0,
       ];
@@ -121,7 +122,7 @@ class RelatorioFichaProducaoController extends Controller
     $itens = $this->search($request);
     $itens = $itens->split(2);
 
-    $pdf = \App::make('dompdf.wrapper');
+    $pdf = App::make('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
     $pdf->setPaper('a4', 'portrait');
     $pdf->loadView('relatorios.ficha_producao.print', [

@@ -218,6 +218,48 @@ class ReforcoController extends Controller
     return response()->json($data);
   }
 
+  public function reforco_analise(Request $request)
+  {
+    $tanque = Tanque::findOrFail($request->get('id'));
+
+    //Gera um registro para o reforço que será associado com o item
+    $reforco = new Reforco;
+    $reforco->tanque_id = $request->get('id');
+    $reforco->tipo = 'A';
+    $reforco->save();
+
+    $current_val = $tanque->ciclos->where('status', 'P')->sum('peso');
+    $reforco_val = $request->get('reforco_analise_valor');
+
+    $diff = 0;
+    if ($reforco_val > $current_val) {
+      $diff = $reforco_val - $current_val;
+    } else {
+      $diff = ($current_val - $reforco_val) * (-1);
+    }
+
+    $ciclo = new TanqueCiclo;
+    $ciclo->tanque_id = $request->get('id');
+    $ciclo->data_servico = \Carbon\Carbon::now();
+    $ciclo->peso = $diff;
+    $ciclo->status = 'P';
+    $ciclo->excedente = true;
+    $ciclo->reforco_id = $reforco->id;
+    $ciclo->save();
+    
+    $data = [];
+    $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
+    foreach ($tanques as $tanque) {
+      $data[] = [
+        'id' => $tanque->id,
+        'val' => $tanque->ciclos->where('status', 'P')->sum('peso'),
+        'exd' => $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? "Excedeu " . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g'  : ""
+      ];
+    }
+
+    return response()->json($data);
+  }
+
   public function undo_reforco(Request $request)
   {
     $tanque = Tanque::findOrFail($request->get('id'));

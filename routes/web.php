@@ -19,12 +19,6 @@ Auth::routes();
 
 // Home - Dashboard
 Route::get('/', 'HomeController@index')->name('home');
-/**
- * 
- * APAGAR APÓS ATUALIZAR
- * 
- */
-Route::get('/restaurar', 'HomeController@restaurar')->name('restaurar');
 
 // PHP Info
 Route::get('phpinfo', function() { phpinfo(); })->name('phpinfo');
@@ -137,6 +131,7 @@ Route::group(['prefix' => 'producao'], function() {
   Route::post('reset_ciclo', 'ReforcoController@reset_ciclo')->name('api_tanques.reforco');
   Route::post('undo_reforco', 'ReforcoController@undo_reforco')->name('api_tanques.undo');
   Route::post('reset_tanque', 'ReforcoController@reset_tanque')->name('api_tanques.reset');
+  Route::post('reforco_analise', 'ReforcoController@reforco_analise')->name('api_tanques.reforco_analise');
 
   //Relatório Ficha de Produção
   Route::get('ficha_producao', 'RelatorioFichaProducaoController@index')->name('relatorio_ficha_producao.index');

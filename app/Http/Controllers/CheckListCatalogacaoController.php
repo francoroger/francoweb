@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Catalogacao;
 use App\CatalogacaoItem;
+use App\Separacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use PDF;
@@ -146,6 +147,10 @@ class CheckListCatalogacaoController extends Controller
     $catalogacao->status = 'P';
     $catalogacao->save();
 
+    $separacao = Separacao::where('catalogacao_id', $catalogacao->id)->get()->first();
+    $separacao->status = 'P';
+    $separacao->save();
+
     return response(200);
   }
 
@@ -168,6 +173,10 @@ class CheckListCatalogacaoController extends Controller
     $catalogacao = Catalogacao::findOrFail($id);
     $catalogacao->status = $request->status;
     $catalogacao->save();
+
+    $separacao = Separacao::where('catalogacao_id', $catalogacao->id)->get()->first();
+    $separacao->status = $request->status;
+    $separacao->save();
 
     return redirect()->route('catalogacao_checklist.index');
   }
