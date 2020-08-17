@@ -54,6 +54,18 @@
     <script>
       Breakpoints();
     </script>
+    @if (str_contains(url('/'), ':8080'))
+    <style media="screen">
+      .navbar-container {
+        background-color: #dc3545!important;
+        color: #FFF !important;
+      }
+      .navbar-header {
+        background-color: #dc3545!important;
+        color: #FFF !important;
+      }
+    </style>
+    @endif
   </head>
   <body class="animsition @yield('body-class')">
     <!--[if lt IE 8]>

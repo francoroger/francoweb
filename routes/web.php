@@ -99,7 +99,7 @@ Route::group(['prefix' => 'cadastros'], function() {
 // Catalogação
 Route::group(['prefix' => 'catalogacao'], function() {
   //Check list catalogação
-  Route::get('checklist/ajax', 'CheckListCatalogacaoController@ajax')->name('catalogacao_checklist.ajax');
+  Route::any('checklist/ajax', 'CheckListCatalogacaoController@ajax')->name('catalogacao_checklist.ajax');
   Route::get('checklist', 'CheckListCatalogacaoController@index')->name('catalogacao_checklist.index');
   Route::post('checklist', 'CheckListCatalogacaoController@autosave')->name('catalogacao_checklist.autosave');
   Route::get('checklist/{id}', 'CheckListCatalogacaoController@show')->name('catalogacao_checklist.show');
@@ -149,4 +149,8 @@ Route::group(['prefix' => 'relatorios'], function() {
   Route::get('servicos', 'RelatorioServicoController@index')->name('relatorio_servicos.index');
   Route::post('servicos', 'RelatorioServicoController@preview')->name('relatorio_servicos.preview');
   Route::post('servicos/print', 'RelatorioServicoController@print')->name('relatorio_servicos.print');
+
+  Route::get('tempo_execucao', 'RelatorioTempoExecucaoController@index')->name('relatorio_tempo_execucao.index');
+  Route::post('tempo_execucao', 'RelatorioTempoExecucaoController@preview')->name('relatorio_tempo_execucao.preview');
+  Route::post('tempo_execucao/print', 'RelatorioTempoExecucaoController@print')->name('relatorio_tempo_execucao.print');
 });

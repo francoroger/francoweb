@@ -133,6 +133,7 @@ class TanqueController extends Controller
     $tanque->descricao = $request->descricao;
     $tanque->ciclo_reforco = $request->ciclo_reforco;
     $tanque->tipo_consumo = $request->tipo_consumo;
+    $tanque->desconto_milesimo = $request->desconto_milesimo;
     $tanque->save();
 
     return redirect()->route('tanques.index');

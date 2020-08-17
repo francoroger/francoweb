@@ -273,6 +273,7 @@
                 'text_color' => 'blue-grey-700',
                 'multi_drag' => true,
                 'status' => 'R',
+                'table' => 'recebimentos'
               ])
             </div>
             
@@ -284,6 +285,7 @@
                 'text_color' => 'text-white',
                 'multi_drag' => false,
                 'status' => 'S',
+                'table' => 'separacoes'
               ])
             </div>
             
@@ -295,6 +297,7 @@
                 'text_color' => 'blue-grey-700',
                 'multi_drag' => false,
                 'status' => 'A',
+                'table' => 'catalogacoes'
               ])
             </div>
             
@@ -306,6 +309,7 @@
                 'text_color' => 'text-white',
                 'multi_drag' => false,
                 'status' => 'F',
+                'table' => 'catalogacoes'
               ])
             </div>
             
@@ -317,6 +321,7 @@
                 'text_color' => 'text-white',
                 'multi_drag' => false,
                 'status' => 'G',
+                'table' => 'catalogacoes'
               ])
             </div>
             
@@ -328,6 +333,7 @@
                 'text_color' => 'text-white',
                 'multi_drag' => false,
                 'status' => 'C',
+                'table' => 'catalogacoes'
               ])
             </div>
             
@@ -339,6 +345,7 @@
                 'text_color' => 'text-white',
                 'multi_drag' => false,
                 'status' => 'L',
+                'table' => 'catalogacoes'
               ])
             </div>
             
@@ -348,27 +355,5 @@
     </div>
     
   </div>
-
-<!-- Modal -->
-<div class="modal fade" id="task-detail-modal" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel" aria-hidden="true" data-backdrop="static">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalFormLabel">Detalhes</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 @endsection

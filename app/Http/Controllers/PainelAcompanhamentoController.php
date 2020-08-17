@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Catalogacao;
+use App\CatalogacaoHistorico;
 use App\OrdemServico;
 use App\Recebimento;
 use App\Separacao;
@@ -219,6 +220,7 @@ class PainelAcompanhamentoController extends Controller
         foreach ($ids as $id) {
           $recebimento = Recebimento::findOrFail($id);
           $recebimento->status = 'S';
+          $recebimento->data_fim = Carbon::now();
           $recebimento->save();
         }
         break;
@@ -245,6 +247,7 @@ class PainelAcompanhamentoController extends Controller
         foreach ($separacao->recebimentos as $receb) {
           $recebimento = Recebimento::findOrFail($receb->id);
           $recebimento->status = null;
+          $recebimento->data_fim = null;
           $recebimento->save();
         }
         //Excluindo a separação
@@ -257,13 +260,21 @@ class PainelAcompanhamentoController extends Controller
        */
       if ($from == 'S') {
         $separacao = Separacao::findOrFail($ids[0]);
-
+        //Cria a catalogação
         $catalogacao = new Catalogacao;
         $catalogacao->idcliente = $separacao->cliente_id;
         $catalogacao->datacad = Carbon::now();
         $catalogacao->horacad = Carbon::now();
         $catalogacao->save();
 
+        //Cria o registro de histórico
+        $historico = new CatalogacaoHistorico;
+        $historico->catalogacao_id = $catalogacao->id;
+        $historico->data_inicio = Carbon::now();
+        $historico->status = $to;
+        $historico->save();
+
+        //Relaciona a separação
         $separacao->catalogacao_id = $catalogacao->id;
         $separacao->status = $to;
         $separacao->save();
@@ -275,10 +286,24 @@ class PainelAcompanhamentoController extends Controller
        * Catalogação (se chegou até aqui é de catalogação para catalogação)
        */
       foreach ($ids as $id) {
+        //Localiza a catalogação
         $catalogacao = Catalogacao::findOrFail($id);
         $catalogacao->status = $to;
         $catalogacao->save();
 
+        //Encerra o antigo (se existir)
+        $historico_enc = CatalogacaoHistorico::firstOrCreate(['catalogacao_id' => $id, 'status' => $from]);
+        $historico_enc->data_fim = Carbon::now();
+        $historico_enc->save();
+
+        //Cria o novo
+        $historico_novo = new CatalogacaoHistorico;
+        $historico_novo->catalogacao_id = $catalogacao->id;
+        $historico_novo->data_inicio = Carbon::now();
+        $historico_novo->status = $to;
+        $historico_novo->save();
+
+        //Atualiza a separação
         $separacao = Separacao::where('catalogacao_id', $id)->get()->first();
         $separacao->status = $to;
         $separacao->save();

@@ -213,6 +213,11 @@
                 </a>
               </li>
               @endcan
+              <li class="site-menu-item{{ Request::is('relatorios/tempo_execucao*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('relatorio_tempo_execucao.index') }}">
+                  <span class="site-menu-title">Tempo de Execução</span>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>

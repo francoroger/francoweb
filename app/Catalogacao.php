@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Catalogacao extends Model
@@ -13,6 +14,11 @@ class Catalogacao extends Model
   public function itens()
   {
     return $this->hasMany('App\CatalogacaoItem', 'idtriagem', 'id');
+  }
+
+  public function historico()
+  {
+    return $this->hasMany('App\CatalogacaoHistorico', 'catalogacao_id', 'id');
   }
 
   public function cliente()
@@ -28,5 +34,14 @@ class Catalogacao extends Model
   public function getPesoTotalItensAttribute($value)
   {
     return $this->itens->sum('peso');
+  }
+
+  public function getCarbonDataHoraEntradaAttribute()
+  {
+    if ($this->datacad && $this->horacad) {
+      return Carbon::parse($this->datacad . ' ' . $this->horacad);
+    } else {
+      return null;
+    }
   }
 }

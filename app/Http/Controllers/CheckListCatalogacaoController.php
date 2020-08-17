@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Catalogacao;
 use App\CatalogacaoItem;
+use App\Fornecedor;
+use App\Material;
+use App\Produto;
 use App\Separacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -28,12 +31,59 @@ class CheckListCatalogacaoController extends Controller
   */
   public function index()
   {
-    return view('catalogacao_checklist.index');
+    $materiais = Material::select(['id','descricao'])->orderBy('descricao')->get();
+    $produtos = Produto::select(['id','descricao'])->orderBy('descricao')->get();
+    $fornecedores = Fornecedor::select(['id','nome'])->orderBy('nome')->get();
+    return view('catalogacao_checklist.index')->with([
+      'materiais' => $materiais,
+      'produtos' => $produtos,
+      'fornecedores' => $fornecedores,
+    ]);
   }
 
   public function ajax(Request $request)
   {
-    $catalogacoes = Catalogacao::where('status', '<>', 'A')->get();
+    $catalogacoes = Catalogacao::where('status', '<>', 'A');
+
+    if ($request->status) {
+      if ($request->status = 'C') {
+        $catalogacoes = Catalogacao::whereIn('status', ['C', 'L']);
+      } else {
+        $catalogacoes = Catalogacao::where('status', $request->status);
+      }
+    }
+
+    if ($request->idproduto) {
+      $catalogacoes->whereHas('itens', function($query) use ($request) {
+        $query->where('idproduto', $request->idproduto);
+      });
+    }
+
+    if ($request->idmaterial) {
+      $catalogacoes->whereHas('itens', function($query) use ($request) {
+        $query->where('idmaterial', $request->idmaterial);
+      });
+    }
+
+    if ($request->idfornec) {
+      $catalogacoes->whereHas('itens', function($query) use ($request) {
+        $query->where('idfornec', $request->idfornec);
+      });
+    }
+
+    if ($request->referencia) {
+      $catalogacoes->whereHas('itens', function($query) use ($request) {
+        $query->where('referencia', 'like', "%".$request->referencia."%");
+      });
+    }
+
+    if ($request->pesoini && $request->pesofim) {
+      $catalogacoes->whereHas('itens', function($query) use ($request) {
+        $query->whereBetween('peso', [$request->pesoini, $request->pesofim]);
+      });
+    }
+    
+    $catalogacoes = $catalogacoes->get();
     $data = [];
     foreach ($catalogacoes as $catalogacao) {
       $actions = '<div class="text-nowrap">';

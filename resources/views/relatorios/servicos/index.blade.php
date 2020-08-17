@@ -51,6 +51,10 @@
 
 @section('content')
   <div class="page">
+    <div class="page-header">
+      <h1 class="page-title font-size-26 font-weight-100">Relatório de Serviços</h1>
+    </div>
+
     <div class="page-content">
 
       <div class="panel" data-plugin="panel">

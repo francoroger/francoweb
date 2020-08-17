@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Separacao extends Model
@@ -21,5 +22,10 @@ class Separacao extends Model
   public function recebimentos()
   {
     return $this->belongsToMany('App\Recebimento', 'separacoes_recebimentos', 'separacao_id', 'recebimento_id');
+  }
+
+  public function getCarbonDataHoraEntradaAttribute()
+  {
+    return $this->created_at ? Carbon::parse($this->created_at) : null;
   }
 }

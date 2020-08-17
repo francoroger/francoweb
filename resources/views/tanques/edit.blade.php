@@ -64,6 +64,16 @@
                 </span>
               @enderror
             </div>
+
+            <div class="form-group col-md-4">
+              <label class="form-control-label" for="desconto_milesimo">Desconto de Milésimo</label>
+              <input type="number" class="form-control @error('desconto_milesimo') is-invalid @enderror" id="desconto_milesimo" name="desconto_milesimo" value="{{ old('desconto_milesimo', $tanque->desconto_milesimo) }}" min="0" step="1" />
+              @error('desconto_milesimo')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
           </div>
 
         </div>

@@ -64,6 +64,7 @@
       value: function getDefaults() {
         return {
           responsive: true,
+          pageLength: 50,
           language: {
             lengthMenu: '_MENU_',
             searchPlaceholder: 'Pesquisar..',

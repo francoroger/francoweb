@@ -719,5 +719,5 @@ gulp.task('dist', gulp.series(
   'skins'
 ));
 gulp.task('build', gulp.series('clean', 'dist'));
-gulp.task('dev', gulp.series('build', gulp.parallel('watch')));
+gulp.task('dev', gulp.series('build'));
 gulp.task('default', gulp.series('dev'));
