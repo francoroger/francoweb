@@ -292,9 +292,11 @@ class PainelAcompanhamentoController extends Controller
         $catalogacao->save();
 
         //Encerra o antigo (se existir)
-        $historico_enc = CatalogacaoHistorico::firstOrCreate(['catalogacao_id' => $id, 'status' => $from]);
-        $historico_enc->data_fim = Carbon::now();
-        $historico_enc->save();
+        $historico_enc = CatalogacaoHistorico::where('catalogacao_id', $id)->where('status', $from)->get()->first();
+        if ($historico_enc) {
+          $historico_enc->data_fim = Carbon::now();
+          $historico_enc->save();
+        }
 
         //Cria o novo
         $historico_novo = new CatalogacaoHistorico;
