@@ -96,6 +96,7 @@
                 <th>Tanque</th>
                 <th>Ciclo de Reforço (gramas)</th>
                 <th>Tipo de Consumo</th>
+                <th>Desconto Mil.</th>
                 <th style="width:100px;" class="text-center">Ações</th>
               </tr>
             </thead>

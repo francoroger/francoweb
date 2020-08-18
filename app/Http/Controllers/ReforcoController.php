@@ -102,10 +102,12 @@ class ReforcoController extends Controller
     foreach ($processos as $proc) {
       $ciclo = new TanqueCiclo;
 
+      $NDesconto = (double)$proc->tanque->desconto_milesimo ?? 0;
+      
       if ($proc->tanque->tipo_consumo == 'M') {
         $NPeso = str_replace(',', '.', $request->get('peso'));
         $NMilesimos = $request->get('milesimos');
-        $peso_consumido = ($NPeso * $NMilesimos) / 1000;
+        $peso_consumido = (($NPeso * $NMilesimos) / 1000) - (($NPeso * $NDesconto) / 1000);
         $ciclo->peso = $peso_consumido;
       } else {
         $fat = $proc->fator ?? 1;

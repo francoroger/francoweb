@@ -55,6 +55,16 @@ class CheckListCatalogacaoController extends Controller
       }
     }
 
+    if ($request->status_check) {
+      $catalogacoes->whereHas('itens', function($query) use ($request) {
+        if ($request->status_check <> '-') {
+          $query->where('status_check', $request->status_check);
+        } else {
+          $query->whereNull('status_check');
+        }
+      });
+    }
+
     if ($request->idproduto) {
       $catalogacoes->whereHas('itens', function($query) use ($request) {
         $query->where('idproduto', $request->idproduto);

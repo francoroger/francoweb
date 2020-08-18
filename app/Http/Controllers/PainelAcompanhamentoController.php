@@ -32,7 +32,9 @@ class PainelAcompanhamentoController extends Controller
       $obj->qtde_itens = 1;
       $obj->qtde_check = 0;
       $obj->data_situacao = $recebimento->data_receb;
+      $obj->data_carbon = Carbon::parse($recebimento->data_receb);
       $obj->obs = $recebimento->obs;
+      $obj->substatus = null;
       $colRecebimento[] = $obj;
     }
 
@@ -53,7 +55,9 @@ class PainelAcompanhamentoController extends Controller
       $obj->qtde_itens = $separacao->recebimentos->count();
       $obj->qtde_check = 0;
       $obj->data_situacao = $separacao->created_at;
+      $obj->data_carbon = Carbon::parse($separacao->created_at);
       $obj->obs = null;
+      $obj->substatus = null;
       $colSeparacao[] = $obj;
     }
 
@@ -67,14 +71,18 @@ class PainelAcompanhamentoController extends Controller
 
     $colCatalogacao = [];
     foreach ($catalogacoes as $separacao) {
+      $historico = $separacao->catalogacao->historico->where('status', 'A')->first();
+
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
       $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_situacao = $historico ? $historico->data_inicio : $separacao->catalogacao->datacad;
+      $obj->data_carbon = $historico ? $historico->carbon_data_hora_entrada : Carbon::parse($separacao->catalogacao->datacad);
       $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = null;
       $colCatalogacao[] = $obj;
     }
 
@@ -88,14 +96,18 @@ class PainelAcompanhamentoController extends Controller
 
     $colOrdens = [];
     foreach ($ordens as $separacao) {
+      $historico = $separacao->catalogacao->historico->where('status', 'F')->first();
+
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
       $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_situacao = $historico ? $historico->data_inicio : $separacao->catalogacao->datacad;
+      $obj->data_carbon = $historico ? $historico->carbon_data_hora_entrada : Carbon::parse($separacao->catalogacao->datacad);
       $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = null;
       $colOrdens[] = $obj;
     }
 
@@ -109,14 +121,18 @@ class PainelAcompanhamentoController extends Controller
 
     $colRevisoes = [];
     foreach ($revisoes as $separacao) {
+      $historico = $separacao->catalogacao->historico->where('status', $separacao->status)->first();
+
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
       $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_situacao = $historico ? $historico->data_inicio : $separacao->catalogacao->datacad;
+      $obj->data_carbon = $historico ? $historico->carbon_data_hora_entrada : Carbon::parse($separacao->catalogacao->datacad);
       $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = $separacao->status;
       $colRevisoes[] = $obj;
     }
 
@@ -132,14 +148,18 @@ class PainelAcompanhamentoController extends Controller
 
     $colExpedicoes = [];
     foreach ($expedicoes as $separacao) {
+      $historico = $separacao->catalogacao->historico->where('status', 'C')->first();
+
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
       $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_situacao = $historico ? $historico->data_inicio : $separacao->catalogacao->datacad;
+      $obj->data_carbon = $historico ? $historico->carbon_data_hora_entrada : Carbon::parse($separacao->catalogacao->datacad);
       $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = null;
       $colExpedicoes[] = $obj;
     }
 
@@ -153,14 +173,18 @@ class PainelAcompanhamentoController extends Controller
 
     $colConcluidos = [];
     foreach ($concluidos as $separacao) {
+      $historico = $separacao->catalogacao->historico->where('status', 'L')->first();
+
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
       $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_situacao = $historico ? $historico->data_inicio : $separacao->catalogacao->datacad;
+      $obj->data_carbon = $historico ? $historico->carbon_data_hora_entrada : Carbon::parse($separacao->catalogacao->datacad);
       $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = null;
       $colConcluidos[] = $obj;
     }
 

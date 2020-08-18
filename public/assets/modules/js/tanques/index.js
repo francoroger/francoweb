@@ -32,7 +32,7 @@
       var defaults = Plugin.getDefaults("dataTable");
 
       var options = _jquery2.default.extend(true, {}, defaults, {
-        columns: [{ data: 'descricao' }, { data: 'ciclo_reforco' }, { data: 'tipo_consumo' }, { data: 'actions', sClass: "text-center", orderable: false, searchable: false }]
+        columns: [{ data: 'descricao' }, { data: 'ciclo_reforco' }, { data: 'tipo_consumo' }, { data: 'desconto_milesimo' }, { data: 'actions', sClass: "text-center", orderable: false, searchable: false }]
       });
 
       tbTanques = (0, _jquery2.default)('#tanques-table').DataTable(options);

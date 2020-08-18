@@ -22,6 +22,7 @@ window.removeTableRow = function(row) {
         { data: 'descricao' },
         { data: 'ciclo_reforco' },
         { data: 'tipo_consumo' },
+        { data: 'desconto_milesimo' },
         { data: 'actions', sClass: "text-center", orderable: false, searchable: false }
       ]
     });

@@ -19,4 +19,9 @@ class Tanque extends Model
   {
     return $this->hasMany('App\Reforco', 'tanque_id', 'id');
   }
+
+  public function setDescontoMilesimoAttribute($value)
+  {
+    isset($value) ? $this->attributes['desconto_milesimo'] = str_replace(',', '.', str_replace('.', '', $value)) : $this->attributes['desconto_milesimo'] = null;
+  }
 }

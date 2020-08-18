@@ -6,10 +6,12 @@
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
+  <script src="{{ asset('assets/plugins/jQuery-Mask-Plugin/dist/jquery.mask.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/tanques/edit.js') }}"></script>
 @endpush
 
 @section('content')
@@ -67,7 +69,7 @@
 
             <div class="form-group col-md-4">
               <label class="form-control-label" for="desconto_milesimo">Desconto de Milésimo</label>
-              <input type="number" class="form-control @error('desconto_milesimo') is-invalid @enderror" id="desconto_milesimo" name="desconto_milesimo" value="{{ old('desconto_milesimo', $tanque->desconto_milesimo) }}" min="0" step="1" />
+              <input type="text" class="form-control @error('desconto_milesimo') is-invalid @enderror" id="desconto_milesimo" name="desconto_milesimo" value="{{ old('desconto_milesimo', $tanque->desconto_milesimo) }}" />
               @error('desconto_milesimo')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>

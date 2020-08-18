@@ -58,6 +58,7 @@ class TanqueController extends Controller
         'descricao' => $tanque->descricao,
         'ciclo_reforco' => $tanque->ciclo_reforco,
         'tipo_consumo' => $tipo_consumo,
+        'desconto_milesimo' => $tanque->desconto_milesimo ? number_format($tanque->desconto_milesimo, 2, ',', '.') : null,
         'actions' => $actions,
       ];
     }

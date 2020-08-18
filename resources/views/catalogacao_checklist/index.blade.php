@@ -87,6 +87,7 @@
             d.pesoini = $('#pesoini').val();
             d.pesofim = $('#pesofim').val();
             d.status = $('#status').val();
+            d.status_check = $('#status_check').val();
           }
         }
       });
@@ -191,13 +192,23 @@
                 </select>
               </div>
     
-              <div class="form-group col-md-12">
+              <div class="form-group col-md-8">
                 <label class="form-control-label" for="idmaterial">Material</label>
                 <select class="form-control" id="idmaterial" name="idmaterial" data-plugin="select2" data-placeholder="TODOS" data-allow-clear="true">
                   <option value=""></option>
                   @foreach ($materiais as $material)
                     <option value="{{ $material->id }}">{{ $material->descricao }}</option>
                   @endforeach
+                </select>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label class="form-control-label" for="status_check">Situação</label>
+                <select class="form-control" id="status_check" name="status_check" data-plugin="select2" data-placeholder="TODOS" data-allow-clear="true">
+                  <option value=""></option>
+                  <option value="S">OK</option>
+                  <option value="N">Não Conforme</option>
+                  <option value="-">Não Checado</option>
                 </select>
               </div>
     

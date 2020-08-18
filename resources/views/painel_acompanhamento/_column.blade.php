@@ -37,6 +37,9 @@
               </h6>
               <span class="d-block mb-2 font-size-10">#{{$item->id }}</span>
               <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->peso, 0, ',', '.') }} g</span>
+              @if ($item->substatus == 'G')
+                <span class="badge badge badge-danger font-size-12 font-weight-500 ml-5">Aguardando</span>
+              @endif
               <p class="mb-0 mt-4">
                 <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->qtde_itens }} itens">
                   <i class="icon wb-gallery text-muted mr-1"></i>{{ $item->qtde_itens }}
@@ -50,7 +53,7 @@
                   <span class="badge badge-pill up badge-warning">!</span>
                 </span>
                 @endif
-                <small class="float-right text-muted">{{ date('d/m/Y', strtotime($item->data_situacao)) }}</small>
+                <small class="float-right text-muted" data-toggle="tooltip" data-original-title="{{ date('d/m/Y', strtotime($item->data_situacao)) }}">{{ $item->data_carbon->diffForHumans() }}</small>
               </p>
             </div>
           </div>
