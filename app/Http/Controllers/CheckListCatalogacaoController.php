@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Catalogacao;
-use App\CatalogacaoHistorico;
 use App\CatalogacaoItem;
 use App\Fornecedor;
 use App\Material;
@@ -124,7 +123,7 @@ class CheckListCatalogacaoController extends Controller
 
       $data[] = [
         'id' => $catalogacao->id,
-        'cliente' => $catalogacao->cliente->nome ?? '',
+        'cliente' => $catalogacao->cliente->identificacao ?? '',
         'datacad' => date('d/m/Y', strtotime($catalogacao->datacad)),
         'horacad' => date('H:i', strtotime($catalogacao->horacad)),
         'status' => $status,
@@ -206,26 +205,21 @@ class CheckListCatalogacaoController extends Controller
     }
 
     $catalogacao = Catalogacao::findOrFail($request->id);
-
-    //Encerra o antigo (se existir)
-    $historico_enc = CatalogacaoHistorico::where('catalogacao_id', $catalogacao->id)->where('status', $catalogacao->status)->get()->first();
-    if ($historico_enc) {
-      $historico_enc->data_fim = Carbon::now();
-      $historico_enc->save();
-    }
-
+    
     $catalogacao->status = 'P';
     $catalogacao->save();
 
-    //Cria o novo
-    $historico_novo = new CatalogacaoHistorico;
-    $historico_novo->catalogacao_id = $catalogacao->id;
-    $historico_novo->data_inicio = Carbon::now();
-    $historico_novo->status = 'P';
-    $historico_novo->save();
-
     $separacao = Separacao::where('catalogacao_id', $catalogacao->id)->get()->first();
     $separacao->status = 'P';
+
+    if (!$separacao->data_fim_banho) {
+      $separacao->data_fim_banho = Carbon::now();
+    }
+
+    if (!$separacao->data_inicio_revisao) {
+      $separacao->data_inicio_revisao = Carbon::now();
+    }
+
     $separacao->save();
 
     return response(200);
@@ -249,25 +243,20 @@ class CheckListCatalogacaoController extends Controller
 
     $catalogacao = Catalogacao::findOrFail($id);
     
-    //Encerra o antigo (se existir)
-    $historico_enc = CatalogacaoHistorico::where('catalogacao_id', $catalogacao->id)->where('status', $catalogacao->status)->get()->first();
-    if ($historico_enc) {
-      $historico_enc->data_fim = Carbon::now();
-      $historico_enc->save();
-    }
-
     $catalogacao->status = $request->status;
     $catalogacao->save();
 
-    //Cria o novo
-    $historico_novo = new CatalogacaoHistorico;
-    $historico_novo->catalogacao_id = $catalogacao->id;
-    $historico_novo->data_inicio = Carbon::now();
-    $historico_novo->status = $request->status;
-    $historico_novo->save();
-
     $separacao = Separacao::where('catalogacao_id', $catalogacao->id)->get()->first();
     $separacao->status = $request->status;
+
+    if (!$separacao->data_fim_banho) {
+      $separacao->data_fim_banho = Carbon::now();
+    }
+
+    if (!$separacao->data_inicio_revisao) {
+      $separacao->data_inicio_revisao = Carbon::now();
+    }
+
     $separacao->save();
 
     return redirect()->route('catalogacao_checklist.index');

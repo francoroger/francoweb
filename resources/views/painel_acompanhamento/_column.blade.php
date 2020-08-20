@@ -40,21 +40,30 @@
               @if ($item->substatus == 'G')
                 <span class="badge badge badge-danger font-size-12 font-weight-500 ml-5">Aguardando</span>
               @endif
-              <p class="mb-0 mt-4">
-                <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->qtde_itens }} itens">
-                  <i class="icon wb-gallery text-muted mr-1"></i>{{ $item->qtde_itens }}
-                </span>
-                <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->qtde_check }} verificados">
-                  <i class="icon wb-check-mini mr-1 text-muted"></i>{{ $item->qtde_check }}
-                </span>
-                @if ($item->obs)
-                <span class="text-nowrap align-middle font-size-12" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->obs }}">
-                  <i class="icon wb-clipboard mr-1"></i>
-                  <span class="badge badge-pill up badge-warning">!</span>
-                </span>
-                @endif
-                <small class="float-right text-muted" data-toggle="tooltip" data-original-title="{{ date('d/m/Y', strtotime($item->data_situacao)) }}">{{ $item->data_carbon->diffForHumans() }}</small>
-              </p>
+              <ul class="blocks-2 mb-0 mt-4">
+                <li class="mb-0">
+                  <div class="example-col">
+                    <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->qtde_itens }} itens">
+                      <i class="icon wb-gallery text-muted mr-1"></i>{{ $item->qtde_itens }}
+                    </span>
+                    <span class="text-nowrap align-middle font-size-12 mr-2" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->qtde_check }} verificados">
+                      <i class="icon wb-check-mini mr-1 text-muted"></i>{{ $item->qtde_check }}
+                    </span>
+                    @if ($item->obs)
+                    <span class="text-nowrap align-middle font-size-12" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $item->obs }}">
+                      <i class="icon wb-clipboard mr-1"></i>
+                      <span class="badge badge-pill up badge-warning">!</span>
+                    </span>
+                    @endif
+                  </div>
+                </li>
+                <li class="mb-0">
+                  <div class="example-col text-right" style="line-height: 1;">
+                    <small class="text-body d-block" data-toggle="tooltip" data-original-title="{{ $item->data_carbon ? $item->data_carbon->format('d/m/Y H:i:s') : '' }}"><strong>{{ $item->data_carbon ? 'Etapa: ' . $item->data_carbon->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) : '' }}</strong></small>
+                    <small class="text-body" data-toggle="tooltip" data-original-title="{{ $item->data_inicio ? $item->data_inicio->format('d/m/Y H:i:s') : '' }}">{{ $item->data_inicio ? 'Total: ' . $item->data_inicio->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) : '' }}</small>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
           @endforeach

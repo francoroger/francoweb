@@ -20,7 +20,7 @@
         <tr>
           <td class="text-nowrap">{{ $item->servico->id }}</td>
           <td class="text-nowrap">{{ date('d/m/Y', strtotime($item->servico->datavenda)) }}</td>
-          <td class="text-nowrap">{{ $item->servico->cliente->nome ?? '' }}</td>
+          <td class="text-nowrap">{{ $item->servico->cliente->identificacao ?? '' }}</td>
           <td class="text-nowrap">{{ $item->servico->guia->nome ?? '' }}</td>
           <td class="text-nowrap">{{ $item->tipo_servico->descricao ?? '' }}</td>
           <td class="text-nowrap">{{ $item->material->descricao ?? '' }}</td>

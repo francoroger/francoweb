@@ -49,7 +49,7 @@ class RecebimentoController extends Controller
       $actions .= '</div>';
       $data[] = [
         'data_hora' => date("Y-m-d H:i:s", strtotime("$recebimento->data_receb $recebimento->hora_receb")),
-        'cliente' => $recebimento->cliente->nome ?? $recebimento->nome_cliente,
+        'cliente' => $recebimento->cliente->identificacao ?? $recebimento->nome_cliente,
         'fornecedor' => $recebimento->fornecedor->nome ?? $recebimento->nome_fornec,
         'pesototal' => $recebimento->pesototal,
         'responsavel' => $recebimento->responsavel->descricao ?? '',

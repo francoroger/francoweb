@@ -45,7 +45,7 @@ class ClienteController extends Controller
       $actions .= '<button class="btn btn-sm btn-icon btn-flat btn-danger btn-delete" title="Excluir" data-id="'.$cliente->id.'"><i class="icon wb-trash"></i></button>';
       $actions .= '</div>';
       $data[] = [
-        'nome' => $cliente->nome,
+        'nome' => $cliente->identificacao,
         'cpf' => $cliente->cpf,
         'cidade' => $cliente->cidade,
         'uf' => $cliente->uf,

@@ -35,13 +35,4 @@ class Catalogacao extends Model
   {
     return $this->itens->sum('peso');
   }
-
-  public function getCarbonDataHoraEntradaAttribute()
-  {
-    if ($this->datacad && $this->horacad) {
-      return Carbon::parse($this->datacad . ' ' . $this->horacad);
-    } else {
-      return null;
-    }
-  }
 }

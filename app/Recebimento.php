@@ -41,22 +41,4 @@ class Recebimento extends Model
     isset($value) ? $this->attributes['pesototal'] = str_replace(',', '.', str_replace('.', '', $value)) : $this->attributes['pesototal'] = null;
   }
 
-  public function getDataHoraEntradaAttribute()
-  {
-    if ($this->data_receb && $this->hora_receb) {
-      return date('Y-m-d H:i:s', strtotime($this->data_receb . ' ' . $this->hora_receb));
-    } else {
-      return null;
-    }
-  }
-
-  public function getCarbonDataHoraEntradaAttribute()
-  {
-    if ($this->data_receb && $this->hora_receb) {
-      return Carbon::parse($this->data_receb . ' ' . $this->hora_receb);
-    } else {
-      return null;
-    }
-  }
-
 }

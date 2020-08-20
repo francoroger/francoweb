@@ -89,7 +89,7 @@
                 <select class="form-control" id="idcliente" name="idcliente[]" data-plugin="select2" multiple>
                   <option value=""></option>
                   @foreach ($clientes as $cliente)
-                    <option value="{{ $cliente->id }}">{{ $cliente->nome }}</option>
+                    <option value="{{ $cliente->id }}">{{ $cliente->identificacao }}</option>
                   @endforeach
                 </select>
               </div>

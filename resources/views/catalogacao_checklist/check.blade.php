@@ -36,7 +36,7 @@
         <div class="row">
           <div class="col-md-9">
             <h1 class="page-title">Catalogação #{{ $catalogacao->id }}</h1>
-            <p class="page-description">{{ $catalogacao->cliente->nome ?? '' }}</p>
+            <p class="page-description">{{ $catalogacao->cliente->identificacao ?? '' }}</p>
           </div>
           <div class="col-md-3 text-right">
             <!-- Ações -->

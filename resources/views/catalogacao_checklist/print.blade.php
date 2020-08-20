@@ -117,7 +117,7 @@
               <tbody>
                 <tr>
                   <td rowspan="2" width="80%" valign="top" align="left">
-                    <b>{{ $catalogacao->cliente->nome ?? '' }}</b> <br>
+                    <b>{{ $catalogacao->cliente->identificacao ?? '' }}</b> <br>
                     @if ($catalogacao->cliente->rzsc ?? false)
                       {{ $catalogacao->cliente->rzsc }} <br>
                     @endif

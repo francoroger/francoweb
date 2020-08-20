@@ -23,9 +23,4 @@ class Separacao extends Model
   {
     return $this->belongsToMany('App\Recebimento', 'separacoes_recebimentos', 'separacao_id', 'recebimento_id');
   }
-
-  public function getCarbonDataHoraEntradaAttribute()
-  {
-    return $this->created_at ? Carbon::parse($this->created_at) : null;
-  }
 }

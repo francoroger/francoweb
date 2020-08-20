@@ -434,7 +434,7 @@
               <select class="form-control" id="idcliente" name="idcliente" style="width:100%;">
                 <option value=""></option>
                 @foreach ($clientes as $cliente)
-                  <option value="{{ $cliente->id }}"{{ $cliente->ativo ? '' : ' disabled' }}>{{ $cliente->rzsc }} ({{ $cliente->nome }})</option>
+                  <option value="{{ $cliente->id }}"{{ $cliente->ativo ? '' : ' disabled' }}>{{ $cliente->identificacao }}</option>
                 @endforeach
               </select>
             </div>

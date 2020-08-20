@@ -80,7 +80,7 @@
           <tr>
             <td>{{ $item->servico->id }}</td>
             <td>{{ date('d/m/Y', strtotime($item->servico->datavenda)) }}</td>
-            <td>{{ $item->servico->cliente->nome ?? '' }}</td>
+            <td>{{ $item->servico->cliente->identificacao ?? '' }}</td>
             <td>{{ $item->servico->guia->nome ?? '' }}</td>
             <td>{{ $item->tipo_servico->descricao ?? '' }}</td>
             <td>{{ $item->material->descricao ?? '' }}</td>

@@ -15,7 +15,7 @@
         <tr>
           <td class="text-nowrap">{{ $servico->id }}</td>
           <td class="text-nowrap">{{ date('d/m/Y', strtotime($servico->datavenda)) }}</td>
-          <td class="text-nowrap">{{ $servico->cliente->nome ?? '' }}</td>
+          <td class="text-nowrap">{{ $servico->cliente->identificacao ?? '' }}</td>
           <td class="text-nowrap">{{ $servico->guia->nome ?? '' }}</td>
           <td class="text-nowrap text-right">R$ {{ number_format($servico->itens->sum('valor'), 2, ',', '.') }}</td>
           <td class="text-nowrap text-right">{{ number_format($servico->itens->sum('peso'), 0, ',', '.') }}</td>
