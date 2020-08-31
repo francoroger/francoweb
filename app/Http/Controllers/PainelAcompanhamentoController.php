@@ -300,6 +300,7 @@ class PainelAcompanhamentoController extends Controller
 
         //Relaciona a separação com a catalogação
         $separacao->catalogacao_id = $catalogacao->id;
+        $separacao->data_fim_separacao = Carbon::now();
         $separacao->data_inicio_catalogacao = Carbon::parse($catalogacao->datacad);
         $separacao->status = $to;
         $separacao->save();
@@ -327,7 +328,11 @@ class PainelAcompanhamentoController extends Controller
             $separacao->data_fim_banho = Carbon::now();
             break;
           case 'G':
-            $separacao->data_fim_revisao = Carbon::now();
+            //Só pega a data fim da revisão se não tiver preenchida
+            //Pode ser que tenha sido preenchida ao finalizar o check list
+            if (!$separacao->data_fim_revisao) {
+              $separacao->data_fim_revisao = Carbon::now();
+            }
             break;
           case 'C':
             $separacao->data_fim_expedicao = Carbon::now();
@@ -350,7 +355,8 @@ class PainelAcompanhamentoController extends Controller
             $separacao->data_inicio_banho = Carbon::now();
             break;
           case 'G':
-            $separacao->data_inicio_revisao = Carbon::now();
+            //Não faz nada, pois só inicia a revisão quando abrir pelo checklist
+            //$separacao->data_inicio_revisao = Carbon::now();
             break;
           case 'C':
             $separacao->data_inicio_expedicao = Carbon::now();

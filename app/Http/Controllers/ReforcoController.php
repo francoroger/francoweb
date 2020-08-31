@@ -10,6 +10,7 @@ use App\Reforco;
 use App\Tanque;
 use App\TanqueCiclo;
 use App\TipoServico;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -343,8 +344,17 @@ class ReforcoController extends Controller
     $processos = $processos->get();
 
     foreach ($processos as $proc) {
-      $fat = $proc->fator ?? 1;
-      $peso = $passagem->peso * $fat;
+      $NDesconto = (double)$proc->tanque->desconto_milesimo ?? 0;
+      
+      if ($proc->tanque->tipo_consumo == 'M') {
+        $NPeso = $passagem->peso;
+        $NMilesimos = $passagem->milesimos;
+        $peso_consumido = (($NPeso * $NMilesimos) / 1000) - (($NPeso * $NDesconto) / 1000);
+        $peso = $peso_consumido;
+      } else {
+        $fat = $proc->fator ?? 1;
+        $peso = $passagem->peso * $fat;
+      }
 
       $ciclo = TanqueCiclo::where('tanque_id', $proc->tanque_id)
                           ->where('cliente_id', $passagem->cliente_id)

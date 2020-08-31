@@ -42,7 +42,7 @@ class RelatorioTempoExecucaoController extends Controller
   */
   public function preview(Request $request)
   {
-    $servicos = Separacao::with('recebimentos')->select();
+    $servicos = Separacao::with('recebimentos')->whereHas('cliente')->select();
 
     if ($request->idcliente) {
       $servicos->whereIn('cliente_id', explode(',', $request->idcliente));

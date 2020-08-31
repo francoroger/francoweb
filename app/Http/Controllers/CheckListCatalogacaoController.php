@@ -234,11 +234,13 @@ class CheckListCatalogacaoController extends Controller
   */
   public function update(Request $request, $id)
   {
-    foreach ($request->itens as $item) {
-      $catalogacao_item = CatalogacaoItem::findOrFail($item['id']);
-      $catalogacao_item->status_check = $item['status_check'];
-      $catalogacao_item->obs_check = $item['obs_check'];
-      $catalogacao_item->save();
+    if ($request->itens) {
+      foreach ($request->itens as $item) {
+        $catalogacao_item = CatalogacaoItem::findOrFail($item['id']);
+        $catalogacao_item->status_check = $item['status_check'];
+        $catalogacao_item->obs_check = $item['obs_check'];
+        $catalogacao_item->save();
+      }
     }
 
     $catalogacao = Catalogacao::findOrFail($id);
@@ -255,6 +257,11 @@ class CheckListCatalogacaoController extends Controller
 
     if (!$separacao->data_inicio_revisao) {
       $separacao->data_inicio_revisao = Carbon::now();
+    }
+
+    if ($request->status == 'C') {
+      $separacao->data_fim_revisao = Carbon::now();
+      $separacao->data_inicio_expedicao = Carbon::now();
     }
 
     $separacao->save();

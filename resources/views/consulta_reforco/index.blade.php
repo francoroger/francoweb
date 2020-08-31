@@ -48,6 +48,12 @@
   <div class="page">
     <div class="page-header">
       <h1 class="page-title font-size-26 font-weight-100">Passagem de Peças</h1>
+      <div class="page-header-actions">
+        <a href="{{ route('controle_reforco') }}" class="btn btn-outline-primary">
+          <i class="fa fa-angle-left" aria-hidden="true"></i>
+          <span class="hidden-sm-down">Voltar</span>
+        </a>
+      </div>
     </div>
 
     <div class="page-content container-fluid">
