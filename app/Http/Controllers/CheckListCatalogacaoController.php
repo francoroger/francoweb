@@ -261,7 +261,7 @@ class CheckListCatalogacaoController extends Controller
 
     if ($request->status == 'C') {
       $separacao->data_fim_revisao = Carbon::now();
-      $separacao->data_inicio_expedicao = Carbon::now();
+      $separacao->status_expedicao = 'G';
     }
 
     $separacao->save();

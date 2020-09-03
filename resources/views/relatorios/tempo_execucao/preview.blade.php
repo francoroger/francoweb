@@ -26,7 +26,7 @@
           $data_inicio_recebimento = $separacao->recebimentos->sortBy('data_receb')->first() ? \Carbon\Carbon::parse($separacao->recebimentos->sortBy('data_receb')->first()->data_receb . ' ' . $separacao->recebimentos->sortBy('data_receb')->first()->hora_receb) : null;
           $data_fim_recebimento = $separacao->recebimentos->sortBy('data_receb')->last() ? \Carbon\Carbon::parse($separacao->recebimentos->sortBy('data_receb')->last()->data_receb . ' ' . $separacao->recebimentos->sortBy('data_receb')->last()->hora_receb) : null;
           $data_inicio_separacao = \Carbon\Carbon::parse($separacao->created_at);
-          $data_fim_separacao = $separacao->data_inicio_catalogacao ? \Carbon\Carbon::parse($separacao->data_inicio_catalogacao) : null; 
+          $data_fim_separacao = $separacao->data_fim_separacao ? \Carbon\Carbon::parse($separacao->data_fim_separacao) : null; 
           $data_inicio_catalogacao = $separacao->data_inicio_catalogacao ? \Carbon\Carbon::parse($separacao->data_inicio_catalogacao) : null;
           $data_fim_catalogacao = $separacao->data_fim_catalogacao ? \Carbon\Carbon::parse($separacao->data_fim_catalogacao) : null;
           $data_inicio_preparacao = $separacao->data_inicio_preparacao ? \Carbon\Carbon::parse($separacao->data_inicio_preparacao) : null;
@@ -90,6 +90,8 @@
             @if ($data_fim_recebimento && $data_inicio_separacao)
               {{ $data_inicio_separacao->diffForHumans($data_fim_recebimento, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
               @php($total_ocioso += $data_inicio_separacao->diffInSeconds($data_fim_recebimento))
+            @elseif($data_fim_recebimento)
+              {{ $data_fim_recebimento->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
             @endif
           </td>
           <td class="font-size-12">{{ $data_inicio_separacao->format('d/m/Y H:i:s') }}</td>
@@ -97,6 +99,8 @@
             @if ($data_fim_separacao && $data_inicio_catalogacao)
               {{ $data_inicio_catalogacao->diffForHumans($data_fim_separacao, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
               @php($total_ocioso += $data_inicio_catalogacao->diffInSeconds($data_fim_separacao))
+            @elseif($data_fim_separacao)
+              {{ $data_fim_separacao->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
             @endif
           </td>
           <td class="font-size-12">{{ $data_inicio_catalogacao ? $data_inicio_catalogacao->format('d/m/Y H:i:s') : '' }}</td>
@@ -104,6 +108,8 @@
             @if ($data_fim_catalogacao && $data_inicio_banho)
               {{ $data_inicio_banho->diffForHumans($data_fim_catalogacao, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
               @php($total_ocioso += $data_inicio_banho->diffInSeconds($data_fim_catalogacao))
+            @elseif($data_fim_catalogacao)
+              {{ $data_fim_catalogacao->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
             @endif
           </td>
           <td class="font-size-12">{{ $data_inicio_preparacao ? $data_inicio_preparacao->format('d/m/Y H:i:s') : '' }}</td>
@@ -111,6 +117,8 @@
             @if ($data_fim_banho && $data_inicio_revisao)
               {{ $data_inicio_revisao->diffForHumans($data_fim_banho, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
               @php($total_ocioso += $data_inicio_revisao->diffInSeconds($data_fim_banho))
+            @elseif($data_fim_banho)
+              {{ $data_fim_banho->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
             @endif
           </td>
           <td class="font-size-12">{{ $data_inicio_revisao ? $data_inicio_revisao->format('d/m/Y H:i:s') : '' }}</td>
@@ -118,6 +126,8 @@
             @if ($data_fim_revisao && $data_inicio_expedicao)
               {{ $data_inicio_expedicao->diffForHumans($data_fim_revisao, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
               @php($total_ocioso += $data_inicio_expedicao->diffInSeconds($data_fim_revisao))
+            @elseif($data_fim_revisao)
+              {{ $data_fim_revisao->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
             @endif
           </td>
           <td class="font-size-12">{{ $data_inicio_expedicao ? $data_inicio_expedicao->format('d/m/Y H:i:s') : '' }}</td>
@@ -129,7 +139,7 @@
         <tr>
           <th class="font-size-12">Fim</th>
           <td class="font-size-12">{{ $data_fim_recebimento ? $data_fim_recebimento->format('d/m/Y H:i:s') : ''  }}</td>
-          <td class="font-size-12">{{ $data_inicio_catalogacao ? $data_inicio_catalogacao->format('d/m/Y H:i:s') : '' }}</td>
+          <td class="font-size-12">{{ $data_fim_separacao ? $data_fim_separacao->format('d/m/Y H:i:s') : '' }}</td>
           <td class="font-size-12">{{ $data_fim_catalogacao ? $data_fim_catalogacao->format('d/m/Y H:i:s') : '' }}</td>
           <td class="font-size-12">{{ $data_fim_preparacao ? $data_fim_preparacao->format('d/m/Y H:i:s') : '' }}</td>
           <td class="font-size-12">{{ $data_fim_revisao ? $data_fim_revisao->format('d/m/Y H:i:s') : '' }}</td>
@@ -140,31 +150,55 @@
           <td class="font-size-12">
             @if ($data_inicio_recebimento && $data_fim_recebimento)
             {{ $data_inicio_recebimento->diffForHumans($data_fim_recebimento, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            @elseif($data_inicio_recebimento)
+            <span class="text-info">
+              {{ $data_inicio_recebimento->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            </span>
             @endif
           </td>
           <td class="font-size-12">
             @if ($data_inicio_separacao && $data_fim_separacao)
             {{ $data_inicio_separacao->diffForHumans($data_fim_separacao, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            @elseif($data_inicio_separacao)
+            <span class="text-info">
+              {{ $data_inicio_separacao->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            </span>
             @endif
           </td>
           <td class="font-size-12">
             @if ($data_inicio_catalogacao && $data_fim_catalogacao)
             {{ $data_inicio_catalogacao->diffForHumans($data_fim_catalogacao, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            @elseif($data_inicio_catalogacao)
+            <span class="text-info">
+              {{ $data_inicio_catalogacao->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            </span>
             @endif
           </td>
           <td class="font-size-12">
             @if ($data_inicio_banho && $data_fim_banho)
             {{ $data_inicio_banho->diffForHumans($data_fim_banho, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            @elseif($data_inicio_banho)
+            <span class="text-info">
+              {{ $data_inicio_banho->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            </span>
             @endif
           </td>
           <td class="font-size-12">
             @if ($data_inicio_revisao && $data_fim_revisao)
             {{ $data_inicio_revisao->diffForHumans($data_fim_revisao, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            @elseif($data_inicio_revisao)
+            <span class="text-info">
+              {{ $data_inicio_revisao->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            </span>
             @endif
           </td>
           <td class="font-size-12">
             @if ($data_inicio_expedicao && $data_fim_expedicao)
             {{ $data_inicio_expedicao->diffForHumans($data_fim_expedicao, \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            @elseif($data_inicio_expedicao)
+            <span class="text-info">
+              {{ $data_inicio_expedicao->diffForHumans(now(), \Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3) }}
+            </span>
             @endif
           </td>
         </tr>

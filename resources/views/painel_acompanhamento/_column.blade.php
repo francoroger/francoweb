@@ -17,28 +17,49 @@
           @foreach ($data as $item)
           <div class="card border mb-0" data-id="{{ $item->id }}">
             <div class="card-body p-5">
+              @if ($status == 'R' || ($status == 'S' && $item->substatus == 'A') || ($status == 'F' && $item->substatus == 'G') || ($status == 'C' && $item->substatus == 'G'))
               <div class="dropdown float-right">
                 <a href="#" class="dropdown-toggle text-muted arrow-none" data-toggle="dropdown" aria-expanded="false">
                   <i class="icon wb-more-vertical px-5"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
+                  @if ($status == 'R')
+                  <a href="javascript:void(0);" class="dropdown-item font-weight-400 action-arquivar"><i class="fa fa-folder-open mr-2"></i>Arquivar</a>
+                  @endif
+                  @if ($status == 'S' && $item->substatus == 'A')
+                  <a href="javascript:void(0);" class="dropdown-item text-danger font-weight-400 action-encerrar-sep"><i class="fa fa-check mr-2"></i>Encerrar</a>
+                  @endif
+                  @if ($status == 'F' && $item->substatus == 'G')
+                  <a href="javascript:void(0);" class="dropdown-item text-primary font-weight-400 action-iniciar-banho"><i class="fa fa-clock-o mr-2"></i>Iniciar</a>
+                  @endif
+                  @if ($status == 'C' && $item->substatus == 'G')
+                  <a href="javascript:void(0);" class="dropdown-item text-primary font-weight-400 action-iniciar-exped"><i class="fa fa-clock-o mr-2"></i>Iniciar</a>
+                  @endif
+                  <!--
                   <a href="javascript:void(0);" data-toggle="modal" data-target="#task-detail-modal" class="dropdown-item"><i class="icon wb-search mr-2"></i>Visualizar</a>
                   <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-edit mr-2"></i>Editar</a>
-                  @if ($status == 'R')
-                  <a href="javascript:void(0);" class="dropdown-item action-arquivar"><i class="fa fa-folder-open-o mr-2"></i>Arquivar</a>
-                  @endif
                   <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-print mr-2"></i>Imprimir</a>
                   <div class="dropdown-divider"></div>
                   <a href="javascript:void(0);" class="dropdown-item text-danger"><i class="icon wb-trash mr-2"></i>Excluir</a>
+                  -->
                 </div>
               </div>
+              @endif
               <h6 class="mt-0 mb-0 font-size-12">
                 <a href="javascript:void(0);" class="text-body">{{ $item->cliente }}</a>
               </h6>
               <span class="d-block mb-2 font-size-10">#{{$item->id }}</span>
-              <span class="badge badge-outline badge-primary font-size-12 font-weight-500">{{ number_format($item->peso, 0, ',', '.') }} g</span>
+              <span class="badge badge-outline badge-primary badge-peso font-size-12 font-weight-500 mt-5" data-placement="right" data-toggle="tooltip" data-original-title="{{ number_format($item->peso_real, 0, ',', '.') }} g">
+                {{ number_format($item->peso, 0, ',', '.') }} g
+              </span>
               @if ($item->substatus == 'G')
                 <span class="badge badge badge-danger font-size-12 font-weight-500 ml-5">Aguardando</span>
+              @endif
+              @if ($item->substatus == 'A')
+                <span class="badge badge badge-warning font-size-12 font-weight-500 ml-5">Em Andamento</span>
+              @endif
+              @if ($item->substatus == 'E')
+                <span class="badge badge badge-success font-size-12 font-weight-500 ml-5">Concluído</span>
               @endif
               <ul class="blocks-2 mb-0 mt-4">
                 <li class="mb-0">

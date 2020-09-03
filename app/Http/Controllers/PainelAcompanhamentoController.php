@@ -20,7 +20,7 @@ class PainelAcompanhamentoController extends Controller
       ->where(function($query) {
         $query->where('arquivado', '=', '0')->orWhereNull('arquivado');
       })
-      ->orderBy('data_receb', 'desc')->get();
+      ->orderBy('id', 'desc')->get();
 
     $colRecebimento = [];
     foreach ($recebimentos as $recebimento) {
@@ -28,6 +28,7 @@ class PainelAcompanhamentoController extends Controller
       $obj->id = $recebimento->id;
       $obj->cliente = $recebimento->cliente->identificacao ?? '';
       $obj->peso = $recebimento->pesototal;
+      $obj->peso_real = $recebimento->pesototal;
       $obj->qtde_itens = 1;
       $obj->qtde_check = 0;
       $obj->data_situacao = $recebimento->data_receb;
@@ -52,13 +53,14 @@ class PainelAcompanhamentoController extends Controller
       $obj->id = $separacao->id;
       $obj->cliente = $separacao->cliente->identificacao ?? '';
       $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->recebimentos->sum('pesototal');
       $obj->qtde_itens = $separacao->recebimentos->count();
       $obj->qtde_check = 0;
       $obj->data_situacao = $separacao->created_at;
       $obj->data_carbon = Carbon::parse($separacao->created_at);
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = null;
-      $obj->substatus = null;
+      $obj->substatus = $separacao->status_separacao;
       $colSeparacao[] = $obj;
     }
 
@@ -68,14 +70,15 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Catalogação
   private function catalogacoes()
   {
-    $catalogacoes = Separacao::where('status', 'A')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->get();
+    $catalogacoes = Separacao::where('status', 'A')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
 
     $colCatalogacao = [];
     foreach ($catalogacoes as $separacao) {
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
       $obj->data_situacao = $separacao->catalogacao->datacad;
@@ -92,21 +95,22 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Ordens
   private function ordens()
   {
-    $ordens = Separacao::where('status', 'F')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->get();
+    $ordens = Separacao::where('status', 'F')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
 
     $colOrdens = [];
     foreach ($ordens as $separacao) {
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
       $obj->data_situacao = $separacao->catalogacao->datacad;
       $obj->data_carbon = $separacao->data_inicio_preparacao ? Carbon::parse($separacao->data_inicio_preparacao) : null;
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
-      $obj->substatus = null;
+      $obj->substatus = $separacao->status_banho;
       $colOrdens[] = $obj;
     }
 
@@ -116,14 +120,15 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Revisões
   private function revisoes()
   {
-    $revisoes = Separacao::whereIn('status', ['P', 'G'])->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->get();
+    $revisoes = Separacao::whereIn('status', ['P', 'G'])->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
 
     $colRevisoes = [];
     foreach ($revisoes as $separacao) {
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
       $obj->data_situacao = $separacao->catalogacao->datacad;
@@ -144,23 +149,24 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Expedições
   private function expedicoes()
   {
-    $expedicoes = Separacao::where('status', 'C')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao', function ($query) {
+    $expedicoes = Separacao::where('status', 'C')->whereNotNull('cliente_id')->whereHas('catalogacao', function ($query) {
       $query->where('datacad', '>=', date('Y-m-d', strtotime('2020-03-01')));
-    })->get();
+    })->orderBy('catalogacao_id', 'desc')->get();
 
     $colExpedicoes = [];
     foreach ($expedicoes as $separacao) {
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
       $obj->data_situacao = $separacao->catalogacao->datacad;
       $obj->data_carbon = $separacao->data_inicio_expedicao ? Carbon::parse($separacao->data_inicio_expedicao) : null;
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
-      $obj->substatus = null;
+      $obj->substatus = $separacao->status_expedicao;
       $colExpedicoes[] = $obj;
     }
 
@@ -170,14 +176,15 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Concluídos
   private function concluidos()
   {
-    $concluidos = Separacao::where('status', 'L')->whereNotNull('cliente_id')->orderBy('created_at', 'desc')->whereHas('catalogacao')->take(10)->get();
+    $concluidos = Separacao::where('status', 'L')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->take(10)->get();
 
     $colConcluidos = [];
     foreach ($concluidos as $separacao) {
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
       $obj->data_situacao = $separacao->catalogacao->datacad;
@@ -214,6 +221,10 @@ class PainelAcompanhamentoController extends Controller
     $to = $request->to;
     $ids = $request->ids;
 
+    if ($from == $to) {
+      return response(200);
+    }
+
     do {
       /**
        * De Recebimentos para Separação
@@ -236,6 +247,7 @@ class PainelAcompanhamentoController extends Controller
         $separacao = new Separacao;
         $separacao->cliente_id = $cliente_id;
         $separacao->status = 'S';
+        $separacao->status_separacao = 'A';
         $separacao->save();
         //Adicionando os recebimentos
         $separacao->recebimentos()->sync($ids);
@@ -291,6 +303,12 @@ class PainelAcompanhamentoController extends Controller
        */
       if ($from == 'S') {
         $separacao = Separacao::findOrFail($ids[0]);
+
+        //Se não foi encerrada não deixa arrastar
+        if (!$separacao->data_fim_separacao) {
+          return response('A separação deve ser encerrada antes de entrar em catalogação!', 503);
+        }
+
         //Cria a catalogação
         $catalogacao = new Catalogacao;
         $catalogacao->idcliente = $separacao->cliente_id;
@@ -300,7 +318,6 @@ class PainelAcompanhamentoController extends Controller
 
         //Relaciona a separação com a catalogação
         $separacao->catalogacao_id = $catalogacao->id;
-        $separacao->data_fim_separacao = Carbon::now();
         $separacao->data_inicio_catalogacao = Carbon::parse($catalogacao->datacad);
         $separacao->status = $to;
         $separacao->save();
@@ -351,17 +368,28 @@ class PainelAcompanhamentoController extends Controller
             $separacao->data_inicio_catalogacao = Carbon::now();
             break;
           case 'F':
-            $separacao->data_inicio_preparacao = Carbon::now();
-            $separacao->data_inicio_banho = Carbon::now();
+            $separacao->status_banho = 'G';
+            //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
+            //$separacao->data_inicio_preparacao = Carbon::now();
+            //$separacao->data_inicio_banho = Carbon::now();
             break;
           case 'G':
+            //Se não foi encerrada não deixa arrastar
+            if ($separacao->status_banho == 'G') {
+              return response('O processo de banho não foi iniciado!', 503);
+            }
             //Não faz nada, pois só inicia a revisão quando abrir pelo checklist
             //$separacao->data_inicio_revisao = Carbon::now();
             break;
           case 'C':
-            $separacao->data_inicio_expedicao = Carbon::now();
+            $separacao->status_expedicao = 'G';
+            //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
+            //$separacao->data_inicio_expedicao = Carbon::now();
             break;
           case 'L':
+            if ($separacao->status_expedicao == 'G') {
+              return response('O processo de expedição não foi iniciado!', 503);
+            }
             //Não faz nada
             break;
           default:
@@ -389,6 +417,36 @@ class PainelAcompanhamentoController extends Controller
     $recebimento = Recebimento::findOrFail($request->id);
     $recebimento->arquivado = true;
     $recebimento->save();
+    return response(200);
+  }
+
+  public function encerrarSeparacao(Request $request)
+  {
+    $separacao = Separacao::findOrFail($request->id);
+    $separacao->data_fim_separacao = Carbon::now();
+    $separacao->status_separacao = 'E';
+    $separacao->save();
+    return response(200);
+  }
+
+  public function iniciarBanho(Request $request)
+  {
+    $banho = Catalogacao::findOrFail($request->id);
+    $separacao = $banho->separacao;
+    $separacao->data_inicio_preparacao = Carbon::now();
+    $separacao->data_inicio_banho = Carbon::now();
+    $separacao->status_banho = 'A';
+    $separacao->save();
+    return response(200);
+  }
+
+  public function iniciarExpedicao(Request $request)
+  {
+    $exped = Catalogacao::findOrFail($request->id);
+    $separacao = $exped->separacao;
+    $separacao->data_inicio_expedicao = Carbon::now();
+    $separacao->status_expedicao = 'A';
+    $separacao->save();
     return response(200);
   }
 

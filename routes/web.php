@@ -110,8 +110,11 @@ Route::group(['prefix' => 'catalogacao'], function() {
 
 // Painel
 Route::get('/painel', 'PainelAcompanhamentoController@index')->name('painel');
-Route::post('catalogacao', 'PainelAcompanhamentoController@move')->name('painel.move');
-Route::post('arquivar', 'PainelAcompanhamentoController@arquivar')->name('painel.arquivar');
+Route::post('/painel/catalogacao', 'PainelAcompanhamentoController@move')->name('painel.move');
+Route::post('/painel/arquivar', 'PainelAcompanhamentoController@arquivar')->name('painel.arquivar');
+Route::post('/painel/encerrar_separacao', 'PainelAcompanhamentoController@encerrarSeparacao')->name('painel.encerrar_separacao');
+Route::post('/painel/iniciar_banho', 'PainelAcompanhamentoController@iniciarBanho')->name('painel.iniciar_banho');
+Route::post('/painel/iniciar_expedicao', 'PainelAcompanhamentoController@iniciarExpedicao')->name('painel.iniciar_expedicao');
 Route::get('/painel/column', 'PainelAcompanhamentoController@column')->name('painel.column');
 
 // Recebimentos

@@ -106,26 +106,28 @@
       ids.push(item.data('id'));
     }
 
-    $.ajax({
-      url: "{{ route('painel.move') }}",
-      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-      type: 'POST',
-      data: {
-        'ids': ids,
-        'from': from.data('status'),
-        'to': to.data('status')
-      },
-      success: function(data) {
-        refreshColumn(to.data('status'));
-        refreshColumn(from.data('status'));
-      },
-      error: function(jqXHR, textStatus, error) {
-        console.log(jqXHR);
-        alert('Erro: ' + jqXHR.responseText);
-        refreshColumn(to.data('status'));
-        refreshColumn(from.data('status'));
-      }
-    });
+    if (from !== to) {
+      $.ajax({
+        url: "{{ route('painel.move') }}",
+        headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+        type: 'POST',
+        data: {
+          'ids': ids,
+          'from': from.data('status'),
+          'to': to.data('status')
+        },
+        success: function(data) {
+          refreshColumn(to.data('status'));
+          refreshColumn(from.data('status'));
+        },
+        error: function(jqXHR, textStatus, error) {
+          console.log(jqXHR);
+          alert('Erro: ' + jqXHR.responseText);
+          refreshColumn(to.data('status'));
+          refreshColumn(from.data('status'));
+        }
+      }); 
+    }
   }
 
   function arquivarRecebimento(id)
@@ -139,6 +141,63 @@
       },
       success: function(data) {
         refreshColumn('R');
+      },
+      error: function(jqXHR, textStatus, error) {
+        console.log(jqXHR);
+        alert('Erro: ' + jqXHR.responseText);
+      }
+    });
+  }
+
+  function encerrarSeparacao(id)
+  {
+    $.ajax({
+      url: "{{ route('painel.encerrar_separacao') }}",
+      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+      type: 'POST',
+      data: {
+        'id': id
+      },
+      success: function(data) {
+        refreshColumn('S');
+      },
+      error: function(jqXHR, textStatus, error) {
+        console.log(jqXHR);
+        alert('Erro: ' + jqXHR.responseText);
+      }
+    });
+  }
+
+  function iniciarBanho(id)
+  {
+    $.ajax({
+      url: "{{ route('painel.iniciar_banho') }}",
+      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+      type: 'POST',
+      data: {
+        'id': id
+      },
+      success: function(data) {
+        refreshColumn('F');
+      },
+      error: function(jqXHR, textStatus, error) {
+        console.log(jqXHR);
+        alert('Erro: ' + jqXHR.responseText);
+      }
+    });
+  }
+
+  function iniciarExpedicao(id)
+  {
+    $.ajax({
+      url: "{{ route('painel.iniciar_expedicao') }}",
+      headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+      type: 'POST',
+      data: {
+        'id': id
+      },
+      success: function(data) {
+        refreshColumn('C');
       },
       error: function(jqXHR, textStatus, error) {
         console.log(jqXHR);
@@ -220,6 +279,33 @@
     }
 
     $(".text-body:icontains('"+term+"')").parent().parent().parent().removeClass('d-none');
+    calcTotais();
+  }
+
+  function calcTotais() {
+    $('.tasks').each(function(i, coluna) {
+      var peso_coluna = 0;
+      var qtde_cards = 0;
+      $(coluna).find('.card').not('.d-none').each(function(j, bloco) {
+        //Peso
+        peso_bloco = parseInt($(bloco).find('.badge-peso').html().replace(' g', '').replace(/\./g, ''));
+        peso_coluna = peso_coluna + peso_bloco;
+        //Quantidade
+        qtde_cards = qtde_cards + 1;
+      });
+      //Caso queira exibir formatado com o separador de milhar:
+      //peso_coluna = peso_coluna.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      if (peso_coluna < 1000) {
+        peso_coluna = peso_coluna + ' g';
+      } else {
+        peso_coluna = peso_coluna / 1000;
+        peso_coluna = peso_coluna.toFixed(2) + ' Kg';
+      }
+      //Peso da coluna
+      $(coluna).find('.totalizador-peso').html(peso_coluna);
+      //Itens da coluna
+      $(coluna).find('.totalizador').html(qtde_cards);
+    });
   }
 
   $(document).on('keyup', '#search', function(key) {
@@ -229,6 +315,21 @@
   $(document).on('click', '.action-arquivar', function(event) {
     var id = $(this).parent().parent().parent().parent().data('id');
     arquivarRecebimento(id);
+  });
+
+  $(document).on('click', '.action-encerrar-sep', function(event) {
+    var id = $(this).parent().parent().parent().parent().data('id');
+    encerrarSeparacao(id);
+  });
+
+  $(document).on('click', '.action-iniciar-banho', function(event) {
+    var id = $(this).parent().parent().parent().parent().data('id');
+    iniciarBanho(id);
+  });
+
+  $(document).on('click', '.action-iniciar-exped', function(event) {
+    var id = $(this).parent().parent().parent().parent().data('id');
+    iniciarExpedicao(id);
   });
 </script>
 @endpush

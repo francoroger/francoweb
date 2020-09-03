@@ -52,6 +52,12 @@ class RelatorioTempoExecucaoController extends Controller
       $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini);
       $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim);
       $servicos->whereBetween('created_at', [$dtini, $dtfim]);
+      $servicos->orWhereHas('recebimentos', function($query) use ($dtini, $dtfim) {
+        $query->whereBetween('data_receb', [$dtini, $dtfim]);
+      });
+      $servicos->orWhereHas('catalogacao', function($query) use ($dtini, $dtfim) {
+        $query->whereBetween('datacad', [$dtini, $dtfim]);
+      });
     }
     
     $servicos = $servicos->paginate(10);
