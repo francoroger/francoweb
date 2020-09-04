@@ -335,6 +335,12 @@ class PainelAcompanhamentoController extends Controller
         //Localiza a separação
         $separacao = Separacao::where('catalogacao_id', $id)->get()->first();
 
+        //Se já tiver catalogação relacionada, não permite voltar
+        if ($to == 'S') {
+          return response('A separação já entrou em fase de catalogação. Não é possível voltar ao recebimento', 503);
+          break;
+        }
+
         //Encerra a data do status anterior
         switch ($from) {
           case 'A':
