@@ -14,20 +14,26 @@ class StatusSeparacaoSeeder extends Seeder
   {
     $separacoes = Separacao::where('status', 'S')->get();
     foreach ($separacoes as $separacao) {
-      $separacao->status_separacao = 'A';
-      $separacao->save();
+      if (!$separacao->status_separacao) {
+        $separacao->status_separacao = 'A';
+        $separacao->save();
+      }
     }
 
     $banhos = Separacao::where('status', 'F')->get();
     foreach ($banhos as $banho) {
-      $banho->status_banho = 'G';
-      $banho->save();
+      if (!$banho->status_banho) {
+        $banho->status_banho = 'G';
+        $banho->save();
+      }
     }
 
     $expedicoes = Separacao::where('status', 'C')->get();
     foreach ($expedicoes as $expedicao) {
-      $expedicao->status_expedicao = 'G';
-      $expedicao->save();
+      if (!$expedicao->status_expedicao) {
+        $expedicao->status_expedicao = 'G';
+        $expedicao->save();
+      }
     }
   }
 }
