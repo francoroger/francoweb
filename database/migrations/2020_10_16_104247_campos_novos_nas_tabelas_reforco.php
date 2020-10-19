@@ -17,6 +17,7 @@ class CamposNovosNasTabelasReforco extends Migration
       $table->decimal('peso_antes', 16, 3)->nullable();
       $table->decimal('peso_depois', 16, 3)->nullable();
       $table->decimal('peso_peca')->nullable();
+      $table->boolean('retroativo')->nullable();
       $table->softDeletes();
     });
 
@@ -44,6 +45,7 @@ class CamposNovosNasTabelasReforco extends Migration
       $table->dropColumn('peso_antes');
       $table->dropColumn('peso_depois');
       $table->dropColumn('peso_peca');
+      $table->dropColumn('retroativo');
     });
 
     Schema::table('reforcos', function (Blueprint $table) {

@@ -127,6 +127,33 @@ class ReforcoController extends Controller
       $ciclo->peso_peca = str_replace(',', '.', $request->get('peso'));
       $ciclo->peso_antes = $proc->tanque->ciclos->where('status', 'P')->sum('peso');
       $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
+
+      //Verifica se já teve reforço após a passagem caso seja retroativa
+      $tanque = Tanque::findOrFail($proc->tanque_id);      
+      $reforcos_apos = $tanque->reforcos->where('created_at', '>=', $data_servico)->sortBy('created_at');
+      if ($reforcos_apos->count() > 0) {
+        //Flag para indentificar que foi lançado retroativo pós reforco
+        $ciclo->retroativo = true;
+        //Lança essa passagem já reforçada
+        $ciclo->status = 'R';
+        $ciclo->reforco_id = $reforcos_apos->first()->id ?? null;
+
+        //Obtem as passagens após esse serviço para atualizar os dados dela
+        $passagens_apos = $tanque->ciclos->where('data_servico', '>=', $data_servico);
+
+        foreach ($passagens_apos as $p) {
+          $ciclo_apos = TanqueCiclo::findOrFail($p->id);
+          $ciclo_apos->peso_antes += $ciclo->peso;
+          $ciclo_apos->peso_depois += $ciclo->peso;
+          if ($ciclo_apos->excedente == true) {
+            $ciclo_apos->peso += $ciclo->peso;
+            $ciclo_apos->peso_peca += $ciclo->peso_peca;
+          }
+          $ciclo_apos->save();
+        }
+
+      }
+
       $ciclo->save();
     }
 
