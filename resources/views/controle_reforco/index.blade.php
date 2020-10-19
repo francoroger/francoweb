@@ -298,6 +298,7 @@
         data: {
           'id': $('#reforco_analise_id').val() ? $('#reforco_analise_id').val() : '',
           'reforco_analise_valor': $('#reforco_analise_valor').val() ? $('#reforco_analise_valor').val() : '0',
+          'reforco_analise_motivo': $('#reforco_analise_motivo').val(),
         },
         success: function (data)
         {
@@ -368,7 +369,7 @@
 
       var currentdate = new Date();
       //var data = currentdate.getDate().toString().padStart(2, "0") + "-" + (currentdate.getMonth()+1).toString().padStart(2, "0") + '-' + currentdate.getFullYear();
-      var hora = currentdate.getHours().toString().padStart(2, "0") + ":" + currentdate.getMinutes().toString().padStart(2, "0");
+      var hora = currentdate.getHours().toString().padStart(2, "0") + ":" + currentdate.getMinutes().toString().padStart(2, "0") + ":" + currentdate.getSeconds().toString().padStart(2, "0");
 
       $('#hora_servico').val(hora);
       $('#data_servico').datepicker("update", new Date());
@@ -423,7 +424,7 @@
             <div class="form-group col-md-6">
               <label class="form-control-label" for="hora_servico">Hora</label>
               <input type="text" class="form-control" id="hora_servico" name="hora_servico" data-plugin="formatter"
-                data-pattern="[[99]]:[[99]]" />
+                data-pattern="[[99]]:[[99]]:[[99]]" />
             </div>
           </div>
 
@@ -521,6 +522,13 @@
             <div class="form-group col-md-12">
               <label class="form-control-label" for="reforco_analise_valor">Valor do tanque após análise</label>
               <input type="number" class="form-control" id="reforco_analise_valor" name="reforco_analise_valor" min="0" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label class="form-control-label" for="reforco_analise_motivo">Motivo</label>
+              <textarea class="form-control" id="reforco_analise_motivo" name="reforco_analise_motivo" rows="5"></textarea>
             </div>
           </div>
         </div>

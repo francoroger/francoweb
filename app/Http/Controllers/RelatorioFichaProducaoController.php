@@ -50,8 +50,8 @@ class RelatorioFichaProducaoController extends Controller
     $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini)->startOfDay();
     $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim)->endOfDay();
 
-    $ciclos = TanqueCiclo::whereBetween('data_servico', [$dtini, $dtfim]);
-    $reforcos = Reforco::whereBetween('created_at', [$dtini, $dtfim]);
+    $ciclos = TanqueCiclo::whereBetween('data_servico', [$dtini, $dtfim])->withTrashed();
+    $reforcos = Reforco::whereBetween('created_at', [$dtini, $dtfim])->withTrashed();
 
     if ($request->idtanque) {
       $ciclos->where('tanque_id', $request->idtanque);
@@ -70,6 +70,11 @@ class RelatorioFichaProducaoController extends Controller
         'tipo' => 'S',
         'data' => $ciclo->data_servico,
         'peso' => $ciclo->peso,
+        'excedente' => $ciclo->excedente,
+        'peso_antes' => $ciclo->peso_antes,
+        'peso_depois' => $ciclo->peso_depois,
+        'peso_peca' => $ciclo->peso_peca ?? null,
+        'deleted_at' => $ciclo->deleted_at
       ];
     }
 
@@ -78,6 +83,11 @@ class RelatorioFichaProducaoController extends Controller
         'tipo' => $reforco->tipo == 'A' ? 'A' : 'R',
         'data' => \Carbon\Carbon::parse($reforco->created_at)->subSeconds(1),
         'peso' => 0,
+        'excedente' => false,
+        'peso_antes' => $reforco->peso_antes,
+        'peso_depois' => $reforco->peso_depois,
+        'peso_peca' => 0,
+        'deleted_at' => $reforco->deleted_at
       ];
     }
 
@@ -120,8 +130,7 @@ class RelatorioFichaProducaoController extends Controller
     $tanque = Tanque::findOrFail($request->idtanque);
 
     $itens = $this->search($request);
-    $itens = $itens->split(2);
-
+    
     $pdf = App::make('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
     $pdf->setPaper('a4', 'portrait');

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PassagemPeca extends Model
 {
+  use SoftDeletes;
+  
   public function material()
   {
     return $this->belongsTo('App\Material', 'material_id');

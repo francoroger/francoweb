@@ -127,8 +127,12 @@
                     </div>
                   @endif
                   <div class="info-wrap">
-                    <div class="title text-center"><h4>{{ $item->produto->descricao ?? '' }}</h4></div>
+                    <div class="title text-center"><h4>{{ $item->descricao_produto }}</h4></div>
                     <table class="table table-bordered">
+                      <tr>
+                        <td class="p-10 font-weight-500 text-right" style="width: 15%">Produto:</td>
+                        <td class="p-10" style="width: 85%">{{ $item->produto->descricao ?? '' }}</td>
+                      </tr>
                       <tr>
                         <td class="p-10 font-weight-500 text-right" style="width: 15%">Material:</td>
                         <td class="p-10" style="width: 85%">{{ $item->material->descricao ?? '' }} {{ $item->milesimos ? "$item->milesimos mil" : '' }}</td>

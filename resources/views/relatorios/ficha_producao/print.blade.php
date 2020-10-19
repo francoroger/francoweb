@@ -31,6 +31,13 @@
       .bg-yellow-100 {
         background-color: #fff6b5!important;
       }
+      .bg-red-100 {
+        background-color: #ffdbdc!important;
+      }
+      .strike {
+        text-decoration: line-through;
+        color: #AA0000;
+      }
 
     </style>
   </head>
@@ -64,54 +71,51 @@
     </table>
 
     <!-- Conteúdo -->
-    <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
-      <tbody>
+    <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+      <thead>
         <tr>
-          <td width="50%" valign="top" align="center">
-
-            <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
-              <thead>
-                <tr>
-                  <th style="width:50%;">Data</th>
-                  <th style="width:50%;">Peso (g)</th>
-                </tr>
-              </thead>
-              <tbody>
-                @if ($itens->count())
-                  @foreach ($itens[0] as $item)
-                    <tr class="{{ ($item->tipo == 'R') || ($item->tipo == 'A') ? ' bg-yellow-100' : '' }}">
-                      <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : ($item->tipo == 'A' ? 'REFORÇO POR ANÁLISE' : 'REFORÇO') }}</td>
-                    </tr>
-                  @endforeach
-                @endif
-              </tbody>
-            </table>
-
-          </td>
-          <td width="50%" valign="top" align="center">
-
-            <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
-              <thead>
-                <tr>
-                  <th style="width:50%;">Data</th>
-                  <th style="width:50%;">Peso (g)</th>
-                </tr>
-              </thead>
-              <tbody>
-                @if ($itens->count())
-                  @foreach ($itens[1] as $item)
-                    <tr class="{{ ($item->tipo == 'R') || ($item->tipo == 'A') ? ' bg-yellow-100' : '' }}">
-                      <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
-                      <td>{{ $item->tipo == 'S' ? number_format($item->peso, 0, ',', '.') : ($item->tipo == 'A' ? 'REFORÇO POR ANÁLISE' : 'REFORÇO') }}</td>
-                    </tr>
-                  @endforeach
-                @endif
-              </tbody>
-            </table>
-
-          </td>
+          <th style="width:15%;">Data</th>
+          <th style="width:15%;">Tipo</th>
+          <th style="width:15%;">Peso Peça</th>
+          <th style="width:15%;">Peso Antes</th>
+          <th style="width:15%;">Peso Consumido</th>
+          <th style="width:15%;">Peso Depois</th>
         </tr>
+      </thead>
+      <tbody>
+        @if ($itens->count())
+          @foreach ($itens as $item)
+            <tr class="{{ $item->deleted_at ? ' strike' : '' }} {{ ($item->tipo == 'R') || ($item->tipo == 'A') ? ' bg-yellow-100' : '' }} {{ $item->excedente ? ' bg-red-100' : '' }}">
+              <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
+              <td>
+                @switch($item->tipo)
+                  @case('R')
+                    REFORÇO
+                    @break
+                  @case('A')
+                    REFORÇO POR ANÁLISE
+                    @break
+                  @default
+                    @if ($item->excedente)
+                    EXCEDENTE
+                    @else
+                    PASSAGEM
+                    @endif
+                @endswitch
+              </td>
+              <td>{{ $item->peso_peca ? number_format($item->peso_peca, 0, ',', '.') . ' g' : '' }}</td>
+              <td>{{ $item->peso_antes ? number_format($item->peso_antes, 0, ',', '.') . ' g' : '' }}</td>
+              <td>
+                @if ($item->tipo == 'S')
+                  {{ number_format($item->peso, 0, ',', '.') }} g
+                @else
+                  {{ $item->tipo == 'A' ? 'REFORÇO POR ANÁLISE' : 'REFORÇO' }}  
+                @endif
+              </td>
+              <td>{{ $item->peso_depois ? number_format($item->peso_depois, 0, ',', '.') . ' g' : '' }}</td>
+            </tr>
+          @endforeach
+        @endif
       </tbody>
     </table>
     <!-- Fim Conteúdo -->

@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TanqueCiclo extends Model
 {
+  use SoftDeletes;
+  
   public function reforco()
   {
     return $this->belongsTo('App\Reforco', 'tanque_id');

@@ -69,8 +69,9 @@ class ReforcoController extends Controller
 
   public function registra_ciclo(Request $request)
   {
+    $data_servico = \Carbon\Carbon::createFromFormat('d/m/Y H:i:s', $request->get('data_servico') . ' ' . $request->get('hora_servico'));
     $passagem = new PassagemPeca;
-    $passagem->data_servico = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->get('data_servico') . ' ' . $request->get('hora_servico'));
+    $passagem->data_servico = $data_servico;
     $passagem->cliente_id = $request->get('idcliente');
     $passagem->tiposervico_id = $request->get('idtiposervico');
     $passagem->material_id = $request->get('idmaterial');
@@ -121,8 +122,11 @@ class ReforcoController extends Controller
       $ciclo->material_id = $request->get('idmaterial');
       $ciclo->cor_id = $request->get('idcor');
       $ciclo->milesimos = $request->get('milesimos');
-      $ciclo->data_servico = \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->get('data_servico') . ' ' . $request->get('hora_servico'));
+      $ciclo->data_servico = $data_servico;
       $ciclo->status = 'P';
+      $ciclo->peso_peca = str_replace(',', '.', $request->get('peso'));
+      $ciclo->peso_antes = $proc->tanque->ciclos->where('status', 'P')->sum('peso');
+      $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
       $ciclo->save();
     }
 
@@ -143,16 +147,27 @@ class ReforcoController extends Controller
 
   public function reset_ciclo(Request $request)
   {
-    //Pega o excedente para criar uma nova transação após o reforço
     $tanque = Tanque::findOrFail($request->get('id'));
-    $exd = $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? $tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco : 0;
+    $peso_antes = $tanque->ciclos->where('status', 'P')->sum('peso');
+
+    //Pega o excedente para criar uma nova transação após o reforço
+    $exd = 0;
+    if ($tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco) {
+      $exd = $tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco;
+    }
 
     //Obter a quantidade mínima necessária pra zerar, o que sobra é o negativo
-    $neg = $tanque->ciclos->where('status', 'P')->sum('peso') < $tanque->ciclo_reforco ? $tanque->ciclo_reforco - $tanque->ciclos->where('status', 'P')->sum('peso') : 0;
+    $neg = 0;
+    if ($tanque->ciclos->where('status', 'P')->sum('peso') < $tanque->ciclo_reforco) {
+      $neg = $tanque->ciclo_reforco - $tanque->ciclos->where('status', 'P')->sum('peso');
+    }
 
     //Gera um registro para o reforço que será associado com o item
     $reforco = new Reforco;
     $reforco->tanque_id = $request->get('id');
+    $reforco->peso_antes = $peso_antes;
+    $reforco->peso = $tanque->ciclo_reforco;
+    $reforco->peso_depois = $peso_antes - $tanque->ciclo_reforco;
     $reforco->save();
 
     //Atualiza o item com o status de R (realizado) e a id do reforço
@@ -172,7 +187,10 @@ class ReforcoController extends Controller
       $ciclo->peso = $exd;
       $ciclo->status = 'P';
       $ciclo->excedente = true;
-      $ciclo->reforco_id = $reforco->id;
+      //$ciclo->reforco_id = $reforco->id;
+      $ciclo->peso_peca = $exd;
+      $ciclo->peso_antes = $tanque->ciclos->where('status', 'P')->sum('peso');
+      $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
       $ciclo->save();
     }
 
@@ -185,6 +203,9 @@ class ReforcoController extends Controller
       $ciclo->status = 'P';
       $ciclo->excedente = true;
       $ciclo->reforco_id = $reforco->id;
+      $ciclo->peso_peca = $exd;
+      $ciclo->peso_antes = $tanque->ciclos->where('status', 'P')->sum('peso');
+      $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
       $ciclo->save();
     }
 
@@ -224,11 +245,16 @@ class ReforcoController extends Controller
   public function reforco_analise(Request $request)
   {
     $tanque = Tanque::findOrFail($request->get('id'));
+    $peso_antes = $tanque->ciclos->where('status', 'P')->sum('peso');
 
     //Gera um registro para o reforço que será associado com o item
     $reforco = new Reforco;
     $reforco->tanque_id = $request->get('id');
     $reforco->tipo = 'A';
+    $reforco->peso_antes = $peso_antes;
+    $reforco->peso = $tanque->ciclo_reforco;
+    $reforco->peso_depois = $request->get('reforco_analise_valor');
+    $reforco->motivo_reforco = $request->get('reforco_analise_motivo');
     $reforco->save();
 
     $current_val = $tanque->ciclos->where('status', 'P')->sum('peso');
@@ -268,15 +294,13 @@ class ReforcoController extends Controller
     $tanque = Tanque::findOrFail($request->get('id'));
     $reforco = $tanque->reforcos->sortByDesc('created_at')->first();
     $reforco_id = $reforco->id;
-
+    
     //Exclui os excedentes
-    $exced = DB::table('tanque_ciclos')
-               ->where('tanque_id', $request->get('id'))
-               ->where('reforco_id', $reforco_id)
-               ->where('status', 'P')
-               ->where('excedente', true)
-               ->delete();
-
+    $excedentes = TanqueCiclo::where('tanque_id', $request->get('id'))->where('reforco_id', null)->where('status', 'P')->where('excedente', true)->get();
+    foreach ($excedentes as $excedente) {
+      $excedente->delete();
+    }
+  
     //Atualiza o item com o status de R (realizado) e a id do reforço
     $updt = DB::table('tanque_ciclos')
               ->where('tanque_id', $request->get('id'))
