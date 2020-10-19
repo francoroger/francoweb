@@ -74,7 +74,8 @@ class RelatorioFichaProducaoController extends Controller
         'peso_antes' => $ciclo->peso_antes,
         'peso_depois' => $ciclo->peso_depois,
         'peso_peca' => $ciclo->peso_peca ?? null,
-        'deleted_at' => $ciclo->deleted_at
+        'deleted_at' => $ciclo->deleted_at,
+        'motivo' => null,
       ];
     }
 
@@ -87,7 +88,8 @@ class RelatorioFichaProducaoController extends Controller
         'peso_antes' => $reforco->peso_antes,
         'peso_depois' => $reforco->peso_depois,
         'peso_peca' => 0,
-        'deleted_at' => $reforco->deleted_at
+        'deleted_at' => $reforco->deleted_at,
+        'motivo' => $reforco->motivo_reforco ?? null
       ];
     }
 

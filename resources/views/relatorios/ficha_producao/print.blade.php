@@ -114,6 +114,11 @@
               </td>
               <td>{{ $item->peso_depois ? number_format($item->peso_depois, 0, ',', '.') . ' g' : '' }}</td>
             </tr>
+            @if ($item->tipo == 'A' && $item->motivo)
+              <tr class="bg-yellow-100">
+                <td colspan="6"><b>Motivo:</b> {{ $item->motivo }}</td>
+              </tr>
+            @endif
           @endforeach
         @endif
       </tbody>
