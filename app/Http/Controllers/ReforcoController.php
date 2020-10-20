@@ -128,30 +128,48 @@ class ReforcoController extends Controller
       $ciclo->peso_antes = $proc->tanque->ciclos->where('status', 'P')->sum('peso');
       $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
 
-      //Verifica se já teve reforço após a passagem caso seja retroativa
+      //Verifica se já teve passagem ou reforço após essaa passagem, caso seja retroativa
       $tanque = Tanque::findOrFail($proc->tanque_id);      
       $reforcos_apos = $tanque->reforcos->where('created_at', '>=', $data_servico)->sortBy('created_at');
-      if ($reforcos_apos->count() > 0) {
+
+      //Obtem as passagens após esse serviço para atualizar os dados dela
+      $passagens_apos = $tanque->ciclos->where('data_servico', '>=', $data_servico)->sortBy('data_servico');
+
+      if ($reforcos_apos->count() > 0 || $passagens_apos->count() > 0) {
         //Flag para indentificar que foi lançado retroativo pós reforco
         $ciclo->retroativo = true;
+      }
+      
+      if ($reforcos_apos->count() > 0) {
         //Lança essa passagem já reforçada
         $ciclo->status = 'R';
         $ciclo->reforco_id = $reforcos_apos->first()->id ?? null;
 
-        //Obtem as passagens após esse serviço para atualizar os dados dela
-        $passagens_apos = $tanque->ciclos->where('data_servico', '>=', $data_servico);
-
-        foreach ($passagens_apos as $p) {
-          $ciclo_apos = TanqueCiclo::findOrFail($p->id);
-          $ciclo_apos->peso_antes += $ciclo->peso;
-          $ciclo_apos->peso_depois += $ciclo->peso;
-          if ($ciclo_apos->excedente == true) {
-            $ciclo_apos->peso += $ciclo->peso;
-            $ciclo_apos->peso_peca += $ciclo->peso_peca;
-          }
-          $ciclo_apos->save();
+        //Percorre os reforços atualizando os valores dos ponteiros
+        foreach ($reforcos_apos as $r) {
+          $reforco_apos = Reforco::findOrFail($r->id);
+          $reforco_apos->peso_antes += $ciclo->peso;
+          $reforco_apos->peso_depois += $ciclo->peso;
+          $reforco_apos->save();
         }
+      }
 
+      //Atualiza as passagens feitas após esse lancamento caso seja retroativo
+      $idx = 0; //pra controlar qual é a primeira passagem
+      foreach ($passagens_apos as $p) {
+        if ($idx == 0) {
+          $ciclo->peso_antes = $p->peso_antes;
+          $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
+        }
+        $ciclo_apos = TanqueCiclo::findOrFail($p->id);
+        $ciclo_apos->peso_antes += $ciclo->peso;
+        $ciclo_apos->peso_depois += $ciclo->peso;
+        if ($ciclo_apos->excedente == true) {
+          $ciclo_apos->peso += $ciclo->peso;
+          $ciclo_apos->peso_peca += $ciclo->peso_peca;
+        }
+        $ciclo_apos->save();
+        $idx++;
       }
 
       $ciclo->save();
@@ -216,8 +234,8 @@ class ReforcoController extends Controller
       $ciclo->excedente = true;
       //$ciclo->reforco_id = $reforco->id;
       $ciclo->peso_peca = $exd;
-      $ciclo->peso_antes = $tanque->ciclos->where('status', 'P')->sum('peso');
-      $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
+      $ciclo->peso_antes = $reforco->peso_depois;
+      $ciclo->peso_depois = $ciclo->peso;
       $ciclo->save();
     }
 
@@ -231,8 +249,8 @@ class ReforcoController extends Controller
       $ciclo->excedente = true;
       $ciclo->reforco_id = $reforco->id;
       $ciclo->peso_peca = $exd;
-      $ciclo->peso_antes = $tanque->ciclos->where('status', 'P')->sum('peso');
-      $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
+      $ciclo->peso_antes = $reforco->peso_depois;
+      $ciclo->peso_depois = $ciclo->peso;
       $ciclo->save();
     }
 
@@ -327,6 +345,16 @@ class ReforcoController extends Controller
     foreach ($excedentes as $excedente) {
       $excedente->delete();
     }
+
+    //Obtem as passagens após esse reforço para atualizar os dados dela
+    $passagens_apos = $tanque->ciclos->where('data_servico', '>=', $reforco->created_at)->sortBy('data_servico');
+    //Atualiza as passagens feitas após esse lancamento caso seja retroativo
+    foreach ($passagens_apos as $p) {
+      $ciclo_apos = TanqueCiclo::findOrFail($p->id);
+      $ciclo_apos->peso_antes += $reforco->tanque->ciclo_reforco;
+      $ciclo_apos->peso_depois += $reforco->tanque->ciclo_reforco;
+      $ciclo_apos->save();
+    }
   
     //Atualiza o item com o status de R (realizado) e a id do reforço
     $updt = DB::table('tanque_ciclos')
@@ -412,15 +440,46 @@ class ReforcoController extends Controller
                           ->where('tiposervico_id', $passagem->tiposervico_id)
                           ->where('material_id', $passagem->material_id)
                           ->where('peso', $peso)
-                          ->get();
+                          ->get()
+                          ->first();
 
-      if ($ciclo->count() > 0) {
-        $toDel = TanqueCiclo::findOrFail($ciclo->first()->id);
+      if ($ciclo) {
+        //Verifica se teve passagem ou reforço após essa passagem
+        $tanque = Tanque::findOrFail($proc->tanque_id);      
+        $reforcos_apos = $tanque->reforcos->where('created_at', '>=', $passagem->data_servico)->sortBy('created_at');
+
+        //Obtem as passagens após esse serviço para atualizar os dados dela
+        $passagens_apos = $tanque->ciclos->where('data_servico', '>=', $passagem->data_servico)->sortBy('data_servico');
+
+        if ($reforcos_apos->count() > 0) {
+          //Percorre os reforços atualizando os valores dos ponteiros
+          foreach ($reforcos_apos as $r) {
+            $reforco_apos = Reforco::findOrFail($r->id);
+            $reforco_apos->peso_antes -= $ciclo->peso;
+            $reforco_apos->peso_depois -= $ciclo->peso;
+            $reforco_apos->save();
+          }
+        }
+
+        //Atualiza as passagens feitas após esse lancamento caso seja retroativo
+        foreach ($passagens_apos as $p) {
+          $ciclo_apos = TanqueCiclo::findOrFail($p->id);
+          $ciclo_apos->peso_antes -= $ciclo->peso;
+          $ciclo_apos->peso_depois -= $ciclo->peso;
+          if ($ciclo_apos->excedente == true) {
+            $ciclo_apos->peso -= $ciclo->peso;
+            $ciclo_apos->peso_peca -= $ciclo->peso_peca;
+          }
+          $ciclo_apos->save();
+        }
+
+        //Exclui o ciclo
+        $toDel = TanqueCiclo::findOrFail($ciclo->id);
         $toDel->delete();
       }
-
     }
 
+    //Exclui a passagem
     if ($passagem->delete()) {
       return response(200);
     }

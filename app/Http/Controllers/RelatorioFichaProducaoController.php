@@ -53,10 +53,9 @@ class RelatorioFichaProducaoController extends Controller
     $ciclos = TanqueCiclo::whereBetween('data_servico', [$dtini, $dtfim])->withTrashed();
     $reforcos = Reforco::whereBetween('created_at', [$dtini, $dtfim])->withTrashed();
 
-    if ($request->idtanque) {
-      $ciclos->where('tanque_id', $request->idtanque);
-      $reforcos->where('tanque_id', $request->idtanque);
-    }
+    $ciclos->where('tanque_id', $request->idtanque);
+    $reforcos->where('tanque_id', $request->idtanque);
+    $tanque = Tanque::findOrFail($request->idtanque);
 
     $ciclos->orderBy('data_servico');
     $reforcos->orderBy('created_at');
@@ -66,6 +65,15 @@ class RelatorioFichaProducaoController extends Controller
 
     $result = [];
     foreach ($ciclos as $ciclo) {
+
+      $formula = null;
+      if ($tanque->tipo_consumo == 'M') {
+        $NDesconto = $tanque->desconto_milesimo ? number_format($tanque->desconto_milesimo, 0, ',', '.') : 0;
+        $NPeso = number_format($ciclo->peso_peca, 0, ',', '.');
+        $NMilesimos = $ciclo->milesimos;
+        $formula = "($NPeso * $NMilesimos / 1000) - ($NPeso * $NDesconto / 1000)";
+      } 
+
       $result[] = (object) [
         'tipo' => 'S',
         'data' => $ciclo->data_servico,
@@ -76,6 +84,7 @@ class RelatorioFichaProducaoController extends Controller
         'peso_peca' => $ciclo->peso_peca ?? null,
         'deleted_at' => $ciclo->deleted_at,
         'motivo' => null,
+        'formula' => $formula,
       ];
     }
 
@@ -83,13 +92,14 @@ class RelatorioFichaProducaoController extends Controller
       $result[] = (object) [
         'tipo' => $reforco->tipo == 'A' ? 'A' : 'R',
         'data' => \Carbon\Carbon::parse($reforco->created_at)->subSeconds(1),
-        'peso' => 0,
+        'peso' => $reforco->tanque->ciclo_reforco,
         'excedente' => false,
         'peso_antes' => $reforco->peso_antes,
         'peso_depois' => $reforco->peso_depois,
         'peso_peca' => 0,
         'deleted_at' => $reforco->deleted_at,
-        'motivo' => $reforco->motivo_reforco ?? null
+        'motivo' => $reforco->motivo_reforco ?? null,
+        'formula' => null,
       ];
     }
 

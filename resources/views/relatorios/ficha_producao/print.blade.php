@@ -38,6 +38,9 @@
         text-decoration: line-through;
         color: #AA0000;
       }
+      td small {
+        font-size: 8px;
+      }
 
     </style>
   </head>
@@ -74,12 +77,12 @@
     <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
       <thead>
         <tr>
-          <th style="width:15%;">Data</th>
+          <th style="width:15%;">Data / Hora</th>
           <th style="width:15%;">Tipo</th>
-          <th style="width:15%;">Peso Peça</th>
-          <th style="width:15%;">Peso Antes</th>
-          <th style="width:15%;">Peso Consumido</th>
-          <th style="width:15%;">Peso Depois</th>
+          <th style="width:10%;">Peso Peça</th>
+          <th style="width:15%;">Ponteiro Antes</th>
+          <th style="width:20%;">Peso Consumido</th>
+          <th style="width:15%;">Ponteiro Depois</th>
         </tr>
       </thead>
       <tbody>
@@ -108,8 +111,12 @@
               <td>
                 @if ($item->tipo == 'S')
                   {{ number_format($item->peso, 0, ',', '.') }} g
+                  @if ($item->formula)
+                    <br>
+                    <small>{{ $item->formula }}</small>
+                  @endif
                 @else
-                  {{ $item->tipo == 'A' ? 'REFORÇO POR ANÁLISE' : 'REFORÇO' }}  
+                  -{{ number_format($item->peso, 0, ',', '.') }} g
                 @endif
               </td>
               <td>{{ $item->peso_depois ? number_format($item->peso_depois, 0, ',', '.') . ' g' : '' }}</td>
