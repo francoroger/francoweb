@@ -111,18 +111,18 @@
               <td>
                 @if ($item->tipo == 'S')
                   {{ number_format($item->peso, 0, ',', '.') }} g
-                  @if ($item->formula)
+                  @if ($item->formula && !$item->excedente)
                     <br>
                     <small>{{ $item->formula }}</small>
                   @endif
                 @else
-                  -{{ number_format($item->peso, 0, ',', '.') }} g
+                  {{ number_format($item->peso, 0, ',', '.') }} g
                 @endif
               </td>
               <td>{{ $item->peso_depois ? number_format($item->peso_depois, 0, ',', '.') . ' g' : '' }}</td>
             </tr>
             @if ($item->tipo == 'A' && $item->motivo)
-              <tr class="bg-yellow-100">
+              <tr class="bg-yellow-100{{ $item->deleted_at ? ' strike' : '' }}">
                 <td colspan="6"><b>Motivo:</b> {{ $item->motivo }}</td>
               </tr>
             @endif

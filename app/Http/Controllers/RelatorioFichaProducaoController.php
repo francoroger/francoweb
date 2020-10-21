@@ -92,7 +92,7 @@ class RelatorioFichaProducaoController extends Controller
       $result[] = (object) [
         'tipo' => $reforco->tipo == 'A' ? 'A' : 'R',
         'data' => \Carbon\Carbon::parse($reforco->created_at)->subSeconds(1),
-        'peso' => $reforco->tanque->ciclo_reforco,
+        'peso' => $reforco->peso ?? $reforco->tanque->ciclo_reforco,
         'excedente' => false,
         'peso_antes' => $reforco->peso_antes,
         'peso_depois' => $reforco->peso_depois,
