@@ -89,6 +89,7 @@
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Aprovado">Aprovados</a>
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Reprovado">Reprovados</a>
                 <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_NaoVerificado">Não Verificados</a>
+                <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Externo">Serviço Externo</a>
               </div>
             </div>
           </div>
@@ -99,9 +100,9 @@
         <div class="media-list is-grid" data-child="li">
           <ul class="blocks blocks-100 blocks-xxl-4 blocks-lg-3 blocks-md-2" id="itens_catalogo">
             @foreach ($itens as $item)
-              <li class="{{ $item->idmaterial ? 'Material_'.$item->idmaterial  : '' }} {{ $item->idproduto ? 'Produto_'.$item->idproduto  : '' }} {{ $item->status_check ? ($item->status_check == 'S' ? 'Status_Verificado Status_Aprovado' : 'Status_Verificado Status_Reprovado') : 'Status_NaoVerificado' }}">
+              <li class="{{ $item->idmaterial ? 'Material_'.$item->idmaterial  : '' }} {{ $item->idproduto ? 'Produto_'.$item->idproduto  : '' }}{{ $item->status_check == 'S' || $item->status_check == 'N' ? ' Status_Verificado' : ' Status_NaoVerificado' }}{{ $item->status_check == 'S' ? ' Status_Aprovado' : '' }}{{ $item->status_check == 'N' ? ' Status_Reprovado' : '' }}{{ $item->status_check == 'E' ? ' Status_Externo' : '' }}">
                 <input type="hidden" name="itens[{{$loop->index}}][id]" value="{{ $item->id }}">
-                <div class="media-item bg-white{{ $item->status_check == 'S' ? ' bg-green-100' : '' }}{{ $item->status_check == 'N' ? ' bg-red-100' : '' }}">
+                <div class="media-item bg-white{{ $item->status_check == 'S' ? ' bg-green-100' : '' }}{{ $item->status_check == 'N' ? ' bg-red-100' : '' }}{{ $item->status_check == 'E' ? ' bg-blue-100' : '' }}">
                   <div class="checkbox-custom checkbox-success checkbox-lg checkbox-custom-left">
                     <input type="radio" name="itens[{{$loop->index}}][status_check]" value="S" id="status_check_s{{$loop->index}}"{{ $item->status_check == 'S' ? ' checked' : '' }} />
                     <label for="status_check_s{{$loop->index}}"></label>
@@ -112,7 +113,12 @@
                     <label for="status_check_n{{$loop->index}}"></label>
                   </div>
 
-                  <div class="checkbox-custom checkbox-lg checkbox-custom-bottom d-none">
+                  <div class="checkbox-custom checkbox-info checkbox-lg checkbox-custom-bottom-left">
+                    <input type="radio" name="itens[{{$loop->index}}][status_check]" value="E" id="status_check_e{{$loop->index}}"{{ $item->status_check == 'E' ? ' checked' : '' }} />
+                    <label for="status_check_e{{$loop->index}}"></label>
+                  </div>
+
+                  <div class="checkbox-custom checkbox-lg checkbox-custom-bottom-right d-none">
                     <input type="radio" name="itens[{{$loop->index}}][status_check]" value="" id="status_check_u{{$loop->index}}"{{ $item->status_check == '' ? ' checked' : '' }} />
                     <label for="status_check_u{{$loop->index}}"></label>
                   </div>

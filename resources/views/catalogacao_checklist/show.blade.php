@@ -82,6 +82,7 @@
               <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Aprovado" data-filter-type="filtro_status" data-filter-value="S">Aprovados</a>
               <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Reprovado" data-filter-type="filtro_status" data-filter-value="N">Reprovados</a>
               <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_NaoVerificado" data-filter-type="filtro_status" data-filter-value="P">Não Verificados</a>
+              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Externo">Serviço Externo</a>
             </div>
           </div>
         </div>
@@ -92,8 +93,8 @@
       <div class="media-list is-grid" data-child="li">
         <ul class="blocks blocks-100 blocks-xxl-4 blocks-lg-3 blocks-md-2" id="itens_catalogo">
           @foreach ($itens as $item)
-            <li class="{{ $item->idmaterial ? 'Material_'.$item->idmaterial  : '' }} {{ $item->idproduto ? 'Produto_'.$item->idproduto  : '' }} {{ $item->status_check ? ($item->status_check == 'S' ? 'Status_Verificado Status_Aprovado' : 'Status_Verificado Status_Reprovado') : 'Status_NaoVerificado' }}">
-              <div class="media-item bg-white {{ $item->status_check == 'S' ? ' bg-green-100' : '' }}{{ $item->status_check == 'N' ? ' bg-red-100' : '' }}">
+            <li class="{{ $item->idmaterial ? 'Material_'.$item->idmaterial  : '' }} {{ $item->idproduto ? 'Produto_'.$item->idproduto  : '' }}{{ $item->status_check == 'S' || $item->status_check == 'N' ? ' Status_Verificado' : ' Status_NaoVerificado' }}{{ $item->status_check == 'S' ? ' Status_Aprovado' : '' }}{{ $item->status_check == 'N' ? ' Status_Reprovado' : '' }}{{ $item->status_check == 'E' ? ' Status_Externo' : '' }}">
+              <div class="media-item bg-white{{ $item->status_check == 'S' ? ' bg-green-100' : '' }}{{ $item->status_check == 'N' ? ' bg-red-100' : '' }}{{ $item->status_check == 'E' ? ' bg-blue-100' : '' }}">
                 @if (file_exists('fotos/'.$item->foto))
                   <div class="image-wrap" data-mfp-src="{{ asset('fotos/'.$item->foto) }}">
                     <img class="image img-rounded" src="{{ route('thumbnail', ['src' => 'fotos/'.$item->foto, 'height' => 528]) }}" alt="{{ $item->foto }}">

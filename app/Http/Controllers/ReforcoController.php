@@ -318,7 +318,10 @@ class ReforcoController extends Controller
     $ciclo->peso = $diff;
     $ciclo->status = 'P';
     $ciclo->excedente = true;
-    $ciclo->reforco_id = $reforco->id;
+    //$ciclo->reforco_id = $reforco->id;
+    $ciclo->peso_peca = $diff;
+    $ciclo->peso_antes = $reforco->peso_depois;
+    $ciclo->peso_depois = $ciclo->peso;
     $ciclo->save();
     
     $data = [];

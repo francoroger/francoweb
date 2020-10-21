@@ -136,10 +136,12 @@ window.autosave = function() {
   $('input[type=radio]').on('change', function() {
     $(this).parent().parent().removeClass('bg-green-100');
     $(this).parent().parent().removeClass('bg-red-100');
+    $(this).parent().parent().removeClass('bg-blue-100');
     $(this).parent().parent().parent().removeClass('Status_Verificado');
     $(this).parent().parent().parent().removeClass('Status_NaoVerificado');
     $(this).parent().parent().parent().removeClass('Status_Aprovado');
     $(this).parent().parent().parent().removeClass('Status_Reprovado');
+    $(this).parent().parent().parent().removeClass('Status_Externo');
 
     if (this.value == 'S') {
       $(this).parent().parent().addClass('bg-green-100');
@@ -151,6 +153,39 @@ window.autosave = function() {
       $(this).parent().parent().parent().addClass('Status_Verificado');
       $(this).parent().parent().parent().addClass('Status_Reprovado');
     }
+    else if (this.value == 'E') {
+      $(this).parent().parent().addClass('bg-blue-100');
+      $(this).parent().parent().parent().addClass('Status_NaoVerificado');
+      $(this).parent().parent().parent().addClass('Status_Externo');
+    } 
+    else {
+      $(this).parent().parent().parent().addClass('Status_NaoVerificado');
+    }
+  });
+})();
+
+// Toggle border on check
+(function() {
+  $('input[type=radio]').on('click', function() {
+    let s_color = $(this).parent().parent().hasClass('bg-green-100');
+    let n_color = $(this).parent().parent().hasClass('bg-red-100');
+    let e_color = $(this).parent().parent().hasClass('bg-blue-100');
+    let el_name = $(this).attr('name');
+    
+    if (this.value == 'S' && s_color) {
+      this.checked = false;
+      $('input[name="'+el_name+'"]').val('');
+      $(this).trigger('change');
+    } else if (this.value == 'N' && n_color) {
+      this.checked = false;
+      $('input[name="'+el_name+'"]').val('');
+      $(this).trigger('change');
+    } else if (this.value == 'E' && e_color) {
+      this.checked = false;
+      $('input[name="'+el_name+'"]').val('');
+      $(this).trigger('change');
+    }
+
   });
 })();
 

@@ -14,7 +14,7 @@
   <tbody>
     @foreach ($passagens as $passagem)
       <tr>
-        <td>{{ date('d/m/Y', strtotime($passagem->data_servico)) }}</td>
+        <td>{{ date('d/m/Y H:i:s', strtotime($passagem->data_servico)) }}</td>
         <td>
           {{ $passagem->cliente->nome ?? '' }} <br>
           <small>{{ $passagem->cliente->rzsc ?? '' }}</small>

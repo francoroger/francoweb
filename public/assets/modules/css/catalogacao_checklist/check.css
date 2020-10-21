@@ -25,8 +25,36 @@
   color: #a3afb7;
 }
 
+.app-media .media-item input[type=radio] {
+  width: 48px;
+  height: 48px;
+}
+
+.app-media .media-item .checkbox-danger input[type=radio]:checked + input[type=hidden] + label::after, .app-media .media-item .checkbox-danger input[type=radio]:checked + label::after {
+  content: "\f195";
+}
+
+.app-media .media-item .checkbox-info input[type=radio]:checked + input[type=hidden] + label::after, .app-media .media-item .checkbox-info input[type=radio]:checked + label::after {
+  content: "\f14d";
+}
+
+.app-media .media-item .checkbox-custom label {
+  vertical-align: top;
+}
+
+.app-media .media-item .checkbox-custom label::after {
+  width: 48px;
+  height: 48px;
+  margin-left: -48px;
+  font-size: 38px;
+  line-height: 48px;
+}
+
 .app-media .media-item .checkbox-custom label::before {
   position: relative;
+  width: 48px;
+  height: 48px;
+  margin-left: -48px;
 }
 
 .app-media .media-item .dropdown:hover .dropdown-toggle {
@@ -75,24 +103,32 @@
 
 .app-media .media-list.is-grid .media-item .checkbox-custom-left {
   position: absolute;
-  top: 5px;
-  left: 7px;
+  top: 10px;
+  left: 6px;
   padding: 0;
   margin: 0;
 }
 
 .app-media .media-list.is-grid .media-item .checkbox-custom-right {
   position: absolute;
-  top: 5px;
+  top: 10px;
   right: 10px;
   padding: 0;
   margin: 0;
 }
 
-.app-media .media-list.is-grid .media-item .checkbox-custom-bottom {
+.app-media .media-list.is-grid .media-item .checkbox-custom-bottom-left {
   position: absolute;
-  top: 180px;
+  bottom: 506px;
+  left: 6px;
+  padding: 0;
+  margin: 0;
+}
+
+.app-media .media-list.is-grid .media-item .checkbox-custom-bottom-right {
+  position: absolute;
   right: 10px;
+  bottom: 506px;
   padding: 0;
   margin: 0;
 }

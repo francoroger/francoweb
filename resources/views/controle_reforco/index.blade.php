@@ -70,14 +70,18 @@
     });
 
     $(document).on('click', '#btn-registrar', function() {
+      $(this).prop('disabled', true);
       if($('#idtiposervico').val() == '') {
         toastr.error("Informe o tipo de serviço!");
+        $(this).prop('disabled', false);
         return false;
       } else if($('#idmaterial').val() == '') {
         toastr.error("Informe o material!");
+        $(this).prop('disabled', false);
         return false;
       } else if($('#peso').val() == '') {
         toastr.error("Informe o peso!");
+        $(this).prop('disabled', false);
         return false;
       } else {
         $.ajax({
@@ -124,6 +128,7 @@
         $('#modalForm').modal('hide');
       }
 
+      $(this).prop('disabled', false);
     });
 
     $(document).on('click', '.btn-reforco', function() {

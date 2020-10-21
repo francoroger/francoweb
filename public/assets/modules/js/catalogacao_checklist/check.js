@@ -144,10 +144,12 @@
     (0, _jquery2.default)('input[type=radio]').on('change', function () {
       (0, _jquery2.default)(this).parent().parent().removeClass('bg-green-100');
       (0, _jquery2.default)(this).parent().parent().removeClass('bg-red-100');
+      (0, _jquery2.default)(this).parent().parent().removeClass('bg-blue-100');
       (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Verificado');
       (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_NaoVerificado');
       (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Aprovado');
       (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Reprovado');
+      (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Externo');
 
       if (this.value == 'S') {
         (0, _jquery2.default)(this).parent().parent().addClass('bg-green-100');
@@ -157,6 +159,36 @@
         (0, _jquery2.default)(this).parent().parent().addClass('bg-red-100');
         (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_Verificado');
         (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_Reprovado');
+      } else if (this.value == 'E') {
+        (0, _jquery2.default)(this).parent().parent().addClass('bg-blue-100');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_NaoVerificado');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_Externo');
+      } else {
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_NaoVerificado');
+      }
+    });
+  })();
+
+  // Toggle border on check
+  (function () {
+    (0, _jquery2.default)('input[type=radio]').on('click', function () {
+      var s_color = (0, _jquery2.default)(this).parent().parent().hasClass('bg-green-100');
+      var n_color = (0, _jquery2.default)(this).parent().parent().hasClass('bg-red-100');
+      var e_color = (0, _jquery2.default)(this).parent().parent().hasClass('bg-blue-100');
+      var el_name = (0, _jquery2.default)(this).attr('name');
+
+      if (this.value == 'S' && s_color) {
+        this.checked = false;
+        (0, _jquery2.default)('input[name="' + el_name + '"]').val('');
+        (0, _jquery2.default)(this).trigger('change');
+      } else if (this.value == 'N' && n_color) {
+        this.checked = false;
+        (0, _jquery2.default)('input[name="' + el_name + '"]').val('');
+        (0, _jquery2.default)(this).trigger('change');
+      } else if (this.value == 'E' && e_color) {
+        this.checked = false;
+        (0, _jquery2.default)('input[name="' + el_name + '"]').val('');
+        (0, _jquery2.default)(this).trigger('change');
       }
     });
   })();
