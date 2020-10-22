@@ -38,6 +38,14 @@
 
   var grid;
 
+  var enableAutosave = function enableAutosave() {
+    changed = true;
+    (0, _jquery2.default)('#btn-autosave').prop('disabled', false);
+    (0, _jquery2.default)('#btn-autosave .ladda-label').html('<i class="icon wb-check mr-10" aria-hidden="true"></i> Salvar');
+    (0, _jquery2.default)('#btn-autosave').addClass('btn-success');
+    (0, _jquery2.default)('#btn-autosave').removeClass('btn-default');
+  };
+
   window.autosave = function () {
     if (changed) {
       (0, _jquery2.default)('#btn-autosave').trigger('click');
@@ -48,13 +56,7 @@
 
   //Form change
   (function () {
-    (0, _jquery2.default)(document).on('change', 'form :input', function () {
-      changed = true;
-      (0, _jquery2.default)('#btn-autosave').prop('disabled', false);
-      (0, _jquery2.default)('#btn-autosave .ladda-label').html('<i class="icon wb-check mr-10" aria-hidden="true"></i> Salvar');
-      (0, _jquery2.default)('#btn-autosave').addClass('btn-success');
-      (0, _jquery2.default)('#btn-autosave').removeClass('btn-default');
-    });
+    (0, _jquery2.default)(document).on('change', 'form :input', enableAutosave);
   })();
 
   //Ajax Save btn click
@@ -176,19 +178,30 @@
       var n_color = (0, _jquery2.default)(this).parent().parent().hasClass('bg-red-100');
       var e_color = (0, _jquery2.default)(this).parent().parent().hasClass('bg-blue-100');
       var el_name = (0, _jquery2.default)(this).attr('name');
+      var elem = (0, _jquery2.default)('input[name="' + el_name + '"]')[3];
 
       if (this.value == 'S' && s_color) {
-        this.checked = false;
-        (0, _jquery2.default)('input[name="' + el_name + '"]').val('');
-        (0, _jquery2.default)(this).trigger('change');
+        (0, _jquery2.default)(this).parent().parent().removeClass('bg-green-100');
+        (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Verificado');
+        (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Aprovado');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_NaoVerificado');
+        (0, _jquery2.default)(this).removeAttr('checked');
+        (0, _jquery2.default)(elem).attr('checked', '');
+        enableAutosave();
       } else if (this.value == 'N' && n_color) {
-        this.checked = false;
-        (0, _jquery2.default)('input[name="' + el_name + '"]').val('');
-        (0, _jquery2.default)(this).trigger('change');
+        (0, _jquery2.default)(this).parent().parent().removeClass('bg-red-100');
+        (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Verificado');
+        (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Reprovado');
+        (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_NaoVerificado');
+        (0, _jquery2.default)(this).removeAttr('checked');
+        (0, _jquery2.default)(elem).attr('checked', '');
+        enableAutosave();
       } else if (this.value == 'E' && e_color) {
-        this.checked = false;
-        (0, _jquery2.default)('input[name="' + el_name + '"]').val('');
-        (0, _jquery2.default)(this).trigger('change');
+        (0, _jquery2.default)(this).parent().parent().removeClass('bg-blue-100');
+        (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Externo');
+        (0, _jquery2.default)(this).removeAttr('checked');
+        (0, _jquery2.default)(elem).attr('checked', '');
+        enableAutosave();
       }
     });
   })();

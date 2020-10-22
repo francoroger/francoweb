@@ -196,12 +196,10 @@ class CheckListCatalogacaoController extends Controller
   {
     $itens = json_decode($request->itens);
     foreach ($itens as $item) {
-      if ($item->status_check || $item->obs_check) {
-        $catalogacao_item = CatalogacaoItem::findOrFail($item->id);
-        $catalogacao_item->status_check = $item->status_check;
-        $catalogacao_item->obs_check = $item->obs_check;
-        $catalogacao_item->save();
-      }
+      $catalogacao_item = CatalogacaoItem::findOrFail($item->id);
+      $catalogacao_item->status_check = $item->status_check;
+      $catalogacao_item->obs_check = $item->obs_check;
+      $catalogacao_item->save();
     }
 
     $catalogacao = Catalogacao::findOrFail($request->id);
