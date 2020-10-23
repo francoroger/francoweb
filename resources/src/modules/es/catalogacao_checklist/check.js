@@ -180,6 +180,7 @@ window.autosave = function() {
       $(this).parent().parent().parent().removeClass('Status_Verificado');
       $(this).parent().parent().parent().removeClass('Status_Aprovado');
       $(this).parent().parent().parent().addClass('Status_NaoVerificado');
+      this.checked = false;
       $(this).removeAttr('checked');
       $(elem).attr('checked', '');
       enableAutosave();
@@ -188,12 +189,14 @@ window.autosave = function() {
       $(this).parent().parent().parent().removeClass('Status_Verificado');
       $(this).parent().parent().parent().removeClass('Status_Reprovado');
       $(this).parent().parent().parent().addClass('Status_NaoVerificado');
+      this.checked = false;
       $(this).removeAttr('checked');
       $(elem).attr('checked', '');
       enableAutosave();
     } else if (this.value == 'E' && e_color) {
       $(this).parent().parent().removeClass('bg-blue-100');
       $(this).parent().parent().parent().removeClass('Status_Externo');
+      this.checked = false;
       $(this).removeAttr('checked');
       $(elem).attr('checked', '');
       enableAutosave();

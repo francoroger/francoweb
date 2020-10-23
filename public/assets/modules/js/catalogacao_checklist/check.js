@@ -185,6 +185,7 @@
         (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Verificado');
         (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Aprovado');
         (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_NaoVerificado');
+        this.checked = false;
         (0, _jquery2.default)(this).removeAttr('checked');
         (0, _jquery2.default)(elem).attr('checked', '');
         enableAutosave();
@@ -193,12 +194,14 @@
         (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Verificado');
         (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Reprovado');
         (0, _jquery2.default)(this).parent().parent().parent().addClass('Status_NaoVerificado');
+        this.checked = false;
         (0, _jquery2.default)(this).removeAttr('checked');
         (0, _jquery2.default)(elem).attr('checked', '');
         enableAutosave();
       } else if (this.value == 'E' && e_color) {
         (0, _jquery2.default)(this).parent().parent().removeClass('bg-blue-100');
         (0, _jquery2.default)(this).parent().parent().parent().removeClass('Status_Externo');
+        this.checked = false;
         (0, _jquery2.default)(this).removeAttr('checked');
         (0, _jquery2.default)(elem).attr('checked', '');
         enableAutosave();
