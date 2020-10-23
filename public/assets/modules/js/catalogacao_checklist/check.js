@@ -171,7 +171,7 @@
     });
   })();
 
-  // Toggle border on check
+  // Uncheck
   (function () {
     (0, _jquery2.default)('input[type=radio]').on('click', function () {
       var s_color = (0, _jquery2.default)(this).parent().parent().hasClass('bg-green-100');

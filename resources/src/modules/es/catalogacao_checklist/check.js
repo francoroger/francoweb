@@ -166,7 +166,7 @@ window.autosave = function() {
   });
 })();
 
-// Toggle border on check
+// Uncheck
 (function() {
   $('input[type=radio]').on('click', function() {
     let s_color = $(this).parent().parent().hasClass('bg-green-100');
