@@ -91,6 +91,10 @@ class RelatorioTempoExecucaoController extends Controller
     
     $servicos = $servicos->get();
 
+    /*return view('relatorios.tempo_execucao.print', [
+      'servicos' => $servicos,
+    ]);*/
+
     $pdf = App::make('dompdf.wrapper');
     $pdf->getDomPDF()->set_option("enable_php", true);
     $pdf->setPaper('a4', 'landscape');
