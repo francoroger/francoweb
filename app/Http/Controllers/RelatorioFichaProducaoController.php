@@ -142,17 +142,31 @@ class RelatorioFichaProducaoController extends Controller
     $tanque = Tanque::findOrFail($request->idtanque);
 
     $itens = $this->search($request);
-    
-    $pdf = App::make('dompdf.wrapper');
-    $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf->setPaper('a4', 'portrait');
-    $pdf->loadView('relatorios.ficha_producao.print', [
-      'tanque' => $tanque->descricao,
-      'ciclo' => $tanque->ciclo_reforco,
-      'itens' => $itens,
-    ]);
 
-    return $pdf->stream('relatorio_ficha_producao.pdf');
+    switch ($request->output) {
+      case 'pdf':
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->loadView('relatorios.ficha_producao.print', [
+          'tanque' => $tanque->descricao,
+          'ciclo' => $tanque->ciclo_reforco,
+          'itens' => $itens,
+        ]);
+
+        return $pdf->stream('relatorio_ficha_producao.pdf');
+      break;
+      case 'print':
+        return view('relatorios.ficha_producao.print')->with([
+          'tanque' => $tanque->descricao,
+          'ciclo' => $tanque->ciclo_reforco,
+          'itens' => $itens,
+        ]);
+      break;
+      default:
+        abort(404, 'Opção inválida');
+      break;
+    }
 
   }
 }

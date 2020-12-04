@@ -22,6 +22,7 @@
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/formatter/jquery.formatter.js') }}"></script>
+  <script src="{{ asset('assets/vendor/moment/moment.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
@@ -83,52 +84,70 @@
         toastr.error("Informe o peso!");
         $(this).prop('disabled', false);
         return false;
+      } else if($('#data_servico').val() == '') {
+        toastr.error("Informe a data do serviço!");
+        $(this).prop('disabled', false);
+        return false;
+      } else if($('#hora_servico').val() == '') {
+        toastr.error("Informe a hora do serviço!");
+        $(this).prop('disabled', false);
+        return false;
       } else {
-        $.ajax({
-          url: "{{ route('api_tanques.registrar') }}",
-          headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-          type: 'POST',
-          data: {
-            'idcliente': $('#idcliente').val() ? $('#idcliente').val() : '',
-            'idtiposervico': $('#idtiposervico').val() ? $('#idtiposervico').val() : '',
-            'idmaterial': $('#idmaterial').val() ? $('#idmaterial').val() : '',
-            'idcor': $('#idcor').val() ? $('#idcor').val() : '',
-            'milesimos': $('#milesimos').val() ? $('#milesimos').val() : '',
-            'peso': $('#peso').val(),
-            'data_servico': $('#data_servico').val(),
-            'hora_servico': $('#hora_servico').val(),
-          },
-          success: function (data)
-          {
-            for(var k in data) {
-              var gauge = $('#tanque-'+data[k].id).data('gauge');
-              $('#tanque-'+data[k].id).data('value', data[k].val);
-              gauge.set(data[k].val);
-              if (data[k].exd) {
-                $('#excedente-'+data[k].id).html(data[k].exd);
-                $('#pnl-'+data[k].id).addClass('panel-danger');
-                $('#pnl-'+data[k].id).addClass('border-danger');
-                  $('#pnl-'+data[k].id).find('.panel-desc').addClass('text-white');
-              } else {
-                $('#excedente-'+data[k].id).html("&nbsp;");
-                $('#pnl-'+data[k].id).removeClass('panel-danger');
-                $('#pnl-'+data[k].id).removeClass('border-danger');
-                  $('#pnl-'+data[k].id).find('.panel-desc').removeClass('text-white');
+        //valida a data atual
+        var data_servico = $('#data_servico').val();
+        var hora_servico = $('#hora_servico').val();
+        var moment_serv = moment(data_servico + ' ' + hora_servico, 'DD/MM/YYYY hh:mm:ss');
+        var moment_now = moment();
+        if (moment_serv.isAfter(moment_now)) {
+          toastr.error("A data/hora do serviço não pode ser maior que a atual!");
+          $(this).prop('disabled', false);
+          return false;
+        } else {
+          $.ajax({
+            url: "{{ route('api_tanques.registrar') }}",
+            headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+            type: 'POST',
+            data: {
+              'idcliente': $('#idcliente').val() ? $('#idcliente').val() : '',
+              'idtiposervico': $('#idtiposervico').val() ? $('#idtiposervico').val() : '',
+              'idmaterial': $('#idmaterial').val() ? $('#idmaterial').val() : '',
+              'idcor': $('#idcor').val() ? $('#idcor').val() : '',
+              'milesimos': $('#milesimos').val() ? $('#milesimos').val() : '',
+              'peso': $('#peso').val(),
+              'data_servico': $('#data_servico').val(),
+              'hora_servico': $('#hora_servico').val(),
+            },
+            success: function (data)
+            {
+              for(var k in data) {
+                var gauge = $('#tanque-'+data[k].id).data('gauge');
+                $('#tanque-'+data[k].id).data('value', data[k].val);
+                gauge.set(data[k].val);
+                if (data[k].exd) {
+                  $('#excedente-'+data[k].id).html(data[k].exd);
+                  $('#pnl-'+data[k].id).addClass('panel-danger');
+                  $('#pnl-'+data[k].id).addClass('border-danger');
+                    $('#pnl-'+data[k].id).find('.panel-desc').addClass('text-white');
+                } else {
+                  $('#excedente-'+data[k].id).html("&nbsp;");
+                  $('#pnl-'+data[k].id).removeClass('panel-danger');
+                  $('#pnl-'+data[k].id).removeClass('border-danger');
+                    $('#pnl-'+data[k].id).find('.panel-desc').removeClass('text-white');
+                }
               }
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+              alert('erro');
+              console.log(jqXHR);
             }
-          },
-          error: function(jqXHR, textStatus, errorThrown)
-          {
-            alert('erro');
-            console.log(jqXHR);
-          }
-        });
+          });
 
-        //fecha modal
-        $('#modalForm').modal('hide');
-      }
-
-      $(this).prop('disabled', false);
+          //fecha modal
+          $('#modalForm').modal('hide');
+          $(this).prop('disabled', false);
+        }
+      }      
     });
 
     $(document).on('click', '.btn-reforco', function() {

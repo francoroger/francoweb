@@ -174,16 +174,24 @@ class RelatorioProducaoController extends Controller
   {
     $itens = $this->search($request);
 
-    //return view('relatorios.producao.print', compact('itens'));
+    switch ($request->output) {
+      case 'pdf':
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->loadView('relatorios.producao.print', [
+          'itens' => $itens,
+        ]);
 
-    $pdf = App::make('dompdf.wrapper');
-    $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf->setPaper('a4', 'portrait');
-    $pdf->loadView('relatorios.producao.print', [
-      'itens' => $itens,
-    ]);
-
-    return $pdf->stream('relatorio_producao.pdf');
+        return $pdf->stream('relatorio_producao.pdf');
+      break;
+      case 'print':
+        return view('relatorios.producao.print', compact('itens'));
+      break;
+      default:
+        abort(404, 'Opção inválida');
+      break;
+    }
 
   }
 }

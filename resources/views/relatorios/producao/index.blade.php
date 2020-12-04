@@ -44,11 +44,7 @@
     var page = $(this).attr('href').split('page=')[1];
     fetchData(route, token, page);
   });
-
-  //Preview
-  $(document).on('click', '#btn-print', function(event) {
-    $('#filter-form').submit();
-  });
+  
   </script>
 @endpush
 
@@ -154,9 +150,12 @@
                 <button type="button" id="btn-preview" class="btn btn-success">
                   <i class="icon wb-search" aria-hidden="true"></i> Pesquisar
                 </button>
-              -->
-                <button type="button" id="btn-print" class="btn btn-info">
+                -->
+                <button type="submit" id="btn-print" name="output" value="print" class="btn btn-info">
                   <i class="fa fa-print" aria-hidden="true"></i> Imprimir
+                </button>
+                <button type="submit" id="btn-pdf" name="output" value="pdf" class="btn btn-danger">
+                  <i class="icon fa-file-pdf-o" aria-hidden="true"></i> Gerar PDF
                 </button>
               </div>
             </div>

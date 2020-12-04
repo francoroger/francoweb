@@ -2647,6 +2647,10 @@ body.site-navbar-small {
   height: calc(100vh - 224px) !important;
 }
 
+.text-strike {
+  text-decoration: line-through;
+}
+
 .radio-custom, .checkbox-custom {
   position: relative;
   display: block;

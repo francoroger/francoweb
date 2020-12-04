@@ -210,15 +210,28 @@ class RelatorioServicoController extends Controller
 
         $itens = $itens->get();
 
-        $pdf = App::make('dompdf.wrapper');
-        $pdf->getDomPDF()->set_option("enable_php", true);
-        $pdf->setPaper('a4', 'landscape');
-        $pdf->loadView('relatorios.servicos.print_detalhado', [
-          'itens' => $itens,
-          'total' => $total
-        ]);
+        switch ($request->output) {
+          case 'pdf':
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->getDomPDF()->set_option("enable_php", true);
+            $pdf->setPaper('a4', 'landscape');
+            $pdf->loadView('relatorios.servicos.print_detalhado', [
+              'itens' => $itens,
+              'total' => $total
+            ]);
 
-        return $pdf->stream('relatorio_servicos.pdf');
+            return $pdf->stream('relatorio_servicos.pdf');
+          break;
+          case 'print':
+            return view('relatorios.servicos.print_detalhado')->with([
+              'itens' => $itens,
+              'total' => $total
+            ]);
+          break;
+          default:
+            abort(404, 'Opção inválida');
+          break;
+        }
 
         break;
       case 'R':

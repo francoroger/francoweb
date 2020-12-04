@@ -91,18 +91,26 @@ class RelatorioTempoExecucaoController extends Controller
     
     $servicos = $servicos->get();
 
-    /*return view('relatorios.tempo_execucao.print', [
-      'servicos' => $servicos,
-    ]);*/
+    switch ($request->output) {
+      case 'pdf':
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->setPaper('a4', 'landscape');
+        $pdf->loadView('relatorios.tempo_execucao.print', [
+          'servicos' => $servicos,
+        ]);
 
-    $pdf = App::make('dompdf.wrapper');
-    $pdf->getDomPDF()->set_option("enable_php", true);
-    $pdf->setPaper('a4', 'landscape');
-    $pdf->loadView('relatorios.tempo_execucao.print', [
-      'servicos' => $servicos,
-    ]);
-
-    return $pdf->stream('relatorio_tempo_execucao.pdf');
+        return $pdf->stream('relatorio_tempo_execucao.pdf');
+      break;
+      case 'print':
+        return view('relatorios.tempo_execucao.print', [
+          'servicos' => $servicos,
+        ]);
+      break;
+      default:
+        abort(404, 'Opção inválida');
+      break;
+    }
   }
   
 }
