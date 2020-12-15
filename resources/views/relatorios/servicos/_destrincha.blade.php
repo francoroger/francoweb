@@ -12,7 +12,9 @@
 
   @php($nivel_atual++)
   
-  @foreach ($dados as $k => $v)
+  @foreach ($dados->sortBy(function ($group, $key) {
+    return $key;
+  }) as $k => $v)
     @include('relatorios.servicos._destrincha', [
       'total_niveis' => $total_niveis,
       'nivel_atual' => $nivel_atual,

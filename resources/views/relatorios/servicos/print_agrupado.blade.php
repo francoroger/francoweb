@@ -82,7 +82,9 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($itens as $k => $v)
+        @foreach ($itens->sortBy(function ($group, $key) {
+          return $key;
+        }) as $k => $v)
           @include('relatorios.servicos._destrincha', [
             'total_niveis' => $total_grupos,
             'nivel_atual' => 1,

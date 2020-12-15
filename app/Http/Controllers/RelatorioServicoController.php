@@ -319,7 +319,6 @@ class RelatorioServicoController extends Controller
           $grupos = is_array($request->grupos) ? $request->grupos : explode(',', $request->grupos);
 
           $itens = $itens->groupBy($grupos);
-          $itens = $itens->sortBy($grupos);
         }
 
         switch ($request->output) {
