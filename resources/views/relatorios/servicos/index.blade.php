@@ -69,11 +69,11 @@
                 <div class="input-daterange" data-plugin="datepicker" data-language="pt-BR">
                   <div class="input-group">
                     <span class="input-group-addon">De</span>
-                    <input type="text" class="form-control" name="dataini" id="dataini" />
+                    <input type="text" class="form-control" name="dataini" id="dataini" value="{{ \Carbon\Carbon::now()->firstOfMonth()->format('d/m/Y') }}" />
                   </div>
                   <div class="input-group">
                     <span class="input-group-addon">Até</span>
-                    <input type="text" class="form-control" name="datafim" id="datafim" />
+                    <input type="text" class="form-control" name="datafim" id="datafim" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}" />
                   </div>
                 </div>
               </div>
@@ -163,6 +163,7 @@
                 <select class="form-control" id="modelo" name="modelo">
                   <option value="D">Detalhado</option>
                   <option value="R">Resumido</option>
+                  <option value="A">Agrupado</option>
                 </select>
               </div>
             </div>
@@ -172,7 +173,7 @@
               <div class="col-md-10">
                 <select class="form-control" id="sortbydet" name="sortbydet">
                   <option value="idservico">Código</option>
-                  <option value="servico.datavenda" selected>Data</option>
+                  <option value="servico.datavenda">Data</option>
                   <option value="cliente.nome">Cliente</option>
                   <option value="guia.nome">Guia</option>
                   <option value="tiposervico.descricao">Tipo Serviço</option>
@@ -193,6 +194,20 @@
                   <option value="datavenda">Data</option>
                   <option value="cliente.nome">Cliente</option>
                   <option value="guia.nome">Guia</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="group-by" class="form-group row d-none">
+              <label class="col-md-2 form-control-label">Agrupar por</label>
+              <div class="col-md-10">
+                <select class="form-control" id="grupos" name="grupos[]" data-plugin="select2" multiple>
+                  <option value=""></option>
+                  <option value="servico.datavenda">Data</option>
+                  <option value="tipo_servico.descricao">Tipo Serviço</option>
+                  <option value="material.descricao">Material</option>
+                  <option value="cor.descricao">Cor</option>
+                  <option value="milesimos">Milésimos</option>
                 </select>
               </div>
             </div>

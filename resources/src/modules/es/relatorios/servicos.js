@@ -11,9 +11,15 @@ $(document).ready(function($) {
     if ($(this).val() == 'D') {
       $('#sorter-det').removeClass('d-none')
       $('#sorter-res').addClass('d-none')
-    } else {
+      $('#group-by').addClass('d-none')
+    } else if ($(this).val() == 'R') {
       $('#sorter-det').addClass('d-none')
       $('#sorter-res').removeClass('d-none')
+      $('#group-by').addClass('d-none')
+    } else if ($(this).val() == 'A') {
+      $('#sorter-det').removeClass('d-none')
+      $('#sorter-res').addClass('d-none')
+      $('#group-by').removeClass('d-none')
     }
   })
 })();
@@ -33,6 +39,7 @@ window.fetchData = function(route, token, page) {
   formData.append('modelo', $('#modelo').val().toString())
   formData.append('sortbydet', $('#sortbydet').val())
   formData.append('sortbyres', $('#sortbyres').val())
+  formData.append('grupos', $('#grupos').val())
 
   route += page ? "page="+page : ''
 

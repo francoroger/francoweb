@@ -11,6 +11,7 @@
         <th>Cor</th>
         <th class="text-right">Ml</th>
         <th class="text-right">Valor</th>
+        <th class="text-right">Comissão</th>
         <th class="text-right text-nowrap">Peso (g)</th>
         <th class="text-right text-nowrap">Consumo (g)</th>
       </tr>
@@ -27,8 +28,9 @@
           <td class="text-nowrap">{{ $item->cor->descricao ?? '' }}</td>
           <td class="text-nowrap text-right">{{ $item->milesimos }}</td>
           <td class="text-nowrap text-right">R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
+          <td class="text-nowrap text-right">R$ {{ number_format($item->valor_comis, 2, ',', '.') }}</td>
           <td class="text-nowrap text-right">{{ number_format($item->peso, 0, ',', '.') }}</td>
-          <td class="text-nowrap text-right">{{ number_format(($item->peso * $item->milesimos) / 1000, 2, ',', '.') }}</td>
+          <td class="text-nowrap text-right">{{ number_format($item->consumo, 2, ',', '.') }}</td>
         </tr>
       @endforeach
     </tbody>
@@ -36,8 +38,9 @@
       <tr class="font-weight-500">
         <td colspan="8">Totais:</td>
         <td class="text-nowrap text-right">R$ {{ number_format($total['valor'], 2, ',', '.') }}</td>
-        <td class="text-nowrap text-right">{{ number_format($total['peso'], 1, ',', '.') }} Kg</td>
-        <td class="text-nowrap text-right"></td>
+        <td class="text-nowrap text-right">R$ {{ number_format($total['valor_comis'], 2, ',', '.') }}</td>
+        <td class="text-nowrap text-right">{{ number_format($total['peso'], 0, ',', '.') }} g</td>
+        <td class="text-nowrap text-right">{{ number_format($total['consumo'], 2, ',', '.') }} g</td>
         <td></td>
       </tr>
     </tfoot>

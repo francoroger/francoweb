@@ -39,4 +39,9 @@ class ServicoItem extends Model
   {
     isset($value) ? $this->attributes['peso'] = str_replace(',', '.', str_replace('.', '', $value)) : $this->attributes['peso'] = null;
   }
+
+  public function getConsumoAttribute($value)
+  {
+    return ($this->peso * $this->milesimos) / 1000;
+  }
 }

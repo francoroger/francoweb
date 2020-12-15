@@ -65,13 +65,14 @@
         <tr>
           <th style="width:5%;">Código</th>
           <th style="width:8%;">Data</th>
-          <th style="width:20%;">Cliente</th>
-          <th style="width:12%;">Guia</th>
-          <th style="width:11%;">Tipo Serviço</th>
-          <th style="width:11%;">Material</th>
-          <th style="width:8%;">Cor</th>
+          <th style="width:17%;">Cliente</th>
+          <th style="width:10%;">Guia</th>
+          <th style="width:10%;">Tipo Serviço</th>
+          <th style="width:10%;">Material</th>
+          <th style="width:7%;">Cor</th>
           <th style="width:3%;">Ml</th>
           <th style="width:8%;">Valor</th>
+          <th style="width:8%;">Comissão</th>
           <th style="width:7%;">Peso (g)</th>
           <th style="width:7%;">Cons.(g)</th>
         </tr>
@@ -88,8 +89,9 @@
             <td>{{ $item->cor->descricao ?? '' }}</td>
             <td>{{ $item->milesimos }}</td>
             <td>R$ {{ number_format($item->valor, 2, ',', '.') }}</td>
+            <td>R$ {{ number_format($item->valor_comis, 2, ',', '.') }}</td>
             <td>{{ number_format($item->peso, 0, ',', '.') }}</td>
-            <td>{{ number_format(($item->peso * $item->milesimos) / 1000, 2, ',', '.') }}</td>
+            <td>{{ number_format($item->consumo, 2, ',', '.') }}</td>
           </tr>
         @endforeach
       </tbody>
@@ -97,8 +99,9 @@
         <tr>
           <td colspan="8" align="right">Totais:</td>
           <td>R$ {{ number_format($total['valor'], 2, ',', '.') }}</td>
-          <td>{{ number_format($total['peso'], 2, ',', '.') }} Kg</td>
-          <td></td>
+          <td>R$ {{ number_format($total['valor_comis'], 2, ',', '.') }}</td>
+          <td>{{ number_format($total['peso'], 0, ',', '.') }} g</td>
+          <td>{{ number_format($total['consumo'], 2, ',', '.') }} g</td>
         </tr>
       </tfoot>
     </table>

@@ -25,9 +25,15 @@
       if ((0, _jquery2.default)(this).val() == 'D') {
         (0, _jquery2.default)('#sorter-det').removeClass('d-none');
         (0, _jquery2.default)('#sorter-res').addClass('d-none');
-      } else {
+        (0, _jquery2.default)('#group-by').addClass('d-none');
+      } else if ((0, _jquery2.default)(this).val() == 'R') {
         (0, _jquery2.default)('#sorter-det').addClass('d-none');
         (0, _jquery2.default)('#sorter-res').removeClass('d-none');
+        (0, _jquery2.default)('#group-by').addClass('d-none');
+      } else if ((0, _jquery2.default)(this).val() == 'A') {
+        (0, _jquery2.default)('#sorter-det').removeClass('d-none');
+        (0, _jquery2.default)('#sorter-res').addClass('d-none');
+        (0, _jquery2.default)('#group-by').removeClass('d-none');
       }
     });
   })();
@@ -47,6 +53,7 @@
     formData.append('modelo', (0, _jquery2.default)('#modelo').val().toString());
     formData.append('sortbydet', (0, _jquery2.default)('#sortbydet').val());
     formData.append('sortbyres', (0, _jquery2.default)('#sortbyres').val());
+    formData.append('grupos', (0, _jquery2.default)('#grupos').val());
 
     route += page ? "page=" + page : '';
 

@@ -29,6 +29,10 @@
         font-size: 11px;
       }
 
+      .grupo {
+        background-color: #cdcdcd;
+      }
+
     </style>
   </head>
 
@@ -63,34 +67,37 @@
     <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
       <thead>
         <tr>
-          <th style="width:8%;">Código</th>
-          <th style="width:12%;">Data</th>
-          <th style="width:33%;">Cliente</th>
-          <th style="width:17%;">Guia</th>
-          <th style="width:10%;">Valor</th>
-          <th style="width:10%;">Comissão</th>
-          <th style="width:10%;">Peso (g)</th>
+          <th style="width:5%;">Código</th>
+          <th style="width:8%;">Data</th>
+          <th style="width:17%;">Cliente</th>
+          <th style="width:10%;">Guia</th>
+          <th style="width:10%;">Tipo Serviço</th>
+          <th style="width:10%;">Material</th>
+          <th style="width:7%;">Cor</th>
+          <th style="width:3%;">Ml</th>
+          <th style="width:8%;">Valor</th>
+          <th style="width:8%;">Comissão</th>
+          <th style="width:7%;">Peso (g)</th>
+          <th style="width:7%;">Cons.(g)</th>
         </tr>
       </thead>
       <tbody>
-        @foreach ($servicos as $servico)
-          <tr>
-            <td class="text-nowrap">{{ $servico->id }}</td>
-            <td class="text-nowrap">{{ date('d/m/Y', strtotime($servico->datavenda)) }}</td>
-            <td class="text-nowrap">{{ $servico->cliente->identificacao ?? '' }}</td>
-            <td class="text-nowrap">{{ $servico->guia->nome ?? '' }}</td>
-            <td class="text-nowrap text-right">R$ {{ number_format($servico->itens->sum('valor'), 2, ',', '.') }}</td>
-            <td class="text-nowrap text-right">R$ {{ number_format($servico->itens->sum('valor_comis'), 2, ',', '.') }}</td>
-            <td class="text-nowrap text-right">{{ number_format($servico->itens->sum('peso'), 0, ',', '.') }}</td>
-          </tr>
+        @foreach ($itens as $k => $v)
+          @include('relatorios.servicos._destrincha', [
+            'total_niveis' => $total_grupos,
+            'nivel_atual' => 1,
+            'nome_grupo' => $k,
+            'dados' => $v
+          ])
         @endforeach
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="4" align="right">Totais:</td>
+          <td colspan="8" align="right">Total Geral:</td>
           <td>R$ {{ number_format($total['valor'], 2, ',', '.') }}</td>
-          <td class="text-nowrap text-right">R$ {{ number_format($total['valor_comis'], 2, ',', '.') }}</td>
+          <td>R$ {{ number_format($total['valor_comis'], 2, ',', '.') }}</td>
           <td>{{ number_format($total['peso'], 0, ',', '.') }} g</td>
+          <td>{{ number_format($total['consumo'], 2, ',', '.') }} g</td>
         </tr>
       </tfoot>
     </table>
