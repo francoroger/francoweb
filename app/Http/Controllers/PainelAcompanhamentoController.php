@@ -388,9 +388,12 @@ class PainelAcompanhamentoController extends Controller
             //$separacao->data_inicio_revisao = Carbon::now();
             break;
           case 'C':
-            $separacao->status_expedicao = 'G';
-            //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
-            //$separacao->data_inicio_expedicao = Carbon::now();
+            //ATUALIZADO 09/02/2021 - 
+            //Antes: Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
+            //Agora: Entra direto em Andamento
+            //$separacao->status_expedicao = 'G';
+            $separacao->status_expedicao = 'A';
+            $separacao->data_inicio_expedicao = Carbon::now();
             break;
           case 'L':
             if ($separacao->status_expedicao == 'G') {
