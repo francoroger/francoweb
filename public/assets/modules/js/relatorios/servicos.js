@@ -34,6 +34,10 @@
         (0, _jquery2.default)('#sorter-det').removeClass('d-none');
         (0, _jquery2.default)('#sorter-res').addClass('d-none');
         (0, _jquery2.default)('#group-by').removeClass('d-none');
+      } else if ((0, _jquery2.default)(this).val() == 'AR') {
+        (0, _jquery2.default)('#sorter-det').removeClass('d-none');
+        (0, _jquery2.default)('#sorter-res').addClass('d-none');
+        (0, _jquery2.default)('#group-by').removeClass('d-none');
       }
     });
   })();

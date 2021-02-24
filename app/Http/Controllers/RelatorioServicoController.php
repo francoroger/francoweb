@@ -116,13 +116,7 @@ class RelatorioServicoController extends Controller
   */
   private function searchResumido(Request $request)
   {
-    $servicos = Servico::select([
-      'servico.id',
-      'servico.datavenda',
-      'servico.idcliente',
-      'servico.idguia',
-    ])->leftJoin('cliente', 'servico.idcliente', '=', 'cliente.id')
-      ->leftJoin('guia', 'servico.idguia', '=', 'guia.id');
+    $servicos = Servico::select();
 
     $servicos->whereHas('itens', function($query) use ($request) {
       if ($request->idtiposervico) {
@@ -183,16 +177,14 @@ class RelatorioServicoController extends Controller
       case 'R':
         $servicos = $this->searchResumido($request);
 
-        $total['valor'] = 0;
-        $total['peso'] = 0;
-        $total['valor_comis'] = 0;
-        $calc = $servicos->get();
-        foreach ($calc as $servico) {
-          $total['valor'] += $servico->itens->sum('valor');
-          $total['peso'] += $servico->itens->sum('peso');
-          $total['valor_comis'] += $servico->itens->sum('valor_comis');
-        }
-        $total['peso'] = $total['peso'];
+        //Totalizadores com base nos itens
+        //Antes estava pegando a soma pelos serviços e não batia
+        $itens = $this->searchDetalhado($request);
+        
+        $total['valor'] = $itens->sum('valor');
+        $total['valor_comis'] = $itens->sum('valor_comis');
+        $total['peso'] = $itens->sum('peso');
+        $total['consumo'] = $itens->get()->sum('consumo');
 
         $servicos = $servicos->paginate(10);
 
@@ -266,17 +258,14 @@ class RelatorioServicoController extends Controller
       break;
       case 'R':
         $servicos = $this->searchResumido($request);
-
-        $total['valor'] = 0;
-        $total['peso'] = 0;
-        $total['valor_comis'] = 0;
-        $calc = $servicos->get();
-        foreach ($calc as $servico) {
-          $total['valor'] += $servico->itens->sum('valor');
-          $total['peso'] += $servico->itens->sum('peso');
-          $total['valor_comis'] += $servico->itens->sum('valor_comis');
-        }
-        $total['peso'] = $total['peso'];
+        //Totalizadores com base nos itens
+        //Antes estava pegando a soma pelos serviços e não batia
+        $itens = $this->searchDetalhado($request);
+        
+        $total['valor'] = $itens->sum('valor');
+        $total['valor_comis'] = $itens->sum('valor_comis');
+        $total['peso'] = $itens->sum('peso');
+        $total['consumo'] = $itens->get()->sum('consumo');
 
         $servicos = $servicos->get();
 
@@ -347,6 +336,48 @@ class RelatorioServicoController extends Controller
         }
 
       break;
+      case 'AR':
+        $itens = $this->searchDetalhado($request);
+
+        $total['valor'] = $itens->sum('valor');
+        $total['valor_comis'] = $itens->sum('valor_comis');
+        $total['peso'] = $itens->sum('peso');
+        $total['consumo'] = $itens->get()->sum('consumo');
+
+        $itens = $itens->get();
+
+        //Agrupamento
+        if ($request->grupos) {
+          $grupos = is_array($request->grupos) ? $request->grupos : explode(',', $request->grupos);
+
+          $itens = $itens->groupBy($grupos);
+        }
+
+        switch ($request->output) {
+          case 'pdf':
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->getDomPDF()->set_option("enable_php", true);
+            $pdf->setPaper('a4', 'landscape');
+            $pdf->loadView('relatorios.servicos.print_agrupado_resumido', [
+              'itens' => $itens,
+              'total' => $total,
+              'total_grupos' => count($grupos),
+            ]);
+
+            return $pdf->stream('relatorio_servicos.pdf');
+          break;
+          case 'print':
+            return view('relatorios.servicos.print_agrupado_resumido')->with([
+              'itens' => $itens,
+              'total' => $total,
+              'total_grupos' => count($grupos),
+            ]);
+          break;
+          default:
+            abort(404, 'Opção inválida');
+          break;
+        }
+      break;  
     }
   }
 

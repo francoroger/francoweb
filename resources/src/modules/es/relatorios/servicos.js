@@ -20,6 +20,10 @@ $(document).ready(function($) {
       $('#sorter-det').removeClass('d-none')
       $('#sorter-res').addClass('d-none')
       $('#group-by').removeClass('d-none')
+    } else if ($(this).val() == 'AR') {
+      $('#sorter-det').removeClass('d-none')
+      $('#sorter-res').addClass('d-none')
+      $('#group-by').removeClass('d-none')
     }
   })
 })();
