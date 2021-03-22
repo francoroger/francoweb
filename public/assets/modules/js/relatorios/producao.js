@@ -19,6 +19,14 @@
     (0, _Site.run)();
   });
 
+  (function () {
+    (0, _jquery2.default)(document).on('click', '.select2-all', function (event) {
+      event.preventDefault();
+      (0, _jquery2.default)(this).parent().find('select > option[value!=""]').prop("selected", "selected");
+      (0, _jquery2.default)(this).parent().find('select').trigger("change");
+    });
+  })();
+
   // Fetch Data
   window.fetchData = function (route, token, page) {
     if ((0, _jquery2.default)('#dataini').val() == '') {
@@ -50,7 +58,7 @@
         (0, _jquery2.default)('html,body').animate({ scrollTop: el.offset().top - 80 }, 'slow');
       },
       error: function error(jqXHR, textStatus, errorThrown) {
-        alert('erro');
+        window.toastr.error(jqXHR.responseJSON.message);
         console.log(jqXHR);
       }
     });

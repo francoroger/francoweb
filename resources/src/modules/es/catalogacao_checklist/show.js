@@ -14,6 +14,8 @@ $(document).ready(function($) {
       enabled: false
     }
   });
+
+  $('.dropdown-item.selected-item').trigger('click');
 });
 
 var grid;

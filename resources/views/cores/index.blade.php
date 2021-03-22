@@ -20,7 +20,7 @@
       },
       error: function(jqXHR, textStatus, errorThrown)
       {
-        alert('erro');
+        window.toastr.error(jqXHR.responseJSON.message)
         console.log(jqXHR);
       }
     });
@@ -61,7 +61,7 @@
       },
       error: function(jqXHR, textStatus, errorThrown)
       {
-        alert('erro');
+        window.toastr.error(jqXHR.responseJSON.message)
         console.log(jqXHR);
       }
     });
@@ -83,7 +83,7 @@
         },
         error: function(jqXHR, textStatus, errorThrown)
         {
-          alert('erro');
+          window.toastr.error(jqXHR.responseJSON.message)
         }
       });
     }

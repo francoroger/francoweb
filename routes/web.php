@@ -106,6 +106,11 @@ Route::group(['prefix' => 'catalogacao'], function() {
   Route::get('checklist/{id}/check', 'CheckListCatalogacaoController@check')->name('catalogacao_checklist.check');
   Route::put('checklist/{id}', 'CheckListCatalogacaoController@update')->name('catalogacao_checklist.update');
   Route::post('checklist/{id}/print', 'CheckListCatalogacaoController@print')->name('catalogacao_checklist.print');
+
+  //Relatório de Checklist
+  Route::get('relatorio_checklist', 'RelatorioCheckListController@index')->name('relatorio_checklist.index');
+  Route::post('relatorio_checklist', 'RelatorioCheckListController@preview')->name('relatorio_checklist.preview');
+  Route::post('relatorio_checklist/print', 'RelatorioCheckListController@print')->name('relatorio_checklist.print');
 });
 
 // Painel

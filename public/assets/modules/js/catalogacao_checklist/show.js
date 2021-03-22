@@ -28,6 +28,8 @@
         enabled: false
       }
     });
+
+    $$$1('.dropdown-item.selected-item').trigger('click');
   });
 
   var grid;

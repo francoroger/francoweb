@@ -72,16 +72,16 @@
           </div>
           <div class="fspacer mx-5 my-5"></div>
           <div class="fdropdown dropdown">
-            <button class="btn btn-block btn-secondary dropdown-toggle selected-item" type="button" id="status-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-block btn-secondary dropdown-toggle" type="button" id="status-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Todas as Situações
             </button>
             <div class="dropdown-menu w-full animation-scale-up animation-top-left animation-duration-250 exampleFilter" aria-labelledby="status-menu" role="menu">
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*" data-filter-type="filtro_status" data-filter-value="">Todas as Situações</a>
+              <a class="dropdown-item {{ app('request')->input('status') ? '' : 'selected-item' }}" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="*" data-filter-type="filtro_status" data-filter-value="">Todas as Situações</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Verificado" data-filter-type="filtro_status" data-filter-value="V">Verificados</a>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Aprovado" data-filter-type="filtro_status" data-filter-value="S">Aprovados</a>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Reprovado" data-filter-type="filtro_status" data-filter-value="N">Reprovados</a>
-              <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_NaoVerificado" data-filter-type="filtro_status" data-filter-value="P">Não Verificados</a>
+              <a class="dropdown-item {{ app('request')->input('status') == 'V' ? 'selected-item' : '' }}" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Verificado" data-filter-type="filtro_status" data-filter-value="V">Verificados</a>
+              <a class="dropdown-item {{ app('request')->input('status') == 'S' ? 'selected-item' : '' }}" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Aprovado" data-filter-type="filtro_status" data-filter-value="S">Aprovados</a>
+              <a class="dropdown-item {{ app('request')->input('status') == 'N' ? 'selected-item' : '' }}" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Reprovado" data-filter-type="filtro_status" data-filter-value="N">Reprovados</a>
+              <a class="dropdown-item {{ app('request')->input('status') == 'P' ? 'selected-item' : '' }}" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_NaoVerificado" data-filter-type="filtro_status" data-filter-value="P">Não Verificados</a>
               <a class="dropdown-item" href="javascript:void(0)" role="menuitem" tabindex="-1" data-filter="Status_Externo">Serviço Externo</a>
             </div>
           </div>

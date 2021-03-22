@@ -42,6 +42,9 @@ class RelatorioTempoExecucaoController extends Controller
   */
   public function preview(Request $request)
   {
+    $lista_etapas = ['Recebimento','Separação','Catalogação','Banho','Revisão','Expedição'];
+    $etapas = array_slice($lista_etapas, array_search($request->etapaini, $lista_etapas), array_search($request->etapafim, $lista_etapas) - array_search($request->etapaini, $lista_etapas) + 1);
+    
     $servicos = Separacao::with('recebimentos')->whereHas('cliente')->select();
 
     if ($request->idcliente) {
@@ -51,14 +54,18 @@ class RelatorioTempoExecucaoController extends Controller
     if ($request->dataini && $request->datafim) {
       $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini);
       $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim);
-      $servicos->where(function($query)  use ($dtini, $dtfim) {
-        $query->whereBetween('created_at', [$dtini, $dtfim])
-              ->orWhereHas('recebimentos', function($query) use ($dtini, $dtfim) {
-                $query->whereBetween('data_receb', [$dtini, $dtfim]);
-              })
-              ->orWhereHas('catalogacao', function($query) use ($dtini, $dtfim) {
-                $query->whereBetween('datacad', [$dtini, $dtfim]);
-              });
+      $servicos->where(function($query)  use ($dtini, $dtfim, $etapas) {
+        $query->whereBetween('created_at', [$dtini, $dtfim]);
+        if (in_array('Recebimento', $etapas)) {
+          $query->orWhereHas('recebimentos', function($query) use ($dtini, $dtfim) {
+            $query->whereBetween('data_receb', [$dtini, $dtfim]);
+          });
+        }
+        if (in_array('Catalogação', $etapas) || in_array('Banho', $etapas) || in_array('Revisão', $etapas) || in_array('Expedição', $etapas)) {
+          $query->orWhereHas('catalogacao', function($query) use ($dtini, $dtfim) {
+            $query->whereBetween('datacad', [$dtini, $dtfim]);
+          });
+        }
       });
     }
     
@@ -66,6 +73,7 @@ class RelatorioTempoExecucaoController extends Controller
 
     return response()->json(['view' => view('relatorios.tempo_execucao.preview', [
       'servicos' => $servicos,
+      'etapas' => $etapas,
     ])->render()]);
   }
 
@@ -77,6 +85,10 @@ class RelatorioTempoExecucaoController extends Controller
   */
   public function print(Request $request)
   {
+    $e = explode(';', $request->etapas);
+    $lista_etapas = ['Recebimento','Separação','Catalogação','Banho','Revisão','Expedição'];
+    $etapas = array_slice($lista_etapas, array_search($e[0], $lista_etapas), array_search($e[1], $lista_etapas) - array_search($e[0], $lista_etapas) + 1);
+    
     $servicos = Separacao::with('recebimentos')->select();
 
     if ($request->idcliente) {
@@ -86,7 +98,19 @@ class RelatorioTempoExecucaoController extends Controller
     if ($request->dataini && $request->datafim) {
       $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini);
       $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim);
-      $servicos->whereBetween('created_at', [$dtini, $dtfim]);
+      $servicos->where(function($query)  use ($dtini, $dtfim, $etapas) {
+        $query->whereBetween('created_at', [$dtini, $dtfim]);
+        if (in_array('Recebimento', $etapas)) {
+          $query->orWhereHas('recebimentos', function($query) use ($dtini, $dtfim) {
+            $query->whereBetween('data_receb', [$dtini, $dtfim]);
+          });
+        }
+        if (in_array('Catalogação', $etapas) || in_array('Banho', $etapas) || in_array('Revisão', $etapas) || in_array('Expedição', $etapas)) {
+          $query->orWhereHas('catalogacao', function($query) use ($dtini, $dtfim) {
+            $query->whereBetween('datacad', [$dtini, $dtfim]);
+          });
+        }
+      });
     }
     
     $servicos = $servicos->get();
@@ -98,6 +122,7 @@ class RelatorioTempoExecucaoController extends Controller
         $pdf->setPaper('a4', 'landscape');
         $pdf->loadView('relatorios.tempo_execucao.print', [
           'servicos' => $servicos,
+          'etapas' => $etapas,
         ]);
 
         return $pdf->stream('relatorio_tempo_execucao.pdf');
@@ -105,6 +130,7 @@ class RelatorioTempoExecucaoController extends Controller
       case 'print':
         return view('relatorios.tempo_execucao.print', [
           'servicos' => $servicos,
+          'etapas' => $etapas,
         ]);
       break;
       default:

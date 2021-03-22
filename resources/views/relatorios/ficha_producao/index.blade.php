@@ -13,6 +13,7 @@
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/asspinner/jquery-asSpinner.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/toastr/toastr.js') }}"></script>
+  <script src="{{ asset('assets/plugins/jQuery-Mask-Plugin/dist/jquery.mask.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
@@ -43,6 +44,11 @@
     event.preventDefault();
     var page = $(this).attr('href').split('page=')[1];
     fetchData(route, token, page);
+  });
+
+  $(document).ready(function($) {
+    $('#dataini').mask('00/00/0000');
+    $('#datafim').mask('00/00/0000');
   });
 
   </script>

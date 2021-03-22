@@ -14,7 +14,7 @@
       },
       error: function(jqXHR, textStatus, errorThrown)
       {
-        alert('erro');
+        window.toastr.error(jqXHR.responseJSON.message)
       }
     });
   });
@@ -36,7 +36,7 @@
         error: function(jqXHR, textStatus, errorThrown)
         {
           console.log(jqXHR);
-          alert('erro');
+          window.toastr.error(jqXHR.responseJSON.message)
         }
       });
     }

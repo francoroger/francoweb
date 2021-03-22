@@ -11,6 +11,7 @@
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/asspinner/jquery-asSpinner.min.js') }}"></script>
+  <script src="{{ asset('assets/plugins/jQuery-Mask-Plugin/dist/jquery.mask.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
@@ -40,6 +41,11 @@
     event.preventDefault();
     var page = $(this).attr('href').split('page=')[1];
     fetchData(route, token, page);
+  });
+
+  $(document).ready(function($) {
+    $('#dataini').mask('00/00/0000');
+    $('#datafim').mask('00/00/0000');
   });
 
   </script>
@@ -106,12 +112,15 @@
             <div class="form-group row">
               <label class="col-md-2 form-control-label">Tipo de Serviço</label>
               <div class="col-md-10">
-                <select class="form-control" id="idtiposervico" name="idtiposervico[]" data-plugin="select2" multiple>
-                  <option value=""></option>
-                  @foreach ($tipos as $tipo)
-                    <option value="{{ $tipo->id }}">{{ $tipo->descricao }}</option>
-                  @endforeach
-                </select>
+                <div class="input-group">
+                  <select class="form-control" id="idtiposervico" name="idtiposervico[]" data-plugin="select2" multiple>
+                    <option value=""></option>
+                    @foreach ($tipos as $tipo)
+                      <option value="{{ $tipo->id }}">{{ $tipo->descricao }}</option>
+                    @endforeach
+                  </select>
+                  <button class="input-group-addon select2-all">Adicionar todos</button>
+                </div>
               </div>
             </div>
 
@@ -119,12 +128,15 @@
               <label class="col-md-2 form-control-label">Material</label>
               <div class="col-md-10">
                 <div class="form-group mb-0">
-                  <select class="form-control" id="idmaterial" name="idmaterial[]" data-plugin="select2" multiple>
-                    <option value=""></option>
-                    @foreach ($materiais as $material)
-                      <option value="{{ $material->id }}">{{ $material->descricao }}</option>
-                    @endforeach
-                  </select>
+                  <div class="input-group">
+                    <select class="form-control" id="idmaterial" name="idmaterial[]" data-plugin="select2" multiple>
+                      <option value=""></option>
+                      @foreach ($materiais as $material)
+                        <option value="{{ $material->id }}">{{ $material->descricao }}</option>
+                      @endforeach
+                    </select>
+                    <button class="input-group-addon select2-all">Adicionar todos</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -132,12 +144,15 @@
             <div class="form-group row">
               <label class="col-md-2 form-control-label">Cor</label>
               <div class="col-md-10">
-                <select class="form-control" id="idcor" name="idcor[]" data-plugin="select2" multiple>
-                  <option value=""></option>
-                  @foreach ($cores as $cor)
-                    <option value="{{ $cor->id }}">{{ $cor->descricao }}</option>
-                  @endforeach
-                </select>
+                <div class="input-group">
+                  <select class="form-control" id="idcor" name="idcor[]" data-plugin="select2" multiple>
+                    <option value=""></option>
+                    @foreach ($cores as $cor)
+                      <option value="{{ $cor->id }}">{{ $cor->descricao }}</option>
+                    @endforeach
+                  </select>
+                  <button class="input-group-addon select2-all">Adicionar todos</button>
+                </div>
               </div>
             </div>
 

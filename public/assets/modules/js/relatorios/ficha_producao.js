@@ -55,7 +55,7 @@
         (0, _jquery2.default)('html,body').animate({ scrollTop: el.offset().top - 80 }, 'slow');
       },
       error: function error(jqXHR, textStatus, errorThrown) {
-        alert('erro');
+        window.toastr.error(jqXHR.responseJSON.message);
         console.log(jqXHR);
       }
     });

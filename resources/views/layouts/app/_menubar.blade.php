@@ -48,6 +48,13 @@
                 </a>
               </li>
               @endcan
+              @can('relatorio_checklist.index')
+              <li class="site-menu-item{{ Request::is('catalogacao/relatorio_checklist*') ? ' active' : '' }}">
+                <a href="{{ route('relatorio_checklist.index') }}">
+                  <span class="site-menu-title">Relatório Check List</span>
+                </a>
+              </li>
+              @endcan
             </ul>
           </li>
           @can('ordens_servico.index')
@@ -213,11 +220,13 @@
                 </a>
               </li>
               @endcan
+              @can('relatorio_tempo_execucao.index')
               <li class="site-menu-item{{ Request::is('relatorios/tempo_execucao*') ? ' active' : '' }}">
                 <a class="animsition-link" href="{{ route('relatorio_tempo_execucao.index') }}">
                   <span class="site-menu-title">Tempo de Execução</span>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
         </ul>

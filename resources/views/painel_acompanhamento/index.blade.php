@@ -122,7 +122,7 @@
         },
         error: function(jqXHR, textStatus, error) {
           console.log(jqXHR);
-          alert('Erro: ' + jqXHR.responseText);
+          window.toastr.error(jqXHR.responseJSON.message)
           refreshColumn(to.data('status'));
           refreshColumn(from.data('status'));
         }
@@ -144,7 +144,7 @@
       },
       error: function(jqXHR, textStatus, error) {
         console.log(jqXHR);
-        alert('Erro: ' + jqXHR.responseText);
+        window.toastr.error(jqXHR.responseJSON.message)
       }
     });
   }
@@ -163,7 +163,7 @@
       },
       error: function(jqXHR, textStatus, error) {
         console.log(jqXHR);
-        alert('Erro: ' + jqXHR.responseText);
+        window.toastr.error(jqXHR.responseJSON.message)
       }
     });
   }
@@ -182,7 +182,7 @@
       },
       error: function(jqXHR, textStatus, error) {
         console.log(jqXHR);
-        alert('Erro: ' + jqXHR.responseText);
+        window.toastr.error(jqXHR.responseJSON.message)
       }
     });
   }
@@ -201,7 +201,7 @@
       },
       error: function(jqXHR, textStatus, error) {
         console.log(jqXHR);
-        alert('Erro: ' + jqXHR.responseText);
+        window.toastr.error(jqXHR.responseJSON.message)
       }
     });
   }
@@ -257,7 +257,7 @@
         filtrar();
       },
       error: function(jqXHR, textStatus, error) {
-        alert('Erro: ' + jqXHR.responseText);
+        window.toastr.error(jqXHR.responseJSON.message)
       }
     });
   }

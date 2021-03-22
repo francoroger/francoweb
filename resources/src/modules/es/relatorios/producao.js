@@ -5,6 +5,14 @@ $(document).ready(function($) {
   Site.run();
 });
 
+(function() {
+  $(document).on('click', '.select2-all', function(event) {
+    event.preventDefault();
+    $(this).parent().find('select > option[value!=""]').prop("selected","selected");
+    $(this).parent().find('select').trigger("change");    
+  });
+})();
+
 // Fetch Data
 window.fetchData = function(route, token, page) {
   if($('#dataini').val() == '') {
@@ -37,7 +45,7 @@ window.fetchData = function(route, token, page) {
     },
     error: function(jqXHR, textStatus, errorThrown)
     {
-      alert('erro')
+      window.toastr.error(jqXHR.responseJSON.message)
       console.log(jqXHR)
     }
   })

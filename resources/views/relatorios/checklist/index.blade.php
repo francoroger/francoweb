@@ -17,7 +17,7 @@
 @endpush
 
 @push('scripts_page')
-  <script src="{{ asset('assets/modules/js/relatorios/producao.js') }}"></script>
+  <script src="{{ asset('assets/modules/js/relatorios/checklist.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/panel.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-datepicker.js') }}"></script>
@@ -25,7 +25,7 @@
   <script src="{{ asset('assets/js/Plugin/toastr.js') }}"></script>
   <script type="text/javascript">
   var token = "{{ csrf_token() }}";
-  var route = "{{ route('relatorio_producao.preview', '') }}";
+  var route = "{{ route('relatorio_checklist.preview', '') }}";
 
   //Form
   $('#filter-form').on('keypress', function (e) {
@@ -66,7 +66,7 @@
           </div>
         </div>
         <div class="panel-body">
-          <form id="filter-form" method="POST" action="{{ route('relatorio_producao.print') }}" target="_blank" class="form-horizontal" autocomplete="off">
+          <form id="filter-form" method="POST" action="{{ route('relatorio_checklist.print') }}" target="_blank" class="form-horizontal" autocomplete="off">
             @csrf
             <div class="form-group row">
               <label class="col-md-2 form-control-label">Período</label>
@@ -97,13 +97,13 @@
             </div>
 
             <div class="form-group row">
-              <label class="col-md-2 form-control-label">Tipo de Serviço</label>
+              <label class="col-md-2 form-control-label">Produto</label>
               <div class="col-md-10">
                 <div class="input-group">
-                  <select class="form-control" id="idtiposervico" name="idtiposervico[]" data-plugin="select2" multiple>
+                  <select class="form-control" id="idproduto" name="idproduto[]" data-plugin="select2" multiple>
                     <option value=""></option>
-                    @foreach ($tipos as $tipo)
-                      <option value="{{ $tipo->id }}">{{ $tipo->descricao }}</option>
+                    @foreach ($produtos as $produto)
+                      <option value="{{ $produto->id }}">{{ $produto->descricao }}</option>
                     @endforeach
                   </select>
                   <button class="input-group-addon select2-all">Adicionar todos</button>
@@ -114,29 +114,42 @@
             <div class="form-group row">
               <label class="col-md-2 form-control-label">Material</label>
               <div class="col-md-10">
-                <div class="form-group mb-0">
-                  <div class="input-group">
+                <div class="input-group">
+                  <div class="form-group mb-0">
                     <select class="form-control" id="idmaterial" name="idmaterial[]" data-plugin="select2" multiple>
                       <option value=""></option>
                       @foreach ($materiais as $material)
                         <option value="{{ $material->id }}">{{ $material->descricao }}</option>
                       @endforeach
                     </select>
-                    <button class="input-group-addon select2-all">Adicionar todos</button>
                   </div>
+                  <button class="input-group-addon select2-all">Adicionar todos</button>
                 </div>
               </div>
             </div>
 
             <div class="form-group row">
-              <label class="col-md-2 form-control-label">Cor</label>
+              <label class="col-md-2 form-control-label">Fornecedor</label>
+              <div class="col-md-10">
+                <select class="form-control" id="idfornec" name="idfornec[]" data-plugin="select2" multiple>
+                  <option value=""></option>
+                  @foreach ($fornecedores as $fornecedor)
+                    <option value="{{ $fornecedor->id }}">{{ $fornecedor->nome }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 form-control-label">Status</label>
               <div class="col-md-10">
                 <div class="input-group">
-                  <select class="form-control" id="idcor" name="idcor[]" data-plugin="select2" multiple>
+                  <select class="form-control" id="status" name="status[]" data-plugin="select2" multiple>
                     <option value=""></option>
-                    @foreach ($cores as $cor)
-                      <option value="{{ $cor->id }}">{{ $cor->descricao }}</option>
-                    @endforeach
+                    <option value="F">Banho/Preparação</option>
+                    <option value="G">Aguardando</option>
+                    <option value="P">Em Andamento</option>
+                    <option value="C">Concluída</option>
                   </select>
                   <button class="input-group-addon select2-all">Adicionar todos</button>
                 </div>
@@ -144,28 +157,37 @@
             </div>
 
             <div class="form-group row">
-              <label class="col-md-2 form-control-label">Camada</label>
-              <div class="col-md-4">
+              <label class="col-md-2 form-control-label">Situação da Peça</label>
+              <div class="col-md-10">
                 <div class="input-group">
-                  <span class="input-group-addon">De</span>
-                  <input type="text" class="form-control" name="milini" id="milini" data-plugin="asSpinner" />
+                  <select class="form-control" id="status_check" name="status_check[]" data-plugin="select2" multiple>
+                    <option value=""></option>
+                    <option value="S">OK</option>
+                    <option value="N">Não Conforme</option>
+                    <option value="-">Não Checado</option>
+                  </select>
+                  <button class="input-group-addon select2-all">Adicionar todos</button>
                 </div>
               </div>
-              <div class="col-md-4">
-                <div class="input-group">
-                  <span class="input-group-addon">Até</span>
-                  <input type="text" class="form-control" name="milfim" id="milfim" data-plugin="asSpinner" />
-                </div>
+            </div>
+
+            <div id="sorter-det" class="form-group row">
+              <label class="col-md-2 form-control-label">Ordenar por</label>
+              <div class="col-md-10">
+                <select class="form-control" id="sortby" name="sortby">
+                  <option value="idservico">Código</option>
+                  <option value="datacad">Data</option>
+                  <option value="cliente.nome">Cliente</option>
+                  <option value="status">Status</option>
+                </select>
               </div>
             </div>
 
             <div class="form-group row">
               <div class="col-md-10 offset-md-2">
-                <!--
                 <button type="button" id="btn-preview" class="btn btn-success">
                   <i class="icon wb-search" aria-hidden="true"></i> Pesquisar
                 </button>
-                -->
                 <button type="submit" id="btn-print" name="output" value="print" class="btn btn-info">
                   <i class="fa fa-print" aria-hidden="true"></i> Imprimir
                 </button>

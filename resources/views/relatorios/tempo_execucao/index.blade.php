@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/asspinner/asSpinner.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/ionrangeslider/ionrangeslider.min.css') }}">
 @endpush
 
 @push('scripts_plugins')
@@ -11,6 +12,8 @@
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/asspinner/jquery-asSpinner.min.js') }}"></script>
+  <script src="{{ asset('assets/plugins/jQuery-Mask-Plugin/dist/jquery.mask.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/ionrangeslider/ion.rangeSlider.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
@@ -19,6 +22,7 @@
   <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-datepicker.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/asspinner.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/ionrangeslider.js') }}"></script>
   <script type="text/javascript">
   var token = "{{ csrf_token() }}";
   var route = "{{ route('relatorio_tempo_execucao.preview', '') }}";
@@ -40,6 +44,11 @@
     event.preventDefault();
     var page = $(this).attr('href').split('page=')[1];
     fetchData(route, token, page);
+  });
+
+  $(document).ready(function($) {
+    $('#dataini').mask('00/00/0000');
+    $('#datafim').mask('00/00/0000');
   });
 
   </script>
@@ -88,6 +97,14 @@
                     <option value="{{ $cliente->id }}">{{ $cliente->identificacao }}</option>
                   @endforeach
                 </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-2 form-control-label">Etapas</label>
+              <div class="col-md-10">
+                <input type="text" id="etapas" name="etapas" data-plugin="ionRangeSlider" data-type="double" data-values="Recebimento,Separação,Catalogação,Banho,Revisão,Expedição"
+                  data-grid=true data-from="0" data-to="5" />
               </div>
             </div>
 

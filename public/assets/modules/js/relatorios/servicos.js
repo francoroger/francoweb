@@ -40,6 +40,12 @@
         (0, _jquery2.default)('#group-by').removeClass('d-none');
       }
     });
+
+    (0, _jquery2.default)(document).on('click', '.select2-all', function (event) {
+      event.preventDefault();
+      (0, _jquery2.default)(this).parent().find('select > option[value!=""]').prop("selected", "selected");
+      (0, _jquery2.default)(this).parent().find('select').trigger("change");
+    });
   })();
 
   // Fetch Data
@@ -75,7 +81,7 @@
         (0, _jquery2.default)('html,body').animate({ scrollTop: el.offset().top - 80 }, 'slow');
       },
       error: function error(jqXHR, textStatus, errorThrown) {
-        alert('erro');
+        window.toastr.error(jqXHR.responseJSON.message);
         console.log(jqXHR);
       }
     });

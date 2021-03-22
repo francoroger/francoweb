@@ -1,6 +1,6 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define('/relatorios/tempo_execucao', ['jquery', 'Site'], factory);
+    define('/relatorios/checklist', ['jquery', 'Site'], factory);
   } else if (typeof exports !== "undefined") {
     factory(require('jquery'), require('Site'));
   } else {
@@ -8,7 +8,7 @@
       exports: {}
     };
     factory(global.jQuery, global.Site);
-    global.relatoriosTempo_execucao = mod.exports;
+    global.relatoriosChecklist = mod.exports;
   }
 })(this, function (_jquery, _Site) {
   'use strict';
@@ -19,14 +19,35 @@
     (0, _Site.run)();
   });
 
+  (function () {
+    (0, _jquery2.default)(document).on('click', '.select2-all', function (event) {
+      event.preventDefault();
+      (0, _jquery2.default)(this).parent().find('select > option[value!=""]').prop("selected", "selected");
+      (0, _jquery2.default)(this).parent().find('select').trigger("change");
+    });
+  })();
+
   // Fetch Data
   window.fetchData = function (route, token, page) {
+    if ((0, _jquery2.default)('#dataini').val() == '') {
+      toastr.error("Informe a data inicial!");
+      return false;
+    }
+    if ((0, _jquery2.default)('#datafim').val() == '') {
+      toastr.error("Informe a data final!");
+      return false;
+    }
+
     var formData = new FormData();
     formData.append('dataini', (0, _jquery2.default)('#dataini').val());
     formData.append('datafim', (0, _jquery2.default)('#datafim').val());
     formData.append('idcliente', (0, _jquery2.default)('#idcliente').val().toString());
-    formData.append('etapaini', (0, _jquery2.default)('#etapas').val().split(';')[0]);
-    formData.append('etapafim', (0, _jquery2.default)('#etapas').val().split(';')[1]);
+    formData.append('idproduto', (0, _jquery2.default)('#idproduto').val().toString());
+    formData.append('idmaterial', (0, _jquery2.default)('#idmaterial').val().toString());
+    formData.append('idfornec', (0, _jquery2.default)('#idfornec').val().toString());
+    formData.append('status', (0, _jquery2.default)('#status').val().toString());
+    formData.append('status_check', (0, _jquery2.default)('#status_check').val().toString());
+    formData.append('sortby', (0, _jquery2.default)('#sortby').val().toString());
 
     route += page ? "page=" + page : '';
 
