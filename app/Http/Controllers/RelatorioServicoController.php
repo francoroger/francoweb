@@ -206,10 +206,33 @@ class RelatorioServicoController extends Controller
 
           $itens = $itens->groupBy($grupos);
           $itens = $itens->sortBy($grupos);
+        } else {
+          abort(400, 'Informe pelo menos um grupo!');
         }
 
         return response()->json(['view' => view('relatorios.servicos.preview_agrupado', ['itens' => $itens, 'total' => $total, 'total_grupos' => count($grupos),])->render()]);
       break;
+      case 'AR':
+        $itens = $this->searchDetalhado($request);
+
+        $total['valor'] = $itens->sum('valor');
+        $total['valor_comis'] = $itens->sum('valor_comis');
+        $total['peso'] = $itens->sum('peso');
+        $total['consumo'] = $itens->get()->sum('consumo');
+
+        $itens = $itens->get();
+
+        //Agrupamento
+        if ($request->grupos) {
+          $grupos = is_array($request->grupos) ? $request->grupos : explode(',', $request->grupos);
+
+          $itens = $itens->groupBy($grupos);
+        } else {
+          abort(400, 'Informe pelo menos um grupo!');
+        }
+
+        return response()->json(['view' => view('relatorios.servicos.preview_agrupado_resumido', ['itens' => $itens, 'total' => $total, 'total_grupos' => count($grupos),])->render()]);
+      break;  
     }
   }
 
@@ -308,6 +331,8 @@ class RelatorioServicoController extends Controller
           $grupos = is_array($request->grupos) ? $request->grupos : explode(',', $request->grupos);
 
           $itens = $itens->groupBy($grupos);
+        } else {
+          abort(400, 'Informe pelo menos um grupo!');
         }
 
         switch ($request->output) {
@@ -351,6 +376,8 @@ class RelatorioServicoController extends Controller
           $grupos = is_array($request->grupos) ? $request->grupos : explode(',', $request->grupos);
 
           $itens = $itens->groupBy($grupos);
+        } else {
+          abort(400, 'Informe pelo menos um grupo!');
         }
 
         switch ($request->output) {

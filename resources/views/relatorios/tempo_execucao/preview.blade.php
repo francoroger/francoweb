@@ -264,9 +264,9 @@
           @endif
         </tr>
         <tr>
-          <th class="font-size-12">Tempo Útil</th>
+          <th class="font-size-12 text-success">Tempo Útil</th>
           @if (in_array('Recebimento', $etapas))
-            <td class="font-size-12">
+            <td class="font-size-12 text-success">
               @if ($data_inicio_recebimento && $data_fim_recebimento)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_inicio_recebimento, $data_fim_recebimento) }}
               @elseif($data_inicio_recebimento)
@@ -275,7 +275,7 @@
               </span>
               @endif
             </td>
-            <td class="font-size-12 text-danger">
+            <td class="font-size-12 text-success">
               @if ($data_fim_recebimento && $data_inicio_separacao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_fim_recebimento, $data_inicio_separacao) }}
                 @php($total_ocioso_util += \App\Helpers\HorasUteis::calculaIntervalo($data_fim_recebimento, $data_inicio_separacao))
@@ -285,7 +285,7 @@
             </td>  
           @endif
           @if (in_array('Separação', $etapas))
-            <td class="font-size-12">
+            <td class="font-size-12 text-success">
               @if ($data_inicio_separacao && $data_fim_separacao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_inicio_separacao, $data_fim_separacao) }}
               @elseif($data_inicio_separacao)
@@ -294,7 +294,7 @@
               </span>
               @endif
             </td>
-            <td class="font-size-12 text-danger">
+            <td class="font-size-12 text-success">
               @if ($data_fim_separacao && $data_inicio_catalogacao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_fim_separacao, $data_inicio_catalogacao) }}
                 @php($total_ocioso_util += \App\Helpers\HorasUteis::calculaIntervalo($data_fim_separacao, $data_inicio_catalogacao))
@@ -304,7 +304,7 @@
             </td>
           @endif
           @if (in_array('Catalogação', $etapas))
-            <td class="font-size-12">
+            <td class="font-size-12 text-success">
               @if ($data_inicio_catalogacao && $data_fim_catalogacao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_inicio_catalogacao, $data_fim_catalogacao) }}
               @elseif($data_inicio_catalogacao)
@@ -313,7 +313,7 @@
               </span>
               @endif
             </td>
-            <td class="font-size-12 text-danger">
+            <td class="font-size-12 text-success">
               @if ($data_fim_catalogacao && $data_inicio_banho)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_fim_catalogacao, $data_inicio_banho) }}
                 @php($total_ocioso_util += \App\Helpers\HorasUteis::calculaIntervalo($data_fim_catalogacao, $data_inicio_banho))
@@ -323,7 +323,7 @@
             </td>
           @endif
           @if (in_array('Banho', $etapas))
-            <td class="font-size-12">
+            <td class="font-size-12 text-success">
               @if ($data_inicio_banho && $data_fim_banho)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_inicio_banho, $data_fim_banho) }}
               @elseif($data_inicio_banho)
@@ -332,7 +332,7 @@
               </span>
               @endif
             </td>
-            <td class="font-size-12 text-danger">
+            <td class="font-size-12 text-success">
               @if ($data_fim_banho && $data_inicio_revisao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_fim_banho, $data_inicio_revisao) }}
                 @php($total_ocioso_util += \App\Helpers\HorasUteis::calculaIntervalo($data_fim_banho, $data_inicio_revisao))
@@ -342,7 +342,7 @@
             </td>  
           @endif
           @if (in_array('Revisão', $etapas))
-            <td class="font-size-12">
+            <td class="font-size-12 text-success">
               @if ($data_inicio_revisao && $data_fim_revisao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_inicio_revisao, $data_fim_revisao) }}
               @elseif($data_inicio_revisao)
@@ -351,7 +351,7 @@
               </span>
               @endif
             </td>
-            <td class="font-size-12 text-danger">
+            <td class="font-size-12 text-success">
               @if ($data_fim_revisao && $data_inicio_expedicao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_fim_revisao, $data_inicio_expedicao) }}
                 @php($total_ocioso_util += \App\Helpers\HorasUteis::calculaIntervalo($data_fim_revisao, $data_inicio_expedicao))
@@ -361,7 +361,7 @@
             </td>  
           @endif
           @if (in_array('Expedição', $etapas))
-            <td class="font-size-12">
+            <td class="font-size-12 text-success">
               @if ($data_inicio_expedicao && $data_fim_expedicao)
                 {{ \App\Helpers\HorasUteis::calculaHoras($data_inicio_expedicao, $data_fim_expedicao) }}
               @elseif($data_inicio_expedicao)
@@ -371,10 +371,10 @@
               @endif
             </td>
           @endif
-          <td class="font-size-12">
+          <td class="font-size-12 text-success">
             {{ \App\Helpers\HorasUteis::calculaHoras($primeiro, $ultimo, false) }}
           </td>
-          <td class="font-size-12 text-danger">
+          <td class="font-size-12 text-success">
             {{ \Carbon\CarbonInterval::seconds($total_ocioso_util)->cascade()->forHumans() }}
           </td>
         </tr>
