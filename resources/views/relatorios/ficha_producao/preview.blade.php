@@ -12,21 +12,25 @@
     </thead>
     <tbody>
       @foreach ($itens as $item)
-        <tr class="{{ $item->deleted_at ? ' text-strike text-danger' : '' }} {{ ($item->tipo == 'R') || ($item->tipo == 'A') ? ' bg-yellow-100' : '' }} {{ $item->excedente ? ' bg-red-100' : '' }}">
+        <tr
+          class="{{ $item->deleted_at ? ' text-strike text-danger' : '' }} {{ $item->tipo == 'R' || $item->tipo == 'A' ? ' bg-yellow-100' : '' }} {{ $item->excedente ? ' bg-red-100' : '' }}">
           <td>{{ date('d/m/Y H:i:s', strtotime($item->data)) }}</td>
           <td>
             @switch($item->tipo)
               @case('R')
                 REFORÇO
-                @break
+              @break
               @case('A')
                 REFORÇO POR ANÁLISE
-                @break
+              @break
+              @case('C')
+                OBSERVAÇÕES
+              @break
               @default
                 @if ($item->excedente)
-                EXCEDENTE
+                  EXCEDENTE
                 @else
-                PASSAGEM
+                  PASSAGEM
                 @endif
             @endswitch
           </td>
@@ -39,15 +43,15 @@
                 <br>
                 <small>{{ $item->formula }}</small>
               @endif
-            @else
+            @elseif($item->tipo !== 'C')
               {{ number_format($item->peso, 0, ',', '.') }} g
             @endif
           </td>
           <td>{{ $item->peso_depois ? number_format($item->peso_depois, 0, ',', '.') . ' g' : '' }}</td>
         </tr>
-        @if ($item->tipo == 'A' && $item->motivo)
+        @if (($item->tipo == 'A' || $item->tipo == 'C') && $item->motivo)
           <tr class="bg-yellow-100{{ $item->deleted_at ? ' text-strike text-danger' : '' }}">
-            <td colspan="6"><b>Motivo:</b> {{ $item->motivo }}</td>
+            <td colspan="6"><b>{{ $item->tipo == 'A' ? 'Motivo:' : 'Observações:' }}</b> {{ $item->motivo }}</td>
           </tr>
         @endif
       @endforeach

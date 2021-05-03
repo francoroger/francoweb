@@ -19,9 +19,12 @@ Auth::routes();
 
 // Home - Dashboard
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/dashboard-tempo', 'DashboardTempoController@index')->name('dashboard_tempo');
 
 // PHP Info
-Route::get('phpinfo', function() { phpinfo(); })->name('phpinfo');
+Route::get('phpinfo', function () {
+  phpinfo();
+})->name('phpinfo');
 
 // Gerar Thumb
 Route::get('thumbnail', 'HomeController@thumbnail')->name('thumbnail');
@@ -31,7 +34,7 @@ Route::get('webcam', 'HomeController@webcam')->name('webcam');
 Route::post('webcam', 'HomeController@upload')->name('webcam.upload');
 
 // Cadastros
-Route::group(['prefix' => 'cadastros'], function() {
+Route::group(['prefix' => 'cadastros'], function () {
   // Clientes
   Route::get('clientes/ajax', 'ClienteController@ajax')->name('clientes.ajax');
   Route::resource('clientes', 'ClienteController');
@@ -97,7 +100,7 @@ Route::group(['prefix' => 'cadastros'], function() {
 });
 
 // Catalogação
-Route::group(['prefix' => 'catalogacao'], function() {
+Route::group(['prefix' => 'catalogacao'], function () {
   //Check list catalogação
   Route::any('checklist/ajax', 'CheckListCatalogacaoController@ajax')->name('catalogacao_checklist.ajax');
   Route::get('checklist', 'CheckListCatalogacaoController@index')->name('catalogacao_checklist.index');
@@ -129,7 +132,7 @@ Route::delete('recebimentos/fotos/{id}', 'RecebimentoController@destroyFoto')->n
 Route::resource('recebimentos', 'RecebimentoController');
 
 //Produção
-Route::group(['prefix' => 'producao'], function() {
+Route::group(['prefix' => 'producao'], function () {
   // Reforço
   Route::get('/controle_reforco', 'ReforcoController@index')->name('controle_reforco');
   Route::get('/controle_reforco/consulta', 'ReforcoController@consulta')->name('controle_reforco.consulta');
@@ -140,6 +143,7 @@ Route::group(['prefix' => 'producao'], function() {
   Route::post('undo_reforco', 'ReforcoController@undo_reforco')->name('api_tanques.undo');
   Route::post('reset_tanque', 'ReforcoController@reset_tanque')->name('api_tanques.reset');
   Route::post('reforco_analise', 'ReforcoController@reforco_analise')->name('api_tanques.reforco_analise');
+  Route::post('comentario', 'ReforcoController@comentario')->name('api_tanques.comentario');
 
   //Relatório Ficha de Produção
   Route::get('ficha_producao', 'RelatorioFichaProducaoController@index')->name('relatorio_ficha_producao.index');
@@ -153,7 +157,7 @@ Route::group(['prefix' => 'producao'], function() {
 });
 
 // Relatórios
-Route::group(['prefix' => 'relatorios'], function() {
+Route::group(['prefix' => 'relatorios'], function () {
   Route::get('servicos', 'RelatorioServicoController@index')->name('relatorio_servicos.index');
   Route::post('servicos', 'RelatorioServicoController@preview')->name('relatorio_servicos.preview');
   Route::post('servicos/print', 'RelatorioServicoController@print')->name('relatorio_servicos.print');

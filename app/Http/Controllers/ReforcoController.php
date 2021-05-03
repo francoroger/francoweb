@@ -50,7 +50,7 @@ class ReforcoController extends Controller
 
     if ($request->get('milesimos')) {
       $processos->where('mil_ini', '<=', $request->get('milesimos'))
-                ->where('mil_fim', '>=', $request->get('milesimos'));
+        ->where('mil_fim', '>=', $request->get('milesimos'));
     }
 
     $processos = $processos->get();
@@ -96,7 +96,7 @@ class ReforcoController extends Controller
 
     if ($request->get('milesimos')) {
       $processos->where('mil_ini', '<=', $request->get('milesimos'))
-                ->where('mil_fim', '>=', $request->get('milesimos'));
+        ->where('mil_fim', '>=', $request->get('milesimos'));
     }
 
     $processos = $processos->get();
@@ -104,8 +104,8 @@ class ReforcoController extends Controller
     foreach ($processos as $proc) {
       $ciclo = new TanqueCiclo;
 
-      $NDesconto = (double)$proc->tanque->desconto_milesimo ?? 0;
-      
+      $NDesconto = (float)$proc->tanque->desconto_milesimo ?? 0;
+
       if ($proc->tanque->tipo_consumo == 'M') {
         $NPeso = str_replace(',', '.', $request->get('peso'));
         $NMilesimos = $request->get('milesimos');
@@ -129,7 +129,7 @@ class ReforcoController extends Controller
       $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
 
       //Verifica se já teve passagem ou reforço após essaa passagem, caso seja retroativa
-      $tanque = Tanque::findOrFail($proc->tanque_id);      
+      $tanque = Tanque::findOrFail($proc->tanque_id);
       $reforcos_apos = $tanque->reforcos->where('created_at', '>=', $data_servico)->sortBy('created_at');
 
       //Obtem as passagens após esse serviço para atualizar os dados dela
@@ -139,7 +139,7 @@ class ReforcoController extends Controller
         //Flag para indentificar que foi lançado retroativo pós reforco
         $ciclo->retroativo = true;
       }
-      
+
       if ($reforcos_apos->count() > 0) {
         //Lança essa passagem já reforçada
         $ciclo->status = 'R';
@@ -187,7 +187,6 @@ class ReforcoController extends Controller
     }
 
     return response()->json($data);
-
   }
 
   public function reset_ciclo(Request $request)
@@ -217,12 +216,12 @@ class ReforcoController extends Controller
 
     //Atualiza o item com o status de R (realizado) e a id do reforço
     $affected = DB::table('tanque_ciclos')
-                  ->where('tanque_id', $request->get('id'))
-                  ->where('status', 'P')
-                  ->update([
-                    'status' => 'R',
-                    'reforco_id' => $reforco->id,
-                  ]);
+      ->where('tanque_id', $request->get('id'))
+      ->where('status', 'P')
+      ->update([
+        'status' => 'R',
+        'reforco_id' => $reforco->id,
+      ]);
 
     //Cria a transação do excedente
     if ($exd > 0) {
@@ -244,7 +243,7 @@ class ReforcoController extends Controller
       $ciclo = new TanqueCiclo;
       $ciclo->tanque_id = $request->get('id');
       $ciclo->data_servico = \Carbon\Carbon::now();
-      $ciclo->peso = - $neg;
+      $ciclo->peso = -$neg;
       $ciclo->status = 'P';
       $ciclo->excedente = true;
       //$ciclo->reforco_id = $reforco->id;
@@ -271,7 +270,7 @@ class ReforcoController extends Controller
   {
     //Pega o excedente para criar uma nova transação após o reforço
     $tanque = Tanque::findOrFail($request->get('id'));
-    
+
     DB::table('tanque_ciclos')->where('tanque_id', $request->get('id'))->delete();
 
     $data = [];
@@ -314,12 +313,12 @@ class ReforcoController extends Controller
 
     //Atualiza o item com o status de R (realizado) e a id do reforço
     $affected = DB::table('tanque_ciclos')
-                  ->where('tanque_id', $request->get('id'))
-                  ->where('status', 'P')
-                  ->update([
-                    'status' => 'R',
-                    'reforco_id' => $reforco->id,
-                  ]);
+      ->where('tanque_id', $request->get('id'))
+      ->where('status', 'P')
+      ->update([
+        'status' => 'R',
+        'reforco_id' => $reforco->id,
+      ]);
 
     $ciclo = new TanqueCiclo;
     $ciclo->tanque_id = $request->get('id');
@@ -332,7 +331,7 @@ class ReforcoController extends Controller
     $ciclo->peso_antes = $reforco->peso_depois;
     $ciclo->peso_depois = $ciclo->peso;
     $ciclo->save();
-    
+
     $data = [];
     $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
     foreach ($tanques as $tanque) {
@@ -346,12 +345,26 @@ class ReforcoController extends Controller
     return response()->json($data);
   }
 
+  public function comentario(Request $request)
+  {
+    $tanque = Tanque::findOrFail($request->get('id'));
+
+    //Gera um registro para o reforço que será associado com o item
+    $reforco = new Reforco;
+    $reforco->tanque_id = $request->get('id');
+    $reforco->tipo = 'C';
+    $reforco->motivo_reforco = $request->get('reforco_comentario');
+    $reforco->save();
+
+    return response(200);
+  }
+
   public function undo_reforco(Request $request)
   {
     $tanque = Tanque::findOrFail($request->get('id'));
     $reforco = $tanque->reforcos->sortByDesc('created_at')->first();
     $reforco_id = $reforco->id;
-    
+
     //Exclui os excedentes
     $excedentes = TanqueCiclo::where('tanque_id', $request->get('id'))->where('reforco_id', null)->where('status', 'P')->where('excedente', true)->get();
     foreach ($excedentes as $excedente) {
@@ -367,15 +380,15 @@ class ReforcoController extends Controller
       $ciclo_apos->peso_depois += $reforco->peso;
       $ciclo_apos->save();
     }
-  
+
     //Atualiza o item com o status de R (realizado) e a id do reforço
     $updt = DB::table('tanque_ciclos')
-              ->where('tanque_id', $request->get('id'))
-              ->where('reforco_id', $reforco_id)
-              ->update([
-                'status' => 'P',
-                'reforco_id' => null,
-              ]);
+      ->where('tanque_id', $request->get('id'))
+      ->where('reforco_id', $reforco_id)
+      ->update([
+        'status' => 'P',
+        'reforco_id' => null,
+      ]);
 
     //Exclui o reforço
     $reforco->delete();
@@ -429,14 +442,14 @@ class ReforcoController extends Controller
 
     if ($passagem->milesimos) {
       $processos->where('mil_ini', '<=', $passagem->milesimos)
-                ->where('mil_fim', '>=', $passagem->milesimos);
+        ->where('mil_fim', '>=', $passagem->milesimos);
     }
 
     $processos = $processos->get();
 
     foreach ($processos as $proc) {
-      $NDesconto = (double)$proc->tanque->desconto_milesimo ?? 0;
-      
+      $NDesconto = (float)$proc->tanque->desconto_milesimo ?? 0;
+
       if ($proc->tanque->tipo_consumo == 'M') {
         $NPeso = $passagem->peso;
         $NMilesimos = $passagem->milesimos;
@@ -448,16 +461,16 @@ class ReforcoController extends Controller
       }
 
       $ciclo = TanqueCiclo::where('tanque_id', $proc->tanque_id)
-                          ->where('cliente_id', $passagem->cliente_id)
-                          ->where('tiposervico_id', $passagem->tiposervico_id)
-                          ->where('material_id', $passagem->material_id)
-                          ->where('peso', $peso)
-                          ->get()
-                          ->first();
+        ->where('cliente_id', $passagem->cliente_id)
+        ->where('tiposervico_id', $passagem->tiposervico_id)
+        ->where('material_id', $passagem->material_id)
+        ->where('peso', $peso)
+        ->get()
+        ->first();
 
       if ($ciclo) {
         //Verifica se teve passagem ou reforço após essa passagem
-        $tanque = Tanque::findOrFail($proc->tanque_id);      
+        $tanque = Tanque::findOrFail($proc->tanque_id);
         $reforcos_apos = $tanque->reforcos->where('created_at', '>=', $passagem->data_servico)->sortBy('created_at');
 
         //Obtem as passagens após esse serviço para atualizar os dados dela

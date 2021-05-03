@@ -17,34 +17,34 @@ use Illuminate\Support\Facades\App;
 class RelatorioFichaProducaoController extends Controller
 {
   /**
-  * Create a new controller instance.
-  *
-  * @return void
-  */
+   * Create a new controller instance.
+   *
+   * @return void
+   */
   public function __construct()
   {
     $this->middleware('auth');
   }
 
   /**
-  * Display a listing of the resource.
-  *
-  * @return \Illuminate\Http\Response
-  */
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
   public function index()
   {
-    $tanques = Tanque::select(['id','descricao'])->orderBy('descricao')->get();
+    $tanques = Tanque::select(['id', 'descricao'])->orderBy('descricao')->get();
     return view('relatorios.ficha_producao.index')->with([
       'tanques' => $tanques,
     ]);
   }
 
   /**
-  * Do search according to request criteria.
-  *
-  * @param  \Illuminate\Http\Request  $request
-  * @return \App\TanqueCiclo
-  */
+   * Do search according to request criteria.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \App\TanqueCiclo
+   */
   private function search(Request $request)
   {
     $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini)->startOfDay();
@@ -72,7 +72,7 @@ class RelatorioFichaProducaoController extends Controller
         $NPeso = number_format($ciclo->peso_peca, 0, ',', '.');
         $NMilesimos = $ciclo->milesimos;
         $formula = "($NPeso * $NMilesimos / 1000) - ($NPeso * $NDesconto / 1000)";
-      } 
+      }
 
       $result[] = (object) [
         'tipo' => 'S',
@@ -90,7 +90,7 @@ class RelatorioFichaProducaoController extends Controller
 
     foreach ($reforcos as $reforco) {
       $result[] = (object) [
-        'tipo' => $reforco->tipo == 'A' ? 'A' : 'R',
+        'tipo' => $reforco->tipo ?? 'R',
         'data' => \Carbon\Carbon::parse($reforco->created_at)->subSeconds(1),
         'peso' => $reforco->peso ?? $reforco->tanque->ciclo_reforco,
         'excedente' => false,
@@ -111,17 +111,17 @@ class RelatorioFichaProducaoController extends Controller
 
   private function paginate($items, $perPage = 10, $page = null, $options = [])
   {
-	  $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
-	  $items = $items instanceof Collection ? $items : Collection::make($items);
-	  return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+    $items = $items instanceof Collection ? $items : Collection::make($items);
+    return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
   }
 
   /**
-  * Post preview.
-  *
-  * @param  \Illuminate\Http\Request  $request
-  * @return \Illuminate\Http\Response
-  */
+   * Post preview.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
   public function preview(Request $request)
   {
     $itens = $this->search($request);
@@ -132,11 +132,11 @@ class RelatorioFichaProducaoController extends Controller
   }
 
   /**
-  * Export to PDF.
-  *
-  * @param  int  $id
-  * @return \Illuminate\Http\Response
-  */
+   * Export to PDF.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
   public function print(Request $request)
   {
     $tanque = Tanque::findOrFail($request->idtanque);
@@ -155,18 +155,17 @@ class RelatorioFichaProducaoController extends Controller
         ]);
 
         return $pdf->stream('relatorio_ficha_producao.pdf');
-      break;
+        break;
       case 'print':
         return view('relatorios.ficha_producao.print')->with([
           'tanque' => $tanque->descricao,
           'ciclo' => $tanque->ciclo_reforco,
           'itens' => $itens,
         ]);
-      break;
+        break;
       default:
         abort(404, 'Opção inválida');
-      break;
+        break;
     }
-
   }
 }
