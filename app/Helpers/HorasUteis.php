@@ -40,7 +40,7 @@ class HorasUteis
         'natal'                                 => '12-25',
       ],
     ]);
-    
+
     $options = 0;
 
     $interval = Carbon::parse($from)->diffAsBusinessInterval($to, $options);
@@ -49,17 +49,17 @@ class HorasUteis
       return $interval->forHumans(\Carbon\CarbonInterface::DIFF_ABSOLUTE, true, 3);
     } else {
       return $interval->forHumans(\Carbon\CarbonInterface::DIFF_ABSOLUTE, false, 4);
-    }    
+    }
   }
 
   public static function calculaIntervalo($from, $to)
   {
     BusinessTime::enable('Illuminate\Support\Carbon', [
-      'monday' => ['08:00-12:00', '13:00-18:00'],
-      'tuesday' => ['08:00-12:00', '13:00-18:00'],
-      'wednesday' => ['08:00-12:00', '13:00-18:00'],
-      'thursday' => ['08:00-12:00', '13:00-18:00'],
-      'friday' => ['08:00-12:00', '13:00-17:00'],
+      'monday' => ['07:00-13:00', '13:00-17:00'],
+      'tuesday' => ['07:00-13:00', '13:00-17:00'],
+      'wednesday' => ['07:00-13:00', '13:00-17:00'],
+      'thursday' => ['07:00-13:00', '13:00-17:00'],
+      'friday' => ['07:00-13:00', '13:00-17:00'],
       'saturday' => [],
       'sunday' => [],
       'exceptions' => [],
@@ -81,12 +81,11 @@ class HorasUteis
         'natal'                                 => '12-25',
       ],
     ]);
-    
+
     $options = 0;
 
     $interval = Carbon::parse($from)->diffInBusinessSeconds($to, $options);
 
     return $interval;
   }
-
 }
