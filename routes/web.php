@@ -20,6 +20,11 @@ Auth::routes();
 // Home - Dashboard
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/dashboard-tempo', 'DashboardTempoController@index')->name('dashboard_tempo');
+Route::post('/dashboard-tempo', 'DashboardTempoController@search')->name('dashboard_tempo.search');
+
+// Config
+Route::get('/config', 'ConfigController@index')->name('config.index');
+Route::put('/config', 'ConfigController@update')->name('config.update');
 
 // PHP Info
 Route::get('phpinfo', function () {
@@ -122,6 +127,7 @@ Route::post('/painel/catalogacao', 'PainelAcompanhamentoController@move')->name(
 Route::post('/painel/arquivar', 'PainelAcompanhamentoController@arquivar')->name('painel.arquivar');
 Route::post('/painel/encerrar_separacao', 'PainelAcompanhamentoController@encerrarSeparacao')->name('painel.encerrar_separacao');
 Route::post('/painel/iniciar_banho', 'PainelAcompanhamentoController@iniciarBanho')->name('painel.iniciar_banho');
+Route::post('/painel/iniciar_retrabalho', 'PainelAcompanhamentoController@iniciarRetrabalho')->name('painel.iniciar_retrabalho');
 Route::post('/painel/iniciar_expedicao', 'PainelAcompanhamentoController@iniciarExpedicao')->name('painel.iniciar_expedicao');
 Route::get('/painel/column', 'PainelAcompanhamentoController@column')->name('painel.column');
 

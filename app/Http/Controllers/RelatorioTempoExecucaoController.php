@@ -11,84 +11,98 @@ use Illuminate\Support\Facades\App;
 class RelatorioTempoExecucaoController extends Controller
 {
   /**
-  * Create a new controller instance.
-  *
-  * @return void
-  */
+   * Create a new controller instance.
+   *
+   * @return void
+   */
   public function __construct()
   {
     $this->middleware('auth');
   }
 
   /**
-  * Display a listing of the resource.
-  *
-  * @return \Illuminate\Http\Response
-  */
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
   public function index()
   {
-    $clientes = Cliente::select(['id','nome'])->orderBy('nome')->get();
-    
+    $clientes = Cliente::select(['id', 'nome'])->orderBy('nome')->get();
+
     return view('relatorios.tempo_execucao.index')->with([
       'clientes' => $clientes,
     ]);
   }
 
   /**
-  * Post preview.
-  *
-  * @param  \Illuminate\Http\Request  $request
-  * @return \Illuminate\Http\Response
-  */
+   * Post preview.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
   public function preview(Request $request)
   {
-    $lista_etapas = ['Recebimento','Separação','Catalogação','Banho','Revisão','Expedição'];
+    $lista_etapas = ['Recebimento', 'Separação', 'Catalogação', 'Preparação', 'Banho', 'Revisão', 'Expedição'];
     $etapas = array_slice($lista_etapas, array_search($request->etapaini, $lista_etapas), array_search($request->etapafim, $lista_etapas) - array_search($request->etapaini, $lista_etapas) + 1);
-    
+
+    $etapa_ini = array_search($request->etapaini, $lista_etapas) + 1;
+    $etapa_fim = array_search($request->etapafim, $lista_etapas) + 1;
+
     $servicos = Separacao::with('recebimentos')->whereHas('cliente')->select();
 
     if ($request->idcliente) {
       $servicos->whereIn('cliente_id', explode(',', $request->idcliente));
     }
 
+    if ($request->tipo_processo == '1') {
+      $servicos->whereNotNull('data_fim_expedicao');
+    } else if ($request->tipo_processo == '0') {
+      $servicos->whereNull('data_fim_expedicao');
+    }
+
     if ($request->dataini && $request->datafim) {
       $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini);
       $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim);
-      $servicos->where(function($query)  use ($dtini, $dtfim, $etapas) {
+      $servicos->where(function ($query)  use ($dtini, $dtfim, $etapas) {
         $query->whereBetween('created_at', [$dtini, $dtfim]);
         if (in_array('Recebimento', $etapas)) {
-          $query->orWhereHas('recebimentos', function($query) use ($dtini, $dtfim) {
+          $query->orWhereHas('recebimentos', function ($query) use ($dtini, $dtfim) {
             $query->whereBetween('data_receb', [$dtini, $dtfim]);
           });
         }
         if (in_array('Catalogação', $etapas) || in_array('Banho', $etapas) || in_array('Revisão', $etapas) || in_array('Expedição', $etapas)) {
-          $query->orWhereHas('catalogacao', function($query) use ($dtini, $dtfim) {
+          $query->orWhereHas('catalogacao', function ($query) use ($dtini, $dtfim) {
             $query->whereBetween('datacad', [$dtini, $dtfim]);
           });
         }
       });
     }
-    
+
     $servicos = $servicos->paginate(10);
 
     return response()->json(['view' => view('relatorios.tempo_execucao.preview', [
       'servicos' => $servicos,
       'etapas' => $etapas,
+      'etapa_ini' => $etapa_ini,
+      'etapa_fim' => $etapa_fim,
     ])->render()]);
   }
 
   /**
-  * Export to PDF.
-  *
-  * @param  int  $id
-  * @return \Illuminate\Http\Response
-  */
+   * Export to PDF.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
   public function print(Request $request)
   {
     $e = explode(';', $request->etapas);
-    $lista_etapas = ['Recebimento','Separação','Catalogação','Banho','Revisão','Expedição'];
+    $lista_etapas = ['Recebimento', 'Separação', 'Catalogação', 'Preparação', 'Banho', 'Revisão', 'Expedição'];
     $etapas = array_slice($lista_etapas, array_search($e[0], $lista_etapas), array_search($e[1], $lista_etapas) - array_search($e[0], $lista_etapas) + 1);
-    
+
+    $etapa_ini = array_search($request->etapaini, $lista_etapas) + 1;
+    $etapa_fim = array_search($request->etapafim, $lista_etapas) + 1;
+
     $servicos = Separacao::with('recebimentos')->select();
 
     if ($request->idcliente) {
@@ -98,21 +112,21 @@ class RelatorioTempoExecucaoController extends Controller
     if ($request->dataini && $request->datafim) {
       $dtini = Carbon::createFromFormat('d/m/Y', $request->dataini);
       $dtfim = Carbon::createFromFormat('d/m/Y', $request->datafim);
-      $servicos->where(function($query)  use ($dtini, $dtfim, $etapas) {
+      $servicos->where(function ($query)  use ($dtini, $dtfim, $etapas) {
         $query->whereBetween('created_at', [$dtini, $dtfim]);
         if (in_array('Recebimento', $etapas)) {
-          $query->orWhereHas('recebimentos', function($query) use ($dtini, $dtfim) {
+          $query->orWhereHas('recebimentos', function ($query) use ($dtini, $dtfim) {
             $query->whereBetween('data_receb', [$dtini, $dtfim]);
           });
         }
         if (in_array('Catalogação', $etapas) || in_array('Banho', $etapas) || in_array('Revisão', $etapas) || in_array('Expedição', $etapas)) {
-          $query->orWhereHas('catalogacao', function($query) use ($dtini, $dtfim) {
+          $query->orWhereHas('catalogacao', function ($query) use ($dtini, $dtfim) {
             $query->whereBetween('datacad', [$dtini, $dtfim]);
           });
         }
       });
     }
-    
+
     $servicos = $servicos->get();
 
     switch ($request->output) {
@@ -123,20 +137,23 @@ class RelatorioTempoExecucaoController extends Controller
         $pdf->loadView('relatorios.tempo_execucao.print', [
           'servicos' => $servicos,
           'etapas' => $etapas,
+          'etapa_ini' => $etapa_ini,
+          'etapa_fim' => $etapa_fim,
         ]);
 
         return $pdf->stream('relatorio_tempo_execucao.pdf');
-      break;
+        break;
       case 'print':
         return view('relatorios.tempo_execucao.print', [
           'servicos' => $servicos,
           'etapas' => $etapas,
+          'etapa_ini' => $etapa_ini,
+          'etapa_fim' => $etapa_fim,
         ]);
-      break;
+        break;
       default:
         abort(404, 'Opção inválida');
-      break;
+        break;
     }
   }
-  
 }

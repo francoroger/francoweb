@@ -24,32 +24,32 @@
   <script src="{{ asset('assets/js/Plugin/asspinner.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/ionrangeslider.js') }}"></script>
   <script type="text/javascript">
-  var token = "{{ csrf_token() }}";
-  var route = "{{ route('relatorio_tempo_execucao.preview', '') }}";
+    var token = "{{ csrf_token() }}";
+    var route = "{{ route('relatorio_tempo_execucao.preview', '') }}";
 
-  //Form
-  $('#filter-form').on('keypress', function (e) {
-    if (e.which == 13) {
-      return false;
-    }
-  });
+    //Form
+    $('#filter-form').on('keypress', function(e) {
+      if (e.which == 13) {
+        return false;
+      }
+    });
 
-  //Preview
-  $(document).on('click', '#btn-preview', function(event) {
-    fetchData(route, token);
-  });
+    //Preview
+    $(document).on('click', '#btn-preview', function(event) {
+      fetchData(route, token);
+    });
 
-  //Pagination
-  $(document).on('click', '.pagination li a', function(event) {
-    event.preventDefault();
-    var page = $(this).attr('href').split('page=')[1];
-    fetchData(route, token, page);
-  });
+    //Pagination
+    $(document).on('click', '.pagination li a', function(event) {
+      event.preventDefault();
+      var page = $(this).attr('href').split('page=')[1];
+      fetchData(route, token, page);
+    });
 
-  $(document).ready(function($) {
-    $('#dataini').mask('00/00/0000');
-    $('#datafim').mask('00/00/0000');
-  });
+    $(document).ready(function($) {
+      $('#dataini').mask('00/00/0000');
+      $('#datafim').mask('00/00/0000');
+    });
 
   </script>
 @endpush
@@ -70,7 +70,8 @@
           </div>
         </div>
         <div class="panel-body">
-          <form id="filter-form" method="POST" action="{{ route('relatorio_tempo_execucao.print') }}" target="_blank" class="form-horizontal" autocomplete="off">
+          <form id="filter-form" method="POST" action="{{ route('relatorio_tempo_execucao.print') }}" target="_blank"
+            class="form-horizontal" autocomplete="off">
             @csrf
             <div class="form-group row">
               <label class="col-md-2 form-control-label">Período</label>
@@ -78,11 +79,13 @@
                 <div class="input-daterange" data-plugin="datepicker" data-language="pt-BR">
                   <div class="input-group">
                     <span class="input-group-addon">De</span>
-                    <input type="text" class="form-control" name="dataini" id="dataini" value="{{ \Carbon\Carbon::now()->firstOfMonth()->format('d/m/Y') }}" />
+                    <input type="text" class="form-control" name="dataini" id="dataini"
+                      value="{{ \Carbon\Carbon::now()->firstOfMonth()->format('d/m/Y') }}" />
                   </div>
                   <div class="input-group">
                     <span class="input-group-addon">Até</span>
-                    <input type="text" class="form-control" name="datafim" id="datafim" value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}" />
+                    <input type="text" class="form-control" name="datafim" id="datafim"
+                      value="{{ \Carbon\Carbon::now()->format('d/m/Y') }}" />
                   </div>
                 </div>
               </div>
@@ -101,10 +104,22 @@
             </div>
 
             <div class="form-group row">
+              <label class="col-md-2 form-control-label">Processo</label>
+              <div class="col-md-10">
+                <select class="form-control" id="tipo_processo" name="tipo_processo">
+                  <option value="">Exibir Todos</option>
+                  <option value="1">Somente Processos Completo</option>
+                  <option value="0">Somente Processos em Andamento</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
               <label class="col-md-2 form-control-label">Etapas</label>
               <div class="col-md-10">
-                <input type="text" id="etapas" name="etapas" data-plugin="ionRangeSlider" data-type="double" data-values="Recebimento,Separação,Catalogação,Banho,Revisão,Expedição"
-                  data-grid=true data-from="0" data-to="5" />
+                <input type="text" id="etapas" name="etapas" data-plugin="ionRangeSlider" data-type="double"
+                  data-values="Recebimento,Separação,Catalogação,Preparação,Banho,Revisão,Expedição" data-grid=true
+                  data-from="0" data-to="6" />
               </div>
             </div>
 

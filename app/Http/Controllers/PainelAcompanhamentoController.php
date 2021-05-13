@@ -15,9 +15,9 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Recebimento
   private function recebimentos()
   {
-    $recebimentos = Recebimento::where('data_receb', '>=', date('Y-m-d', strtotime('2020-03-01')) )
+    $recebimentos = Recebimento::where('data_receb', '>=', date('Y-m-d', strtotime('2020-03-01')))
       ->whereNull('status')
-      ->where(function($query) {
+      ->where(function ($query) {
         $query->where('arquivado', '=', '0')->orWhereNull('arquivado');
       })
       ->orderBy('id', 'desc')->get();
@@ -93,6 +93,7 @@ class PainelAcompanhamentoController extends Controller
   }
 
   //Coluna Ordens
+  /*
   private function ordens()
   {
     $ordens = Separacao::where('status', 'F')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
@@ -111,6 +112,82 @@ class PainelAcompanhamentoController extends Controller
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
       $obj->substatus = $separacao->status_banho;
+      $colOrdens[] = $obj;
+    }
+
+    return collect((object) $colOrdens);
+  }
+  */
+
+  //Coluna Preparação
+  private function preparacao()
+  {
+    $ordens = Separacao::where('status', 'F')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
+
+    $colOrdens = [];
+    foreach ($ordens as $separacao) {
+      $obj = new stdClass();
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_carbon = $separacao->data_inicio_preparacao ? Carbon::parse($separacao->data_inicio_preparacao) : null;
+      $obj->data_inicio = Carbon::parse($separacao->created_at);
+      $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = null; //$separacao->status_banho;
+      $colOrdens[] = $obj;
+    }
+
+    return collect((object) $colOrdens);
+  }
+
+  //Coluna Banho
+  private function banho()
+  {
+    $ordens = Separacao::where('status', 'B')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
+
+    $colOrdens = [];
+    foreach ($ordens as $separacao) {
+      $obj = new stdClass();
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_carbon = $separacao->data_inicio_preparacao ? Carbon::parse($separacao->data_inicio_preparacao) : null;
+      $obj->data_inicio = Carbon::parse($separacao->created_at);
+      $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = null; //$separacao->status_banho;
+      $colOrdens[] = $obj;
+    }
+
+    return collect((object) $colOrdens);
+  }
+
+  //Coluna Retrabalho
+  private function retrabalho()
+  {
+    $ordens = Separacao::where('status', 'T')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
+
+    $colOrdens = [];
+    foreach ($ordens as $separacao) {
+      $obj = new stdClass();
+      $obj->id = $separacao->catalogacao->id;
+      $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
+      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
+      $obj->qtde_itens = $separacao->catalogacao->itens->count();
+      $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
+      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_carbon = $separacao->data_inicio_preparacao ? Carbon::parse($separacao->data_inicio_preparacao) : null;
+      $obj->data_inicio = Carbon::parse($separacao->created_at);
+      $obj->obs = $separacao->catalogacao->observacoes;
+      $obj->substatus = $separacao->status_retrabalho;
       $colOrdens[] = $obj;
     }
 
@@ -205,7 +282,10 @@ class PainelAcompanhamentoController extends Controller
     $painel->put('recebimentos', collect((object) $this->recebimentos()));
     $painel->put('separacoes', collect((object) $this->separacoes()));
     $painel->put('catalogacoes', collect((object) $this->catalogacoes()));
-    $painel->put('ordens', collect((object) $this->ordens()));
+    //$painel->put('ordens', collect((object) $this->ordens()));
+    $painel->put('preparacoes', collect((object) $this->preparacao()));
+    $painel->put('banhos', collect((object) $this->banho()));
+    $painel->put('retrabalhos', collect((object) $this->retrabalho()));
     $painel->put('revisoes', collect((object) $this->revisoes()));
     $painel->put('expedicoes', collect((object) $this->expedicoes()));
     $painel->put('concluidos', collect((object) $this->concluidos()));
@@ -234,7 +314,7 @@ class PainelAcompanhamentoController extends Controller
         $cliente_id = null;
         foreach ($ids as $id) {
           $recebimento = Recebimento::findOrFail($id);
-  
+
           if ($cliente_id != null) {
             if ($cliente_id != $recebimento->idcliente) {
               return response('Os recebimentos não são do mesmo cliente', 503);
@@ -242,7 +322,7 @@ class PainelAcompanhamentoController extends Controller
           }
           $cliente_id = $recebimento->idcliente;
         }
-  
+
         //Criando a separação
         $separacao = new Separacao;
         $separacao->cliente_id = $cliente_id;
@@ -251,7 +331,7 @@ class PainelAcompanhamentoController extends Controller
         $separacao->save();
         //Adicionando os recebimentos
         $separacao->recebimentos()->sync($ids);
-  
+
         //Mudando o status dos recebimentos
         foreach ($ids as $id) {
           $recebimento = Recebimento::findOrFail($id);
@@ -276,7 +356,7 @@ class PainelAcompanhamentoController extends Controller
         return response('Os recebimentos precisam passar pela separação', 503);
         break;
       }
-      
+
       //De Separação para Recebimento
       if ($from == 'S' && $to == 'R') {
         $separacao = Separacao::findOrFail($ids[0]);
@@ -296,7 +376,7 @@ class PainelAcompanhamentoController extends Controller
         //Excluindo a separação
         $separacao->delete();
         break;
-      } 
+      }
 
       /**
        * De Separação para Catalogação (A, F, G, C, L)
@@ -324,7 +404,7 @@ class PainelAcompanhamentoController extends Controller
 
         break;
       }
-      
+
       /**
        * Catalogação (se chegou até aqui é de catalogação para catalogação)
        */
@@ -348,7 +428,12 @@ class PainelAcompanhamentoController extends Controller
             break;
           case 'F':
             $separacao->data_fim_preparacao = Carbon::now();
+            break;
+          case 'B':
             $separacao->data_fim_banho = Carbon::now();
+            break;
+          case 'T':
+            $separacao->data_fim_retrabalho = Carbon::now();
             break;
           case 'G':
             //Só pega a data fim da revisão se não tiver preenchida
@@ -376,13 +461,27 @@ class PainelAcompanhamentoController extends Controller
           case 'F':
             $separacao->status_banho = 'G';
             //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
-            //$separacao->data_inicio_preparacao = Carbon::now();
+            //Sobre comentário acima: agora faz pois não teremos mais o menu iniciar nesse box
+            $separacao->data_inicio_preparacao = Carbon::now();
             //$separacao->data_inicio_banho = Carbon::now();
+            break;
+          case 'B':
+            $separacao->status_banho = 'A';
+            //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
+            //Sobre comentário acima: agora faz pois não teremos mais o menu iniciar nesse box
+            //$separacao->data_inicio_preparacao = Carbon::now();
+            $separacao->data_inicio_banho = Carbon::now();
+            break;
+          case 'T':
+            $separacao->status_retrabalho = 'G';
             break;
           case 'G':
             //Se não foi encerrada não deixa arrastar
             if ($separacao->status_banho == 'G') {
               return response('O processo de banho não foi iniciado!', 503);
+            }
+            if ($separacao->status_retrabalho == 'G') {
+              return response('O processo de retrabalho não foi iniciado!', 503);
             }
             //Não faz nada, pois só inicia a revisão quando abrir pelo checklist
             //$separacao->data_inicio_revisao = Carbon::now();
@@ -415,7 +514,6 @@ class PainelAcompanhamentoController extends Controller
         $separacao->save();
       }
       break;
-
     } while (0);
 
     return response(200);
@@ -442,9 +540,19 @@ class PainelAcompanhamentoController extends Controller
   {
     $banho = Catalogacao::findOrFail($request->id);
     $separacao = $banho->separacao;
-    $separacao->data_inicio_preparacao = Carbon::now();
+    //$separacao->data_inicio_preparacao = Carbon::now();
     $separacao->data_inicio_banho = Carbon::now();
     $separacao->status_banho = 'A';
+    $separacao->save();
+    return response(200);
+  }
+
+  public function iniciarRetrabalho(Request $request)
+  {
+    $retrab = Catalogacao::findOrFail($request->id);
+    $separacao = $retrab->separacao;
+    $separacao->data_inicio_retrabalho = Carbon::now();
+    $separacao->status_retrabalho = 'A';
     $separacao->save();
     return response(200);
   }
@@ -494,12 +602,28 @@ class PainelAcompanhamentoController extends Controller
         $status = 'A';
         break;
       case 'F':
-        $data = $this->ordens();
-        $label = 'Preparação / Banho';
+        $data = $this->preparacao();
+        $label = 'Preparação';
         $bg_color = 'bg-blue-600';
         $text_color = 'text-white';
         $multi_drag = false;
         $status = 'F';
+        break;
+      case 'B':
+        $data = $this->banho();
+        $label = 'Banho';
+        $bg_color = 'bg-purple-500';
+        $text_color = 'text-white';
+        $multi_drag = false;
+        $status = 'B';
+        break;
+      case 'T':
+        $data = $this->retrabalho();
+        $label = 'Retrabalho';
+        $bg_color = 'bg-brown-500';
+        $text_color = 'text-white';
+        $multi_drag = false;
+        $status = 'T';
         break;
       case 'G':
         $data = $this->revisoes();
@@ -526,14 +650,14 @@ class PainelAcompanhamentoController extends Controller
         $status = 'L';
         break;
       default:
-        
+
         break;
     }
 
     return response()->json(['view' => view('painel_acompanhamento._column', [
-      'data' => $data, 
-      'label' => $label, 
-      'bg_color' => $bg_color, 
+      'data' => $data,
+      'label' => $label,
+      'bg_color' => $bg_color,
       'text_color' => $text_color,
       'multi_drag' => $multi_drag,
       'status' => $status,

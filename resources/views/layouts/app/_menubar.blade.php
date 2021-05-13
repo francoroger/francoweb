@@ -3,7 +3,7 @@
     <div>
       <div>
         <ul class="site-menu" data-plugin="menu">
-          <li class="site-menu-category">Navegação</li>
+          <li class="site-menu-category">Menu</li>
           <li class="site-menu-item{{ Request::is('/') ? ' active' : '' }}">
             <a href="{{ url('/') }}">
               <i class="site-menu-icon wb-dashboard" aria-hidden="true"></i>
@@ -40,6 +40,7 @@
               <span class="site-menu-arrow"></span>
             </a>
             <ul class="site-menu-sub">
+              {{-- 
               @can('catalogacoes.index')
                 <li class="site-menu-item">
                   <a href="#">
@@ -47,6 +48,7 @@
                   </a>
                 </li>
               @endcan
+               --}}
               @can('checklist.index')
                 <li class="site-menu-item{{ Request::is('catalogacao/checklist*') ? ' active' : '' }}">
                   <a href="{{ route('catalogacao_checklist.index') }}">
@@ -63,6 +65,7 @@
               @endcan
             </ul>
           </li>
+          {{-- 
           @can('ordens_servico.index')
             <li class="site-menu-item">
               <a href="#">
@@ -79,7 +82,7 @@
               </a>
             </li>
           @endcan
-          <li class="site-menu-category">Produção</li>
+           --}}
           <li class="site-menu-item has-sub{{ Request::is('producao/*') ? ' active open' : '' }}">
             <a href="javascript:void(0)">
               <i class="site-menu-icon wb-pluse" aria-hidden="true"></i>
@@ -105,6 +108,30 @@
                 <li class="site-menu-item{{ Request::is('producao/relatorio_producao*') ? ' active' : '' }}">
                   <a class="animsition-link" href="{{ route('relatorio_producao.index') }}">
                     <span class="site-menu-title">Relatório de Produção</span>
+                  </a>
+                </li>
+              @endcan
+            </ul>
+          </li>
+          <li class="site-menu-category">Consultas</li>
+          <li class="site-menu-item has-sub{{ Request::is('relatorios/*') ? ' active open' : '' }}">
+            <a href="javascript:void(0)">
+              <i class="site-menu-icon wb-file" aria-hidden="true"></i>
+              <span class="site-menu-title">Relatórios</span>
+              <span class="site-menu-arrow"></span>
+            </a>
+            <ul class="site-menu-sub">
+              @can('relatorio_servicos.index')
+                <li class="site-menu-item{{ Request::is('relatorios/servicos*') ? ' active' : '' }}">
+                  <a class="animsition-link" href="{{ route('relatorio_servicos.index') }}">
+                    <span class="site-menu-title">Relatório de Serviços</span>
+                  </a>
+                </li>
+              @endcan
+              @can('relatorio_tempo_execucao.index')
+                <li class="site-menu-item{{ Request::is('relatorios/tempo_execucao*') ? ' active' : '' }}">
+                  <a class="animsition-link" href="{{ route('relatorio_tempo_execucao.index') }}">
+                    <span class="site-menu-title">Tempo de Execução</span>
                   </a>
                 </li>
               @endcan
@@ -211,29 +238,11 @@
               @endcan
             </ul>
           </li>
-          <li class="site-menu-category">Consultas</li>
-          <li class="site-menu-item has-sub{{ Request::is('relatorios/*') ? ' active open' : '' }}">
-            <a href="javascript:void(0)">
-              <i class="site-menu-icon wb-file" aria-hidden="true"></i>
-              <span class="site-menu-title">Relatórios</span>
-              <span class="site-menu-arrow"></span>
+          <li class="site-menu-item{{ Request::is('config*') ? ' active' : '' }}">
+            <a href="{{ route('config.index') }}">
+              <i class="site-menu-icon wb-settings" aria-hidden="true"></i>
+              <span class="site-menu-title">Configurações</span>
             </a>
-            <ul class="site-menu-sub">
-              @can('relatorio_servicos.index')
-                <li class="site-menu-item{{ Request::is('relatorios/servicos*') ? ' active' : '' }}">
-                  <a class="animsition-link" href="{{ route('relatorio_servicos.index') }}">
-                    <span class="site-menu-title">Relatório de Serviços</span>
-                  </a>
-                </li>
-              @endcan
-              @can('relatorio_tempo_execucao.index')
-                <li class="site-menu-item{{ Request::is('relatorios/tempo_execucao*') ? ' active' : '' }}">
-                  <a class="animsition-link" href="{{ route('relatorio_tempo_execucao.index') }}">
-                    <span class="site-menu-title">Tempo de Execução</span>
-                  </a>
-                </li>
-              @endcan
-            </ul>
           </li>
         </ul>
       </div>

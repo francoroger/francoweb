@@ -177,7 +177,9 @@
             <td class="font-size-12" rowspan="4">
               <strong>{{ $separacao->cliente->identificacao ?? '' }}</strong><br><br>
               <strong>Catalogação nº:</strong> {{ $separacao->catalogacao_id }} <br>
-              <strong>Separação nº:</strong> {{ $separacao->id }}
+              <strong>Separação nº:</strong> {{ $separacao->id }} <br>
+              <strong>Peso: </strong> {{ number_format($separacao->recebimentos->sum('pesototal'), 0, ',', '.') }} g <br>
+              <strong>Itens: </strong> {{ $separacao->catalogacao_id ? $separacao->catalogacao->itens->count() : '' }}
             </td>
             <th class="font-size-12">Início</th>
             @if (in_array('Recebimento', $etapas))
