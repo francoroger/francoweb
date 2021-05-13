@@ -26,7 +26,8 @@
           <div class="row">
             <div class="form-group col-md-12">
               <label class="form-control-label" for="name">Nome <span class="text-danger">*</span></label>
-              <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Nome" value="{{ old('name', $role->name) }}" required />
+              <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
+                placeholder="Nome" value="{{ old('name', $role->name) }}" required />
               @error('name')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -61,38 +62,34 @@
                         </td>
                         <td class="text-center">
                           @if ($names->where('method', 'index')->count() > 0)
-                          <input type="checkbox" data-plugin="switchery" data-color="#526069"
-                          data-group="{{ $loop->parent->index . '_index' }}"
-                           name="permissions[]"
-                            value="{{ $names->where('method', 'index')->first()->name }}"
-                            {{ $role->hasPermissionTo($names->where('method', 'index')->first()->name) ? 'checked' : '' }}>
+                            <input type="checkbox" data-plugin="switchery" data-color="#526069"
+                              data-group="{{ $loop->parent->index . '_index' }}" name="permissions[]"
+                              value="{{ $names->where('method', 'index')->first()->name }}"
+                              {{ $role->hasPermissionTo($names->where('method', 'index')->first()->name) ? 'checked' : '' }}>
                           @endif
                         </td>
                         <td class="text-center">
                           @if ($names->where('method', 'create')->count() > 0)
-                          <input type="checkbox" data-plugin="switchery" data-color="#526069"
-                          data-group="{{ $loop->parent->index . '_create' }}"
-                           name="permissions[]"
-                            value="{{ $names->where('method', 'create')->first()->name }}"
-                            {{ $role->hasPermissionTo($names->where('method', 'create')->first()->name) ? 'checked' : '' }}>
+                            <input type="checkbox" data-plugin="switchery" data-color="#526069"
+                              data-group="{{ $loop->parent->index . '_create' }}" name="permissions[]"
+                              value="{{ $names->where('method', 'create')->first()->name }}"
+                              {{ $role->hasPermissionTo($names->where('method', 'create')->first()->name) ? 'checked' : '' }}>
                           @endif
                         </td>
                         <td class="text-center">
                           @if ($names->where('method', 'edit')->count() > 0)
-                          <input type="checkbox" data-plugin="switchery" data-color="#526069"
-                          data-group="{{ $loop->parent->index . '_edit' }}"
-                           name="permissions[]"
-                            value="{{ $names->where('method', 'edit')->first()->name }}"
-                            {{ $role->hasPermissionTo($names->where('method', 'edit')->first()->name) ? 'checked' : '' }}>
+                            <input type="checkbox" data-plugin="switchery" data-color="#526069"
+                              data-group="{{ $loop->parent->index . '_edit' }}" name="permissions[]"
+                              value="{{ $names->where('method', 'edit')->first()->name }}"
+                              {{ $role->hasPermissionTo($names->where('method', 'edit')->first()->name) ? 'checked' : '' }}>
                           @endif
                         </td>
                         <td class="text-center">
                           @if ($names->where('method', 'destroy')->count() > 0)
-                          <input type="checkbox" data-plugin="switchery" data-color="#526069"
-                          data-group="{{ $loop->parent->index . '_destroy' }}"
-                           name="permissions[]"
-                            value="{{ $names->where('method', 'destroy')->first()->name }}"
-                            {{ $role->hasPermissionTo($names->where('method', 'destroy')->first()->name) ? 'checked' : '' }}>
+                            <input type="checkbox" data-plugin="switchery" data-color="#526069"
+                              data-group="{{ $loop->parent->index . '_destroy' }}" name="permissions[]"
+                              value="{{ $names->where('method', 'destroy')->first()->name }}"
+                              {{ $role->hasPermissionTo($names->where('method', 'destroy')->first()->name) ? 'checked' : '' }}>
                           @endif
                         </td>
                       </tr>
@@ -102,11 +99,9 @@
                         <tr>
                           <td class="font-w700" colspan="5">
                             <input type="checkbox" data-plugin="switchery" data-color="#526069"
-                               data-group="{{ $loop->parent->parent->index . '_special' }}"
-                                name="permissions[]"
-                                 value="{{ $specialPermission->name }}" 
-                                 {{ $role->hasPermissionTo($specialPermission->name) ? 'checked' : '' }}>
-                                 {{ $specialPermission->feature }}
+                              data-group="{{ $loop->parent->parent->index . '_special' }}" name="permissions[]"
+                              value="{{ $specialPermission->name }}">
+                            {{ $specialPermission->feature }}
                           </td>
                         </tr>
                       @endforeach
