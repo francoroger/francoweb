@@ -2,31 +2,34 @@
 
 @push('stylesheets_plugins')
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/examples/css/charts/flot.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/ladda/ladda.css') }}">
 @endpush
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js') }}"></script>
   <script src="{{ asset('assets/plugins/jQuery-Mask-Plugin/dist/jquery.mask.min.js') }}"></script>
-  <script src="{{ asset('assets/vendor/flot/jquery.flot.js') }}"></script>
-  <script src="{{ asset('assets/vendor/flot/jquery.flot.resize.js') }}"></script>
-  <script src="{{ asset('assets/vendor/flot/jquery.flot.time.js') }}"></script>
-  <script src="{{ asset('assets/vendor/flot/jquery.flot.stack.js') }}"></script>
-  <script src="{{ asset('assets/vendor/flot/jquery.flot.pie.js') }}"></script>
-  <script src="{{ asset('assets/vendor/flot/jquery.flot.selection.js') }}"></script>
+  <script src="{{ asset('assets/vendor/ladda/spin.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/ladda/ladda.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
   <!-- Apex Charts -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-datepicker.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/ladda.js') }}"></script>
   <script type="text/javascript">
     $('#dataini').mask('00/00/0000');
     $('#datafim').mask('00/00/0000');
 
     $('#filtros').on('submit', function(e) {
       e.preventDefault();
+
+      //Ladda
+      var l = Ladda.create(document.querySelector('#btn-search'));
+      l.start();
+      l.isLoading();
+      l.setProgress(0 - 1);
 
       let formData = new FormData();
       formData.append("dataini", $("#dataini").val());
@@ -43,6 +46,7 @@
         cache: false,
         processData: false,
         success: function(data) {
+          l.stop();
           $('#total-servicos-count').html(data.total_servicos);
           $('#total-peso-count').html(data.total_peso);
           $('#total-itens-count').html(data.total_itens);
@@ -56,6 +60,8 @@
           updateChart(data.dados_tempo_exec_util, tempo_execucao_chart_util);
           updateChart(data.dados_tempo_espera_util, tempo_espera_chart_util);
           updateChart(data.dados_tempo_exec_kg_util, tempo_kg_chart_util);
+
+          $('#dados').html(data.view);
 
         },
         error: function(jqXHR, textStatus, errorThrown) {
@@ -159,7 +165,7 @@
       tempo_kg_chart.render();
 
       tempo_execucao_chart_util = new ApexCharts(document.querySelector('#chart-tempo-medio-etapa-util'),
-      utilOptions);
+        utilOptions);
       tempo_execucao_chart_util.render();
 
       tempo_espera_chart_util = new ApexCharts(document.querySelector('#chart-tempo-espera-etapa-util'), utilOptions);
@@ -214,7 +220,11 @@
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-primary">Pesquisar</button>
+            <button type="submit" id="btn-search" class="btn btn-primary ladda-button" data-style="expand-left">
+              <span class="ladda-label">
+                <i class="icon wb-search mr-10" aria-hidden="true"></i> Pesquisar
+              </span>
+            </button>
           </div>
 
         </form>

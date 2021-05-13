@@ -159,7 +159,7 @@ class PainelAcompanhamentoController extends Controller
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
       $obj->data_situacao = $separacao->catalogacao->datacad;
-      $obj->data_carbon = $separacao->data_inicio_preparacao ? Carbon::parse($separacao->data_inicio_preparacao) : null;
+      $obj->data_carbon = $separacao->data_inicio_banho ? Carbon::parse($separacao->data_inicio_banho) : null;
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
       $obj->substatus = null; //$separacao->status_banho;
@@ -184,7 +184,7 @@ class PainelAcompanhamentoController extends Controller
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
       $obj->data_situacao = $separacao->catalogacao->datacad;
-      $obj->data_carbon = $separacao->data_inicio_preparacao ? Carbon::parse($separacao->data_inicio_preparacao) : null;
+      $obj->data_carbon = $separacao->data_inicio_retrabalho ? Carbon::parse($separacao->data_inicio_retrabalho) : null;
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
       $obj->substatus = $separacao->status_retrabalho;
@@ -216,7 +216,7 @@ class PainelAcompanhamentoController extends Controller
       }
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
-      $obj->substatus = $separacao->status;
+      $obj->substatus = $separacao->status == 'G' ? 'G' : 'A';
       $colRevisoes[] = $obj;
     }
 
@@ -474,6 +474,11 @@ class PainelAcompanhamentoController extends Controller
             break;
           case 'T':
             $separacao->status_retrabalho = 'G';
+            //Zera tudo que foi pela frente
+            $separacao->data_inicio_revisao = null;
+            $separacao->data_fim_revisao = null;
+            $separacao->data_fim_expedicao = null;
+            $separacao->data_inicio_expedicao = null;
             break;
           case 'G':
             //Se não foi encerrada não deixa arrastar

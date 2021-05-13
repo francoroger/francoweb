@@ -123,9 +123,9 @@
             refreshColumn(to.data('status'));
             refreshColumn(from.data('status'));
           },
-          error: function(jqXHR, textStatus, error) {
+          error: function(jqXHR, textStatus, err) {
             console.log(jqXHR);
-            window.toastr.error(jqXHR.responseJSON.message)
+            window.toastr.error(jqXHR.responseText)
             refreshColumn(to.data('status'));
             refreshColumn(from.data('status'));
           }
@@ -406,129 +406,129 @@
           <div class="board">
 
             @can('painel_acompanhamento.recebimentos')
-            <div id="recebimentos" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('recebimentos'),
-              'label' => 'Recebimento',
-              'bg_color' => 'bg-teal-400',
-              'text_color' => 'blue-grey-700',
-              'multi_drag' => true,
-              'status' => 'R',
-              'table' => 'recebimentos'
-              ])
-            </div>
+              <div id="recebimentos" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('recebimentos'),
+                'label' => 'Recebimento',
+                'bg_color' => 'bg-teal-400',
+                'text_color' => 'blue-grey-700',
+                'multi_drag' => true,
+                'status' => 'R',
+                'table' => 'recebimentos'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.separacoes')
-            <div id="separacoes" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('separacoes'),
-              'label' => 'Separação',
-              'bg_color' => 'bg-orange-500',
-              'text_color' => 'text-white',
-              'multi_drag' => false,
-              'status' => 'S',
-              'table' => 'separacoes'
-              ])
-            </div>
+              <div id="separacoes" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('separacoes'),
+                'label' => 'Separação',
+                'bg_color' => 'bg-orange-500',
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'S',
+                'table' => 'separacoes'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.catalogacoes')
-            <div id="catalogacoes" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('catalogacoes'),
-              'label' => 'Catalogando',
-              'bg_color' => 'bg-yellow-600',
-              'text_color' => 'blue-grey-700',
-              'multi_drag' => false,
-              'status' => 'A',
-              'table' => 'catalogacoes'
-              ])
-            </div>
+              <div id="catalogacoes" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('catalogacoes'),
+                'label' => 'Catalogando',
+                'bg_color' => 'bg-yellow-600',
+                'text_color' => 'blue-grey-700',
+                'multi_drag' => false,
+                'status' => 'A',
+                'table' => 'catalogacoes'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.preparacoes')
-            <div id="preparacoes" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('preparacoes'),
-              'label' => 'Preparação',
-              'bg_color' => 'bg-blue-600',
-              'text_color' => 'text-white',
-              'multi_drag' => false,
-              'status' => 'F',
-              'table' => 'catalogacoes'
-              ])
-            </div>
+              <div id="preparacoes" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('preparacoes'),
+                'label' => 'Preparação',
+                'bg_color' => 'bg-blue-600',
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'F',
+                'table' => 'catalogacoes'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.banhos')
-            <div id="banhos" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('banhos'),
-              'label' => 'Banho',
-              'bg_color' => 'bg-purple-500',
-              'text_color' => 'text-white',
-              'multi_drag' => false,
-              'status' => 'B',
-              'table' => 'catalogacoes'
-              ])
-            </div>
+              <div id="banhos" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('banhos'),
+                'label' => 'Banho',
+                'bg_color' => 'bg-purple-500',
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'B',
+                'table' => 'catalogacoes'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.retrabalhos')
-            <div id="retrabalhos" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('retrabalhos'),
-              'label' => 'Retrabalho',
-              'bg_color' => 'bg-brown-500',
-              'text_color' => 'text-white',
-              'multi_drag' => false,
-              'status' => 'T',
-              'table' => 'catalogacoes'
-              ])
-            </div>
+              <div id="retrabalhos" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('retrabalhos'),
+                'label' => 'Retrabalho',
+                'bg_color' => 'bg-brown-500',
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'T',
+                'table' => 'catalogacoes'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.revisoes')
-            <div id="revisoes" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('revisoes'),
-              'label' => 'Revisão',
-              'bg_color' => 'bg-red-600',
-              'text_color' => 'text-white',
-              'multi_drag' => false,
-              'status' => 'G',
-              'table' => 'catalogacoes'
-              ])
-            </div>
+              <div id="revisoes" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('revisoes'),
+                'label' => 'Revisão',
+                'bg_color' => 'bg-red-600',
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'G',
+                'table' => 'catalogacoes'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.expedicoes')
-            <div id="expedicoes" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('expedicoes'),
-              'label' => 'Peças Prontas - Expedição',
-              'bg_color' => 'bg-green-600',
-              'text_color' => 'text-white',
-              'multi_drag' => false,
-              'status' => 'C',
-              'table' => 'catalogacoes'
-              ])
-            </div>
+              <div id="expedicoes" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('expedicoes'),
+                'label' => 'Peças Prontas - Expedição',
+                'bg_color' => 'bg-green-600',
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'C',
+                'table' => 'catalogacoes'
+                ])
+              </div>
             @endcan
 
             @can('painel_acompanhamento.enviados')
-            <div id="concluidos" class="d-inline-block">
-              @include('painel_acompanhamento._column', [
-              'data' => $painel->get('concluidos'),
-              'label' => 'Enviado',
-              'bg_color' => 'bg-grey-600',
-              'text_color' => 'text-white',
-              'multi_drag' => false,
-              'status' => 'L',
-              'table' => 'catalogacoes'
-              ])
-            </div>
+              <div id="concluidos" class="d-inline-block">
+                @include('painel_acompanhamento._column', [
+                'data' => $painel->get('concluidos'),
+                'label' => 'Enviado',
+                'bg_color' => 'bg-grey-600',
+                'text_color' => 'text-white',
+                'multi_drag' => false,
+                'status' => 'L',
+                'table' => 'catalogacoes'
+                ])
+              </div>
             @endcan
 
           </div>
