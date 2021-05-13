@@ -100,7 +100,8 @@
                           <td class="font-w700" colspan="5">
                             <input type="checkbox" data-plugin="switchery" data-color="#526069"
                               data-group="{{ $loop->parent->parent->index . '_special' }}" name="permissions[]"
-                              value="{{ $specialPermission->name }}">
+                              value="{{ $specialPermission->name }}"
+                              {{ $role->hasPermissionTo($specialPermission->name) ? ' checked' : '' }}>
                             {{ $specialPermission->feature }}
                           </td>
                         </tr>

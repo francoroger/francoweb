@@ -137,7 +137,7 @@ class PainelAcompanhamentoController extends Controller
       $obj->data_carbon = $separacao->data_inicio_preparacao ? Carbon::parse($separacao->data_inicio_preparacao) : null;
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
-      $obj->substatus = null; //$separacao->status_banho;
+      $obj->substatus = $separacao->status_preparacao ?? 'A'; //TEMPORÁRIO, POIS POR PADRÃO ESTÁ NULO
       $colOrdens[] = $obj;
     }
 
@@ -459,14 +459,16 @@ class PainelAcompanhamentoController extends Controller
             $separacao->data_inicio_catalogacao = Carbon::now();
             break;
           case 'F':
-            $separacao->status_banho = 'G';
+            $separacao->status_preparacao = 'G';
             //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
-            //Sobre comentário acima: agora faz pois não teremos mais o menu iniciar nesse box
-            $separacao->data_inicio_preparacao = Carbon::now();
             //$separacao->data_inicio_banho = Carbon::now();
             break;
           case 'B':
-            $separacao->status_banho = 'A';
+            //Se não foi encerrada não deixa arrastar
+            if ($separacao->status_preparacao == 'G') {
+              return response('O processo de preparação não foi iniciado!', 503);
+            }
+            //$separacao->status_banho = 'A';
             //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
             //Sobre comentário acima: agora faz pois não teremos mais o menu iniciar nesse box
             //$separacao->data_inicio_preparacao = Carbon::now();
@@ -541,13 +543,12 @@ class PainelAcompanhamentoController extends Controller
     return response(200);
   }
 
-  public function iniciarBanho(Request $request)
+  public function iniciarPreparacao(Request $request)
   {
     $banho = Catalogacao::findOrFail($request->id);
     $separacao = $banho->separacao;
-    //$separacao->data_inicio_preparacao = Carbon::now();
-    $separacao->data_inicio_banho = Carbon::now();
-    $separacao->status_banho = 'A';
+    $separacao->data_inicio_preparacao = Carbon::now();
+    $separacao->status_preparacao = 'A';
     $separacao->save();
     return response(200);
   }

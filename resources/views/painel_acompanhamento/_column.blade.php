@@ -36,7 +36,7 @@
                       @endif
                       @if ($status == 'F' && $item->substatus == 'G')
                         <a href="javascript:void(0);"
-                          class="dropdown-item text-primary font-weight-400 action-iniciar-banho"><i
+                          class="dropdown-item text-primary font-weight-400 action-iniciar-prep"><i
                             class="fa fa-clock-o mr-2"></i>Iniciar</a>
                       @endif
                       @if ($status == 'T' && $item->substatus == 'G')

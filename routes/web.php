@@ -126,7 +126,7 @@ Route::get('/painel', 'PainelAcompanhamentoController@index')->name('painel');
 Route::post('/painel/catalogacao', 'PainelAcompanhamentoController@move')->name('painel.move');
 Route::post('/painel/arquivar', 'PainelAcompanhamentoController@arquivar')->name('painel.arquivar');
 Route::post('/painel/encerrar_separacao', 'PainelAcompanhamentoController@encerrarSeparacao')->name('painel.encerrar_separacao');
-Route::post('/painel/iniciar_banho', 'PainelAcompanhamentoController@iniciarBanho')->name('painel.iniciar_banho');
+Route::post('/painel/iniciar_preparacao', 'PainelAcompanhamentoController@iniciarPreparacao')->name('painel.iniciar_preparacao');
 Route::post('/painel/iniciar_retrabalho', 'PainelAcompanhamentoController@iniciarRetrabalho')->name('painel.iniciar_retrabalho');
 Route::post('/painel/iniciar_expedicao', 'PainelAcompanhamentoController@iniciarExpedicao')->name('painel.iniciar_expedicao');
 Route::get('/painel/column', 'PainelAcompanhamentoController@column')->name('painel.column');

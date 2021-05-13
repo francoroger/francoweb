@@ -99,6 +99,14 @@
       var items = $(evt.items);
       var ids = [];
 
+      if (to.data('status') === 'T') {
+        if (!confirm('Deseja realmente lançar um retrabalho?')) {
+          refreshColumn(to.data('status'));
+          refreshColumn(from.data('status'));
+          return;
+        }
+      }
+
       if (items.length > 0) {
         items.each(function(index, element) {
           ids.push($(element).data('id'));
@@ -173,9 +181,9 @@
       });
     }
 
-    function iniciarBanho(id) {
+    function iniciarPreparacao(id) {
       $.ajax({
-        url: "{{ route('painel.iniciar_banho') }}",
+        url: "{{ route('painel.iniciar_preparacao') }}",
         headers: {
           'X-CSRF-TOKEN': "{{ csrf_token() }}"
         },
@@ -353,9 +361,9 @@
       encerrarSeparacao(id);
     });
 
-    $(document).on('click', '.action-iniciar-banho', function(event) {
+    $(document).on('click', '.action-iniciar-prep', function(event) {
       var id = $(this).parent().parent().parent().parent().data('id');
-      iniciarBanho(id);
+      iniciarPreparacao(id);
     });
 
     $(document).on('click', '.action-iniciar-retrab', function(event) {
