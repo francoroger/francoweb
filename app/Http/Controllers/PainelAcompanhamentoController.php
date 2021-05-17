@@ -473,6 +473,7 @@ class PainelAcompanhamentoController extends Controller
             //Sobre comentário acima: agora faz pois não teremos mais o menu iniciar nesse box
             //$separacao->data_inicio_preparacao = Carbon::now();
             $separacao->data_inicio_banho = Carbon::now();
+            $separacao->status_banho = 'A';
             break;
           case 'T':
             $separacao->status_retrabalho = 'G';
@@ -484,9 +485,9 @@ class PainelAcompanhamentoController extends Controller
             break;
           case 'G':
             //Se não foi encerrada não deixa arrastar
-            if ($separacao->status_banho == 'G') {
-              return response('O processo de banho não foi iniciado!', 503);
-            }
+            //if ($separacao->status_banho == 'G') {
+            //  return response('O processo de banho não foi iniciado!', 503);
+            //}
             if ($separacao->status_retrabalho == 'G') {
               return response('O processo de retrabalho não foi iniciado!', 503);
             }
