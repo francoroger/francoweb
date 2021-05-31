@@ -49,6 +49,9 @@
                           class="dropdown-item text-primary font-weight-400 action-iniciar-exped"><i
                             class="fa fa-clock-o mr-2"></i>Iniciar</a>
                       @endif
+                      @if ($label === 'Retrabalho')
+                        <a href="javascript:void(0);" class="dropdown-item edit-retrabalho"><i class="icon wb-edit mr-2"></i>Editar</a>        
+                      @endif
                       <!--
                   <a href="javascript:void(0);" data-toggle="modal" data-target="#task-detail-modal" class="dropdown-item"><i class="icon wb-search mr-2"></i>Visualizar</a>
                   <a href="javascript:void(0);" class="dropdown-item"><i class="icon wb-edit mr-2"></i>Editar</a>

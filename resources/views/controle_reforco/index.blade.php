@@ -416,7 +416,7 @@
     }
 
     function limpaCampos() {
-      $('#idcliente').val('');
+      //$('#idcliente').val(''); //não limpar campo cliente pois ela lança por cliente
       $('#idcliente').trigger('change');
       $('#idtiposervico').val('');
       $('#idmaterial').val('');

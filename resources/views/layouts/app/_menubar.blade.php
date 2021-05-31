@@ -40,15 +40,13 @@
               <span class="site-menu-arrow"></span>
             </a>
             <ul class="site-menu-sub">
-              {{-- 
-              @can('catalogacoes.index')
+              {{-- @can('catalogacoes.index')
                 <li class="site-menu-item">
                   <a href="#">
                     <span class="site-menu-title">Catalogação</span>
                   </a>
                 </li>
-              @endcan
-               --}}
+              @endcan --}}
               @can('checklist.index')
                 <li class="site-menu-item{{ Request::is('catalogacao/checklist*') ? ' active' : '' }}">
                   <a href="{{ route('catalogacao_checklist.index') }}">
@@ -65,8 +63,7 @@
               @endcan
             </ul>
           </li>
-          {{-- 
-          @can('ordens_servico.index')
+          {{-- @can('ordens_servico.index')
             <li class="site-menu-item">
               <a href="#">
                 <i class="site-menu-icon wb-order" aria-hidden="true"></i>
@@ -81,8 +78,7 @@
                 <span class="site-menu-title">Serviço</span>
               </a>
             </li>
-          @endcan
-           --}}
+          @endcan --}}
           <li class="site-menu-item has-sub{{ Request::is('producao/*') ? ' active open' : '' }}">
             <a href="javascript:void(0)">
               <i class="site-menu-icon wb-pluse" aria-hidden="true"></i>
@@ -97,6 +93,11 @@
                   </a>
                 </li>
               @endcan
+              <li class="site-menu-item{{ Request::is('producao/retrabalhos*') ? ' active' : '' }}">
+                <a href="{{ route('retrabalhos.index') }}">
+                  <span class="site-menu-title">Retrabalhos</span>
+                </a>
+              </li>
               @can('relatorio_ficha_producao.index')
                 <li class="site-menu-item{{ Request::is('producao/ficha_producao*') ? ' active' : '' }}">
                   <a class="animsition-link" href="{{ route('relatorio_ficha_producao.index') }}">

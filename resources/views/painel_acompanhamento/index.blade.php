@@ -3,6 +3,7 @@
 @push('stylesheets_plugins')
   <link rel="stylesheet" href="{{ asset('assets/vendor/asscrollable/asScrollable.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/examples/css/advanced/scrollable.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}">
 
   <style media="screen">
     .board {
@@ -63,34 +64,33 @@
       display: none !important;
     }
 
+    /*select2 on modal*/
+    .modal-open .select2-container {
+      z-index: 1701 !important;
+    }
+
   </style>
 @endpush
 
 @push('scripts_plugins')
   <script src="{{ asset('assets/plugins/Sortable/Sortable.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
 @endpush
 
 @push('scripts_page')
+  <script src="{{ asset('assets/modules/js/painel_acompanhamento/retrabalho.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/asscrollable.js') }}"></script>
+  <script src="{{ asset('assets/js/Plugin/select2.js') }}"></script>
 
   <script src="{{ asset('assets/js/Plugin/kanban.js') }}"></script>
   <script type="text/javascript">
-    //
-    //Nested
-    //
-    /*(function() {
-      var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
+    coresUrl = "{{ route('materiais.cores_disponiveis', ['id' => '/']) }}/";
+    storeRetrabalhoUrl = "{{ route('retrabalhos.store') }}";
+    apitoken = "{{ csrf_token() }}";
 
-      // Loop through each nested sortable element
-      for (var i = 0; i < nestedSortables.length; i++) {
-        new Sortable(nestedSortables[i], {
-          group: 'nested',
-          animation: 150,
-          fallbackOnBody: true,
-          swapThreshold: 0.65
-        });
-      }
-    })();*/
+    $('#idcliente').select2({
+      dropdownParent: $('#modalForm')
+    });
 
     function doChangeEvent(evt) {
       var from = $(evt.from);
@@ -99,20 +99,38 @@
       var items = $(evt.items);
       var ids = [];
 
-      if (to.data('status') === 'T') {
-        if (!confirm('Deseja realmente lançar um retrabalho?')) {
-          refreshColumn(to.data('status'));
-          refreshColumn(from.data('status'));
-          return;
-        }
-      }
-
       if (items.length > 0) {
         items.each(function(index, element) {
           ids.push($(element).data('id'));
         });
       } else {
         ids.push(item.data('id'));
+      }
+
+      if (to.data('status') === 'T') {
+        if (!confirm('Deseja realmente lançar um retrabalho?')) {
+          refreshColumn(to.data('status'));
+          refreshColumn(from.data('status'));
+          return;
+        }
+
+        var item_id = item.data('id');
+        $.ajax({
+          url: "{{ route('painel.infoitem', ['id' => '/']) }}/" + item_id,
+          type: 'GET',
+          success: function(data) {
+            $('#idseparacao').val(data.id);
+            $('#idcliente').val(data.cliente_id);
+            $('#idcliente').trigger('change');
+            $('#retrabalho-modal').modal('show');
+          },
+          error: function(jqXHR, textStatus, err) {
+            console.log(jqXHR);
+            window.toastr.error(jqXHR.responseText)
+            refreshColumn(to.data('status'));
+            refreshColumn(from.data('status'));
+          }
+        });
       }
 
       if (from !== to) {
@@ -545,5 +563,7 @@
     </div>
 
   </div>
+
+  @include('painel_acompanhamento._retrabalho')
 
 @endsection

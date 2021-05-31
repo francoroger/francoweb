@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Catalogacao;
+use App\Cliente;
+use App\Material;
 use App\OrdemServico;
 use App\Recebimento;
 use App\Separacao;
+use App\TipoServico;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use stdClass;
@@ -290,8 +293,15 @@ class PainelAcompanhamentoController extends Controller
     $painel->put('expedicoes', collect((object) $this->expedicoes()));
     $painel->put('concluidos', collect((object) $this->concluidos()));
 
+    $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
+    $tiposServico = TipoServico::orderBy('descricao')->get();
+    $materiais = Material::where('ativo', true)->orderBy('pos')->get();
+
     return view('painel_acompanhamento.index')->with([
       'painel' => $painel,
+      'tiposServico' => $tiposServico,
+      'materiais' => $materiais,
+      'clientes' => $clientes,
     ]);
   }
 
@@ -669,5 +679,13 @@ class PainelAcompanhamentoController extends Controller
       'multi_drag' => $multi_drag,
       'status' => $status,
     ])->render()]);
+  }
+
+  public function infoItem(Request $request, $id)
+  {
+    $cat = Catalogacao::findOrFail($id);
+    $item = $cat->separacao;
+
+    return response()->json($item);
   }
 }

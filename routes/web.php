@@ -130,6 +130,7 @@ Route::post('/painel/iniciar_preparacao', 'PainelAcompanhamentoController@inicia
 Route::post('/painel/iniciar_retrabalho', 'PainelAcompanhamentoController@iniciarRetrabalho')->name('painel.iniciar_retrabalho');
 Route::post('/painel/iniciar_expedicao', 'PainelAcompanhamentoController@iniciarExpedicao')->name('painel.iniciar_expedicao');
 Route::get('/painel/column', 'PainelAcompanhamentoController@column')->name('painel.column');
+Route::get('/painel/item/{id}', 'PainelAcompanhamentoController@infoItem')->name('painel.infoitem');
 
 // Recebimentos
 Route::get('recebimentos/ajax', 'RecebimentoController@ajax')->name('recebimentos.ajax');
@@ -160,6 +161,11 @@ Route::group(['prefix' => 'producao'], function () {
   Route::get('relatorio_producao', 'RelatorioProducaoController@index')->name('relatorio_producao.index');
   Route::post('relatorio_producao', 'RelatorioProducaoController@preview')->name('relatorio_producao.preview');
   Route::post('relatorio_producao/print', 'RelatorioProducaoController@print')->name('relatorio_producao.print');
+
+  //Retrabalho
+  Route::get('retrabalhos/ajax', 'RetrabalhoController@ajax')->name('retrabalhos.ajax');
+  Route::get('retrabalhos/data/{id}', 'RetrabalhoController@retrabalhoData')->name('retrabalhos.retrabalhoData');
+  Route::resource('retrabalhos', 'RetrabalhoController');
 });
 
 // Relatórios
