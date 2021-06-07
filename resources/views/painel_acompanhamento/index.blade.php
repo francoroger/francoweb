@@ -69,6 +69,60 @@
       z-index: 1701 !important;
     }
 
+    @media only screen and (max-width: 800px) {
+
+      /* Force table to not be like tables anymore */
+      #no-more-tables table,
+      #no-more-tables thead,
+      #no-more-tables tbody,
+      #no-more-tables th,
+      #no-more-tables td,
+      #no-more-tables tr {
+        display: block;
+      }
+
+      /* Hide table headers (but not display: none;, for accessibility) */
+      #no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      #no-more-tables tr {
+        border: 1px solid #ccc;
+      }
+
+      #no-more-tables td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 30%;
+        white-space: normal;
+        text-align: left;
+      }
+
+      #no-more-tables td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 400;
+      }
+
+      /*
+                Label the data
+                */
+      #no-more-tables td:before {
+        content: attr(data-title);
+      }
+    }
+
   </style>
 @endpush
 
@@ -590,18 +644,20 @@
 
       let data = $('#retrabalho-form').serializeArray();
 
-      $.ajax({
-        url: storeRetrabalhoUrl,
-        type: 'POST',
-        data: data,
-        headers: {
-          'X-CSRF-TOKEN': apitoken
-        },
-        success: function(data) {
-          $('#retrabalho-modal').modal('hide');
-          refreshColumn('T');
-        }
-      });
+      if (validaItens()) {
+        $.ajax({
+          url: storeRetrabalhoUrl,
+          type: 'POST',
+          data: data,
+          headers: {
+            'X-CSRF-TOKEN': apitoken
+          },
+          success: function(data) {
+            $('#retrabalho-modal').modal('hide');
+            refreshColumn('T');
+          }
+        });
+      }
 
     });
 
@@ -609,6 +665,25 @@
     $(document).on('submit', '#retrabalho-form', function(e) {
       e.preventDefault();
     });
+
+    function validaItens() {
+      let result = true;
+      $('.item-retrabalho').each(function(i, v) {
+        let check = $(v).find('select[name*="idtiposervico"]');
+        if (check.val() != '') {
+          //valida linha
+          if ($(v).find('select[name*="idmaterial"]').val() == '') {
+            toastr.error("Informe o material!");
+            result = false;
+          }
+          if ($(v).find('input[name*="peso"]').val() == '') {
+            toastr.error("Informe o peso!");
+            result = false;
+          }
+        }
+      });
+      return result;
+    }
 
   </script>
 @endpush

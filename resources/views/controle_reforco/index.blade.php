@@ -12,6 +12,60 @@
       z-index: 1701 !important;
     }
 
+    @media only screen and (max-width: 800px) {
+
+      /* Force table to not be like tables anymore */
+      #no-more-tables table,
+      #no-more-tables thead,
+      #no-more-tables tbody,
+      #no-more-tables th,
+      #no-more-tables td,
+      #no-more-tables tr {
+        display: block;
+      }
+
+      /* Hide table headers (but not display: none;, for accessibility) */
+      #no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      #no-more-tables tr {
+        border: 1px solid #ccc;
+      }
+
+      #no-more-tables td {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 30%;
+        white-space: normal;
+        text-align: left;
+      }
+
+      #no-more-tables td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: 400;
+      }
+
+      /*
+                                        Label the data
+                                        */
+      #no-more-tables td:before {
+        content: attr(data-title);
+      }
+    }
+
   </style>
 @endpush
 
@@ -39,32 +93,24 @@
       dropdownParent: $('#modalForm')
     });
 
-    $(document).on('change', '#idmaterial', function() {
-      var id = $(this).val();
-
-      if (id == '') {
-        var cbCores = document.getElementById("idcor");
-        cbCores.options.length = 0;
-        cbCores.add(document.createElement("option"));
-      } else {
-        $.ajax({
-          url: "{{ route('materiais.cores_disponiveis', ['id' => '/']) }}/" + id,
-          dataType: "json",
-          success: function(data) {
-            var cbCores = document.getElementById("idcor");
-            cbCores.options.length = 0;
-            cbCores.add(document.createElement("option"));
-
-            for (var k in data) {
-              var option = document.createElement("option");
-              option.value = data[k].id;
-              option.text = data[k].descricao;
-              cbCores.add(option);
-            }
+    function validaItens() {
+      let result = true;
+      $('.item-passagem').each(function(i, v) {
+        let check = $(v).find('select[name*="idtiposervico"]');
+        if (check.val() != '') {
+          //valida linha
+          if ($(v).find('select[name*="idmaterial"]').val() == '') {
+            toastr.error("Informe o material!");
+            result = false;
           }
-        });
-      }
-    });
+          if ($(v).find('input[name*="peso"]').val() == '') {
+            toastr.error("Informe o peso!");
+            result = false;
+          }
+        }
+      });
+      return result;
+    }
 
     $(document).on('click', '#btn-registrar', function() {
       $(this).prop('disabled', true);
@@ -74,6 +120,9 @@
         return false;
       } else if ($('#hora_servico').val() == '') {
         toastr.error("Informe a hora do serviço!");
+        $(this).prop('disabled', false);
+        return false;
+      } else if (!validaItens()) {
         $(this).prop('disabled', false);
         return false;
       } else {
@@ -455,7 +504,8 @@
 @section('content')
   <div class="page">
     <div class="page-header">
-      <h1 class="page-title font-size-26 font-weight-100">Controle de Reforço de Tanques</h1>
+      <h1 class="page-title font-size-26 font-weight-100"><span class="hidden-sm-down">Controle de </span>Reforço<span
+          class="hidden-sm-down"> de Tanques</span></h1>
       <div class="page-header-actions">
         <a class="btn btn-icon btn-info btn-outline" href="{{ route('controle_reforco.consulta') }}"
           data-placement="bottom" data-toggle="tooltip" data-original-title="Consultar">
@@ -516,58 +566,60 @@
 
             <div class="row">
               <div class="col-md-12">
-                <table class="table table-condensed table-bordered" id="tb-item-passagem">
-                  <thead>
-                    <tr>
-                      <th class="w-p25">Serviço</th>
-                      <th class="w-p25">Material</th>
-                      <th class="w-p20">Cor</th>
-                      <th class="w-p10">Ml</th>
-                      <th class="w-p15">Peso</th>
-                      <th class="w-p5"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="item-passagem" data-index="0">
-                      <td>
-                        <select class="form-control" name="item_passagem[0][idtiposervico]">
-                          <option value=""></option>
-                          @foreach ($tiposServico as $tipoServico)
-                            <option value="{{ $tipoServico->id }}">{{ $tipoServico->descricao }}</option>
-                          @endforeach
-                        </select>
-                      </td>
-                      <td>
-                        <select class="form-control" name="item_passagem[0][idmaterial]">
-                          <option value=""></option>
-                          @foreach ($materiais as $material)
-                            <option value="{{ $material->id }}">{{ $material->descricao }}</option>
-                          @endforeach
-                        </select>
-                      </td>
-                      <td>
-                        <select class="form-control" name="item_passagem[0][idcor]">
-                          <option value=""></option>
-                        </select>
-                      </td>
-                      <td>
-                        <input type="number" class="form-control" name="item_passagem[0][milesimos]" min="0" />
-                      </td>
-                      <td>
-                        <input type="number" class="form-control" name="item_passagem[0][peso]" min="0" />
-                      </td>
-                      <td>
-                        <input type="hidden" name="item_passagem[0][item_id]">
-                        <div class="item-passagem-controls d-none justify-content-center">
-                          <button type="button" class="btn btn-sm btn-block btn-outline-danger btn-remove-item-passagem"
-                            title="Excluir"><i class="fa fa-times"></i></button>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-block btn-info btn-add-item-passagem"
-                          title="Adicionar item"><i class="icon wb-plus"></i></button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div id="no-more-tables">
+                  <table class="col-sm-12 table table-condensed cf p-0" id="tb-item-passagem">
+                    <thead class="cf">
+                      <tr>
+                        <th class="w-p25">Serviço</th>
+                        <th class="w-p25">Material</th>
+                        <th class="w-p20">Cor</th>
+                        <th class="w-p10">Ml</th>
+                        <th class="w-p15">Peso</th>
+                        <th class="w-p5"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="item-passagem" data-index="0">
+                        <td data-title="Serviço">
+                          <select class="form-control" name="item_passagem[0][idtiposervico]">
+                            <option value=""></option>
+                            @foreach ($tiposServico as $tipoServico)
+                              <option value="{{ $tipoServico->id }}">{{ $tipoServico->descricao }}</option>
+                            @endforeach
+                          </select>
+                        </td>
+                        <td data-title="Material">
+                          <select class="form-control" name="item_passagem[0][idmaterial]">
+                            <option value=""></option>
+                            @foreach ($materiais as $material)
+                              <option value="{{ $material->id }}">{{ $material->descricao }}</option>
+                            @endforeach
+                          </select>
+                        </td>
+                        <td data-title="Cor">
+                          <select class="form-control" name="item_passagem[0][idcor]">
+                            <option value=""></option>
+                          </select>
+                        </td>
+                        <td data-title="Ml">
+                          <input type="number" class="form-control" name="item_passagem[0][milesimos]" min="0" />
+                        </td>
+                        <td data-title="Peso">
+                          <input type="number" class="form-control" name="item_passagem[0][peso]" min="0" />
+                        </td>
+                        <td data-title="Ações">
+                          <input type="hidden" name="item_passagem[0][item_id]">
+                          <div class="item-passagem-controls d-none justify-content-center">
+                            <button type="button" class="btn btn-sm btn-block btn-outline-danger btn-remove-item-passagem"
+                              title="Excluir"><i class="fa fa-times"></i></button>
+                          </div>
+                          <button type="button" class="btn btn-sm btn-block btn-info btn-add-item-passagem"
+                            title="Adicionar item"><i class="icon wb-plus"></i></button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </form>

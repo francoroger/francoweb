@@ -172,7 +172,7 @@ Route::group(['prefix' => 'producao'], function () {
   //Retrabalho
   Route::get('retrabalhos/ajax', 'RetrabalhoController@ajax')->name('retrabalhos.ajax');
   Route::get('retrabalhos/data/{id}', 'RetrabalhoController@retrabalhoData')->name('retrabalhos.retrabalhoData');
-  Route::get('retrabalhos/ajaxstore', 'RetrabalhoController@ajaxstore')->name('retrabalhos.ajaxstore');
+  Route::post('retrabalhos/ajaxstore', 'RetrabalhoController@ajaxstore')->name('retrabalhos.ajaxstore');
   Route::resource('retrabalhos', 'RetrabalhoController');
 });
 
