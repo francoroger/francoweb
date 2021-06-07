@@ -168,6 +168,12 @@
                       <td>
                         <select class="form-control" name="item_retrabalho[{{ $loop->index }}][idcor]">
                           <option value=""></option>
+                          @foreach ($item->material->cores as $cor)
+                            <option value="{{ $cor->id }}"
+                              {{ $item->cor_id == $cor->id ? ' selected' : '' }}>
+                              {{ $cor->descricao }}
+                            </option>
+                          @endforeach
                         </select>
                       </td>
                       <td>

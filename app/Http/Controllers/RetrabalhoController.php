@@ -231,6 +231,51 @@ class RetrabalhoController extends Controller
    */
   public function update(Request $request, $id)
   {
+    $data_inicio = $request->data_inicio ? \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->get('data_inicio') . ' ' . $request->get('hora_inicio')) : null;
+    $data_fim = $request->data_fim ? \Carbon\Carbon::createFromFormat('d/m/Y H:i', $request->get('data_fim') . ' ' . $request->get('hora_fim')) : null;
+    $retrabalho = Retrabalho::findOrFail($id);
+    $retrabalho->cliente_id = $request->idcliente;
+    $retrabalho->observacoes = $request->observacoes;
+    $retrabalho->status = $request->status;
+    $retrabalho->data_inicio = $data_inicio;
+    $retrabalho->data_fim = $data_fim;
+    $retrabalho->save();
+
+    //Delete
+    $del = array_filter($request->item_retrabalho, function ($v) {
+      return !is_null($v);
+    });
+    $ids = Arr::pluck($del, 'item_id');
+    $to_remove = RetrabalhoItem::where('retrabalho_id', $retrabalho->id);
+    if (array_filter($ids)) {
+      $to_remove->whereNotIn('id', array_filter($ids));
+    }
+    $to_remove = $to_remove->get();
+    foreach ($to_remove as $r) {
+      $r->delete();
+    }
+
+    //Salva
+    foreach ($request->item_retrabalho as $item_retrabalho) {
+      if ($item_retrabalho) {
+        if ($item_retrabalho['idtiposervico']) {
+          if ($item_retrabalho['item_id']) {
+            $item = RetrabalhoItem::findOrFail($item_retrabalho['item_id']);
+          } else {
+            $item = new RetrabalhoItem;
+          }
+          $item->retrabalho_id = $retrabalho->id;
+          $item->tiposervico_id = $item_retrabalho['idtiposervico'];
+          $item->material_id = $item_retrabalho['idmaterial'];
+          $item->cor_id = $item_retrabalho['idcor'];
+          $item->milesimos = $item_retrabalho['milesimos'];
+          $item->peso = $item_retrabalho['peso'];
+          $item->save();
+        }
+      }
+    }
+
+    return redirect()->route('retrabalhos.index');
   }
 
   /**
