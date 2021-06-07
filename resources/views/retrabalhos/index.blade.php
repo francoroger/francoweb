@@ -54,7 +54,7 @@
   <script src="{{ asset('assets/examples/js/advanced/bootbox-sweetalert.js') }}"></script>
 
   <script type="text/javascript">
-    function excluirGuia(id) {
+    function excluirRetrabalho(id) {
       if (id) {
         $.ajax({
           url: "{{ route('retrabalhos.destroy', '') }}/" + id,
@@ -83,6 +83,14 @@
   <div class="page">
     <div class="page-header">
       <h1 class="page-title font-size-26 font-weight-100">Retrabalhos</h1>
+      <div class="page-header-actions">
+        <div class="btn-group btn-group-sm" aria-label="Ações" role="group">
+          <a href="{{ route('retrabalhos.create') }}" class="btn btn-info">
+            <i class="icon wb-plus" aria-hidden="true"></i>
+            <span class="hidden-sm-down">Adicionar</span>
+          </a>
+        </div>
+      </div>
     </div>
 
     <div class="page-content">
@@ -94,7 +102,8 @@
               <tr>
                 <th class="w-100">Código</th>
                 <th>Cliente</th>
-                <th>Data</th>
+                <th>Data Início</th>
+                <th>Data Fim</th>
                 <th class="text-center">Status</th>
                 <th class="text-center">Ações</th>
               </tr>

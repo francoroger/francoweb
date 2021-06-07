@@ -8,6 +8,7 @@ use App\Fornecedor;
 use App\Material;
 use App\Produto;
 use App\Separacao;
+use App\TipoFalha;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -16,29 +17,31 @@ use PDF;
 class CheckListCatalogacaoController extends Controller
 {
   /**
-  * Create a new controller instance.
-  *
-  * @return void
-  */
+   * Create a new controller instance.
+   *
+   * @return void
+   */
   public function __construct()
   {
     $this->middleware('auth');
   }
 
   /**
-  * Display a listing of the resource.
-  *
-  * @return \Illuminate\Http\Response
-  */
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
   public function index()
   {
-    $materiais = Material::select(['id','descricao'])->orderBy('descricao')->get();
-    $produtos = Produto::select(['id','descricao'])->orderBy('descricao')->get();
-    $fornecedores = Fornecedor::select(['id','nome'])->orderBy('nome')->get();
+    $materiais = Material::select(['id', 'descricao'])->orderBy('descricao')->get();
+    $produtos = Produto::select(['id', 'descricao'])->orderBy('descricao')->get();
+    $fornecedores = Fornecedor::select(['id', 'nome'])->orderBy('nome')->get();
+    $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
     return view('catalogacao_checklist.index')->with([
       'materiais' => $materiais,
       'produtos' => $produtos,
       'fornecedores' => $fornecedores,
+      'tiposFalha' => $tiposFalha,
     ]);
   }
 
@@ -55,7 +58,7 @@ class CheckListCatalogacaoController extends Controller
     }
 
     if ($request->status_check) {
-      $catalogacoes->whereHas('itens', function($query) use ($request) {
+      $catalogacoes->whereHas('itens', function ($query) use ($request) {
         if ($request->status_check <> '-') {
           $query->where('status_check', $request->status_check);
         } else {
@@ -65,41 +68,41 @@ class CheckListCatalogacaoController extends Controller
     }
 
     if ($request->idproduto) {
-      $catalogacoes->whereHas('itens', function($query) use ($request) {
+      $catalogacoes->whereHas('itens', function ($query) use ($request) {
         $query->where('idproduto', $request->idproduto);
       });
     }
 
     if ($request->idmaterial) {
-      $catalogacoes->whereHas('itens', function($query) use ($request) {
+      $catalogacoes->whereHas('itens', function ($query) use ($request) {
         $query->where('idmaterial', $request->idmaterial);
       });
     }
 
     if ($request->idfornec) {
-      $catalogacoes->whereHas('itens', function($query) use ($request) {
+      $catalogacoes->whereHas('itens', function ($query) use ($request) {
         $query->where('idfornec', $request->idfornec);
       });
     }
 
     if ($request->referencia) {
-      $catalogacoes->whereHas('itens', function($query) use ($request) {
-        $query->where('referencia', 'like', "%".$request->referencia."%");
+      $catalogacoes->whereHas('itens', function ($query) use ($request) {
+        $query->where('referencia', 'like', "%" . $request->referencia . "%");
       });
     }
 
     if ($request->pesoini && $request->pesofim) {
-      $catalogacoes->whereHas('itens', function($query) use ($request) {
+      $catalogacoes->whereHas('itens', function ($query) use ($request) {
         $query->whereBetween('peso', [$request->pesoini, $request->pesofim]);
       });
     }
-    
+
     $catalogacoes = $catalogacoes->get();
     $data = [];
     foreach ($catalogacoes as $catalogacao) {
       $actions = '<div class="text-nowrap">';
-      $actions .= ($catalogacao->status == 'F' || $catalogacao->status == 'B' || $catalogacao->status == 'G' || $catalogacao->status == 'P') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a>' : '';
-      $actions .= ($catalogacao->status == 'C' || $catalogacao->status == 'L') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Editar" href="'.route('catalogacao_checklist.check', $catalogacao->id).'"><i class="icon wb-pencil"></i></a> <a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="'.route('catalogacao_checklist.show', $catalogacao->id).'"><i class="icon wb-search"></i></a>' : '';
+      $actions .= ($catalogacao->status == 'G' || $catalogacao->status == 'P' || $catalogacao->status == 'C' || $catalogacao->status == 'L') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="' . route('catalogacao_checklist.check', $catalogacao->id) . '"><i class="icon wb-pencil"></i></a>' : '';
+      $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="' . route('catalogacao_checklist.show', $catalogacao->id) . '"><i class="icon wb-search"></i></a>';
       $actions .= '</div>';
       switch ($catalogacao->status) {
         case 'F':
@@ -140,16 +143,16 @@ class CheckListCatalogacaoController extends Controller
   }
 
   /**
-  * Display the specified resource.
-  *
-  * @param  int  $id
-  * @return \Illuminate\Http\Response
-  */
+   * Display the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
   public function show($id)
   {
     $catalogacao = Catalogacao::findOrFail($id);
 
-    $itens = $catalogacao->itens->sortBy(function($item) {
+    $itens = $catalogacao->itens->sortBy(function ($item) {
       return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
 
@@ -165,16 +168,16 @@ class CheckListCatalogacaoController extends Controller
   }
 
   /**
-  * Show the form for editing the specified resource.
-  *
-  * @param  int  $id
-  * @return \Illuminate\Http\Response
-  */
+   * Show the form for editing the specified resource.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
   public function check($id)
   {
     $catalogacao = Catalogacao::findOrFail($id);
 
-    $itens = $catalogacao->itens->sortBy(function($item) {
+    $itens = $catalogacao->itens->sortBy(function ($item) {
       return $item->descricao_produto . '-' . ($item->idfornec ? $item->fornecedor->nome : '') . '-' . $item->preco_bruto . '-' . $item->id;
       //return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
@@ -182,33 +185,37 @@ class CheckListCatalogacaoController extends Controller
     $produtos = $catalogacao->itens->unique('produto.descricao')->sortBy('produto.descricao')->pluck('produto.descricao', 'produto.id');
     $materiais = $catalogacao->itens->unique('material.descricao')->sortBy('material.descricao')->pluck('material.descricao', 'material.id');
 
+    $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
+
     return view('catalogacao_checklist.check')->with([
       'catalogacao' => $catalogacao,
       'itens' => $itens,
       'produtos' => $produtos,
       'materiais' => $materiais,
+      'tiposFalha' => $tiposFalha,
     ]);
   }
 
   /**
-  * Salva o conteúdo preenchido via ajax.
-  *
-  * @param  \Illuminate\Http\Request  $request
-  * @return \Illuminate\Http\Response
-  */
+   * Salva o conteúdo preenchido via ajax.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @return \Illuminate\Http\Response
+   */
   public function autosave(Request $request)
   {
     $itens = json_decode($request->itens);
-    
+
     foreach ($itens as $item) {
       $catalogacao_item = CatalogacaoItem::findOrFail($item->id);
       $catalogacao_item->status_check = $item->status_check ?? null;
       $catalogacao_item->obs_check = $item->obs_check;
+      $catalogacao_item->tipo_falha_id = $item->tipo_falha_id ? (int) $item->tipo_falha_id : null;
       $catalogacao_item->save();
     }
 
     $catalogacao = Catalogacao::findOrFail($request->id);
-    
+
     $catalogacao->status = 'P';
     $catalogacao->save();
 
@@ -229,25 +236,26 @@ class CheckListCatalogacaoController extends Controller
   }
 
   /**
-  * Update the specified resource in storage.
-  *
-  * @param  \Illuminate\Http\Request  $request
-  * @param  int  $id
-  * @return \Illuminate\Http\Response
-  */
+   * Update the specified resource in storage.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
   public function update(Request $request, $id)
   {
     if ($request->itens) {
       foreach ($request->itens as $item) {
         $catalogacao_item = CatalogacaoItem::findOrFail($item['id']);
-        $catalogacao_item->status_check = $item['status_check'];
-        $catalogacao_item->obs_check = $item['obs_check'];
+        $catalogacao_item->status_check = $item['status_check'] ?? null;
+        $catalogacao_item->obs_check = $item['obs_check'] ?? null;
+        $catalogacao_item->tipo_falha_id = $item['tipo_falha_id'] ?? null;
         $catalogacao_item->save();
       }
     }
 
     $catalogacao = Catalogacao::findOrFail($id);
-    
+
     $catalogacao->status = $request->status;
     $catalogacao->save();
 
@@ -274,16 +282,16 @@ class CheckListCatalogacaoController extends Controller
   }
 
   /**
-  * Export to PDF.
-  *
-  * @param  int  $id
-  * @return \Illuminate\Http\Response
-  */
+   * Export to PDF.
+   *
+   * @param  int  $id
+   * @return \Illuminate\Http\Response
+   */
   public function print(Request $request, $id)
   {
     $catalogacao = Catalogacao::findOrFail($id);
 
-    $itens = $catalogacao->itens->sortBy(function($item) {
+    $itens = $catalogacao->itens->sortBy(function ($item) {
       return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
     });
 

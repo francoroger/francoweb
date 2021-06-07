@@ -12,6 +12,7 @@
       <div class="modal-body">
         <form id="retrabalho-form">
           <input type="hidden" name="idseparacao" id="idseparacao">
+          <input type="hidden" name="idretrabalho" id="idretrabalho">
           <div class="row">
             <div class="form-group col-md-12">
               <label class="form-control-label font-weight-400" for="idcliente">Cliente</label>
@@ -75,6 +76,7 @@
                       <input type="number" class="form-control" name="item_retrabalho[0][peso]" min="0" />
                     </td>
                     <td>
+                      <input type="hidden" name="item_retrabalho[0][item_id]">
                       <div class="item-retrabalho-controls d-none justify-content-center">
                         <button type="button" class="btn btn-sm btn-block btn-outline-danger btn-remove-item-retrabalho"
                           title="Excluir"><i class="fa fa-times"></i></button>

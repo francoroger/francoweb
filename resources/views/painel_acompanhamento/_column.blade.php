@@ -18,7 +18,7 @@
           @foreach ($data as $item)
             <div class="card border mb-0" data-id="{{ $item->id }}">
               <div class="card-body p-5">
-                @if ($status == 'R' || ($status == 'S' && $item->substatus == 'A') || ($status == 'F' && $item->substatus == 'G') || ($status == 'T' && $item->substatus == 'G') || ($status == 'C' && $item->substatus == 'G'))
+                @if ($status == 'R' || ($status == 'S' && $item->substatus == 'A') || ($status == 'T' && $item->substatus == 'A') || ($status == 'F' && $item->substatus == 'G') || ($status == 'T' && $item->substatus == 'G') || ($status == 'C' && $item->substatus == 'G'))
                   <div class="dropdown float-right">
                     <a href="#" class="dropdown-toggle text-muted arrow-none" data-toggle="dropdown"
                       aria-expanded="false">
@@ -32,6 +32,11 @@
                       @if ($status == 'S' && $item->substatus == 'A')
                         <a href="javascript:void(0);"
                           class="dropdown-item text-danger font-weight-400 action-encerrar-sep"><i
+                            class="fa fa-check mr-2"></i>Encerrar</a>
+                      @endif
+                      @if ($status == 'T' && $item->substatus == 'A')
+                        <a href="javascript:void(0);"
+                          class="dropdown-item text-danger font-weight-400 action-encerrar-retrab"><i
                             class="fa fa-check mr-2"></i>Encerrar</a>
                       @endif
                       @if ($status == 'F' && $item->substatus == 'G')
@@ -50,7 +55,8 @@
                             class="fa fa-clock-o mr-2"></i>Iniciar</a>
                       @endif
                       @if ($label === 'Retrabalho')
-                        <a href="javascript:void(0);" class="dropdown-item edit-retrabalho"><i class="icon wb-edit mr-2"></i>Editar</a>        
+                        <a href="javascript:void(0);" class="dropdown-item edit-retrabalho"><i
+                            class="icon wb-edit mr-2"></i>Editar</a>
                       @endif
                       <!--
                   <a href="javascript:void(0);" data-toggle="modal" data-target="#task-detail-modal" class="dropdown-item"><i class="icon wb-search mr-2"></i>Visualizar</a>

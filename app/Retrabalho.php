@@ -15,4 +15,9 @@ class Retrabalho extends Model
   {
     return $this->hasMany('App\RetrabalhoItem');
   }
+
+  public function getPesoTotalAttribute()
+  {
+    return $this->itens->sum('peso');
+  }
 }

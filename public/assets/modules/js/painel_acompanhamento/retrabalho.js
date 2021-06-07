@@ -114,24 +114,13 @@
       cbCores.empty();
       cbCores.append('<option></option>');
     } else {
-      _jquery2.default.ajax({
-        url: coresUrl + id,
-        dataType: "json",
-        success: function success(data) {
-          cbCores.empty();
-          cbCores.append('<option></option>');
-
-          for (var k in data) {
-            cbCores.append('<option value="' + data[k].id + '">' + data[k].descricao + '</option>');
-          }
-        }
-      });
+      preencheCores(id, cbCores);
     }
   });
 
   (0, _jquery2.default)(document).on('click', '#btn-registrar', function () {
 
-    var data = (0, _jquery2.default)('#retrabalho-form').serializeObject();
+    var data = (0, _jquery2.default)('#retrabalho-form').serializeArray();
 
     _jquery2.default.ajax({
       url: storeRetrabalhoUrl,
@@ -141,7 +130,6 @@
         'X-CSRF-TOKEN': apitoken
       },
       success: function success(data) {
-        refreshColumn('T');
         (0, _jquery2.default)('#retrabalho-modal').modal('hide');
       }
     });
@@ -150,4 +138,23 @@
   (0, _jquery2.default)(document).on('submit', '#retrabalho-form', function (e) {
     e.preventDefault();
   });
+
+  (0, _jquery2.default)('#retrabalho-modal').on('hide.bs.modal', function (event) {
+    refreshColumn('T');
+  });
+
+  function preencheCores(id, cbCores) {
+    return _jquery2.default.ajax({
+      url: coresUrl + id,
+      dataType: "json",
+      success: function success(data) {
+        cbCores.empty();
+        cbCores.append('<option></option>');
+
+        for (var k in data) {
+          cbCores.append('<option value="' + data[k].id + '">' + data[k].descricao + '</option>');
+        }
+      }
+    });
+  }
 });

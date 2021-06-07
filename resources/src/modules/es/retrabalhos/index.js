@@ -21,7 +21,8 @@ window.removeTableRow = function (row) {
       columns: [
         { data: 'id' },
         { data: 'nome' },
-        { data: 'datacad' },
+        { data: 'data_inicio' },
+        { data: 'data_fim' },
         { data: 'status', sClass: "text-center" },
         { data: 'actions', sClass: "text-center", orderable: false, searchable: false }
       ],
@@ -47,7 +48,7 @@ window.removeTableRow = function (row) {
       closeOnConfirm: true,
     },
       function () {
-        excluirGuia(id);
+        excluirRetrabalho(id);
       });
   });
 })();

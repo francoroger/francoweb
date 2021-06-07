@@ -70,109 +70,111 @@ class ReforcoController extends Controller
   public function registra_ciclo(Request $request)
   {
     $data_servico = \Carbon\Carbon::createFromFormat('d/m/Y H:i:s', $request->get('data_servico') . ' ' . $request->get('hora_servico'));
-    $passagem = new PassagemPeca;
-    $passagem->data_servico = $data_servico;
-    $passagem->cliente_id = $request->get('idcliente');
-    $passagem->tiposervico_id = $request->get('idtiposervico');
-    $passagem->material_id = $request->get('idmaterial');
-    $passagem->cor_id = $request->get('idcor');
-    $passagem->milesimos = $request->get('milesimos');
-    $passagem->peso = str_replace(',', '.', $request->get('peso'));
-    $passagem->save();
+    foreach ($request->item_passagem as $item_passagem) {
+      $passagem = new PassagemPeca;
+      $passagem->data_servico = $data_servico;
+      $passagem->cliente_id = $request->get('idcliente');
+      $passagem->tiposervico_id = $item_passagem['idtiposervico'];
+      $passagem->material_id = $item_passagem['idmaterial'];
+      $passagem->cor_id = $item_passagem['idcor'];
+      $passagem->milesimos = $item_passagem['milesimos'];
+      $passagem->peso = str_replace(',', '.', $item_passagem['peso']);
+      $passagem->save();
 
-    $processos = ProcessoTanque::orderBy('id');
+      $processos = ProcessoTanque::orderBy('id');
 
-    if ($request->get('idtiposervico')) {
-      $processos->where('tiposervico_id', $request->get('idtiposervico'));
-    }
-
-    if ($request->get('idmaterial')) {
-      $processos->where('material_id', $request->get('idmaterial'));
-    }
-
-    if ($request->get('idcor')) {
-      $processos->where('cor_id', $request->get('idcor'));
-    }
-
-    if ($request->get('milesimos')) {
-      $processos->where('mil_ini', '<=', $request->get('milesimos'))
-        ->where('mil_fim', '>=', $request->get('milesimos'));
-    }
-
-    $processos = $processos->get();
-
-    foreach ($processos as $proc) {
-      $ciclo = new TanqueCiclo;
-
-      $NDesconto = (float)$proc->tanque->desconto_milesimo ?? 0;
-
-      if ($proc->tanque->tipo_consumo == 'M') {
-        $NPeso = str_replace(',', '.', $request->get('peso'));
-        $NMilesimos = $request->get('milesimos');
-        $peso_consumido = (($NPeso * $NMilesimos) / 1000) - (($NPeso * $NDesconto) / 1000);
-        $ciclo->peso = $peso_consumido;
-      } else {
-        $fat = $proc->fator ?? 1;
-        $ciclo->peso = str_replace(',', '.', $request->get('peso')) * $fat;
+      if ($item_passagem['idtiposervico']) {
+        $processos->where('tiposervico_id', $item_passagem['idtiposervico']);
       }
 
-      $ciclo->tanque_id = $proc->tanque_id;
-      $ciclo->cliente_id = $request->get('idcliente');
-      $ciclo->tiposervico_id = $request->get('idtiposervico');
-      $ciclo->material_id = $request->get('idmaterial');
-      $ciclo->cor_id = $request->get('idcor');
-      $ciclo->milesimos = $request->get('milesimos');
-      $ciclo->data_servico = $data_servico;
-      $ciclo->status = 'P';
-      $ciclo->peso_peca = str_replace(',', '.', $request->get('peso'));
-      $ciclo->peso_antes = $proc->tanque->ciclos->where('status', 'P')->sum('peso');
-      $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
-
-      //Verifica se já teve passagem ou reforço após essaa passagem, caso seja retroativa
-      $tanque = Tanque::findOrFail($proc->tanque_id);
-      $reforcos_apos = $tanque->reforcos->where('created_at', '>=', $data_servico)->sortBy('created_at');
-
-      //Obtem as passagens após esse serviço para atualizar os dados dela
-      $passagens_apos = $tanque->ciclos->where('data_servico', '>=', $data_servico)->sortBy('data_servico');
-
-      if ($reforcos_apos->count() > 0 || $passagens_apos->count() > 0) {
-        //Flag para indentificar que foi lançado retroativo pós reforco
-        $ciclo->retroativo = true;
+      if ($item_passagem['idmaterial']) {
+        $processos->where('material_id', $item_passagem['idmaterial']);
       }
 
-      if ($reforcos_apos->count() > 0) {
-        //Lança essa passagem já reforçada
-        $ciclo->status = 'R';
-        $ciclo->reforco_id = $reforcos_apos->first()->id ?? null;
+      if ($item_passagem['idcor']) {
+        $processos->where('cor_id', $item_passagem['idcor']);
+      }
 
-        //Percorre os reforços atualizando os valores dos ponteiros
-        foreach ($reforcos_apos as $r) {
-          $reforco_apos = Reforco::findOrFail($r->id);
-          $reforco_apos->peso_antes += $ciclo->peso;
-          $reforco_apos->peso_depois += $ciclo->peso;
-          $reforco_apos->save();
+      if ($item_passagem['milesimos']) {
+        $processos->where('mil_ini', '<=', $item_passagem['milesimos'])
+          ->where('mil_fim', '>=', $item_passagem['milesimos']);
+      }
+
+      $processos = $processos->get();
+
+      foreach ($processos as $proc) {
+        $ciclo = new TanqueCiclo;
+
+        $NDesconto = (float)$proc->tanque->desconto_milesimo ?? 0;
+
+        if ($proc->tanque->tipo_consumo == 'M') {
+          $NPeso = str_replace(',', '.', $item_passagem['peso']);
+          $NMilesimos = $item_passagem['milesimos'];
+          $peso_consumido = (($NPeso * $NMilesimos) / 1000) - (($NPeso * $NDesconto) / 1000);
+          $ciclo->peso = $peso_consumido;
+        } else {
+          $fat = $proc->fator ?? 1;
+          $ciclo->peso = str_replace(',', '.', $item_passagem['peso']) * $fat;
         }
-      }
 
-      //Atualiza as passagens feitas após esse lancamento caso seja retroativo
-      $idx = 0; //pra controlar qual é a primeira passagem
-      foreach ($passagens_apos as $p) {
-        if ($idx == 0) {
-          $ciclo->peso_antes = $p->peso_antes;
-          $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
-        }
-        $ciclo_apos = TanqueCiclo::findOrFail($p->id);
-        $ciclo_apos->peso_antes += $ciclo->peso;
-        $ciclo_apos->peso_depois += $ciclo->peso;
-        if ($ciclo_apos->excedente == true) {
-          $ciclo_apos->peso += $ciclo->peso;
-          $ciclo_apos->peso_peca += $ciclo->peso_peca;
-        }
-        $ciclo_apos->save();
-        $idx++;
-      }
+        $ciclo->tanque_id = $proc->tanque_id;
+        $ciclo->cliente_id = $request->get('idcliente');
+        $ciclo->tiposervico_id = $item_passagem['idtiposervico'];
+        $ciclo->material_id = $item_passagem['idmaterial'];
+        $ciclo->cor_id = $item_passagem['idcor'];
+        $ciclo->milesimos = $item_passagem['milesimos'];
+        $ciclo->data_servico = $data_servico;
+        $ciclo->status = 'P';
+        $ciclo->peso_peca = str_replace(',', '.', $item_passagem['peso']);
+        $ciclo->peso_antes = $proc->tanque->ciclos->where('status', 'P')->sum('peso');
+        $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
 
-      $ciclo->save();
+        //Verifica se já teve passagem ou reforço após essaa passagem, caso seja retroativa
+        $tanque = Tanque::findOrFail($proc->tanque_id);
+        $reforcos_apos = $tanque->reforcos->where('created_at', '>=', $data_servico)->sortBy('created_at');
+
+        //Obtem as passagens após esse serviço para atualizar os dados dela
+        $passagens_apos = $tanque->ciclos->where('data_servico', '>=', $data_servico)->sortBy('data_servico');
+
+        if ($reforcos_apos->count() > 0 || $passagens_apos->count() > 0) {
+          //Flag para indentificar que foi lançado retroativo pós reforco
+          $ciclo->retroativo = true;
+        }
+
+        if ($reforcos_apos->count() > 0) {
+          //Lança essa passagem já reforçada
+          $ciclo->status = 'R';
+          $ciclo->reforco_id = $reforcos_apos->first()->id ?? null;
+
+          //Percorre os reforços atualizando os valores dos ponteiros
+          foreach ($reforcos_apos as $r) {
+            $reforco_apos = Reforco::findOrFail($r->id);
+            $reforco_apos->peso_antes += $ciclo->peso;
+            $reforco_apos->peso_depois += $ciclo->peso;
+            $reforco_apos->save();
+          }
+        }
+
+        //Atualiza as passagens feitas após esse lancamento caso seja retroativo
+        $idx = 0; //pra controlar qual é a primeira passagem
+        foreach ($passagens_apos as $p) {
+          if ($idx == 0) {
+            $ciclo->peso_antes = $p->peso_antes;
+            $ciclo->peso_depois = $ciclo->peso_antes + $ciclo->peso;
+          }
+          $ciclo_apos = TanqueCiclo::findOrFail($p->id);
+          $ciclo_apos->peso_antes += $ciclo->peso;
+          $ciclo_apos->peso_depois += $ciclo->peso;
+          if ($ciclo_apos->excedente == true) {
+            $ciclo_apos->peso += $ciclo->peso;
+            $ciclo_apos->peso_peca += $ciclo->peso_peca;
+          }
+          $ciclo_apos->save();
+          $idx++;
+        }
+
+        $ciclo->save();
+      }
     }
 
     $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();

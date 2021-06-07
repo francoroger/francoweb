@@ -30,22 +30,28 @@ class CatalogacaoItem extends Model
     return $this->belongsTo('App\Produto', 'idproduto');
   }
 
+  public function tipo_falha()
+  {
+    return $this->belongsTo('App\TipoFalha', 'tipo_falha_id');
+  }
+
   public function servicos()
   {
     return $this->hasMany('App\CatalogacaoServico', 'iditemtri', 'id');
   }
 
-  public function getPesoRealAttribute($value) {
+  public function getPesoRealAttribute($value)
+  {
     return $this->peso * $this->quantidade;
   }
 
   /**
-  * Get foto - trata o caminho para localizar a foto na estrutura de pastas
-  * Exemplo: CATALOGAÇÃO/FOTOS CATALOGO YYYY/MM-YYYY/FILENAME.jpg
-  *
-  * @param  string  $value
-  * @return string
-  */
+   * Get foto - trata o caminho para localizar a foto na estrutura de pastas
+   * Exemplo: CATALOGAÇÃO/FOTOS CATALOGO YYYY/MM-YYYY/FILENAME.jpg
+   *
+   * @param  string  $value
+   * @return string
+   */
   public function getFotoAttribute($value)
   {
     //remove 'T:\' do caminho do arquivo

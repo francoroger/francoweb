@@ -87,6 +87,12 @@ Route::group(['prefix' => 'cadastros'], function () {
   Route::get('tanques/ajax', 'TanqueController@ajax')->name('tanques.ajax');
   Route::resource('tanques', 'TanqueController');
 
+  // Tipos de Falha
+  Route::get('tipos_falha', 'TipoFalhaController@index')->name('tipos_falha.index');
+  Route::post('tipos_falha', 'TipoFalhaController@store')->name('tipos_falha.store');
+  Route::put('tipos_falha/{id}', 'TipoFalhaController@update')->name('tipos_falha.update');
+  Route::delete('tipos_falha/{id}', 'TipoFalhaController@destroy')->name('tipos_falha.destroy');
+
   // Tipos de Serviço
   Route::get('tipos_servico', 'TipoServicoController@index')->name('tipos_servico.index');
   Route::post('tipos_servico', 'TipoServicoController@store')->name('tipos_servico.store');
@@ -126,11 +132,12 @@ Route::get('/painel', 'PainelAcompanhamentoController@index')->name('painel');
 Route::post('/painel/catalogacao', 'PainelAcompanhamentoController@move')->name('painel.move');
 Route::post('/painel/arquivar', 'PainelAcompanhamentoController@arquivar')->name('painel.arquivar');
 Route::post('/painel/encerrar_separacao', 'PainelAcompanhamentoController@encerrarSeparacao')->name('painel.encerrar_separacao');
+Route::post('/painel/encerrar_retrabalho', 'PainelAcompanhamentoController@encerrarRetrabalho')->name('painel.encerrar_retrabalho');
 Route::post('/painel/iniciar_preparacao', 'PainelAcompanhamentoController@iniciarPreparacao')->name('painel.iniciar_preparacao');
 Route::post('/painel/iniciar_retrabalho', 'PainelAcompanhamentoController@iniciarRetrabalho')->name('painel.iniciar_retrabalho');
 Route::post('/painel/iniciar_expedicao', 'PainelAcompanhamentoController@iniciarExpedicao')->name('painel.iniciar_expedicao');
 Route::get('/painel/column', 'PainelAcompanhamentoController@column')->name('painel.column');
-Route::get('/painel/item/{id}', 'PainelAcompanhamentoController@infoItem')->name('painel.infoitem');
+Route::get('/painel/item/{id}', 'PainelAcompanhamentoController@separacaoFromCatalogacao')->name('painel.separacaoFromCatalogacao');
 
 // Recebimentos
 Route::get('recebimentos/ajax', 'RecebimentoController@ajax')->name('recebimentos.ajax');
@@ -165,6 +172,7 @@ Route::group(['prefix' => 'producao'], function () {
   //Retrabalho
   Route::get('retrabalhos/ajax', 'RetrabalhoController@ajax')->name('retrabalhos.ajax');
   Route::get('retrabalhos/data/{id}', 'RetrabalhoController@retrabalhoData')->name('retrabalhos.retrabalhoData');
+  Route::get('retrabalhos/ajaxstore', 'RetrabalhoController@ajaxstore')->name('retrabalhos.ajaxstore');
   Route::resource('retrabalhos', 'RetrabalhoController');
 });
 

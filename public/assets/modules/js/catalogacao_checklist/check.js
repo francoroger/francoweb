@@ -85,7 +85,8 @@
         itens.push({
           id: (0, _jquery2.default)(this).val(),
           status_check: (0, _jquery2.default)('input[name="' + name.replace('id', 'status_check') + '"]:checked').val(),
-          obs_check: (0, _jquery2.default)('input[name="' + name.replace('id', 'obs_check') + '"]').val()
+          obs_check: (0, _jquery2.default)('input[name="' + name.replace('id', 'obs_check') + '"]').val(),
+          tipo_falha_id: (0, _jquery2.default)('select[name="' + name.replace('id', 'tipo_falha_id') + '"]').val()
         });
       });
       formData.append('itens', JSON.stringify(itens));

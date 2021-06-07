@@ -32,7 +32,7 @@
       var defaults = Plugin.getDefaults("dataTable");
 
       var options = _jquery2.default.extend(true, {}, defaults, {
-        columns: [{ data: 'id' }, { data: 'nome' }, { data: 'datacad' }, { data: 'status', sClass: "text-center" }, { data: 'actions', sClass: "text-center", orderable: false, searchable: false }],
+        columns: [{ data: 'id' }, { data: 'nome' }, { data: 'data_inicio' }, { data: 'data_fim' }, { data: 'status', sClass: "text-center" }, { data: 'actions', sClass: "text-center", orderable: false, searchable: false }],
         order: [[0, "desc"]]
       });
 
@@ -54,7 +54,7 @@
         cancelButtonText: 'Cancelar',
         closeOnConfirm: true
       }, function () {
-        excluirGuia(id);
+        excluirRetrabalho(id);
       });
     });
   })();

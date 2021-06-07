@@ -25,16 +25,22 @@
   color: #a3afb7;
 }
 
-.app-media .media-item input[type=radio] {
+.app-media .media-item input[type="radio"] {
   width: 48px;
   height: 48px;
 }
 
-.app-media .media-item .checkbox-danger input[type=radio]:checked + input[type=hidden] + label::after, .app-media .media-item .checkbox-danger input[type=radio]:checked + label::after {
+.app-media .media-item .checkbox-danger
+input[type="radio"]:checked
++ input[type="hidden"]
++ label::after, .app-media .media-item .checkbox-danger input[type="radio"]:checked + label::after {
   content: "\f195";
 }
 
-.app-media .media-item .checkbox-info input[type=radio]:checked + input[type=hidden] + label::after, .app-media .media-item .checkbox-info input[type=radio]:checked + label::after {
+.app-media .media-item .checkbox-info
+input[type="radio"]:checked
++ input[type="hidden"]
++ label::after, .app-media .media-item .checkbox-info input[type="radio"]:checked + label::after {
   content: "\f14d";
 }
 
@@ -119,7 +125,7 @@
 
 .app-media .media-list.is-grid .media-item .checkbox-custom-bottom-left {
   position: absolute;
-  bottom: 506px;
+  bottom: 565px;
   left: 6px;
   padding: 0;
   margin: 0;
@@ -128,7 +134,7 @@
 .app-media .media-list.is-grid .media-item .checkbox-custom-bottom-right {
   position: absolute;
   right: 10px;
-  bottom: 506px;
+  bottom: 565px;
   padding: 0;
   margin: 0;
 }

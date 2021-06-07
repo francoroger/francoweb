@@ -202,6 +202,11 @@
                   </a>
                 </li>
               @endcan
+              <li class="site-menu-item{{ Request::is('cadastros/tipos_falha*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('tipos_falha.index') }}">
+                  <span class="site-menu-title">Tipos de Falha</span>
+                </a>
+              </li>
               @can('tanques.index')
                 <li class="site-menu-item{{ Request::is('cadastros/tanques*') ? ' active' : '' }}">
                   <a href="{{ route('tanques.index') }}">

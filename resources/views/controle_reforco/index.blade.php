@@ -39,10 +39,6 @@
       dropdownParent: $('#modalForm')
     });
 
-    $(document).on('change', '#idtiposervico, #idmaterial, #idcor, #milesimos', function() {
-      listaTanques();
-    });
-
     $(document).on('change', '#idmaterial', function() {
       var id = $(this).val();
 
@@ -72,19 +68,7 @@
 
     $(document).on('click', '#btn-registrar', function() {
       $(this).prop('disabled', true);
-      if ($('#idtiposervico').val() == '') {
-        toastr.error("Informe o tipo de serviço!");
-        $(this).prop('disabled', false);
-        return false;
-      } else if ($('#idmaterial').val() == '') {
-        toastr.error("Informe o material!");
-        $(this).prop('disabled', false);
-        return false;
-      } else if ($('#peso').val() == '') {
-        toastr.error("Informe o peso!");
-        $(this).prop('disabled', false);
-        return false;
-      } else if ($('#data_servico').val() == '') {
+      if ($('#data_servico').val() == '') {
         toastr.error("Informe a data do serviço!");
         $(this).prop('disabled', false);
         return false;
@@ -103,22 +87,14 @@
           $(this).prop('disabled', false);
           return false;
         } else {
+          let dados = $('#passagem-form').serializeArray();
           $.ajax({
             url: "{{ route('api_tanques.registrar') }}",
             headers: {
               'X-CSRF-TOKEN': "{{ csrf_token() }}"
             },
             type: 'POST',
-            data: {
-              'idcliente': $('#idcliente').val() ? $('#idcliente').val() : '',
-              'idtiposervico': $('#idtiposervico').val() ? $('#idtiposervico').val() : '',
-              'idmaterial': $('#idmaterial').val() ? $('#idmaterial').val() : '',
-              'idcor': $('#idcor').val() ? $('#idcor').val() : '',
-              'milesimos': $('#milesimos').val() ? $('#milesimos').val() : '',
-              'peso': $('#peso').val(),
-              'data_servico': $('#data_servico').val(),
-              'hora_servico': $('#hora_servico').val(),
-            },
+            data: dados,
             success: function(data) {
               for (var k in data) {
                 var gauge = $('#tanque-' + data[k].id).data('gauge');
@@ -389,40 +365,60 @@
       $('#modalComentario').modal('hide');
     });
 
-    function listaTanques() {
-      $.ajax({
-        url: "{{ route('api_tanques') }}",
-        headers: {
-          'X-CSRF-TOKEN': "{{ csrf_token() }}"
-        },
-        type: 'POST',
-        data: {
-          'idtiposervico': $('#idtiposervico').val() ? $('#idtiposervico').val() : '',
-          'idmaterial': $('#idmaterial').val() ? $('#idmaterial').val() : '',
-          'idcor': $('#idcor').val() ? $('#idcor').val() : '',
-          'milesimos': $('#milesimos').val() ? $('#milesimos').val() : ''
-        },
-        success: function(data) {
-          $('#tab-tanques tbody').empty();
-          for (var k in data) {
-            $('#tab-tanques tbody').append('<tr><td>' + data[k].descricao + '</td></tr>')
-          }
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR);
-        }
+    //Add Item Passagem
+    $(document).on('click', '.btn-add-item-passagem', function() {
+      let rowbase = $('.item-passagem').last();
+      let container = rowbase.parent();
+      let clone = rowbase.clone();
+      let index = parseInt(clone.data('index'));
+      let cloneindex = index + 1;
+
+      clone.attr('data-index', cloneindex);
+      clone.find('input, select').each(function(i, elem) {
+        $(elem).attr('name', $(elem).attr('name').replace(index, cloneindex));
+        $(elem).val('');
       });
 
-    }
+      rowbase.find('.item-passagem-controls').removeClass('d-none').addClass('d-flex');
+      rowbase.find('.btn-add-item-passagem').addClass('d-none');
+
+      container.append(clone);
+    });
+
+    //Del Item Passagem
+    $(document).on('click', '.btn-remove-item-passagem', function(e) {
+      e.preventDefault();
+      let row = $(this).parent().parent().parent();
+      row.remove();
+
+    });
+
+    $(document).on('change', 'select[name*="idmaterial"]', function() {
+      let id = $(this).val();
+      let cbCores = $(this).parent().parent().find('select[name*="idcor"]');
+
+      if (id == '') {
+        cbCores.empty();
+        cbCores.append(`<option></option>`);
+      } else {
+        preencheCores(id, cbCores);
+      }
+    });
 
     function limpaCampos() {
-      //$('#idcliente').val(''); //não limpar campo cliente pois ela lança por cliente
+      $('#idcliente').val('');
       $('#idcliente').trigger('change');
-      $('#idtiposervico').val('');
-      $('#idmaterial').val('');
-      $('#idcor').val('');
-      $('#milesimos').val('');
-      $('#peso').val('');
+      let lim = $('.item-passagem').length - 1;
+      $('.item-passagem').each(function(i, v) {
+        if (i < lim) {
+          $(v).remove();
+        } else {
+          $(v).find('input, select').each(function(j, elem) {
+            $(elem).val('');
+          });
+          $(v).attr('data-index', '0');
+        }
+      });
 
       var currentdate = new Date();
       //var data = currentdate.getDate().toString().padStart(2, "0") + "-" + (currentdate.getMonth()+1).toString().padStart(2, "0") + '-' + currentdate.getFullYear();
@@ -431,6 +427,22 @@
 
       $('#hora_servico').val(hora);
       $('#data_servico').datepicker("update", new Date());
+    }
+
+    //Preenche Cores
+    function preencheCores(id, cbCores) {
+      return $.ajax({
+        url: "{{ route('materiais.cores_disponiveis', ['id' => '/']) }}/" + id,
+        dataType: "json",
+        success: function(data) {
+          cbCores.empty();
+          cbCores.append(`<option></option>`);
+
+          for (let k in data) {
+            cbCores.append(`<option value="${data[k].id}">${data[k].descricao}</option>`);
+          }
+        }
+      });
     }
 
     $('#modalForm').on('show.bs.modal', function(e) {
@@ -465,7 +477,7 @@
   <!-- Modal passagem -->
   <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel" aria-hidden="true"
     data-backdrop="static">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalFormLabel">Passagem de Peças</h5>
@@ -474,92 +486,91 @@
           </button>
         </div>
         <div class="modal-body">
+          <form id="passagem-form">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label class="form-control-label font-weight-400" for="data_servico">Data</label>
+                <input type="text" class="form-control" id="data_servico" name="data_servico" data-plugin="datepicker"
+                  data-language="pt-BR" />
+              </div>
 
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label class="form-control-label" for="data_servico">Data</label>
-              <input type="text" class="form-control" id="data_servico" name="data_servico" data-plugin="datepicker"
-                data-language="pt-BR" />
+              <div class="form-group col-md-6">
+                <label class="form-control-label font-weight-400" for="hora_servico">Hora</label>
+                <input type="text" class="form-control" id="hora_servico" name="hora_servico" data-plugin="formatter"
+                  data-pattern="[[99]]:[[99]]:[[99]]" />
+              </div>
             </div>
 
-            <div class="form-group col-md-6">
-              <label class="form-control-label" for="hora_servico">Hora</label>
-              <input type="text" class="form-control" id="hora_servico" name="hora_servico" data-plugin="formatter"
-                data-pattern="[[99]]:[[99]]:[[99]]" />
-            </div>
-          </div>
-
-
-          <div class="row">
-            <div class="form-group col-md-12">
-              <label class="form-control-label" for="idcliente">Cliente</label>
-              <select class="form-control" id="idcliente" name="idcliente" style="width:100%;">
-                <option value=""></option>
-                @foreach ($clientes as $cliente)
-                  <option value="{{ $cliente->id }}" {{ $cliente->ativo ? '' : ' disabled' }}>
-                    {{ $cliente->identificacao }}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-6">
-              <label class="form-control-label" for="idtiposervico">Serviço</label>
-              <select class="form-control" id="idtiposervico" name="idtiposervico">
-                <option value=""></option>
-                @foreach ($tiposServico as $tipoServico)
-                  <option value="{{ $tipoServico->id }}">{{ $tipoServico->descricao }}</option>
-                @endforeach
-              </select>
+            <div class="row">
+              <div class="form-group col-md-12">
+                <label class="form-control-label font-weight-400" for="idcliente">Cliente</label>
+                <select class="form-control" id="idcliente" name="idcliente" style="width:100%;">
+                  <option value=""></option>
+                  @foreach ($clientes as $cliente)
+                    <option value="{{ $cliente->id }}" {{ $cliente->ativo ? '' : ' disabled' }}>
+                      {{ $cliente->identificacao }}</option>
+                  @endforeach
+                </select>
+              </div>
             </div>
 
-            <div class="form-group col-md-6">
-              <label class="form-control-label" for="idmaterial">Material</label>
-              <select class="form-control" id="idmaterial" name="idmaterial">
-                <option value=""></option>
-                @foreach ($materiais as $material)
-                  <option value="{{ $material->id }}">{{ $material->descricao }}</option>
-                @endforeach
-              </select>
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-condensed table-bordered" id="tb-item-passagem">
+                  <thead>
+                    <tr>
+                      <th class="w-p25">Serviço</th>
+                      <th class="w-p25">Material</th>
+                      <th class="w-p20">Cor</th>
+                      <th class="w-p10">Ml</th>
+                      <th class="w-p15">Peso</th>
+                      <th class="w-p5"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="item-passagem" data-index="0">
+                      <td>
+                        <select class="form-control" name="item_passagem[0][idtiposervico]">
+                          <option value=""></option>
+                          @foreach ($tiposServico as $tipoServico)
+                            <option value="{{ $tipoServico->id }}">{{ $tipoServico->descricao }}</option>
+                          @endforeach
+                        </select>
+                      </td>
+                      <td>
+                        <select class="form-control" name="item_passagem[0][idmaterial]">
+                          <option value=""></option>
+                          @foreach ($materiais as $material)
+                            <option value="{{ $material->id }}">{{ $material->descricao }}</option>
+                          @endforeach
+                        </select>
+                      </td>
+                      <td>
+                        <select class="form-control" name="item_passagem[0][idcor]">
+                          <option value=""></option>
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" name="item_passagem[0][milesimos]" min="0" />
+                      </td>
+                      <td>
+                        <input type="number" class="form-control" name="item_passagem[0][peso]" min="0" />
+                      </td>
+                      <td>
+                        <input type="hidden" name="item_passagem[0][item_id]">
+                        <div class="item-passagem-controls d-none justify-content-center">
+                          <button type="button" class="btn btn-sm btn-block btn-outline-danger btn-remove-item-passagem"
+                            title="Excluir"><i class="fa fa-times"></i></button>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-block btn-info btn-add-item-passagem"
+                          title="Adicionar item"><i class="icon wb-plus"></i></button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-
-            <div class="form-group col-md-6">
-              <label class="form-control-label" for="idcor">Cor</label>
-              <select class="form-control" id="idcor" name="idcor">
-                <option value=""></option>
-              </select>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label class="form-control-label" for="milesimos">Milésimos</label>
-              <input type="number" class="form-control" id="milesimos" name="milesimos" min="0" />
-            </div>
-
-            <div class="form-group col-md-3">
-              <label class="form-control-label" for="peso">Peso (g)</label>
-              <input type="number" class="form-control" id="peso" name="peso" min="0" />
-            </div>
-
-          </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-sm" id="tab-tanques">
-                <thead>
-                  <tr>
-                    <th style="border-bottom:none;">
-                      <a class="font-size-12" data-toggle="collapse" href="#siteMegaCollapseOne"
-                        data-parent="#siteMegaAccordion" aria-expanded="false" aria-controls="siteMegaCollapseOne">Ver
-                        Tanques</a>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="collapse" id="siteMegaCollapseOne"></tbody>
-              </table>
-            </div>
-          </div>
-
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

@@ -7,6 +7,7 @@ use App\Cliente;
 use App\Material;
 use App\OrdemServico;
 use App\Recebimento;
+use App\Retrabalho;
 use App\Separacao;
 use App\TipoServico;
 use Carbon\Carbon;
@@ -175,18 +176,18 @@ class PainelAcompanhamentoController extends Controller
   //Coluna Retrabalho
   private function retrabalho()
   {
-    $ordens = Separacao::where('status', 'T')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
+    $ordens = Separacao::whereHas('retrabalho')->where('status_retrabalho', '<>', 'E')->whereNotNull('cliente_id')->whereHas('catalogacao')->orderBy('catalogacao_id', 'desc')->get();
 
     $colOrdens = [];
     foreach ($ordens as $separacao) {
       $obj = new stdClass();
       $obj->id = $separacao->catalogacao->id;
       $obj->cliente = $separacao->catalogacao->cliente->identificacao ?? '';
-      $obj->peso = $separacao->recebimentos->sum('pesototal');
+      $obj->peso = $separacao->retrabalho->peso_total;
       $obj->peso_real = $separacao->catalogacao->itens->sum('peso_real');
       $obj->qtde_itens = $separacao->catalogacao->itens->count();
       $obj->qtde_check = $separacao->catalogacao->itens->where('status_check', '<>', null)->count();
-      $obj->data_situacao = $separacao->catalogacao->datacad;
+      $obj->data_situacao = $separacao->retrabalho->created_at;
       $obj->data_carbon = $separacao->data_inicio_retrabalho ? Carbon::parse($separacao->data_inicio_retrabalho) : null;
       $obj->data_inicio = Carbon::parse($separacao->created_at);
       $obj->obs = $separacao->catalogacao->observacoes;
@@ -523,13 +524,17 @@ class PainelAcompanhamentoController extends Controller
             break;
         }
 
-        //Atualiza a catalogação
-        $catalogacao->status = $to;
-        $catalogacao->save();
+        //Caso seja retrabalho não atualiza o status do processo, para simular um clone, já que os 
+        //retrabalhos são um processo a parte
+        if ($to != 'T') {
+          //Atualiza a catalogação
+          $catalogacao->status = $to;
+          $catalogacao->save();
 
-        //Atualiza a separação
-        $separacao->status = $to;
-        $separacao->save();
+          //Atualiza a separação
+          $separacao->status = $to;
+          $separacao->save();
+        }
       }
       break;
     } while (0);
@@ -554,6 +559,22 @@ class PainelAcompanhamentoController extends Controller
     return response(200);
   }
 
+  public function encerrarRetrabalho(Request $request)
+  {
+    $retrab = Catalogacao::findOrFail($request->id);
+    $separacao = $retrab->separacao;
+    $separacao->data_fim_retrabalho = Carbon::now();
+    $separacao->status_retrabalho = 'E';
+    $separacao->save();
+
+    $retrabalho = Retrabalho::findOrFail($separacao->retrabalho_id);
+    $retrabalho->data_fim = Carbon::now();
+    $retrabalho->status = 'E';
+    $retrabalho->save();
+
+    return response(200);
+  }
+
   public function iniciarPreparacao(Request $request)
   {
     $banho = Catalogacao::findOrFail($request->id);
@@ -571,6 +592,12 @@ class PainelAcompanhamentoController extends Controller
     $separacao->data_inicio_retrabalho = Carbon::now();
     $separacao->status_retrabalho = 'A';
     $separacao->save();
+
+    $retrabalho = Retrabalho::findOrFail($separacao->retrabalho_id);
+    $retrabalho->data_inicio = Carbon::now();
+    $retrabalho->status = 'A';
+    $retrabalho->save();
+
     return response(200);
   }
 
@@ -681,7 +708,7 @@ class PainelAcompanhamentoController extends Controller
     ])->render()]);
   }
 
-  public function infoItem(Request $request, $id)
+  public function separacaoFromCatalogacao(Request $request, $id)
   {
     $cat = Catalogacao::findOrFail($id);
     $item = $cat->separacao;
