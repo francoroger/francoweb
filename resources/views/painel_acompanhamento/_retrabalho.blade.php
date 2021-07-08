@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="retrabalho-modal" tabindex="-1" role="dialog" aria-labelledby="modalRetrabalhoLabel"
   aria-hidden="true" data-backdrop="static">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalRetrabalhoLabel">Retrabalho</h5>
@@ -39,11 +39,12 @@
                 <table class="col-sm-12 table table-condensed cf p-0" id="tb-item-retrabalho">
                   <thead class="cf">
                     <tr>
-                      <th class="w-p25">Serviço</th>
-                      <th class="w-p25">Material</th>
-                      <th class="w-p20">Cor</th>
+                      <th class="w-p20">Serviço</th>
+                      <th class="w-p20">Material</th>
+                      <th class="w-p15">Cor</th>
                       <th class="w-p10">Ml</th>
-                      <th class="w-p15">Peso</th>
+                      <th class="w-p10">Peso</th>
+                      <th class="w-p20">Tipo de Falha</th>
                       <th class="w-p5"></th>
                     </tr>
                   </thead>
@@ -75,6 +76,14 @@
                       </td>
                       <td data-title="Peso">
                         <input type="number" class="form-control" name="item_retrabalho[0][peso]" min="0" />
+                      </td>
+                      <td data-title="Tipo de Falha">
+                        <select class="form-control" name="item_retrabalho[0][tipo_falha_id]">
+                          <option value=""></option>
+                          @foreach ($tiposFalha as $tipoFalha)
+                            <option value="{{ $tipoFalha->id }}">{{ $tipoFalha->descricao }}</option>
+                          @endforeach
+                        </select>
                       </td>
                       <td data-title="Ações">
                         <input type="hidden" name="item_retrabalho[0][item_id]">

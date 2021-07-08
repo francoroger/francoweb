@@ -2651,6 +2651,18 @@ body.site-navbar-small {
   text-decoration: line-through;
 }
 
+@media (min-width: 992px) {
+  .modal-lg, .modal-xl {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 1140px;
+  }
+}
+
 .radio-custom, .checkbox-custom {
   position: relative;
   display: block;

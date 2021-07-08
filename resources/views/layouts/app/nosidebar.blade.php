@@ -55,7 +55,6 @@
   <script src="{{ asset('assets/vendor/breakpoints/breakpoints.js') }}"></script>
   <script>
     Breakpoints();
-
   </script>
 </head>
 
@@ -101,7 +100,6 @@
   <script src="{{ asset('assets/js/config/tour.js') }}"></script>
   <script>
     Config.set('assets', '{{ asset('assets') }}');
-
   </script>
 
   <!-- Page -->
@@ -122,7 +120,6 @@
         Site.run();
       });
     })(document, window, jQuery);
-
   </script>
 </body>
 

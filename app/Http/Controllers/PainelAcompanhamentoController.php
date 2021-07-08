@@ -9,6 +9,7 @@ use App\OrdemServico;
 use App\Recebimento;
 use App\Retrabalho;
 use App\Separacao;
+use App\TipoFalha;
 use App\TipoServico;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -297,12 +298,14 @@ class PainelAcompanhamentoController extends Controller
     $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
     $tiposServico = TipoServico::orderBy('descricao')->get();
     $materiais = Material::where('ativo', true)->orderBy('pos')->get();
+    $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
 
     return view('painel_acompanhamento.index')->with([
       'painel' => $painel,
       'tiposServico' => $tiposServico,
       'materiais' => $materiais,
       'clientes' => $clientes,
+      'tiposFalha' => $tiposFalha,
     ]);
   }
 

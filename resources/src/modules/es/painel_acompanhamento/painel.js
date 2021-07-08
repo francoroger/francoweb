@@ -174,6 +174,7 @@ function editarRetrabalho(id) {
               row.find('select[name*=idmaterial]').val(item.idmaterial);
               row.find('input[name*=milesimos]').val(item.milesimos);
               row.find('input[name*=peso]').val(item.peso);
+              row.find('input[name*=tipo_falha_id]').val(item.tipo_falha_id);
               row.find('input[name*=item_id]').val(item.id);
               if (item.idmaterial) {
                 let cbCores = row.find('select[name*=idcor]');

@@ -22,7 +22,6 @@
   <script src="{{ asset('assets/modules/js/retrabalhos/edit.js') }}"></script>
   <script type="text/javascript">
     coresUrl = "{{ route('materiais.cores_disponiveis', ['id' => '/']) }}/";
-
   </script>
 @endpush
 
@@ -126,11 +125,12 @@
               <table class="table table-condensed table-bordered" id="tb-item-retrabalho">
                 <thead>
                   <tr>
-                    <th class="w-p25">Serviço</th>
-                    <th class="w-p25">Material</th>
-                    <th class="w-p20">Cor</th>
+                    <th class="w-p20">Serviço</th>
+                    <th class="w-p20">Material</th>
+                    <th class="w-p15">Cor</th>
                     <th class="w-p10">Ml</th>
-                    <th class="w-p15">Peso</th>
+                    <th class="w-p10">Peso</th>
+                    <th class="w-p20">Tipo de Falha</th>
                     <th class="w-p5"></th>
                   </tr>
                 </thead>
@@ -162,6 +162,14 @@
                     </td>
                     <td>
                       <input type="number" class="form-control" name="item_retrabalho[0][peso]" min="0" />
+                    </td>
+                    <td>
+                      <select class="form-control" name="item_retrabalho[0][tipo_falha_id]">
+                        <option value=""></option>
+                        @foreach ($tiposFalha as $tipoFalha)
+                          <option value="{{ $tipoFalha->id }}">{{ $tipoFalha->descricao }}</option>
+                        @endforeach
+                      </select>
                     </td>
                     <td>
                       <input type="hidden" name="item_retrabalho[0][item_id]">

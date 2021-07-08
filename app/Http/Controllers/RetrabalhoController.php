@@ -7,6 +7,7 @@ use App\Material;
 use App\Retrabalho;
 use App\RetrabalhoItem;
 use App\Separacao;
+use App\TipoFalha;
 use App\TipoServico;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -65,7 +66,7 @@ class RetrabalhoController extends Controller
 
       $data[] = [
         'id' => $retrabalho->id,
-        'nome' => $retrabalho->cliente->identificacao,
+        'nome' => $retrabalho->cliente->identificacao ?? '',
         'data_inicio' => $retrabalho->data_inicio ? date('d/m/Y', strtotime($retrabalho->data_inicio)) : '',
         'data_fim' => $retrabalho->data_fim ? date('d/m/Y', strtotime($retrabalho->data_fim)) : '',
         'status' => $status,
@@ -88,11 +89,13 @@ class RetrabalhoController extends Controller
     $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
     $tiposServico = TipoServico::orderBy('descricao')->get();
     $materiais = Material::where('ativo', true)->orderBy('pos')->get();
+    $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
 
     return view('retrabalhos.create')->with([
       'tiposServico' => $tiposServico,
       'materiais' => $materiais,
       'clientes' => $clientes,
+      'tiposFalha' => $tiposFalha,
     ]);
   }
 
@@ -124,6 +127,7 @@ class RetrabalhoController extends Controller
           $item->cor_id = $item_retrabalho['idcor'];
           $item->milesimos = $item_retrabalho['milesimos'];
           $item->peso = $item_retrabalho['peso'];
+          $item->tipo_falha_id = $item_retrabalho['tipo_falha_id'];
           $item->save();
         }
       }
@@ -173,6 +177,7 @@ class RetrabalhoController extends Controller
           $item->cor_id = $item_retrabalho['idcor'];
           $item->milesimos = $item_retrabalho['milesimos'];
           $item->peso = $item_retrabalho['peso'];
+          $item->tipo_falha_id = $item_retrabalho['tipo_falha_id'];
           $item->save();
         }
       }
@@ -213,12 +218,14 @@ class RetrabalhoController extends Controller
     $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
     $tiposServico = TipoServico::orderBy('descricao')->get();
     $materiais = Material::where('ativo', true)->orderBy('pos')->get();
+    $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
     $retrabalho = Retrabalho::findOrFail($id);
     return view('retrabalhos.edit')->with([
       'tiposServico' => $tiposServico,
       'materiais' => $materiais,
       'clientes' => $clientes,
       'retrabalho' => $retrabalho,
+      'tiposFalha' => $tiposFalha,
     ]);
   }
 
@@ -270,6 +277,7 @@ class RetrabalhoController extends Controller
           $item->cor_id = $item_retrabalho['idcor'];
           $item->milesimos = $item_retrabalho['milesimos'];
           $item->peso = $item_retrabalho['peso'];
+          $item->tipo_falha_id = $item_retrabalho['tipo_falha_id'];
           $item->save();
         }
       }
@@ -311,6 +319,7 @@ class RetrabalhoController extends Controller
       $item['idcor'] = $item_retrabalho->cor_id;
       $item['milesimos'] = $item_retrabalho->milesimos;
       $item['peso'] = number_format($item_retrabalho->peso, 0);
+      $item['tipo_falha_id'] = $item_retrabalho->tipo_falha_id;
       $data['itens'][] = $item;
     }
 
