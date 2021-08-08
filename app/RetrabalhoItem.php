@@ -8,9 +8,19 @@ class RetrabalhoItem extends Model
 {
   protected $table = 'retrabalhos_itens';
 
+  public function retrabalho()
+  {
+    return $this->belongsTo('App\Retrabalho', 'retrabalho_id');
+  }
+
+  public function tipo_falha()
+  {
+    return $this->belongsTo('App\TipoFalha', 'tipo_falha_id');
+  }
+
   public function tipo_servico()
   {
-    return $this->belongsTo('App\TipoServico', 'tipo_servico_id');
+    return $this->belongsTo('App\TipoServico', 'tiposervico_id');
   }
 
   public function material()

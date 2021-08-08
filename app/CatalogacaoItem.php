@@ -40,6 +40,11 @@ class CatalogacaoItem extends Model
     return $this->hasMany('App\CatalogacaoServico', 'iditemtri', 'id');
   }
 
+  public function edicao()
+  {
+    return $this->hasOne('App\CatalogacaoEdicao', 'iditemtriagem', 'id');
+  }
+
   public function getPesoRealAttribute($value)
   {
     return $this->peso * $this->quantidade;

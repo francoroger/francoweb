@@ -28,6 +28,7 @@ window.fetchData = function (route, token, page) {
   formData.append('dataini', $('#dataini').val())
   formData.append('datafim', $('#datafim').val())
   formData.append('idcliente', $('#idcliente').val().toString())
+  formData.append('idtipofalha', $('#idtipofalha').val().toString())
   formData.append('idtiposervico', $('#idtiposervico').val().toString())
   formData.append('idmaterial', $('#idmaterial').val().toString())
   formData.append('idcor', $('#idcor').val().toString())

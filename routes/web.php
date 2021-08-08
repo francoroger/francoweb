@@ -120,6 +120,9 @@ Route::group(['prefix' => 'catalogacao'], function () {
   Route::get('checklist/{id}/check', 'CheckListCatalogacaoController@check')->name('catalogacao_checklist.check');
   Route::put('checklist/{id}', 'CheckListCatalogacaoController@update')->name('catalogacao_checklist.update');
   Route::post('checklist/{id}/print', 'CheckListCatalogacaoController@print')->name('catalogacao_checklist.print');
+  Route::get('checklist/{id}/print/html', 'CheckListCatalogacaoController@printHtml')->name('catalogacao_checklist.print_html');
+  Route::get('checklist/itens/edit/{id}', 'CheckListCatalogacaoController@editItem')->name('catalogacao_checklist.editItem');
+  Route::post('checklist/itens/update/{id}', 'CheckListCatalogacaoController@updateItem')->name('catalogacao_checklist.updateItem');
 
   //Relatório de Checklist
   Route::get('relatorio_checklist', 'RelatorioCheckListController@index')->name('relatorio_checklist.index');
@@ -168,6 +171,11 @@ Route::group(['prefix' => 'producao'], function () {
   Route::get('relatorio_producao', 'RelatorioProducaoController@index')->name('relatorio_producao.index');
   Route::post('relatorio_producao', 'RelatorioProducaoController@preview')->name('relatorio_producao.preview');
   Route::post('relatorio_producao/print', 'RelatorioProducaoController@print')->name('relatorio_producao.print');
+
+  //Relatório de Retrabalhos
+  Route::get('relatorio_retrabalho', 'RelatorioRetrabalhoController@index')->name('relatorio_retrabalho.index');
+  Route::post('relatorio_retrabalho', 'RelatorioRetrabalhoController@preview')->name('relatorio_retrabalho.preview');
+  Route::post('relatorio_retrabalho/print', 'RelatorioRetrabalhoController@print')->name('relatorio_retrabalho.print');
 
   //Retrabalho
   Route::get('retrabalhos/ajax', 'RetrabalhoController@ajax')->name('retrabalhos.ajax');

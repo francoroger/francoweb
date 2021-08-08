@@ -438,16 +438,24 @@ class PainelAcompanhamentoController extends Controller
         //Encerra a data do status anterior
         switch ($from) {
           case 'A':
-            $separacao->data_fim_catalogacao = Carbon::now();
+            if (!$separacao->data_fim_catalogacao) {
+              $separacao->data_fim_catalogacao = Carbon::now();
+            }
             break;
           case 'F':
-            $separacao->data_fim_preparacao = Carbon::now();
+            if (!$separacao->data_fim_preparacao) {
+              $separacao->data_fim_preparacao = Carbon::now();
+            }
             break;
           case 'B':
-            $separacao->data_fim_banho = Carbon::now();
+            if (!$separacao->data_fim_banho) {
+              $separacao->data_fim_banho = Carbon::now();
+            }
             break;
           case 'T':
-            $separacao->data_fim_retrabalho = Carbon::now();
+            if (!$separacao->data_fim_retrabalho) {
+              $separacao->data_fim_retrabalho = Carbon::now();
+            }
             break;
           case 'G':
             //Só pega a data fim da revisão se não tiver preenchida
@@ -457,7 +465,9 @@ class PainelAcompanhamentoController extends Controller
             }
             break;
           case 'C':
-            $separacao->data_fim_expedicao = Carbon::now();
+            if (!$separacao->data_fim_expedicao) {
+              $separacao->data_fim_expedicao = Carbon::now();
+            }
             break;
           case 'L':
             //Não faz nada
@@ -470,7 +480,9 @@ class PainelAcompanhamentoController extends Controller
         //Insere a data do status atual
         switch ($to) {
           case 'A':
-            $separacao->data_inicio_catalogacao = Carbon::now();
+            if (!$separacao->data_inicio_catalogacao) {
+              $separacao->data_inicio_catalogacao = Carbon::now();
+            }
             break;
           case 'F':
             $separacao->status_preparacao = 'G';
@@ -486,7 +498,9 @@ class PainelAcompanhamentoController extends Controller
             //Não faz nada, pois só inicia a contagem quando clicar no menu iniciar
             //Sobre comentário acima: agora faz pois não teremos mais o menu iniciar nesse box
             //$separacao->data_inicio_preparacao = Carbon::now();
-            $separacao->data_inicio_banho = Carbon::now();
+            if (!$separacao->data_inicio_banho) {
+              $separacao->data_inicio_banho = Carbon::now();
+            }
             $separacao->status_banho = 'A';
             break;
           case 'T':
@@ -514,7 +528,9 @@ class PainelAcompanhamentoController extends Controller
             //Agora: Entra direto em Andamento
             //$separacao->status_expedicao = 'G';
             $separacao->status_expedicao = 'A';
-            $separacao->data_inicio_expedicao = Carbon::now();
+            if (!$separacao->data_inicio_expedicao) {
+              $separacao->data_inicio_expedicao = Carbon::now();
+            }
             break;
           case 'L':
             if ($separacao->status_expedicao == 'G') {
@@ -582,7 +598,9 @@ class PainelAcompanhamentoController extends Controller
   {
     $banho = Catalogacao::findOrFail($request->id);
     $separacao = $banho->separacao;
-    $separacao->data_inicio_preparacao = Carbon::now();
+    if (!$separacao->data_inicio_preparacao) {
+      $separacao->data_inicio_preparacao = Carbon::now();
+    }
     $separacao->status_preparacao = 'A';
     $separacao->save();
     return response(200);
@@ -608,7 +626,9 @@ class PainelAcompanhamentoController extends Controller
   {
     $exped = Catalogacao::findOrFail($request->id);
     $separacao = $exped->separacao;
-    $separacao->data_inicio_expedicao = Carbon::now();
+    if (!$separacao->data_inicio_expedicao) {
+      $separacao->data_inicio_expedicao = Carbon::now();
+    }
     $separacao->status_expedicao = 'A';
     $separacao->save();
     return response(200);

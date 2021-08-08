@@ -1,6 +1,6 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define('/relatorios/producao', ['jquery', 'Site'], factory);
+    define('/relatorios/retrabalho', ['jquery', 'Site'], factory);
   } else if (typeof exports !== "undefined") {
     factory(require('jquery'), require('Site'));
   } else {
@@ -8,7 +8,7 @@
       exports: {}
     };
     factory(global.jQuery, global.Site);
-    global.relatoriosProducao = mod.exports;
+    global.relatoriosRetrabalho = mod.exports;
   }
 })(this, function (_jquery, _Site) {
   'use strict';
@@ -42,6 +42,7 @@
     formData.append('dataini', (0, _jquery2.default)('#dataini').val());
     formData.append('datafim', (0, _jquery2.default)('#datafim').val());
     formData.append('idcliente', (0, _jquery2.default)('#idcliente').val().toString());
+    formData.append('idtipofalha', (0, _jquery2.default)('#idtipofalha').val().toString());
     formData.append('idtiposervico', (0, _jquery2.default)('#idtiposervico').val().toString());
     formData.append('idmaterial', (0, _jquery2.default)('#idmaterial').val().toString());
     formData.append('idcor', (0, _jquery2.default)('#idcor').val().toString());

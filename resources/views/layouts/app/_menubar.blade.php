@@ -112,6 +112,11 @@
                   </a>
                 </li>
               @endcan
+              <li class="site-menu-item{{ Request::is('producao/relatorio_retrabalho*') ? ' active' : '' }}">
+                <a class="animsition-link" href="{{ route('relatorio_retrabalho.index') }}">
+                  <span class="site-menu-title">Relatório de Retrabalho</span>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="site-menu-category">Consultas</li>

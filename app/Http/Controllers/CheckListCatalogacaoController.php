@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Catalogacao;
+use App\CatalogacaoEdicao;
 use App\CatalogacaoItem;
 use App\Fornecedor;
 use App\Material;
@@ -186,6 +187,7 @@ class CheckListCatalogacaoController extends Controller
     $materiais = $catalogacao->itens->unique('material.descricao')->sortBy('material.descricao')->pluck('material.descricao', 'material.id');
 
     $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
+    $fornecedores = Fornecedor::select(['id', 'nome'])->orderBy('nome')->get();
 
     return view('catalogacao_checklist.check')->with([
       'catalogacao' => $catalogacao,
@@ -193,6 +195,7 @@ class CheckListCatalogacaoController extends Controller
       'produtos' => $produtos,
       'materiais' => $materiais,
       'tiposFalha' => $tiposFalha,
+      'fornecedores' => $fornecedores,
     ]);
   }
 
@@ -333,5 +336,82 @@ class CheckListCatalogacaoController extends Controller
     ]);
 
     return $pdf->stream('checklist.pdf');
+  }
+
+  public function printHtml(Request $request, $id)
+  {
+    $catalogacao = Catalogacao::findOrFail($id);
+
+    $itens = $catalogacao->itens->sortBy(function ($item) {
+      return sprintf('%-12s%s', $item->descricao_produto, $item->fornecedor->nome ?? '', $item->preco_bruto);
+    });
+
+    if ($request->filtro_material) {
+      $itens = $itens->where('idmaterial', $request->filtro_material);
+    }
+
+    if ($request->filtro_produto) {
+      $itens = $itens->where('idproduto', $request->filtro_produto);
+    }
+
+    if ($request->filtro_status) {
+      switch ($request->filtro_status) {
+        case 'V':
+          $itens = $itens->where('status_check', '!=', null);
+          break;
+        case 'S':
+          $itens = $itens->where('status_check', 'S');
+          break;
+        case 'N':
+          $itens = $itens->where('status_check', 'N');
+          break;
+        case 'P':
+          $itens = $itens->where('status_check', null);
+          break;
+      }
+    }
+
+    return view('catalogacao_checklist.print')->with([
+      'catalogacao' => $catalogacao,
+      'itens' => $itens,
+    ]);
+  }
+
+  public function editItem($id)
+  {
+    $item = CatalogacaoItem::findOrFail($id);
+
+    $res = $item->toArray();
+
+    if ($item->edicao) {
+      $res['idfornec'] = $item->edicao->idfornec ?? $item->idfornec;
+      $res['peso'] = $item->edicao->peso ?? $item->peso;
+      $res['referencia'] = $item->edicao->referencia ?? $item->referencia;
+      $res['quantidade'] = $item->edicao->quantidade ?? $item->quantidade;
+    }
+
+    return response()->json($res);
+  }
+
+  public function updateItem(Request $request, $id)
+  {
+    $item = CatalogacaoItem::findOrFail($id);
+    $edicao = $item->edicao;
+
+    if (!$edicao) {
+      $edicao = CatalogacaoEdicao::firstOrCreate([
+        'iditemtriagem' => $id,
+      ]);
+    }
+
+    $edicao->idfornec = $request->idfornec != $item->idfornec ? $request->idfornec : null;
+    $edicao->peso = $request->peso != $item->peso ? $request->peso : null;
+    $edicao->referencia = $request->referencia != $item->referencia ? $request->referencia : null;
+    $edicao->quantidade = $request->quantidade != $item->quantidade ? $request->quantidade : null;
+    $edicao->save();
+
+    $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
+
+    return response()->json(['index' => $request->index, 'view' => view('catalogacao_checklist._info', ['item' => $item, 'index' => $request->index, 'tiposFalha' => $tiposFalha])->render()]);
   }
 }
