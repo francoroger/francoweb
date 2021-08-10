@@ -183,6 +183,7 @@
                   <option value="D">Detalhado</option>
                   <option value="R">Resumido</option>
                   <option value="A">Agrupado</option>
+                  <option value="AR">Agrupado e Resumido</option>
                 </select>
               </div>
             </div>

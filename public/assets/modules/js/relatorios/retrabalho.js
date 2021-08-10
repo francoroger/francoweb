@@ -46,6 +46,15 @@
       (0, _jquery2.default)(this).parent().find('select > option[value!=""]').prop("selected", "selected");
       (0, _jquery2.default)(this).parent().find('select').trigger("change");
     });
+
+    (0, _jquery2.default)(document).on('submit', '#filter-form', function () {
+      if ((0, _jquery2.default)('#modelo').val() == 'A' || (0, _jquery2.default)('#modelo').val() == 'AR') {
+        if ((0, _jquery2.default)('#grupos').val() == '') {
+          toastr.error("Informe pelo menos um grupo!");
+          return false;
+        }
+      }
+    });
   })();
 
   // Fetch Data
@@ -57,6 +66,12 @@
     if ((0, _jquery2.default)('#datafim').val() == '') {
       toastr.error("Informe a data final!");
       return false;
+    }
+    if ((0, _jquery2.default)('#modelo').val() == 'A' || (0, _jquery2.default)('#modelo').val() == 'AR') {
+      if ((0, _jquery2.default)('#grupos').val() == '') {
+        toastr.error("Informe pelo menos um grupo!");
+        return false;
+      }
     }
 
     var formData = new FormData();

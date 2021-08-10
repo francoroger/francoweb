@@ -198,6 +198,27 @@ class RelatorioRetrabalhoController extends Controller
 
         return response()->json(['view' => view('relatorios.retrabalho.preview_agrupado', ['itens' => $itens, 'total_grupos' => count($grupos), 'total' => $total])->render()]);
         break;
+      case 'AR':
+        $itens = $this->searchDetalhado($request);
+
+        $total['peso'] = $itens->sum('peso');
+        $total['itens'] = $itens->count();
+
+        //Agrupamento
+        if ($request->grupos) {
+          $grupos = is_array($request->grupos) ? $request->grupos : explode(',', $request->grupos);
+
+          $itens = $itens->groupBy($grupos);
+        } else {
+          abort(400, 'Informe pelo menos um grupo!');
+        }
+
+        return response()->json(['view' => view('relatorios.retrabalho.preview_agrupado_resumido', [
+          'itens' => $itens,
+          'total' => $total,
+          'total_grupos' => count($grupos),
+        ])->render()]);
+        break;
     }
   }
 
@@ -314,6 +335,46 @@ class RelatorioRetrabalhoController extends Controller
             break;
         }
 
+        break;
+      case 'AR':
+        $itens = $this->searchDetalhado($request);
+
+        $total['peso'] = $itens->sum('peso');
+        $total['itens'] = $itens->count();
+
+        //Agrupamento
+        if ($request->grupos) {
+          $grupos = is_array($request->grupos) ? $request->grupos : explode(',', $request->grupos);
+
+          $itens = $itens->groupBy($grupos);
+        } else {
+          abort(400, 'Informe pelo menos um grupo!');
+        }
+
+        switch ($request->output) {
+          case 'pdf':
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->getDomPDF()->set_option("enable_php", true);
+            $pdf->setPaper('a4', 'landscape');
+            $pdf->loadView('relatorios.retrabalho.print_agrupado_resumido', [
+              'itens' => $itens,
+              'total' => $total,
+              'total_grupos' => count($grupos),
+            ]);
+
+            return $pdf->stream('relatorio_retrabalho.pdf');
+            break;
+          case 'print':
+            return view('relatorios.retrabalho.print_agrupado_resumido')->with([
+              'itens' => $itens,
+              'total' => $total,
+              'total_grupos' => count($grupos),
+            ]);
+            break;
+          default:
+            abort(404, 'Opção inválida');
+            break;
+        }
         break;
     }
   }

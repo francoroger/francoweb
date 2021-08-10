@@ -1,13 +1,13 @@
 import $ from 'jquery';
 import * as Site from 'Site';
 
-$(document).ready(function($) {
+$(document).ready(function ($) {
   Site.run();
 });
 
 //Modelo Change
-(function() {
-  $(document).on('change', '#modelo', function(event) {
+(function () {
+  $(document).on('change', '#modelo', function (event) {
     if ($(this).val() == 'D') {
       $('#sorter-det').removeClass('d-none')
       $('#sorter-res').addClass('d-none')
@@ -27,15 +27,31 @@ $(document).ready(function($) {
     }
   })
 
-  $(document).on('click', '.select2-all', function(event) {
+  $(document).on('submit', '#filter-form', function () {
+    if ($('#modelo').val() == 'A' || $('#modelo').val() == 'AR') {
+      if ($('#grupos').val() == '') {
+        toastr.error("Informe pelo menos um grupo!");
+        return false
+      }
+    }
+  });
+
+  $(document).on('click', '.select2-all', function (event) {
     event.preventDefault();
-    $(this).parent().find('select > option[value!=""]').prop("selected","selected");
-    $(this).parent().find('select').trigger("change");    
+    $(this).parent().find('select > option[value!=""]').prop("selected", "selected");
+    $(this).parent().find('select').trigger("change");
   });
 })();
 
 // Fetch Data
-window.fetchData = function(route, token, page) {
+window.fetchData = function (route, token, page) {
+  if ($('#modelo').val() == 'A' || $('#modelo').val() == 'AR') {
+    if ($('#grupos').val() == '') {
+      toastr.error("Informe pelo menos um grupo!");
+      return false
+    }
+  }
+
   let formData = new FormData()
   formData.append('dataini', $('#dataini').val())
   formData.append('datafim', $('#datafim').val())
@@ -51,23 +67,22 @@ window.fetchData = function(route, token, page) {
   formData.append('sortbyres', $('#sortbyres').val())
   formData.append('grupos', $('#grupos').val())
 
-  route += page ? "page="+page : ''
+  route += page ? "page=" + page : ''
 
   return $.ajax({
     url: route,
-    headers: {'X-CSRF-TOKEN': token},
+    headers: { 'X-CSRF-TOKEN': token },
     type: 'POST',
     data: formData,
     contentType: false,
     cache: false,
     processData: false,
-    success: function(data) {
+    success: function (data) {
       $('#result').html(data.view)
       var el = $("#result")
-      $('html,body').animate({scrollTop: el.offset().top - 80},'slow')
+      $('html,body').animate({ scrollTop: el.offset().top - 80 }, 'slow')
     },
-    error: function(jqXHR, textStatus, errorThrown)
-    {
+    error: function (jqXHR, textStatus, errorThrown) {
       window.toastr.error(jqXHR.responseJSON.message)
       console.log(jqXHR)
     }

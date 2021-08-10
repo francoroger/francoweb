@@ -32,6 +32,15 @@ $(document).ready(function ($) {
     $(this).parent().find('select > option[value!=""]').prop("selected", "selected");
     $(this).parent().find('select').trigger("change");
   });
+
+  $(document).on('submit', '#filter-form', function () {
+    if ($('#modelo').val() == 'A' || $('#modelo').val() == 'AR') {
+      if ($('#grupos').val() == '') {
+        toastr.error("Informe pelo menos um grupo!");
+        return false
+      }
+    }
+  });
 })();
 
 // Fetch Data
@@ -44,6 +53,13 @@ window.fetchData = function (route, token, page) {
     toastr.error("Informe a data final!")
     return false
   }
+  if ($('#modelo').val() == 'A' || $('#modelo').val() == 'AR') {
+    if ($('#grupos').val() == '') {
+      toastr.error("Informe pelo menos um grupo!");
+      return false
+    }
+  }
+
 
   let formData = new FormData()
   formData.append('dataini', $('#dataini').val())

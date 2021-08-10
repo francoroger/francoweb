@@ -31,4 +31,9 @@
   'dados' => $v
   ])
 
+  <tr class="font-weight-500">
+    <td colspan="8">Total</td>
+    <td class="text-nowrap text-right">{{ number_format($v->sum('peso'), 0, ',', '.') }} g</td>
+  </tr>
+
 @endif

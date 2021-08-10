@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;">
-  <title>Relatório de Retrabalhos</title>
+  <title>Relatório de Serviços</title>
 
   <style type="text/css">
     body * {
@@ -35,18 +35,6 @@
       font-size: 11px;
     }
 
-    .grupo {
-      background-color: #cdcdcd;
-    }
-
-    .text-nowrap {
-      white-space: nowrap !important;
-    }
-
-    .text-right {
-      text-align: right !important;
-    }
-
   </style>
 </head>
 
@@ -70,7 +58,7 @@
       <tr>
         <td width="100%" valign="top" align="center">
           <!-- Título -->
-          <h3>RETRABALHOS</h3>
+          <h3>RELATÓRIO DE RETRABALHOS</h3>
           <!-- Fim Título -->
         </td>
       </tr>
@@ -81,20 +69,16 @@
   <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
     <thead>
       <tr>
-        <th style="width: 5%;">Código</th>
-        <th style="width: 8%;">Data Início</th>
-        <th style="width: 8%;">Data Fim</th>
-        <th style="width: 29%;">Cliente</th>
-        <th style="width: 8%;">Status</th>
-        <th style="width: 15%;">Tipo de Falha</th>
-        <th style="width: 7%;">Serviço</th>
-        <th style="width: 15%;">Material</th>
-        <th style="width: 5%;" class="text-right">Peso (g)</th>
+        <th style="width:85%;">Grupo</th>
+        <th style="width:15%;">Peso (g)</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($itens as $k => $v)
-        @include('relatorios.retrabalho._destrincha', [
+      @foreach ($itens->sortBy(function ($group, $key) {
+        return $key;
+    })
+    as $k => $v)
+        @include('relatorios.retrabalho._destrincha_resumido', [
         'total_niveis' => $total_grupos,
         'nivel_atual' => 1,
         'nome_grupo' => $k,
@@ -103,9 +87,9 @@
       @endforeach
     </tbody>
     <tfoot>
-      <tr class="font-weight-500">
-        <td colspan="8">Totais:</td>
-        <td class="text-nowrap text-right">{{ number_format($total['peso'], 0, ',', '.') }} g</td>
+      <tr>
+        <td>Total Geral:</td>
+        <td>{{ number_format($total['peso'], 0, ',', '.') }} g</td>
       </tr>
     </tfoot>
   </table>

@@ -41,6 +41,15 @@
       }
     });
 
+    (0, _jquery2.default)(document).on('submit', '#filter-form', function () {
+      if ((0, _jquery2.default)('#modelo').val() == 'A' || (0, _jquery2.default)('#modelo').val() == 'AR') {
+        if ((0, _jquery2.default)('#grupos').val() == '') {
+          toastr.error("Informe pelo menos um grupo!");
+          return false;
+        }
+      }
+    });
+
     (0, _jquery2.default)(document).on('click', '.select2-all', function (event) {
       event.preventDefault();
       (0, _jquery2.default)(this).parent().find('select > option[value!=""]').prop("selected", "selected");
@@ -50,6 +59,13 @@
 
   // Fetch Data
   window.fetchData = function (route, token, page) {
+    if ((0, _jquery2.default)('#modelo').val() == 'A' || (0, _jquery2.default)('#modelo').val() == 'AR') {
+      if ((0, _jquery2.default)('#grupos').val() == '') {
+        toastr.error("Informe pelo menos um grupo!");
+        return false;
+      }
+    }
+
     var formData = new FormData();
     formData.append('dataini', (0, _jquery2.default)('#dataini').val());
     formData.append('datafim', (0, _jquery2.default)('#datafim').val());
