@@ -19,7 +19,28 @@
     (0, _Site.run)();
   });
 
+  //Modelo Change
   (function () {
+    (0, _jquery2.default)(document).on('change', '#modelo', function (event) {
+      if ((0, _jquery2.default)(this).val() == 'D') {
+        (0, _jquery2.default)('#sorter-det').removeClass('d-none');
+        (0, _jquery2.default)('#sorter-res').addClass('d-none');
+        (0, _jquery2.default)('#group-by').addClass('d-none');
+      } else if ((0, _jquery2.default)(this).val() == 'R') {
+        (0, _jquery2.default)('#sorter-det').addClass('d-none');
+        (0, _jquery2.default)('#sorter-res').removeClass('d-none');
+        (0, _jquery2.default)('#group-by').addClass('d-none');
+      } else if ((0, _jquery2.default)(this).val() == 'A') {
+        (0, _jquery2.default)('#sorter-det').removeClass('d-none');
+        (0, _jquery2.default)('#sorter-res').addClass('d-none');
+        (0, _jquery2.default)('#group-by').removeClass('d-none');
+      } else if ((0, _jquery2.default)(this).val() == 'AR') {
+        (0, _jquery2.default)('#sorter-det').removeClass('d-none');
+        (0, _jquery2.default)('#sorter-res').addClass('d-none');
+        (0, _jquery2.default)('#group-by').removeClass('d-none');
+      }
+    });
+
     (0, _jquery2.default)(document).on('click', '.select2-all', function (event) {
       event.preventDefault();
       (0, _jquery2.default)(this).parent().find('select > option[value!=""]').prop("selected", "selected");
@@ -48,6 +69,10 @@
     formData.append('idcor', (0, _jquery2.default)('#idcor').val().toString());
     formData.append('milini', (0, _jquery2.default)('#milini').val().toString());
     formData.append('milfim', (0, _jquery2.default)('#milfim').val().toString());
+    formData.append('modelo', (0, _jquery2.default)('#modelo').val().toString());
+    formData.append('sortbydet', (0, _jquery2.default)('#sortbydet').val());
+    formData.append('sortbyres', (0, _jquery2.default)('#sortbyres').val());
+    formData.append('grupos', (0, _jquery2.default)('#grupos').val());
 
     route += page ? "page=" + page : '';
 

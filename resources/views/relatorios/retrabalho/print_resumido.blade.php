@@ -77,44 +77,41 @@
   <table class="table-bordered" width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
     <thead>
       <tr>
-        <th style="width: 5%;">Código</th>
-        <th style="width: 8%;">Data Início</th>
-        <th style="width: 8%;">Data Fim</th>
-        <th style="width: 29%;">Cliente</th>
-        <th style="width: 8%;">Status</th>
-        <th style="width: 15%;">Tipo de Falha</th>
-        <th style="width: 7%;">Serviço</th>
-        <th style="width: 15%;">Material</th>
+        <th style="width: 10%;">Código</th>
+        <th style="width: 10%;">Data Início</th>
+        <th style="width: 10%;">Data Fim</th>
+        <th style="width: 50%;">Cliente</th>
+        <th style="width: 10%;">Status</th>
+        <th style="width: 5%;" class="text-right">Itens</th>
         <th style="width: 5%;" class="text-right">Peso (g)</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($itens as $item)
+      @foreach ($retrabalhos as $retrabalho)
         <tr>
-          <td>{{ $item->retrabalho->id ?? '' }}</td>
-          <td>{{ $item->retrabalho->data_inicio ? date('d/m/Y', strtotime($item->retrabalho->data_inicio)) : '' }}
+          <td class="text-nowrap">{{ $retrabalho->id }}</td>
+          <td class="text-nowrap">
+            {{ $retrabalho->data_inicio ? date('d/m/Y', strtotime($retrabalho->data_inicio)) : '' }}</td>
+          <td class="text-nowrap">{{ $retrabalho->data_fim ? date('d/m/Y', strtotime($retrabalho->data_fim)) : '' }}
           </td>
-          <td>{{ $item->retrabalho->data_fim ? date('d/m/Y', strtotime($item->retrabalho->data_fim)) : '' }}</td>
-          <td>{{ $item->retrabalho->cliente->identificacao ?? '' }}</td>
+          <td class="text-nowrap">{{ $retrabalho->cliente->identificacao ?? '' }}</td>
           <td>
-            @switch($item->retrabalho->status)
+            @switch($retrabalho->status)
               @case('G') Aguardando @break
               @case('A') Em Andamento @break
               @case('E') Concluído @break
               @default Aguardando
             @endswitch
           </td>
-          <td>{{ $item->tipo_falha->descricao ?? '' }}</td>
-          <td>{{ $item->tipo_servico->descricao ?? '' }}</td>
-          <td class="text-nowrap">{{ $item->material->descricao ?? '' }} {{ $item->cor->descricao ?? '' }}
-            {{ $item->milesimos ? $item->milesimos . ' ml' : '' }}</td>
-          <td class="text-right">{{ number_format($item->peso, 0, ',', '.') }}</td>
+          <td class="text-nowrap text-right">{{ $retrabalho->itens->count() }}</td>
+          <td class="text-nowrap text-right">{{ number_format($retrabalho->itens->sum('peso'), 0, ',', '.') }}</td>
         </tr>
       @endforeach
     </tbody>
     <tfoot>
       <tr class="font-weight-500">
-        <td colspan="8">Totais:</td>
+        <td colspan="5">Totais:</td>
+        <td class="text-nowrap text-right">{{ number_format($total['itens'], 0, ',', '.') }}</td>
         <td class="text-nowrap text-right">{{ number_format($total['peso'], 0, ',', '.') }} g</td>
       </tr>
     </tfoot>

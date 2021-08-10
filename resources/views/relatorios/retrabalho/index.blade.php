@@ -177,6 +177,60 @@
             </div>
 
             <div class="form-group row">
+              <label class="col-md-2 form-control-label">Modelo</label>
+              <div class="col-md-10">
+                <select class="form-control" id="modelo" name="modelo">
+                  <option value="D">Detalhado</option>
+                  <option value="R">Resumido</option>
+                  <option value="A">Agrupado</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="sorter-det" class="form-group row">
+              <label class="col-md-2 form-control-label">Ordenar por</label>
+              <div class="col-md-10">
+                <select class="form-control" id="sortbydet" name="sortbydet">
+                  <option value="retrabalhos.id">Código</option>
+                  <option value="retrabalhos.data_inicio">Data</option>
+                  <option value="cliente.nome">Cliente</option>
+                  <option value="tipo_falha.descricao">Tipo de Falha</option>
+                  <option value="tipo_servico.descricao">Tipo Serviço</option>
+                  <option value="material.descricao">Material</option>
+                  <option value="cor.descricao">Cor</option>
+                  <option value="milesimos">Milésimos</option>
+                  <option value="peso">Peso</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="sorter-res" class="form-group row d-none">
+              <label class="col-md-2 form-control-label">Ordenar por</label>
+              <div class="col-md-10">
+                <select class="form-control" id="sortbyres" name="sortbyres">
+                  <option value="retrabalhos.id">Código</option>
+                  <option value="data_inicio">Data</option>
+                  <option value="cliente.nome">Cliente</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="group-by" class="form-group row d-none">
+              <label class="col-md-2 form-control-label">Agrupar por</label>
+              <div class="col-md-10">
+                <select class="form-control" id="grupos" name="grupos[]" data-plugin="select2" multiple>
+                  <option value=""></option>
+                  <option value="retrabalhos.data_inicio">Data</option>
+                  <option value="tipo_falha.descricao">Tipo de Falha</option>
+                  <option value="tipo_servico.descricao">Tipo Serviço</option>
+                  <option value="material.descricao">Material</option>
+                  <option value="cor.descricao">Cor</option>
+                  <option value="milesimos">Milésimos</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
               <div class="col-md-10 offset-md-2">
                 <button type="button" id="btn-preview" class="btn btn-success">
                   <i class="icon wb-search" aria-hidden="true"></i> Pesquisar

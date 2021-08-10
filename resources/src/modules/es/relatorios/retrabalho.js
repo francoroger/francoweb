@@ -5,7 +5,28 @@ $(document).ready(function ($) {
   Site.run();
 });
 
+//Modelo Change
 (function () {
+  $(document).on('change', '#modelo', function (event) {
+    if ($(this).val() == 'D') {
+      $('#sorter-det').removeClass('d-none')
+      $('#sorter-res').addClass('d-none')
+      $('#group-by').addClass('d-none')
+    } else if ($(this).val() == 'R') {
+      $('#sorter-det').addClass('d-none')
+      $('#sorter-res').removeClass('d-none')
+      $('#group-by').addClass('d-none')
+    } else if ($(this).val() == 'A') {
+      $('#sorter-det').removeClass('d-none')
+      $('#sorter-res').addClass('d-none')
+      $('#group-by').removeClass('d-none')
+    } else if ($(this).val() == 'AR') {
+      $('#sorter-det').removeClass('d-none')
+      $('#sorter-res').addClass('d-none')
+      $('#group-by').removeClass('d-none')
+    }
+  })
+
   $(document).on('click', '.select2-all', function (event) {
     event.preventDefault();
     $(this).parent().find('select > option[value!=""]').prop("selected", "selected");
@@ -34,6 +55,10 @@ window.fetchData = function (route, token, page) {
   formData.append('idcor', $('#idcor').val().toString())
   formData.append('milini', $('#milini').val().toString())
   formData.append('milfim', $('#milfim').val().toString())
+  formData.append('modelo', $('#modelo').val().toString())
+  formData.append('sortbydet', $('#sortbydet').val())
+  formData.append('sortbyres', $('#sortbyres').val())
+  formData.append('grupos', $('#grupos').val())
 
   route += page ? "page=" + page : ''
 
