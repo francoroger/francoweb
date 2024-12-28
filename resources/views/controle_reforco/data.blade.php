@@ -1,13 +1,15 @@
+{{ Log::info('Iniciando renderização de data.blade.php') }}
 <div class="row">
   @foreach ($tanques as $tanque)
+    {{ Log::info('Renderizando tanque ' . $tanque->id) }}
     <div class="col-md-4">
       <div id="{{ 'pnl-' . $tanque->id }}"
-        class="panel border{{ $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? ' panel-danger border-danger' : '' }}">
+        class="panel border{{ $tanque->excedeu ? ' panel-danger border-danger' : '' }}">
         <div class="panel-heading text-center">
           <h3 class="panel-title">
             {{ $tanque->descricao }}
             <span
-              class="panel-desc{{ $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? ' text-white' : '' }}">a
+              class="panel-desc{{ $tanque->excedeu ? ' text-white' : '' }}">a
               cada {{ $tanque->ciclo_reforco }} g</span>
           </h3>
           <div class="panel-actions panel-actions-keep" style="top: 18px; right: 0px;">
@@ -22,23 +24,21 @@
                     class="fa fa-flask"></i> Reforço por análise</a>
                 <a class="reforco_comentario dropdown-item" href="#" data-id="{{ $tanque->id }}"><i
                     class="fa fa-comment-o"></i> Adicionar observação</a>
-                <!--
-                <a class="reset_tanque dropdown-item text-danger" href="#" data-id="{{ $tanque->id }}"><i class="fa fa-power-off"></i> Reset</a>
-                -->
               </div>
             </div>
           </div>
         </div>
         <div class="panel-body text-center">
+          {{ Log::info('Renderizando gauge para tanque ' . $tanque->id) }}
           <div class="gauge mt-30" id="{{ 'tanque-' . $tanque->id }}" data-plugin="gauge" data-color-start="#FFDBDC"
             data-color-stop="#E62020" data-angle="0" data-generate-gradient="true"
-            data-value="{{ $tanque->ciclos->where('status', 'P')->sum('peso') }}"
+            data-value="{{ $tanque->soma_peso }}"
             data-max-value="{{ $tanque->ciclo_reforco }}">
             <div class="gauge-label"></div>
             <canvas width="250" height="150"></canvas>
           </div>
           <span id="{{ 'excedente-' . $tanque->id }}"
-            class="font-size-12 font-weight-500 text-danger">{!! $tanque->ciclos->where('status', 'P')->sum('peso') > $tanque->ciclo_reforco ? 'Excedeu ' . ($tanque->ciclos->where('status', 'P')->sum('peso') - $tanque->ciclo_reforco) . ' g' : '&nbsp;' !!}</span>
+            class="font-size-12 font-weight-500 text-danger">{!! $tanque->excedeu ? 'Excedeu ' . $tanque->diferenca . ' g' : '&nbsp;' !!}</span>
         </div>
         <div class="panel-footer text-center">
           <button type="button" data-id="{{ $tanque->id }}" data-descricao="{{ $tanque->descricao }}"
@@ -46,5 +46,7 @@
         </div>
       </div>
     </div>
+    {{ Log::info('Tanque ' . $tanque->id . ' renderizado com sucesso') }}
   @endforeach
 </div>
+{{ Log::info('Renderização de data.blade.php finalizada') }}

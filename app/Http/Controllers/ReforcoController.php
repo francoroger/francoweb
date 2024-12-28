@@ -13,23 +13,81 @@ use App\TipoServico;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ReforcoController extends Controller
 {
   public function index()
   {
-    $tanques = Tanque::whereNotNull('ciclo_reforco')->orderBy('pos')->get();
-
-    $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
-
-    $tiposServico = TipoServico::whereHas('processos_tanque')->orderBy('descricao')->get();
-    $materiais = Material::whereHas('processos_tanque')->orderBy('pos')->get();
-    return view('controle_reforco.index')->with([
-      'tanques' => $tanques,
-      'tiposServico' => $tiposServico,
-      'materiais' => $materiais,
-      'clientes' => $clientes,
-    ]);
+    try {
+      Log::info('Iniciando método index do ReforcoController');
+      
+      Log::info('Buscando tanques com eager loading');
+      $tanques = Tanque::with(['ciclos' => function($query) {
+        $query->where('status', 'P');
+      }])
+      ->whereNotNull('ciclo_reforco')
+      ->orderBy('pos')
+      ->get()
+      ->map(function($tanque) {
+        // Pré-calcular valores para cada tanque
+        $soma_peso = $tanque->ciclos->sum('peso');
+        $excedeu = $soma_peso > $tanque->ciclo_reforco;
+        $diferenca = $excedeu ? ($soma_peso - $tanque->ciclo_reforco) : 0;
+        
+        Log::info("Tanque {$tanque->id} processado:", [
+          'id' => $tanque->id,
+          'descricao' => $tanque->descricao,
+          'ciclo_reforco' => $tanque->ciclo_reforco,
+          'ciclos_count' => $tanque->ciclos->count(),
+          'soma_peso' => $soma_peso,
+          'excedeu' => $excedeu,
+          'diferenca' => $diferenca
+        ]);
+        
+        $tanque->soma_peso = $soma_peso;
+        $tanque->excedeu = $excedeu;
+        $tanque->diferenca = $diferenca;
+        
+        return $tanque;
+      });
+      
+      Log::info('Tanques encontrados: ' . $tanques->count());
+      
+      Log::info('Buscando clientes');
+      $clientes = Cliente::select(['id', 'nome', 'rzsc', 'ativo'])->orderBy('rzsc')->get();
+      Log::info('Clientes encontrados: ' . $clientes->count());
+      
+      Log::info('Buscando tipos de serviço');
+      $tiposServico = TipoServico::whereHas('processos_tanque')->orderBy('descricao')->get();
+      Log::info('Tipos de serviço encontrados: ' . $tiposServico->count());
+      
+      Log::info('Buscando materiais');
+      $materiais = Material::whereHas('processos_tanque')->orderBy('pos')->get();
+      Log::info('Materiais encontrados: ' . $materiais->count());
+      
+      Log::info('Renderizando view');
+      return view('controle_reforco.index')->with([
+        'tanques' => $tanques,
+        'tiposServico' => $tiposServico,
+        'materiais' => $materiais,
+        'clientes' => $clientes,
+      ]);
+    } catch (\Exception $e) {
+      Log::error('Erro no método index do ReforcoController', [
+        'message' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => $e->getTraceAsString()
+      ]);
+      
+      return response()->json([
+        'error' => $e->getMessage(),
+        'file' => $e->getFile(),
+        'line' => $e->getLine(),
+        'trace' => $e->getTraceAsString()
+      ], 500);
+    }
   }
 
   public function tanques(Request $request)
