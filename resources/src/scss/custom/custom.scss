@@ -1,0 +1,30 @@
+.modal-open .select2-container {
+  z-index: 1600 !important;
+}
+
+.page-full-h {
+  position: relative;
+  min-height: 100%;
+  background: $page-bg;
+}
+
+.h-calculated {
+  height: calc(100vh - 224px) !important;
+}
+
+.text-strike {
+  text-decoration: line-through;
+}
+
+@media (min-width: 992px) {
+  .modal-lg,
+  .modal-xl {
+    max-width: 800px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal-xl {
+    max-width: 1140px;
+  }
+}
