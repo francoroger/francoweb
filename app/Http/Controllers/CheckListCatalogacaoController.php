@@ -13,6 +13,7 @@ use App\TipoFalha;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use PDF;
 
 class CheckListCatalogacaoController extends Controller
@@ -48,64 +49,66 @@ class CheckListCatalogacaoController extends Controller
 
   public function ajax(Request $request)
   {
-    $catalogacoes = Catalogacao::where('status', '<>', 'A');
+    $draw = $request->get('draw');
+    $start = $request->get('start');
+    $length = $request->get('length');
+    $search = $request->get('search');
+    $order = $request->get('order');
+    $columns = $request->get('columns');
 
-    if ($request->status) {
-      if ($request->status == 'C') {
-        $catalogacoes = Catalogacao::whereIn('status', ['C', 'L']);
-      } else {
-        $catalogacoes = Catalogacao::where('status', $request->status);
+    $query = Catalogacao::query();
+
+    // Filtros
+    if (!empty($request->get('idproduto'))) {
+      $query->where('idproduto', $request->get('idproduto'));
+    }
+    if (!empty($request->get('idmaterial'))) {
+      $query->where('idmaterial', $request->get('idmaterial'));
+    }
+    if (!empty($request->get('idfornec'))) {
+      $query->where('idfornec', $request->get('idfornec'));
+    }
+    if (!empty($request->get('referencia'))) {
+      $query->where('referencia', 'like', '%' . $request->get('referencia') . '%');
+    }
+    if (!empty($request->get('status'))) {
+      $query->where('status', $request->get('status'));
+    }
+    if (!empty($request->get('status_check'))) {
+      $query->where('status_check', $request->get('status_check'));
+    }
+
+    // Busca global
+    if (!empty($search['value'])) {
+      $query->where(function($q) use ($search) {
+        $q->where('id', 'like', '%' . $search['value'] . '%')
+          ->orWhere('cliente', 'like', '%' . $search['value'] . '%');
+      });
+    }
+
+    // Total de registros
+    $recordsTotal = $query->count();
+    $recordsFiltered = $recordsTotal;
+
+    // Ordenação
+    if (isset($order[0])) {
+      $column = $columns[$order[0]['column']];
+      $dir = $order[0]['dir'];
+      if ($column['data'] != 'actions') {
+        $query->orderBy($column['data'], $dir);
       }
     }
 
-    if ($request->status_check) {
-      $catalogacoes->whereHas('itens', function ($query) use ($request) {
-        if ($request->status_check <> '-') {
-          $query->where('status_check', $request->status_check);
-        } else {
-          $query->whereNull('status_check');
-        }
-      });
-    }
+    // Paginação
+    $query->skip($start)->take($length);
 
-    if ($request->idproduto) {
-      $catalogacoes->whereHas('itens', function ($query) use ($request) {
-        $query->where('idproduto', $request->idproduto);
-      });
-    }
-
-    if ($request->idmaterial) {
-      $catalogacoes->whereHas('itens', function ($query) use ($request) {
-        $query->where('idmaterial', $request->idmaterial);
-      });
-    }
-
-    if ($request->idfornec) {
-      $catalogacoes->whereHas('itens', function ($query) use ($request) {
-        $query->where('idfornec', $request->idfornec);
-      });
-    }
-
-    if ($request->referencia) {
-      $catalogacoes->whereHas('itens', function ($query) use ($request) {
-        $query->where('referencia', 'like', "%" . $request->referencia . "%");
-      });
-    }
-
-    if ($request->pesoini && $request->pesofim) {
-      $catalogacoes->whereHas('itens', function ($query) use ($request) {
-        $query->whereBetween('peso', [$request->pesoini, $request->pesofim]);
-      });
-    }
-
-    $catalogacoes = $catalogacoes->get();
-    $data = [];
-    foreach ($catalogacoes as $catalogacao) {
+    // Dados
+    $data = $query->get()->map(function($item) {
       $actions = '<div class="text-nowrap">';
-      $actions .= ($catalogacao->status == 'G' || $catalogacao->status == 'P' || $catalogacao->status == 'C' || $catalogacao->status == 'L') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="' . route('catalogacao_checklist.check', $catalogacao->id) . '"><i class="icon wb-pencil"></i></a>' : '';
-      $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="' . route('catalogacao_checklist.show', $catalogacao->id) . '"><i class="icon wb-search"></i></a>';
+      $actions .= ($item->status == 'G' || $item->status == 'P' || $item->status == 'C' || $item->status == 'L') ? '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Check List" href="' . route('catalogacao_checklist.check', $item->id) . '"><i class="icon wb-pencil"></i></a>' : '';
+      $actions .= '<a class="btn btn-sm btn-icon btn-flat btn-primary" title="Visualizar" href="' . route('catalogacao_checklist.show', $item->id) . '"><i class="icon wb-search"></i></a>';
       $actions .= '</div>';
-      switch ($catalogacao->status) {
+      switch ($item->status) {
         case 'F':
           $status = '<span class="badge badge-info">Preparação</span>';
           break;
@@ -128,21 +131,22 @@ class CheckListCatalogacaoController extends Controller
           break;
       }
 
-      $data[] = [
-        'id' => $catalogacao->id,
-        'cliente' => $catalogacao->cliente->identificacao ?? '',
-        'datacad' => date('d/m/Y', strtotime($catalogacao->datacad)),
-        'horacad' => date('H:i', strtotime($catalogacao->horacad)),
+      return [
+        'id' => $item->id,
+        'cliente' => $item->cliente->identificacao ?? '',
+        'datacad' => date('d/m/Y', strtotime($item->datacad)),
+        'horacad' => date('H:i', strtotime($item->horacad)),
         'status' => $status,
         'actions' => $actions,
       ];
-    }
-    $data = [
-      'data' => $data,
-      'recordsTotal' => count($data),
-      'recordsFiltered' => count($data)
-    ];
-    return response()->json($data);
+    })->toArray();
+
+    return response()->json([
+      'draw' => (int)$draw,
+      'recordsTotal' => $recordsTotal,
+      'recordsFiltered' => $recordsFiltered,
+      'data' => array_values($data)
+    ]);
   }
 
   /**

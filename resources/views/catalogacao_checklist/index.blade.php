@@ -9,12 +9,12 @@
   <link rel="stylesheet" href="{{ asset('assets/vendor/datatables.net-select-bs4/dataTables.select.bootstrap4.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/datatables.net-responsive-bs4/dataTables.responsive.bootstrap4.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/datatables.net-buttons-bs4/dataTables.buttons.bootstrap4.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/examples/css/tables/datatable.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/examples/css/tables/datatable.css') }}";
 
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/asspinner/asSpinner.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.css') }}";
 
   <style media="screen">
     .modal-open .select2-container {
@@ -77,13 +77,12 @@
         order: [[ 0, 'desc' ]],
         pageLength: 50,
         processing: true,
-        ajax:  {
+        serverSide: true,
+        deferRender: true,
+        ajax: {
           url: "{{ route('catalogacao_checklist.ajax') }}",
-<<<<<<< HEAD
           type: 'POST',
           headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-=======
->>>>>>> 7e5b37cb9f83395d9e052fa4aaa0900d02db0493
           data: function(d) {
             d.idproduto = $('#idproduto').val();
             d.idmaterial = $('#idmaterial').val();
@@ -94,37 +93,30 @@
             d.status = $('#status').val();
             d.status_check = $('#status_check').val();
           }
+        },
+        language: {
+          processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><span class="sr-only">Carregando...</span>',
+          search: "Pesquisar:",
+          lengthMenu: "Mostrar _MENU_ registros por página",
+          zeroRecords: "Nenhum registro encontrado",
+          info: "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+          infoEmpty: "Mostrando 0 até 0 de 0 registros",
+          infoFiltered: "(Filtrados de _MAX_ registros)",
+          paginate: {
+            first: "Primeiro",
+            last: "Último",
+            next: "Próximo",
+            previous: "Anterior"
+          }
         }
       });
 
       DTable = $('#catalogacao-checklist-table').DataTable(options);
-    });
 
-    $(document).on('click', '#btn-pesquisar', function() {      
-      $.ajax({
-        url: "{{ route('catalogacao_checklist.ajax') }}",
-        headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
-        type: 'POST',
-        beforeSend: function(jqXHR, settings) {
-          $('#btn-pesquisar').prop('disabled', true);
-          $('#btn-pesquisar').removeClass('btn-success');
-          $('#btn-pesquisar').addClass('btn-default');
-        },
-        success: function (data)
-        {
-          DTable.ajax.reload(function() {
-            $('#btn-pesquisar').prop('disabled', false);
-            $('#btn-pesquisar').removeClass('btn-default');
-            $('#btn-pesquisar').addClass('btn-success');
-            $('#modalPesquisa').modal('hide');
-          }, true);
-        },
-        error: function(jqXHR, textStatus, errorThrown)
-        {
-          window.toastr.error(jqXHR.responseJSON.message)
-          console.log(jqXHR);
-        }
-      }); 
+      $('#btn-pesquisar').on('click', function() {
+        DTable.ajax.reload();
+        $('#modalPesquisa').modal('hide');
+      });
     });
   </script>
 @endpush
@@ -185,7 +177,7 @@
                   @endforeach
                 </select>
               </div>
-  
+
               <div class="form-group col-md-4">
                 <label class="form-control-label" for="status">Status</label>
                 <select class="form-control" id="status" name="status" data-plugin="select2" data-placeholder="TODOS" data-allow-clear="true">
@@ -196,7 +188,7 @@
                   <option value="C">Concluída</option>
                 </select>
               </div>
-    
+
               <div class="form-group col-md-8">
                 <label class="form-control-label" for="idmaterial">Material</label>
                 <select class="form-control" id="idmaterial" name="idmaterial" data-plugin="select2" data-placeholder="TODOS" data-allow-clear="true">
@@ -216,7 +208,7 @@
                   <option value="-">Não Checado</option>
                 </select>
               </div>
-    
+
               <div class="form-group col-md-8">
                 <label class="form-control-label" for="idfornec">Fornecedor</label>
                 <select class="form-control" id="idfornec" name="idfornec" data-plugin="select2" data-placeholder="TODOS" data-allow-clear="true">
@@ -226,12 +218,12 @@
                   @endforeach
                 </select>
               </div>
-    
+
               <div class="form-group col-md-4">
                 <label class="form-control-label" for="referencia">Referência</label>
                 <input type="text" class="form-control" id="referencia" name="referencia" />
               </div>
-    
+
               <div class="form-group col-md-12">
                 <label class="form-control-label" for="pesoini">Peso</label>
                 <div class="row">
@@ -239,7 +231,7 @@
                     <span class="input-group-addon">De</span>
                     <input type="number" class="form-control" id="pesoini" name="pesoini" min="0" step="any" />
                   </div>
-  
+
                   <div class="input-group col-6">
                     <span class="input-group-addon">Até</span>
                     <input type="number" class="form-control" id="pesofim" name="pesofim" min="0" step="any" />
