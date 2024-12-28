@@ -79,8 +79,11 @@
         processing: true,
         ajax:  {
           url: "{{ route('catalogacao_checklist.ajax') }}",
+<<<<<<< HEAD
           type: 'POST',
           headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
+=======
+>>>>>>> 7e5b37cb9f83395d9e052fa4aaa0900d02db0493
           data: function(d) {
             d.idproduto = $('#idproduto').val();
             d.idmaterial = $('#idmaterial').val();
