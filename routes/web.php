@@ -115,6 +115,7 @@ Route::group(['prefix' => 'catalogacao'], function () {
   //Check list catalogação
   Route::any('checklist/ajax', 'CheckListCatalogacaoController@ajax')->name('catalogacao_checklist.ajax');
   Route::get('checklist', 'CheckListCatalogacaoController@index')->name('catalogacao_checklist.index');
+  Route::get('checklist/export', 'CheckListCatalogacaoController@export')->name('catalogacao_checklist.export');
   Route::post('checklist', 'CheckListCatalogacaoController@autosave')->name('catalogacao_checklist.autosave');
   Route::get('checklist/{id}', 'CheckListCatalogacaoController@show')->name('catalogacao_checklist.show');
   Route::get('checklist/{id}/check', 'CheckListCatalogacaoController@check')->name('catalogacao_checklist.check');
@@ -123,6 +124,7 @@ Route::group(['prefix' => 'catalogacao'], function () {
   Route::get('checklist/{id}/print/html', 'CheckListCatalogacaoController@printHtml')->name('catalogacao_checklist.print_html');
   Route::get('checklist/itens/edit/{id}', 'CheckListCatalogacaoController@editItem')->name('catalogacao_checklist.editItem');
   Route::post('checklist/itens/update/{id}', 'CheckListCatalogacaoController@updateItem')->name('catalogacao_checklist.updateItem');
+  Route::get('checklist/export', 'CheckListCatalogacaoController@export')->name('catalogacao_checklist.export');
 
   //Relatório de Checklist
   Route::get('relatorio_checklist', 'RelatorioCheckListController@index')->name('relatorio_checklist.index');

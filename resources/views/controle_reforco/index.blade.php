@@ -1,6 +1,7 @@
 @extends('layouts.app.main')
 
 @push('stylesheets_plugins')
+  {{ Log::info('Carregando stylesheets plugins') }}
   <link rel="stylesheet" href="{{ asset('assets/vendor/gauge-js/gauge.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/toastr/toastr.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.css') }}">
@@ -67,9 +68,11 @@
     }
 
   </style>
+  {{ Log::info('Stylesheets plugins carregados') }}
 @endpush
 
 @push('scripts_plugins')
+  {{ Log::info('Carregando scripts plugins') }}
   <script src="{{ asset('assets/vendor/gauge-js/gauge.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/toastr/toastr.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap-sweetalert/sweetalert.js') }}"></script>
@@ -78,9 +81,11 @@
   <script src="{{ asset('assets/vendor/select2/select2.full.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/formatter/jquery.formatter.js') }}"></script>
   <script src="{{ asset('assets/vendor/moment/moment.min.js') }}"></script>
+  {{ Log::info('Scripts plugins carregados') }}
 @endpush
 
 @push('scripts_page')
+  {{ Log::info('Carregando scripts page') }}
   <script src="{{ asset('assets/js/Plugin/gauge.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/toastr.js') }}"></script>
   <script src="{{ asset('assets/js/Plugin/bootstrap-sweetalert.js') }}"></script>
@@ -497,11 +502,12 @@
     $('#modalForm').on('show.bs.modal', function(e) {
       limpaCampos();
     })
-
   </script>
+  {{ Log::info('Scripts page carregados') }}
 @endpush
 
 @section('content')
+  {{ Log::info('Iniciando seção content') }}
   <div class="page">
     <div class="page-header">
       <h1 class="page-title font-size-26 font-weight-100"><span class="hidden-sm-down">Controle de </span>Reforço<span
@@ -523,177 +529,5 @@
 
     </div>
   </div>
-
-  <!-- Modal passagem -->
-  <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel" aria-hidden="true"
-    data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalFormLabel">Passagem de Peças</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="passagem-form">
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label class="form-control-label font-weight-400" for="data_servico">Data</label>
-                <input type="text" class="form-control" id="data_servico" name="data_servico" data-plugin="datepicker"
-                  data-language="pt-BR" />
-              </div>
-
-              <div class="form-group col-md-6">
-                <label class="form-control-label font-weight-400" for="hora_servico">Hora</label>
-                <input type="text" class="form-control" id="hora_servico" name="hora_servico" data-plugin="formatter"
-                  data-pattern="[[99]]:[[99]]:[[99]]" />
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="form-group col-md-12">
-                <label class="form-control-label font-weight-400" for="idcliente">Cliente</label>
-                <select class="form-control" id="idcliente" name="idcliente" style="width:100%;">
-                  <option value=""></option>
-                  @foreach ($clientes as $cliente)
-                    <option value="{{ $cliente->id }}" {{ $cliente->ativo ? '' : ' disabled' }}>
-                      {{ $cliente->identificacao }}</option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-12">
-                <div id="no-more-tables">
-                  <table class="col-sm-12 table table-condensed cf p-0" id="tb-item-passagem">
-                    <thead class="cf">
-                      <tr>
-                        <th class="w-p25">Serviço</th>
-                        <th class="w-p25">Material</th>
-                        <th class="w-p20">Cor</th>
-                        <th class="w-p10">Ml</th>
-                        <th class="w-p15">Peso</th>
-                        <th class="w-p5"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="item-passagem" data-index="0">
-                        <td data-title="Serviço">
-                          <select class="form-control" name="item_passagem[0][idtiposervico]">
-                            <option value=""></option>
-                            @foreach ($tiposServico as $tipoServico)
-                              <option value="{{ $tipoServico->id }}">{{ $tipoServico->descricao }}</option>
-                            @endforeach
-                          </select>
-                        </td>
-                        <td data-title="Material">
-                          <select class="form-control" name="item_passagem[0][idmaterial]">
-                            <option value=""></option>
-                            @foreach ($materiais as $material)
-                              <option value="{{ $material->id }}">{{ $material->descricao }}</option>
-                            @endforeach
-                          </select>
-                        </td>
-                        <td data-title="Cor">
-                          <select class="form-control" name="item_passagem[0][idcor]">
-                            <option value=""></option>
-                          </select>
-                        </td>
-                        <td data-title="Ml">
-                          <input type="number" class="form-control" name="item_passagem[0][milesimos]" min="0" />
-                        </td>
-                        <td data-title="Peso">
-                          <input type="number" class="form-control" name="item_passagem[0][peso]" min="0" />
-                        </td>
-                        <td data-title="Ações">
-                          <input type="hidden" name="item_passagem[0][item_id]">
-                          <div class="item-passagem-controls d-none justify-content-center">
-                            <button type="button" class="btn btn-sm btn-block btn-outline-danger btn-remove-item-passagem"
-                              title="Excluir"><i class="fa fa-times"></i></button>
-                          </div>
-                          <button type="button" class="btn btn-sm btn-block btn-info btn-add-item-passagem"
-                            title="Adicionar item"><i class="icon wb-plus"></i></button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success" id="btn-registrar"><i class="fa fa-tick"></i> OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal reforço -->
-  <div class="modal fade" id="modalReforco" tabindex="-1" role="dialog" aria-labelledby="modalReforcoLabel"
-    aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalReforcoLabel">Reforço por Análise</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="reforco_analise_id" id="reforco_analise_id">
-          <div class="row">
-            <div class="form-group col-md-12">
-              <label class="form-control-label" for="reforco_analise_valor">Valor do tanque após análise</label>
-              <input type="number" class="form-control" id="reforco_analise_valor" name="reforco_analise_valor" min="0" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="form-group col-md-12">
-              <label class="form-control-label" for="reforco_analise_motivo">Motivo</label>
-              <textarea class="form-control" id="reforco_analise_motivo" name="reforco_analise_motivo"
-                rows="5"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success" id="btn-analise"><i class="fa fa-tick"></i> OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal comentário -->
-  <div class="modal fade" id="modalComentario" tabindex="-1" role="dialog" aria-labelledby="modalComentarioLabel"
-    aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalComentarioLabel">Observação</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" name="reforco_comentario_id" id="reforco_comentario_id">
-          <div class="row">
-            <div class="form-group col-md-12">
-              <label class="form-control-label" for="reforco_comentario">Observações</label>
-              <textarea class="form-control" id="reforco_comentario" name="reforco_comentario" rows="5"></textarea>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-success" id="btn-comentario"><i class="fa fa-tick"></i> OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  {{ Log::info('Seção content finalizada') }}
 @endsection
