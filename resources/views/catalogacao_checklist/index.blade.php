@@ -130,6 +130,10 @@
           <i class="fa fa-search"></i>
           <span class="hidden-sm-down ml-3">Pesquisa Avançada</span>
         </button>
+        <a href="{{ route('catalogacao_checklist.export') }}" class="btn btn-primary">
+          <i class="icon wb-file" aria-hidden="true"></i>
+          Exportar Excel
+        </a>
       </div>
     </div>
 

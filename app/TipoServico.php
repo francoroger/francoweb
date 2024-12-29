@@ -10,6 +10,11 @@ class TipoServico extends Model
 
   public $timestamps = false;
 
+  public function processos_tanque()
+  {
+    return $this->hasMany('App\ProcessoTanque', 'tiposervico_id');
+  }
+
   /**
   * Get Descrição do Parâmetro
   *
@@ -29,12 +34,6 @@ class TipoServico extends Model
         break;
       default:
         return '';
-        break;
     }
-  }
-
-  public function processos_tanque()
-  {
-    return $this->hasMany('App\ProcessoTanque', 'tiposervico_id', 'id');
   }
 }

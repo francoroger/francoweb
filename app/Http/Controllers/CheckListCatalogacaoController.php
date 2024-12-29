@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\CheckListExport;
 use PDF;
 
 class CheckListCatalogacaoController extends Controller
@@ -419,5 +421,13 @@ class CheckListCatalogacaoController extends Controller
     $tiposFalha = TipoFalha::select(['id', 'descricao'])->orderBy('descricao')->get();
 
     return response()->json(['index' => $request->index, 'view' => view('catalogacao_checklist._info', ['item' => $item, 'index' => $request->index, 'tiposFalha' => $tiposFalha])->render()]);
+  }
+
+  /**
+   * Exportar dados para Excel
+   */
+  public function export(Request $request)
+  {
+      return Excel::download(new CheckListExport($request), 'checklist-' . date('Y-m-d') . '.xlsx');
   }
 }
